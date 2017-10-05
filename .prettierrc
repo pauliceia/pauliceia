@@ -1,0 +1,12 @@
+{
+  "semi": false,
+  "trailingComma": "es5",
+  "overrides": [
+    {
+      "files": "*.vue",
+      "options": {
+        "parser": "html"
+      }
+    }
+  ]
+}
