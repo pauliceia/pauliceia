@@ -24,15 +24,15 @@
 
 <script>
   export default {
-    name: "sobre",
+    name: 'sobre',
     methods: {
       toggle_sobre: function () {
-        document.getElementById("sobre-desc").classList.toggle("is-active")
-      },
+        document.getElementById('sobre-desc').classList.toggle('is-active')
+      }
     },
-    data() {
+    data () {
       return {}
-    },
+    }
   }
 </script>
 

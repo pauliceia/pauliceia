@@ -13,8 +13,8 @@
   export default {
     name: 'app',
     components: {
-      Navigation,
-    },
+      Navigation
+    }
   }
 </script>
 
