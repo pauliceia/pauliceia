@@ -21,9 +21,9 @@
     name: 'navbar',
     data () {
       return {
-        'logo': Logo,
+        'logo': Logo
       }
-    },
+    }
   }
 </script>
 

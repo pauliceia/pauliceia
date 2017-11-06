@@ -15,12 +15,12 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home,
+      component: Home
     },
     {
       path: '/sobre',
       name: 'Sobre',
-      component: Sobre,
+      component: Sobre
     },
     {
       path: '/usuario',
@@ -29,24 +29,24 @@ export default new Router({
       children: [
         {
           path: '',
-          redirect: {name: 'Dashboard'},
+          redirect: {name: 'Dashboard'}
         },
         {
           path: 'dashboard',
           name: 'Dashboard',
-          component: Dashboard,
-        },
-      ],
+          component: Dashboard
+        }
+      ]
     },
     {
       path: '/dados/:id',
       name: 'Dados',
-      component: Dados,
+      component: Dados
     },
     {
       path: '/projetos/:id',
       name: 'Projetos',
-      component: Projetos,
-    },
-  ],
+      component: Projetos
+    }
+  ]
 })
