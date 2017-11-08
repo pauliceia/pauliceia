@@ -30,18 +30,24 @@ import {
 } from './layers'
 
 import {
-Projects,
-ProjectsIndex,
-ProjectsSingle
+  Projects,
+  ProjectsIndex,
+  ProjectsSingle
 } from './projects'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
       name: 'Home',
+      component: Home
+    },
+    {
+      // TODO add 404 page
+      path: '*',
       component: Home
     },
     {
@@ -87,12 +93,12 @@ export default new Router({
       children: [
         {
           path: '',
-          name: 'Projects',
+          name: 'ProjectsIndex',
           component: ProjectsIndex
         },
         {
           path: ':id',
-          name: 'Projects',
+          name: 'ProjectsSingle',
           component: ProjectsSingle
         }
       ]

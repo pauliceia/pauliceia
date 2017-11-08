@@ -15,6 +15,7 @@
     "openlayers": "^4.4.2",
     "vue": "^2.3.3",
     "vue-axios": "^2.0.2",
+    "vue-i18n": "^7.3.2",
     "vue-router": "^2.7.0"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@
     </section>
     <section class="nav-right nav-menu">
       <span class="nav-item">
-          <router-link to="Sobre">Sobre</router-link>
+          <router-link :to="{ name: 'About' }">{{ $t('about.about') }}</router-link>
       </span>
     </section>
   </nav>
