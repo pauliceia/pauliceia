@@ -1,7 +1,5 @@
 <template>
-  <section class="container">
-    <ol-map></ol-map>
-  </section>
+  <ol-map></ol-map>
 </template>
 
 <script>
@@ -13,11 +11,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  @import "../scss/style";
-
-  section {
-    height: 100%;
-  }
-</style>

@@ -1,9 +1,7 @@
 <template>
-  <section id="app">
+  <section class="is-flex">
     <navigation></navigation>
-    <section class="section">
-      <router-view></router-view>
-    </section>
+    <router-view></router-view>
   </section>
 </template>
 
@@ -19,9 +17,9 @@
 </script>
 
 <style lang="scss" scoped>
-  #app {
-    section {
-      height: 100%;
-    }
+  section {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
   }
 </style>
