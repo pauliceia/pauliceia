@@ -11,11 +11,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  @import "../scss/style";
-
-  section {
-    height: 100%;
-  }
-</style>
