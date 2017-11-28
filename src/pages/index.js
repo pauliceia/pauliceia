@@ -38,7 +38,7 @@ import {
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '/',
@@ -93,7 +93,7 @@ export default new Router({
       children: [
         {
           path: '',
-          name: 'ProjectsIndex',
+          name: 'Projects',
           component: ProjectsIndex
         },
         {

@@ -15,6 +15,7 @@ new Vue({ // eslint-disable-line
   router,
   i18n: new VueI18n({
     locale: 'pt-BR',
+    //locale: 'en',
     messages: locale
   }),
   template: '<App/>',

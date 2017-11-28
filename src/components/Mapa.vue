@@ -1,5 +1,5 @@
 <template>
-  <div id="mapa"></div>
+  <div id="meu-mapa"></div>
 </template>
 
 <script>
@@ -11,7 +11,9 @@
         name: 'OlMap',
         olmap: null,
         view: new ol.View({
-          projection: 'EPSG:4326'
+          projection: 'EPSG:4326',
+          center: [-46.63576816, -23.54308645],
+          zoom: 14.98
         }),
         layersBase: {
           osm: new ol.layer.Tile({
@@ -37,7 +39,8 @@
 <style lang="scss" scoped>
   @import "~openlayers/css/ol.css";
 
-  #mapa {
-    height: 100%;
+  #meu-mapa {
+    flex-grow: 1;
+    overflow: hidden;
   }
 </style>

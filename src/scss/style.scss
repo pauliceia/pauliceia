@@ -1,6 +1,7 @@
-@import "../../node_modules/bulma/sass/utilities/initial-variables";
+@import "../../node_modules/bulma/sass/utilities/_all";
 
-$primary: $red;
+$primary: $turquoise;
+$primary-invert: $turquoise-invert;
 
 @import "~bulma";
 
@@ -8,6 +9,7 @@ html, body, #app {
   height: 100%;
   width: 100%;
   margin: 0;
+  overflow: auto;
 }
 
 html {

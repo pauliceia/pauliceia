@@ -1,7 +1,5 @@
 <template>
-  <section class="container">
-    <ol-map></ol-map>
-  </section>
+  <ol-map></ol-map>
 </template>
 
 <script>
