@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueI18n from 'vue-i18n'
+import 'bootstrap'
 
 import App from '../components/App.vue'
 import router from '../pages'
@@ -15,6 +16,7 @@ new Vue({ // eslint-disable-line
   router,
   i18n: new VueI18n({
     locale: 'pt-BR',
+    //locale: 'en',
     messages: locale
   }),
   template: '<App/>',

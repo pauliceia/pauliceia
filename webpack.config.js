@@ -41,7 +41,12 @@ module.exports = {
       template: './src/html/index.html'
     }),
     new webpack.ProvidePlugin({
-      ol: 'openlayers/dist/ol.js'
+      ol: 'openlayers/dist/ol.js',
+      $: 'jquery',
+      jquery: 'jquery',
+      'window.jQuery': 'jquery',
+      jQuery: 'jquery',
+      Popper: ['popper.js', 'default'],
     })
   ],
   resolve: {

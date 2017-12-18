@@ -11,12 +11,16 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "bulma": "^0.5.1",
-    "openlayers": "^4.4.2",
-    "vue": "^2.3.3",
+    "bootstrap": "^4.0.0-beta.2",
+    "bootstrap-slider": "^10.0.0",
+    "bulma": "^0.5.3",
+    "jquery": "^3.2.1",
+    "openlayers": "^4.6.4",
+    "popper.js": "^1.13.0",
+    "vue": "^2.5.11",
     "vue-axios": "^2.0.2",
     "vue-i18n": "^7.3.2",
-    "vue-router": "^2.7.0"
+    "vue-router": "^2.8.1"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
@@ -27,14 +31,14 @@
     "eslint-plugin-html": "^3.2.2",
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.30.1",
-    "husky": "^0.15.0-beta.13",
-    "node-sass": "^4.5.0",
+    "husky": "^0.15.0-beta.16",
+    "node-sass": "^4.7.2",
     "sass-loader": "^5.0.1",
     "standard": "^10.0.3",
     "vue-loader": "^12.1.0",
-    "vue-template-compiler": "^2.3.3",
+    "vue-template-compiler": "^2.5.11",
     "webpack": "^2.6.1",
-    "webpack-dev-server": "^2.4.5"
+    "webpack-dev-server": "^2.9.7"
   },
   "husky": {
     "hooks": {

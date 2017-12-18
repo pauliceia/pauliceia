@@ -6,5 +6,14 @@ export default {
       (1870-1940), associada a uma interface que permita a interatividade de
       pesquisadores, que poderão alimentar a base com dados espaciais de suas
       próprias investigações.`
+  },
+  data: {
+    data: 'Dados'
+  },
+  layers: {
+    layers: 'Camadas'
+  },
+  projects: {
+    projects: 'Projetos'
   }
 }
