@@ -44,7 +44,6 @@ module.exports = {
           new ol.control.ScaleLine(),
           new ol.control.ZoomSlider()
         ]),
-        renderer: 'canvas',
         layers: [this.layersBase.osm],
         view: this.view
     });
@@ -52,5 +51,5 @@ module.exports = {
 }
 </script>
 
-<style>
+<style lang="sass" scoped>
 </style>

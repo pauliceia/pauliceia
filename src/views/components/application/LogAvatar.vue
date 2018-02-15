@@ -8,17 +8,17 @@
         </md-button>
         
         <md-menu-content>
+            <md-menu-item to="/dashboard/profile">
+                <md-icon>person</md-icon>
+                <span class="md-list-item-text">{{ $t('nav.profile') }}</span>
+            </md-menu-item>
+            <md-menu-item to="/dashboard">
+                <md-icon>home</md-icon>
+                <span class="md-list-item-text">{{ $t('nav.dashboard') }}</span>
+            </md-menu-item>
             <md-menu-item>
-                <md-icon to="#">home</md-icon>
-                <span class="md-list-item-text">Meu profile</span>
-            </md-menu-item>
-            <md-menu-item to="#">
-                <md-icon>whatshot</md-icon>
-                <span class="md-list-item-text">News</span>
-            </md-menu-item>
-            <md-menu-item to="#">
                 <md-icon>exit_to_app</md-icon>
-                <span class="md-list-item-text">Logout</span>
+                <span class="md-list-item-text">{{ $t('nav.logout') }}</span>
             </md-menu-item>
         </md-menu-content>
     </md-menu>
@@ -36,6 +36,9 @@ export default {
     *
         color: #fff
     
+    .md-menu
+        float: right
+    
     .md-button
         border-radius: 50px
     
@@ -44,7 +47,6 @@ export default {
 
     .md-menu-item:hover
         background: rgba(0,0,0,0.1)
-        margin: 1px
 
     .md-icon
         color: $color-nav

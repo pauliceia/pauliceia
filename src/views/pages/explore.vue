@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import OlMap from '@/views/components/Ol-map'
+import OlMap from '@/views/components/map/Ol-map'
 
 export default {
     components: {
@@ -22,6 +22,6 @@ export default {
         left: 0
         right: 0
         bottom: 0
-        top: 87px
+        top: 69px
         background: #fff
 </style>

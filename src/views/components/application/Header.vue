@@ -6,7 +6,7 @@
             <div class="container">
             
                 <router-link to="/" class="navbar-brand">
-                    <img :src="logo" title="logo of pauliceia" alt="logo ofpauliceia" />
+                    <img :src="logo" title="logo of pauliceia" alt="logo of pauliceia" />
                 </router-link>
                 
                 <!-- BUTTON MOBILE -->
@@ -14,6 +14,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <!-- content nav -->
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
@@ -22,7 +23,7 @@
                         <li class="nav-item">
                             <router-link class="nav-link" to="/about">{{ $t('nav.about') }}</router-link>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" style="cursor: pointer">
                             <a class="nav-link dropdown-toggle" style="text-transform: uppercase;" data-toggle="dropdown">{{ $i18n.locale() }}</a>
                             
                             <!-- component of language -->
@@ -31,7 +32,12 @@
                         </li>
                     </ul>
                     
-                    <p-logAvatar/>
+                    <div v-if="logado">
+                        <p-logAvatar />
+                    </div>
+                    <div v-else>
+                        <router-link to="/login" class="btn btn-default">{{ $t('nav.login') }}</router-link>
+                    </div>
                 </div>
 
             </div><!-- END .CONTAINER -->
@@ -40,8 +46,8 @@
 </template>
 
 <script>
-import LogAvatar from '@/views/components/application/header/logAvatar'
-import dropLanguage from '@/views/components/application/header/dropLanguage'
+import LogAvatar from '@/views/components/application/LogAvatar'
+import dropLanguage from '@/views/components/application/DropLanguage'
 
 import logo from '@/views/assets/images/logo.png'
 
@@ -52,7 +58,8 @@ export default {
     },
     data() {
         return {
-            logo
+            logo,
+            logado: false
         }
     }
 }
@@ -68,10 +75,17 @@ export default {
         height: 5px
         background: #0B1D3B        
 
-    .navbar-brand img
-        width: 90%
+    .navbar-brand
+        width: 120px
 
     .navbar-nav li a
         text-decoration: none
         font-size: 1.3em 
+
+    .btn-default
+        background: #5D7AA9
+        color: #fff
+    .btn-default:hover
+        background: #7188AD
+        text-decoration: none
 </style>

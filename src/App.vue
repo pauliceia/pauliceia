@@ -10,9 +10,11 @@ export default {
 }
 </script>
 
-<style lang="sass">
-  body
-    background: #eee
+<style lang="sass">  
+  html, body, #app
+    height: 100%
+    width: 100%
+    margin: 0
 
   *, *:before, *:after 
     box-sizing: border-box

@@ -38,11 +38,13 @@ export default {
 }
 </script>
 
-<style lang="sass">
-    .md-list
-        padding: 0 5px !important
-        cursor: pointer
+<style lang="sass" scoped>
+@import '~vue-material/dist/vue-material.min.css'
 
-    .md-list:active
-        background: rgba(0,0,0,0.2)
+.md-list
+    padding: 0 5px !important
+    cursor: pointer
+
+.md-list:active
+    background: rgba(0,0,0,0.2)
 </style>

@@ -1,6 +1,16 @@
 {
     "nav": {
         "explore": "Explore",
-        "about": "About"
+        "about": "About",
+        "login": "Sign In",
+        "profile": "My Profile",
+        "dashboard": "Dashboard",
+        "logout": "Logout"
+    },
+    "dashboard": {
+        "nav": {
+            "notifications": "Notifications",
+            "infos": "Informations"
+        }
     }
 }
