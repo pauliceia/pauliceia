@@ -4,11 +4,11 @@
 
         <nav class="navbar navbar-expand-md navbar-dark">
             <div class="container">
-            
+
                 <router-link to="/" class="navbar-brand">
                     <img :src="logo" title="logo of pauliceia" alt="logo of pauliceia" />
                 </router-link>
-                
+
                 <!-- BUTTON MOBILE -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,13 +25,13 @@
                         </li>
                         <li class="nav-item dropdown" style="cursor: pointer">
                             <a class="nav-link dropdown-toggle" style="text-transform: uppercase;" data-toggle="dropdown">{{ $i18n.locale() }}</a>
-                            
+
                             <!-- component of language -->
                             <p-dropLanguage />
 
                         </li>
                     </ul>
-                    
+
                     <div v-if="logado">
                         <p-logAvatar />
                     </div>
@@ -59,7 +59,7 @@ export default {
     data() {
         return {
             logo,
-            logado: false
+            logado: true
         }
     }
 }
@@ -73,14 +73,14 @@ export default {
     .sub-nav
         width: 100%
         height: 5px
-        background: #0B1D3B        
+        background: #0B1D3B
 
     .navbar-brand
         width: 120px
 
     .navbar-nav li a
         text-decoration: none
-        font-size: 1.3em 
+        font-size: 1.3em
 
     .btn-default
         background: #5D7AA9
