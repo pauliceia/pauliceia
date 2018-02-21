@@ -12,5 +12,8 @@
             "notifications": "Notifications",
             "infos": "Informations"
         }
+    },
+    "map":{
+      "title": "test"
     }
 }
