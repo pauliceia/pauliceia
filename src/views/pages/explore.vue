@@ -3,6 +3,8 @@
 
     <ol-map class="map">
       <p-timeline></p-timeline>
+      <p-geocoding></p-geocoding>
+      <p-layersRaster></p-layersRaster>
     </ol-map>
 
   </section>
@@ -11,6 +13,8 @@
 <script>
   import OlMap from '@/views/components/map/Ol-map'
   import Timeline from '@/views/components/map/Timeline'
+  import Geocoding from '@/views/components/map/Geocoding'
+  import LayersRaster from '@/views/components/map/LayersRaster'
 
   import {
     placeStyle,
@@ -24,7 +28,9 @@
   export default {
     components: {
       'ol-map': OlMap,
-      'p-timeline': Timeline
+      'p-timeline': Timeline,
+      'p-geocoding': Geocoding,
+      'p-layersRaster': LayersRaster
     },
     created () {
 

@@ -1,4 +1,4 @@
-import Api from '@/middleware/Api'
+import Api from '@/middleware/ApiVGI'
 
 export default {
   login (credentials) {

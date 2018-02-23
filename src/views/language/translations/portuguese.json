@@ -14,6 +14,8 @@
         }
     },
     "map":{
-      "title": "teste"
+      "geocoding": {
+          "placeholder": "nome da rua, número, ano"
+      } 
     }
 }

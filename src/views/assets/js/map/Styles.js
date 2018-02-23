@@ -7,6 +7,16 @@ const placeStyle = new ol.style.Style({
   }))
 })
 
+const placeStyleSearch = new ol.style.Style({
+  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+      anchor: [0.5, 29],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      opacity: 0.85,
+      src: 'https://raw.githubusercontent.com/Pauliceia/edit/master/images/iconLocation.png'
+  }))
+})
+
 const streetsStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
     color: 'blue',
@@ -20,6 +30,7 @@ const emptyStyle = new ol.style.Style({
 
 export {
   placeStyle,
+  placeStyleSearch,
   streetsStyle,
   emptyStyle
 }

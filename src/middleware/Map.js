@@ -1,7 +1,7 @@
-import Api from '@/middleware/Api'
+import Api from '@/middleware/ApiGeocoding'
 
 export default {
-  getMap (mapName) {
-    return Api().get('/maps/geojson/'+mapName)
+  geolocationOne (address) {
+    return Api().get(`/geolocation/${address}/json`)
   }
 }

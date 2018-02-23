@@ -31,14 +31,7 @@
           zoom: this.zoom,
           maxZoom: 21,
           minZoom: 2
-        }),
-        layersBase: {
-          osm: new ol.layer.Tile({
-            source: new ol.source.OSM(),
-            visible: true,
-            name: 'openstreetmap'
-          })
-        }
+        })
       }
     },
     mounted () {
@@ -50,7 +43,6 @@
           new ol.control.ZoomSlider()
         ]),
         layers: [
-          this.layersBase.osm,
           overlayGroupBase,
           overlayGroup
         ],
