@@ -2,13 +2,12 @@ import 'openlayers/dist/ol-debug.js'
 
 const overlayGroupBase = new ol.layer.Group({
   'title': 'Base maps',
-  layers: [
-    new ol.layer.Tile({
-      title: 'OSM',
-      type: 'base',
-      source: new ol.source.OSM()
-    })
-  ]
+  layers: []
+})
+
+const overlayGroupRasters = new ol.layer.Group({
+  title: 'Overlays Rasters',
+  layers: []
 })
 
 const overlayGroup = new ol.layer.Group({
@@ -18,5 +17,6 @@ const overlayGroup = new ol.layer.Group({
 
 export {
   overlayGroupBase,
+  overlayGroupRasters,
   overlayGroup,
 }

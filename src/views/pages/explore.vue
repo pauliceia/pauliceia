@@ -5,6 +5,7 @@
       <p-timeline></p-timeline>
       <p-geocoding></p-geocoding>
       <p-layersRaster></p-layersRaster>
+      <p-layersBase></p-layersBase>
     </ol-map>
 
   </section>
@@ -15,6 +16,7 @@
   import Timeline from '@/views/components/map/Timeline'
   import Geocoding from '@/views/components/map/Geocoding'
   import LayersRaster from '@/views/components/map/LayersRaster'
+  import LayersBase from '@/views/components/map/LayersBase'
 
   import {
     placeStyle,
@@ -30,7 +32,8 @@
       'ol-map': OlMap,
       'p-timeline': Timeline,
       'p-geocoding': Geocoding,
-      'p-layersRaster': LayersRaster
+      'p-layersRaster': LayersRaster,
+      'p-layersBase': LayersBase
     },
     created () {
 
@@ -53,24 +56,6 @@
         }),
         style: streetsStyle
       });
-
-      overlayGroup.getLayers().push(
-        new ol.layer.Tile({
-          title: 'SP 1930',
-          visible: true,
-          source: new ol.source.TileWMS({
-            url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/wms',
-            params: {
-              'FORMAT': 'image/png',
-              'VERSION': '1.1.1',
-              tiled: true,
-              STYLES: '',
-              LAYERS: 'pauliceia:saraBrasil30',
-              tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
-            }
-          })
-        })
-      )
 
       overlayGroup.getLayers().push(
         vectorLayerStreets

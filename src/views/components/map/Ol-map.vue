@@ -7,6 +7,7 @@
 <script>
   import {
     overlayGroupBase,
+    overlayGroupRasters,
     overlayGroup,
   } from '@/views/assets/js/map/overlayGroup'
 
@@ -44,6 +45,7 @@
         ]),
         layers: [
           overlayGroupBase,
+          overlayGroupRasters,
           overlayGroup
         ],
         view: this.view

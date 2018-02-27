@@ -1,0 +1,51 @@
+<template>
+    <md-switch v-model="btnOSM">OSM</md-switch>
+</template>
+
+<script>
+import {
+    overlayGroupBase
+} from '@/views/assets/js/map/overlayGroup'
+
+export default {
+    name: "LayersBase",
+    data() {
+        return {
+            btnOSM: true,
+            osm: new ol.layer.Tile({
+                title: 'OSM',
+                type: 'base',
+                source: new ol.source.OSM()
+            })
+        }
+    },
+    created() {
+        if(this.btnOSM) overlayGroupBase.getLayers().push(this.osm)
+    },
+    watch: {
+        btnOSM(val) {
+            if(overlayGroupBase.getLayers().getLength() == 1) overlayGroupBase.getLayers().pop();
+            else overlayGroupBase.getLayers().push(this.osm)
+        }
+    }
+}
+    
+</script>
+
+<style lang="sass" scoped>
+    @import '~vue-material/dist/vue-material.min.css'
+
+    .md-switch 
+        display: flex
+        position: absolute
+        z-index: 1
+        color: #304A73
+        top: 100px
+        right: 20px
+        font-weight: 600
+        font-size: 1.8em
+        padding: 15px 15px 5px 15px !important
+        border-radius: 10px
+        background-color: rgba(#fff, 0.5)
+      
+</style>
