@@ -14,8 +14,16 @@
         }
     },
     "map":{
-      "geocoding": {
-          "placeholder": "nome da rua, número, ano"
-      } 
+        "geocoding": {
+            "placeholder": "nome da rua, número, ano"
+        },
+        "sidebar": {
+            "title": "MENU",
+            "layers": {
+                "title": "Camadas",
+                "newproject": "NOVO PROJETO"
+            },
+            "multigeolocation": "Geolocalização Multipla"          
+        }
     }
 }

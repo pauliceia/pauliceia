@@ -26,4 +26,5 @@ export default {
 
   .clear
     clear: both
+
 </style>

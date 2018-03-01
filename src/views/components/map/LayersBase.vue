@@ -1,14 +1,22 @@
 <template>
-    <md-switch v-model="btnOSM">OSM</md-switch>
+    <div class="switches">
+        <switches v-model="btnOSM" theme="bootstrap" color="primary"></switches> 
+        <span>OSM</span>
+    </div>
 </template>
 
 <script>
+import Switches from 'vue-switches'
+
 import {
     overlayGroupBase
 } from '@/views/assets/js/map/overlayGroup'
 
 export default {
     name: "LayersBase",
+    components: {
+        Switches
+    },
     data() {
         return {
             btnOSM: true,
@@ -33,9 +41,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-    @import '~vue-material/dist/vue-material.min.css'
-
-    .md-switch 
+    .switches 
         display: flex
         position: absolute
         z-index: 1
@@ -47,5 +53,8 @@ export default {
         padding: 15px 15px 5px 15px !important
         border-radius: 10px
         background-color: rgba(#fff, 0.5)
+
+        span
+            margin-left: 10px
       
 </style>

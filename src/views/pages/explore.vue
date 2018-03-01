@@ -6,6 +6,7 @@
       <p-geocoding></p-geocoding>
       <p-layersRaster></p-layersRaster>
       <p-layersBase></p-layersBase>
+      <p-sidebar></p-sidebar>
     </ol-map>
 
   </section>
@@ -17,6 +18,7 @@
   import Geocoding from '@/views/components/map/Geocoding'
   import LayersRaster from '@/views/components/map/LayersRaster'
   import LayersBase from '@/views/components/map/LayersBase'
+  import Sidebar from '@/views/components/map/Sidebar'
 
   import {
     placeStyle,
@@ -33,7 +35,8 @@
       'p-timeline': Timeline,
       'p-geocoding': Geocoding,
       'p-layersRaster': LayersRaster,
-      'p-layersBase': LayersBase
+      'p-layersBase': LayersBase,
+      'p-sidebar': Sidebar
     },
     created () {
 

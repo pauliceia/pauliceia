@@ -14,8 +14,16 @@
         }
     },
     "map":{
-      "geocoding": {
-          "placeholder": "street name, number, year"
-      } 
+        "geocoding": {
+            "placeholder": "street name, number, year"
+        },
+        "sidebar": {
+            "title": "NAVIGATOR",
+            "layers": {
+                "title": "Layers",
+                "newproject": "NEW PROJECT"
+            },
+            "multigeolocation": "Multi Geolocation"          
+        }
     }
 }
