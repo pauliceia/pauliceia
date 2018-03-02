@@ -1,17 +1,17 @@
 <template>
     <div>
-        <p class="btn_sidebar" v-show="!sidebar" @click="sidebar = true">
+        <p class="btn_sidebar" v-show="!sidebarVisible" @click="sidebar()">
             <md-icon>keyboard_arrow_right</md-icon>
             <b>{{ $t('map.sidebar.title')}}</b>
         </p>
 
-        <section class="sidebar" v-show="sidebar">
-            <md-toolbar md-elevation="1">
+        <section class="sidebar" v-show="sidebarVisible">
+            <md-toolbar md-elevation="1" style="background: #FFF">
                 <md-icon>public</md-icon>
                 <span class="md-title nav-title">{{ $t('map.sidebar.title') }}</span>
 
                 <div class="md-toolbar-section-end">
-                    <md-button class="md-icon-button md-dense" @click="sidebar = false">
+                    <md-button class="md-icon-button md-dense" @click="sidebar()">
                         <md-icon>keyboard_arrow_left</md-icon>
                     </md-button>
                 </div>
@@ -25,11 +25,11 @@
                     <md-list slot="md-expand">
                         <div class="layers">
                             <p> 
-                                <switches v-model="street"></switches> 
+                                <switches v-model="street" theme="bootstrap" color="success"></switches> 
                                 <span>[Pauliceia]: <b>STREET</b></span>
                             </p>
                             <p>
-                                <switches v-model="places"></switches> 
+                                <switches v-model="places" theme="bootstrap" color="success"></switches> 
                                 <span>[Pauliceia]: <b>PLACES</b></span>
                             </p>
                             
@@ -65,7 +65,7 @@ export default {
     },
     data(){
         return {
-            sidebar: false,
+            sidebarVisible: false,
             street: true,
             places: true
         }
@@ -81,6 +81,21 @@ export default {
                 if (sublayer.get('title') === 'Places') sublayer.setVisible(this.places)
             })
         }
+    },
+    methods: {
+        sidebar() {
+            if (this.sidebarVisible == false) {
+                this.sidebarVisible = true
+                $('.ol-zoomslider').css("margin-left", "305px")
+                $('.ol-zoom').css("margin-left", "305px")
+                $('.ol-scale-line').css("margin-left", "305px")
+            }else{
+                this.sidebarVisible = false
+                $('.ol-zoomslider').css("margin-left", "0")
+                $('.ol-zoom').css("margin-left", "0")
+                $('.ol-scale-line').css("margin-left", "0")
+            }
+        }
     }
 }
     
@@ -92,7 +107,7 @@ export default {
         left: 50px
         z-index: 1
         padding: 8px 30px
-        background: rgba(#FFF, 0.7)
+        background: rgba(#FFF, 0.8)
         border-radius: 10px
         cursor: pointer
         b
@@ -103,7 +118,7 @@ export default {
     .sidebar
         overflow: auto
         position: absolute
-        width: 250px
+        width: 300px
         height: 100%
         bottom: 0
         left: 0
@@ -124,7 +139,7 @@ export default {
             
             .layers
                 padding: 15px 10px 0 20px 
-                background: rgba(#000, 0.1)
+                background: rgba(#000, 0.15)
 
                 span
                     margin-left: 10px

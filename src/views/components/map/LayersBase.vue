@@ -52,7 +52,7 @@ export default {
         font-size: 1.8em
         padding: 15px 15px 5px 15px !important
         border-radius: 10px
-        background-color: rgba(#fff, 0.5)
+        background-color: rgba(#fff, 0.7)
 
         span
             margin-left: 10px
