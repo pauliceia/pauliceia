@@ -39,8 +39,8 @@
                         
                         <md-list slot="md-expand">
                             <p> 
-                                <switches v-model="street" theme="bootstrap" color="success"></switches> 
-                                <span><b>STREET</b></span>
+                                <switches v-model="btnOSM" theme="bootstrap" color="primary"></switches> 
+                                <span><b>OSM</b></span>
                             </p>
                         </md-list>
                     </md-list-item>
@@ -54,7 +54,8 @@
 <script>
 import Switches from 'vue-switches'
 import {
-    overlayGroup
+    overlayGroup,
+    overlayGroupBase
 } from '@/views/assets/js/map/overlayGroup'
 
 export default {
@@ -64,8 +65,17 @@ export default {
     data(){
         return {
             street: true,
-            places: true
+            places: true,
+            btnOSM: true,
+            osm: new ol.layer.Tile({
+                title: 'OSM',
+                type: 'base',
+                source: new ol.source.OSM()
+            })
         }
+    },
+    created() {
+        if(this.btnOSM) overlayGroupBase.getLayers().push(this.osm)
     },
     watch: {
         street(val) {
@@ -77,6 +87,10 @@ export default {
             overlayGroup.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === 'Places') sublayer.setVisible(this.places)
             })
+        },
+        btnOSM(val) {
+            if(overlayGroupBase.getLayers().getLength() == 1) overlayGroupBase.getLayers().pop();
+            else overlayGroupBase.getLayers().push(this.osm)
         }
     }
 }
