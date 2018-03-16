@@ -35,7 +35,7 @@
         //margin: 20, // Handles must be at least 300 apart
         //limit: 50, // ... but no more than 600
         tooltips: true,
-        direction: 'rtl',
+        direction: 'ltr',
         range: {
           'min': 1868,
           'max': 1940
@@ -102,7 +102,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   @import "~nouislider/distribute/nouislider.css";
 
   #contentSlider {
@@ -112,12 +112,12 @@
     bottom: 35px;
     height: 65px;
     width: 40%;
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.7);
     right: 30%;
     border-radius: 10px;
   }
 
-  #slider{
+  #contentSlider .sliders{
     position: relative;
     width: 84%;
     height: 10px;
@@ -125,4 +125,8 @@
     bottom: -10px;
   }
 
+  #contentSlider .sliders .noUi-connect{
+    background: #58595b !important;
+  }
+        
 </style>

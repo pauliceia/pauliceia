@@ -6,80 +6,42 @@
         </p>
 
         <section class="sidebar" v-show="sidebarVisible">
-            <md-toolbar md-elevation="1" style="background: #FFF">
+            <md-toolbar md-elevation="1" style="background: #FFF; color: #f15a29;">
                 <md-icon>public</md-icon>
                 <span class="md-title nav-title">{{ $t('map.sidebar.title') }}</span>
 
                 <div class="md-toolbar-section-end">
                     <md-button class="md-icon-button md-dense" @click="sidebar()">
-                        <md-icon>keyboard_arrow_left</md-icon>
+                        <md-icon style="color: #f15a29;">keyboard_arrow_left</md-icon>
                     </md-button>
                 </div>
             </md-toolbar>
 
             <md-list>
-                <md-list-item md-expand>
-                    <md-icon>edit</md-icon>
-                    <span class="md-list-item-text">{{ $t('map.sidebar.layers.title') }}</span>
-
-                    <md-list slot="md-expand">
-                        <div class="layers">
-                            <p> 
-                                <switches v-model="street" theme="bootstrap" color="success"></switches> 
-                                <span>[Pauliceia]: <b>STREET</b></span>
-                            </p>
-                            <p>
-                                <switches v-model="places" theme="bootstrap" color="success"></switches> 
-                                <span>[Pauliceia]: <b>PLACES</b></span>
-                            </p>
-                            
-                            <p class="btn_newProject">
-                                <span>&#10010; {{ $t('map.sidebar.layers.newproject') }}</span>
-                            </p>
-                        </div>
-                        
-                        <!---
-                        <md-list-item>Console</md-list-item>
-                        <md-list-item>PC</md-list-item>
-                        -->
-                    </md-list>
-                </md-list-item>
+                <p-sidebar-layers></p-sidebar-layers>
 
                 <md-list-item>
                     <md-icon>search</md-icon>
                     <span class="md-list-item-text">{{ $t('map.sidebar.multigeolocation') }}</span>
                 </md-list-item> 
+
             </md-list>
         </section>
     </div>
 </template>
 <script>
-import Switches from 'vue-switches'
+import Layers from '@/views/components/map/sidebar/Layers.vue'
 import {
     overlayGroup
 } from '@/views/assets/js/map/overlayGroup'
 
 export default {
     components: {
-        Switches
+        'p-sidebar-layers': Layers
     },
     data(){
         return {
-            sidebarVisible: false,
-            street: true,
-            places: true
-        }
-    },
-    watch: {
-        street(val) {
-            overlayGroup.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === 'Streets') sublayer.setVisible(this.street)
-            })
-        },
-        places(val) {
-            overlayGroup.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === 'Places') sublayer.setVisible(this.places)
-            })
+            sidebarVisible: false
         }
     },
     methods: {
@@ -101,20 +63,23 @@ export default {
     
 </script>
 <style lang="sass">
+    //SIDEBAR BUTTON
     .btn_sidebar
         position: absolute
         top: 15px
         left: 50px
         z-index: 1
         padding: 8px 30px
-        background: rgba(#FFF, 0.8)
+        background: rgba(#f15a29, 0.8)
+        color: #FFF
         border-radius: 10px
         cursor: pointer
         b
-            text-shadow: 1px 2px 1px #999
+            text-shadow: 1px 2px 1px #58595b
     .btn_sidebar:hover
-        background: rgba(#FFF, 0.9)
-        
+        background: #f15a29
+    
+    //SIDEBAR BOX
     .sidebar
         overflow: auto
         position: absolute
@@ -122,35 +87,37 @@ export default {
         height: 100%
         bottom: 0
         left: 0
-        background: rgba(#FFF, 0.7)
+        background: rgba(#58595b, 0.75)
         z-index: 1
         box-shadow: 2px 0 10px #666
 
         .md-list
             padding-top: 1px !important
             cursor: pointer
+            color: #FFF
+
+            .md-list-item .md-list-item-text
+                text-transform: uppercase
+                font-weight: 600
+            .md-list-item:hover
+                background: rgba(#FFF, .1)
+                border-left: 2px solid #f15a29   
 
             .md-icon
-                margin-right: 10px !important
+                margin-right: 12px !important
 
-            .md-list-item:hover
-                //background: rgba(#000, .08)
-                border-left: 3px solid #7188AD
-            
-            .layers
-                padding: 15px 10px 0 20px 
-                background: rgba(#000, 0.15)
-
-                span
-                    margin-left: 10px
+            //ACTIVE
+            .md-active
+                background: rgba(#FFF, .2)
+                border-left: 2px solid #f15a29
                 
-                .btn_newProject
-                    font-size: 0.8em
-                    text-align: right
-                .btn_newProject:hover
-                    font-weight: 600
-                    color: #304A73
+                .md-list-item-content
+                    background: rgba(#FFF, .3)
 
+            .md-active:hover
+                border-left: 1px solid #f15a29 
+
+    //SCROLL
     .sidebar::-webkit-scrollbar 
         width: 0.5em
  

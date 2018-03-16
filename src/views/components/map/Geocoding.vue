@@ -80,4 +80,14 @@ export default {
         right: 20px
         z-index: 1
 
+        .btn-secondary
+            background: #58595b !important
+            border-bottom: 1px solid #4b4c4e !important
+
+        .btn-secondary:hover
+            background: #4b4c4e !important
+
+    input:focus
+        border-color: rgba(#58595b, 0.2) !important
+        box-shadow: 0px 0px 10px rgba(#58595b, 0.2) !important
 </style>

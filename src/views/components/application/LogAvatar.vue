@@ -34,7 +34,7 @@ export default {
 
     @import '~vue-material/dist/vue-material.min.css'
     *
-        color: #fff
+        color: #FFF
     
     .md-menu
         float: right

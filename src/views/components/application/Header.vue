@@ -67,20 +67,23 @@ export default {
 
 <style lang="sass" scoped>
     header
-        background: #304A73 !important
-        border-bottom: 1px solid #0B1D3B
+        background: #58595b !important
+        border-bottom: 1px solid #4b4c4e
 
     .sub-nav
         width: 100%
         height: 5px
-        background: #0B1D3B
+        background: #f15a29
 
     .navbar-brand
         width: 120px
 
     .navbar-nav li a
+        color: #DDD !important
         text-decoration: none
         font-size: 1.3em
+    .navbar-nav li a:hover, .navbar-nav li .active
+        color: #FFF !important
 
     .btn-default
         background: #5D7AA9

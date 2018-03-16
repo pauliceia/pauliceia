@@ -5,7 +5,6 @@
       <p-timeline></p-timeline>
       <p-geocoding></p-geocoding>
       <p-layersRaster></p-layersRaster>
-      <p-layersBase></p-layersBase>
       <p-sidebar></p-sidebar>
     </ol-map>
 
@@ -17,7 +16,6 @@
   import Timeline from '@/views/components/map/Timeline'
   import Geocoding from '@/views/components/map/Geocoding'
   import LayersRaster from '@/views/components/map/LayersRaster'
-  import LayersBase from '@/views/components/map/LayersBase'
   import Sidebar from '@/views/components/map/Sidebar'
 
   import {
@@ -35,12 +33,11 @@
       'p-timeline': Timeline,
       'p-geocoding': Geocoding,
       'p-layersRaster': LayersRaster,
-      'p-layersBase': LayersBase,
       'p-sidebar': Sidebar
     },
     created () {
 
-      var vectorLayerPlaces = new ol.layer.Vector({
+      let vectorLayerPlaces = new ol.layer.Vector({
         title: 'Places',
         source: new ol.source.Vector({
           url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application%2Fjson',
@@ -50,7 +47,7 @@
         style: placeStyle
       });
 
-      var vectorLayerStreets = new ol.layer.Vector({
+      let vectorLayerStreets = new ol.layer.Vector({
         title: 'Streets',
         source: new ol.source.Vector({
           url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:streets&outputFormat=application%2Fjson',
@@ -60,18 +57,28 @@
         style: streetsStyle
       });
 
+      let osm = new ol.layer.Tile({
+        title: 'OSM',
+        type: 'base',
+        source: new ol.source.OSM()
+      })
+
+
+      overlayGroup.getLayers().push(
+        osm
+      )
       overlayGroup.getLayers().push(
         vectorLayerStreets
       )
       overlayGroup.getLayers().push(
         vectorLayerPlaces
-      )
+      )      
 
     }
   }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
   .map
     position: absolute
     left: 0
@@ -79,4 +86,9 @@
     bottom: 0
     top: 69px
     background: #fff
+  
+  .ol-zoomslider-thumb, .ol-scale-line, .ol-zoom-in, .ol-zoom-out
+    background: rgba(#58595b, 0.7) !important
+  .ol-zoomslider-thumb:hover, .ol-zoom-in:hover, .ol-zoom-out:hover
+    background: rgba(#58595b, 0.9) !important
 </style>

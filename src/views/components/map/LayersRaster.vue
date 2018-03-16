@@ -78,12 +78,12 @@ export default {
     @import '~vue-material/dist/vue-material.min.css'
 
     .icon_primary
-        background: #304A73
+        background: #f15a29
         color: #FFF
     
     .md-icon-button
-        background: rgba(#7188AD, 0.9)
-        color: #FFF
+        background: rgba(#58595b, 0.9)
+        color: #000
     .md-icon-button.active
-        color: #000 
+        color: #FFF 
 </style>
