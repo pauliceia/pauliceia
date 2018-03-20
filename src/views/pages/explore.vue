@@ -24,7 +24,8 @@
   } from '@/views/assets/js/map/Styles'
 
   import {
-    overlayGroup
+    overlayGroup,
+    overlayGroupBase
   } from '@/views/assets/js/map/overlayGroup'
 
   export default {
@@ -59,10 +60,13 @@
 
       let osm = new ol.layer.Tile({
         title: 'OSM',
-        type: 'base',
         source: new ol.source.OSM()
       })
 
+      overlayGroupBase.getLayers().push(
+        osm
+      )
+      
       overlayGroup.getLayers().push(
         vectorLayerStreets
       )

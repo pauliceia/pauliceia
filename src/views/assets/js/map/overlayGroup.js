@@ -1,17 +1,17 @@
 import 'openlayers/dist/ol-debug.js'
 
 const overlayGroupBase = new ol.layer.Group({
-  'title': 'Base maps',
+  title: 'overlays_base',
   layers: []
 })
 
 const overlayGroupRasters = new ol.layer.Group({
-  title: 'Overlays Rasters',
+  title: 'overlays_rasters',
   layers: []
 })
 
 const overlayGroup = new ol.layer.Group({
-  title: 'Overlays',
+  title: 'overlays',
   layers: []
 })
 

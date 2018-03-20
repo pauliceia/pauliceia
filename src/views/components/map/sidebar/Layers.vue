@@ -23,14 +23,8 @@
                         <span class="md-list-item-text">Pauliceia</span>
                         
                         <md-list slot="md-expand">
-                            <p> 
-                                <switches v-model="street" theme="bootstrap" color="success"></switches> 
-                                <span><b>STREET</b></span>
-                            </p>
-                            <p>
-                                <switches v-model="places" theme="bootstrap" color="success"></switches> 
-                                <span><b>PLACES</b></span>
-                            </p>
+                            <p-layers-item :status="true" color="success" title="Streets" :group="vectorLayer"></p-layers-item>
+                            <p-layers-item :status="true" color="success" title="Places" :group="vectorLayer"></p-layers-item>
                         </md-list>
                     </md-list-item>
 
@@ -38,10 +32,7 @@
                         <span class="md-list-item-text">Others</span>
                         
                         <md-list slot="md-expand">
-                            <p> 
-                                <switches v-model="btnOSM" theme="bootstrap" color="primary"></switches> 
-                                <span><b>OSM</b></span>
-                            </p>
+                            <p-layers-item :status="true" color="primary" title="OSM" :group="baseLayer" :view="false"></p-layers-item>                      
                         </md-list>
                     </md-list-item>
                 </div>
@@ -52,45 +43,23 @@
 
 </template>
 <script>
-import Switches from 'vue-switches'
+import LayersItem from '@/views/components/map/sidebar/LayersItem'
+
 import {
     overlayGroup,
-    overlayGroupBase
+    overlayGroupBase,
+    overlayGroupRasters
 } from '@/views/assets/js/map/overlayGroup'
 
 export default {
     components: {
-        Switches
+        'p-layers-item': LayersItem
     },
     data(){
         return {
-            street: true,
-            places: true,
-            btnOSM: true,
-            osm: new ol.layer.Tile({
-                title: 'OSM',
-                type: 'base',
-                source: new ol.source.OSM()
-            })
-        }
-    },
-    created() {
-        if(this.btnOSM) overlayGroupBase.getLayers().push(this.osm)
-    },
-    watch: {
-        street(val) {
-            overlayGroup.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === 'Streets') sublayer.setVisible(this.street)
-            })
-        },
-        places(val) {
-            overlayGroup.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === 'Places') sublayer.setVisible(this.places)
-            })
-        },
-        btnOSM(val) {
-            if(overlayGroupBase.getLayers().getLength() == 1) overlayGroupBase.getLayers().pop();
-            else overlayGroupBase.getLayers().push(this.osm)
+            vectorLayer: overlayGroup,
+            baseLayer: overlayGroupBase,
+            rasterLayers: overlayGroupRasters
         }
     }
 }
@@ -114,5 +83,5 @@ export default {
             margin-top: 10px
 
             .md-list
-                padding: 20px 10px 5px 20px !important
+                padding: 20px 10px 5px 20px !important                
 </style>
