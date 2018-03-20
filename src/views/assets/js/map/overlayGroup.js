@@ -18,5 +18,5 @@ const overlayGroup = new ol.layer.Group({
 export {
   overlayGroupBase,
   overlayGroupRasters,
-  overlayGroup,
+  overlayGroup
 }

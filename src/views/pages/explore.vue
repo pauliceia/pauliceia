@@ -63,10 +63,12 @@
         source: new ol.source.OSM()
       })
 
+      overlayGroupBase.getLayers().clear();  
       overlayGroupBase.getLayers().push(
         osm
       )
       
+      overlayGroup.getLayers().clear();
       overlayGroup.getLayers().push(
         vectorLayerStreets
       )

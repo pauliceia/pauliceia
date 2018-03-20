@@ -49,6 +49,8 @@ export default {
         viewExtend(){
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title && this.layer && this.view) {
+                    console.log(sublayer.getSource().getFeatures());
+                    
                     let extentLayer = sublayer.getSource().getExtent();
                     let extentEmpty = ol.extent.createEmpty();
 
