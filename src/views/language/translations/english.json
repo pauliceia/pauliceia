@@ -10,7 +10,7 @@
     "dashboard": {
         "nav": {
             "notifications": "Notifications",
-            "infos": "Informations"
+            "infos": "Information"
         }
     },
     "map":{
@@ -23,7 +23,7 @@
                 "title": "Layers",
                 "newproject": "NEW PROJECT"
             },
-            "multigeolocation": "Multi Geolocation"          
+            "viewinfo": "View Info"          
         }
     }
 }

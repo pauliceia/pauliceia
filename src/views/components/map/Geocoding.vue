@@ -1,5 +1,5 @@
 <template>
-    <section class="box">
+    <section class="box" v-show="boxGeocoding">
         
         <form @submit.prevent="search">
             <div class="input-group">
@@ -17,6 +17,7 @@
 
 <script>
 import ApiMap from '@/middleware/Map'
+import { mapState } from 'vuex'
 
 import {
     overlayGroup
@@ -32,6 +33,9 @@ export default {
         return {
             inputSearch: ''
         }
+    },
+    computed: {
+      ...mapState('map', ['boxGeocoding'])
     },
     methods: {
         async search () {

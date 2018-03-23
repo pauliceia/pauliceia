@@ -1,16 +1,18 @@
 <template>
-        <p> 
-            <switches v-model="layer" :theme="theme ? theme: 'bootstrap'" :color="color"></switches> 
-            <span>
-                <b>{{ title.toUpperCase() }}</b>
-                <span v-show="layer && view">
-                    =>
-                    <button class="btn-view" @click="viewExtend()">
-                        <md-icon>search</md-icon>
-                    </button>
-                </span>
+    <p> 
+        <switches v-model="layer" :theme="theme ? theme: 'bootstrap'" :color="color"></switches> 
+        <span>
+            <b>{{ title.toUpperCase() }}</b>
+            <span v-show="layer && view">                   
+                <button class="btn-view" @click="viewExtend()">
+                    <md-icon>flip_to_front</md-icon>
+                </button>
+                <button class="btn-view" @click="viewExtend()">
+                    <md-icon>border_color</md-icon>
+                </button>
             </span>
-        </p>             
+        </span>
+    </p>           
 </template>
 <script>
 import Switches from 'vue-switches'
@@ -68,12 +70,14 @@ export default {
         padding-left: 7.5px
 
     .btn-view
-        width: 27px
         background: none
+        padding-right: -10px !important
         border: none
         cursor: pointer
+        float: right
+
     .btn-view:hover
         color: #FFF
         text-shadow: 0px 0px 3px #333
-                
+
 </style>

@@ -20,24 +20,23 @@
             <md-list>
                 <p-sidebar-layers></p-sidebar-layers>
 
-                <md-list-item>
-                    <md-icon>search</md-icon>
-                    <span class="md-list-item-text">{{ $t('map.sidebar.multigeolocation') }}</span>
-                </md-list-item> 
-
+                <p-sidebar-viewinfo></p-sidebar-viewinfo>
             </md-list>
         </section>
     </div>
 </template>
 <script>
 import Layers from '@/views/components/map/sidebar/Layers.vue'
+import ViewInfo from '@/views/components/map/sidebar/ViewInfo.vue'
+
 import {
     overlayGroup
 } from '@/views/assets/js/map/overlayGroup'
 
 export default {
     components: {
-        'p-sidebar-layers': Layers
+        'p-sidebar-layers': Layers,
+        'p-sidebar-viewinfo': ViewInfo
     },
     data(){
         return {

@@ -5,13 +5,9 @@
       </md-speed-dial-target>
 
       <md-speed-dial-content>
-        <md-button :class="layerSelected == 'saraBrasil30' ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster('saraBrasil30')">1930</md-button>
-        <md-button :class="layerSelected == '1920' ? 'md-icon-button active' : 'md-icon-button'">1920</md-button>
-        <md-button :class="layerSelected == '1910' ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster('1910')">1910</md-button>
-        <md-button :class="layerSelected == '1890' ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster('1890')">1890</md-button>
-        <md-button :class="layerSelected == '1880' ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster('1880')">1880</md-button>
-        <md-button :class="layerSelected == '1870' ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster('1870')">1870</md-button>
-        <md-button :class="layerSelected == '1868' ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster('1868')">1868</md-button>
+        <div v-for="layer of layers">
+            <md-button :class="layerSelected == layer.title ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster(layer.title)">{{ layer.title == 'saraBrasil30' ? '1930' : layer.title }}</md-button>  
+        </div>
       </md-speed-dial-content>
     </md-speed-dial>
 </template>
@@ -25,10 +21,41 @@ export default {
     name: "LayersRaster",
     data() {
         return {
-            layerSelected: 'saraBrasil30'
+            layerSelected: 'saraBrasil30',
+            layers: [
+                {
+                    title: 'saraBrasil30',
+                    range: [1930,1940]
+                },
+                {
+                    title: '1920',
+                    range: [1920,1930]
+                },
+                {
+                    title: '1910',
+                    range: [1910,1920]
+                },
+                {
+                    title: '1890',
+                    range: [1890,1910]
+                },
+                {
+                    title: '1880',
+                    range: [1880,1890]
+                },
+                {
+                    title: '1870',
+                    range: [1870,1880]
+                },
+                {
+                    title: '1868',
+                    range: [1868,1880]
+                }
+            ]
         }
     },
     created() {
+        overlayGroupRasters.getLayers().clear();
         overlayGroupRasters.getLayers().push(
             new ol.layer.Tile({
                 title: this.layerSelected,

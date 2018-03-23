@@ -1,6 +1,6 @@
 <template>
     <header>
-        <div class="sub-nav"/>
+        <div class="sub-nav" />
 
         <nav class="navbar navbar-expand-md navbar-dark">
             <div class="container">
@@ -33,9 +33,12 @@
                     </ul>
 
                     <div v-if="logado">
+                        <button @click="actGeocoding()" v-show="this.$route.path == '/explore'" 
+                            :class="this.boxGeocoding ? 'btn-geocoding btn-active' : 'btn-geocoding'"><md-icon>search</md-icon></button>
                         <p-logAvatar />
                     </div>
                     <div v-else>
+                        <button @click="" class="btn-geocoding btn-active"><md-icon>search</md-icon></button>
                         <router-link to="/login" class="btn btn-default">{{ $t('nav.login') }}</router-link>
                     </div>
                 </div>
@@ -51,15 +54,24 @@ import dropLanguage from '@/views/components/application/DropLanguage'
 
 import logo from '@/views/assets/images/logo.png'
 
+import { mapState } from 'vuex'
 export default {
     components: {
         'p-logAvatar': LogAvatar,
         'p-dropLanguage': dropLanguage
     },
+    computed: {
+      ...mapState('map', ['boxGeocoding'])
+    },
     data() {
         return {
             logo,
             logado: true
+        }
+    },
+    methods: {
+        actGeocoding() {
+            this.$store.dispatch('map/setBoxGeocoding', !this.boxGeocoding)
         }
     }
 }
@@ -91,4 +103,20 @@ export default {
     .btn-default:hover
         background: #7188AD
         text-decoration: none
+    
+    .btn-geocoding
+        cursor: pointer
+        margin-top: 2.5px
+        margin-right: 25px
+        padding: 5px
+        background: rgba(#f15a29, 0.5)
+        border: none
+    .btn-geocoding:hover
+        background: rgba(#f15a29, 0.2)
+    
+    .btn-active
+        background: rgba(#f15a29, 0.2)
+    .btn-active:hover
+        background: rgba(#f15a29, 0.5)
+
 </style>

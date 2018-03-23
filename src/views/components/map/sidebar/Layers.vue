@@ -1,6 +1,6 @@
 <template>
     <md-list-item md-expand>
-        <md-icon>edit</md-icon>
+        <md-icon>list</md-icon>
         <span class="md-list-item-text">{{ $t('map.sidebar.layers.title') }}</span>
 
         <md-list slot="md-expand">
@@ -24,7 +24,7 @@
                         
                         <md-list slot="md-expand">
                             <p-layers-item :status="true" color="success" title="Streets" :group="vectorLayer"></p-layers-item>
-                            <p-layers-item :status="true" color="success" title="Places" :group="vectorLayer"></p-layers-item>
+                            <p-layers-item :status="false" color="success" title="Places" :group="vectorLayer"></p-layers-item>
                         </md-list>
                     </md-list-item>
 
