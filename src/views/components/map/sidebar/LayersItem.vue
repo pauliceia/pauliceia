@@ -17,6 +17,10 @@
 <script>
 import Switches from 'vue-switches'
 
+import {
+    emptyStyle
+} from '@/views/assets/js/map/Styles'
+
 export default {
     components: {
         Switches
@@ -65,6 +69,11 @@ export default {
                             width: 3
                         })
                     })
+
+                    sublayer.getSource().getFeatures().map(features => {
+                        if(features.getStyle() !== emptyStyle) features.setStyle(newStyle)
+                    });
+
                     sublayer.setStyle(newStyle)
                 }
             })

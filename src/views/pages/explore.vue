@@ -38,14 +38,43 @@
     },
     created () {
 
+      let styleCache = {};
       let vectorLayerPlaces = new ol.layer.Vector({
         title: 'Places',
-        source: new ol.source.Vector({
-          url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application%2Fjson',
-          format: new ol.format.GeoJSON(),
-          crossOrigin: 'anonymous',
+        // source: new ol.source.Cluster({
+        //   distance: parseInt(60, 10),
+          source: new ol.source.Vector({
+            url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application%2Fjson',
+            format: new ol.format.GeoJSON(),
+            crossOrigin: 'anonymous',
+          // })
         }),
         style: placeStyle
+        // style: function(feature) {
+        //   var size = feature.get('features').length;
+        //   var style = styleCache[size];
+        //   if (!style) {
+        //     style = new ol.style.Style({
+        //       image: new ol.style.Circle({
+        //         radius: 10,
+        //         stroke: new ol.style.Stroke({
+        //           color: '#fff'
+        //         }),
+        //         fill: new ol.style.Fill({
+        //           color: '#3399CC'
+        //         })
+        //       }),
+        //       text: new ol.style.Text({
+        //         text: size.toString(),
+        //         fill: new ol.style.Fill({
+        //           color: '#fff'
+        //         })
+        //       })
+        //     });
+        //     styleCache[size] = style;
+        //   }
+        //   return style;
+        // }
       });
 
       let vectorLayerStreets = new ol.layer.Vector({

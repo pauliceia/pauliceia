@@ -11,15 +11,15 @@
     overlayGroup
   } from '@/views/assets/js/map/overlayGroup'
   import {
-    placeStyle,
-    streetsStyle,
     emptyStyle
   } from '@/views/assets/js/map/Styles'
 
   export default {
     name: 'Timeline',
     data () {
-      return {}
+      return {
+        style: null
+      }
     },
     computed: {
       ...mapState('map', ['years'])
@@ -32,8 +32,6 @@
         connect: true,
         orientation: 'horizontal',
         step: 1,
-        //margin: 20, // Handles must be at least 300 apart
-        //limit: 50, // ... but no more than 600
         tooltips: true,
         direction: 'ltr',
         range: {
@@ -70,32 +68,18 @@
         let yearFirst = this.years.first
         let yearLast = this.years.last
 
-        let filtered, filtered2
-
         overlayGroup.getLayers().forEach(sublayer => {
-          if (sublayer.get('title') === 'Streets') {
-            filtered2 = sublayer.getSource().getFeatures().filter(featuresStreets => {
-              let last_year2 = featuresStreets.get('last_year')
-              if (last_year2 === null) last_year2 = 1940
-              if (featuresStreets.get('first_year') <= yearLast && last_year2 >= yearFirst) {
-                featuresStreets.setStyle(streetsStyle)
-              }
-              else {
-                featuresStreets.setStyle(emptyStyle)
-              }
-            })
-          } else if (sublayer.get('title') === 'Places') {
-            filtered = sublayer.getSource().getFeatures().filter(featuresPlaces => {
-              let last_year2 = featuresPlaces.get('last_year')
-              if (last_year2 === null) last_year2 = 1940
-              if (featuresPlaces.get('first_year') <= yearLast && last_year2 >= yearFirst) {
-                featuresPlaces.setStyle(placeStyle)
-              }
-              else {
-                featuresPlaces.setStyle(emptyStyle)
-              }
-            })
-          }
+          this.style = sublayer.getStyle()
+
+          sublayer.getSource().getFeatures().filter(features => {
+            let last_year = features.get('last_year')
+            if (last_year === null) last_year = 1940
+            if (features.get('first_year') <= yearLast && last_year >= yearFirst) {
+              features.setStyle(this.style)
+            } else {
+              features.setStyle(emptyStyle)
+            }
+          })
         })
       }
     }
