@@ -7,9 +7,9 @@
                 <button class="btn-view" @click="viewExtend()">
                     <md-icon>flip_to_front</md-icon>
                 </button>
-                <button class="btn-view" @click="viewExtend()">
-                    <md-icon>border_color</md-icon>
-                </button>
+            </span>
+            <span v-show="layer && editColor"> 
+                <input type="color" class="btn-color" v-model="colorVector" />
             </span>
         </span>
     </p>           
@@ -30,29 +30,50 @@ export default {
         view: {
             type: Boolean,
             default: true
+        },
+        editColor: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
         return {
-            layer: true
+            layer: true,
+            colorVector: null
         }
     },
     created(){
         this.layer = this.status
+        this.group.getLayers().forEach(sublayer => {
+            if (sublayer.get('title') === this.title && this.layer && this.editColor) {
+                this.colorVector = sublayer.getStyle().getStroke().getColor()
+            }
+        })
     },
     watch: {
         layer(val) {
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title) sublayer.setVisible(this.layer)
             })
+        },
+        colorVector(val) {
+            this.group.getLayers().forEach(sublayer => {
+                if (sublayer.get('title') === this.title && this.layer && this.editColor) {
+                    let newStyle = new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: val,
+                            width: 3
+                        })
+                    })
+                    sublayer.setStyle(newStyle)
+                }
+            })
         }
     },
     methods: {
         viewExtend(){
             this.group.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === this.title && this.layer && this.view) {
-                    console.log(sublayer.getSource().getFeatures());
-                    
+                if (sublayer.get('title') === this.title && this.layer && this.view) {                    
                     let extentLayer = sublayer.getSource().getExtent();
                     let extentEmpty = ol.extent.createEmpty();
 
@@ -80,4 +101,8 @@ export default {
         color: #FFF
         text-shadow: 0px 0px 3px #333
 
+    .btn-color
+        float: right
+        background: rgba(#FFF, 0.5)
+        margin-right: 7px
 </style>

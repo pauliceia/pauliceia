@@ -18,10 +18,14 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <router-link class="nav-link" to="/explore">{{ $t('nav.explore') }}</router-link>
+                            <router-link 
+                                :class="this.$route.path == '/explore' ? 'nav-link active': 'nav-link'"
+                                to="/explore">{{ $t('nav.explore') }}</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link" to="/about">{{ $t('nav.about') }}</router-link>
+                            <router-link 
+                                :class="this.$route.path == '/about' ? 'nav-link active': 'nav-link'"
+                                to="/about">{{ $t('nav.about') }}</router-link>
                         </li>
                         <li class="nav-item dropdown" style="cursor: pointer">
                             <a class="nav-link dropdown-toggle" style="text-transform: uppercase;" data-toggle="dropdown">{{ $i18n.locale() }}</a>

@@ -19,7 +19,8 @@ const placeStyleSearch = new ol.style.Style({
 
 const streetsStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
-    color: 'blue',
+    //NOT put 'string color', put 'hexadecimal color'
+    color: '#0000ff',
     width: 3
   })
 })

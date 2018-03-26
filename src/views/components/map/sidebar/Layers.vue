@@ -24,7 +24,7 @@
                         
                         <md-list slot="md-expand">
                             <p-layers-item :status="true" color="success" title="Streets" :group="vectorLayer"></p-layers-item>
-                            <p-layers-item :status="false" color="success" title="Places" :group="vectorLayer"></p-layers-item>
+                            <p-layers-item :status="false" :editColor="false" color="success" title="Places" :group="vectorLayer"></p-layers-item>
                         </md-list>
                     </md-list-item>
 
@@ -32,7 +32,7 @@
                         <span class="md-list-item-text">Others</span>
                         
                         <md-list slot="md-expand">
-                            <p-layers-item :status="true" color="primary" title="OSM" :group="baseLayer" :view="false"></p-layers-item>                      
+                            <p-layers-item :status="true" :editColor="false" color="primary" title="OSM" :group="baseLayer" :view="false"></p-layers-item>                      
                         </md-list>
                     </md-list-item>
                 </div>
