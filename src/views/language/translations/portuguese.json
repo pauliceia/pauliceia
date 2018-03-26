@@ -9,7 +9,7 @@
     },
     "dashboard": {
         "nav": {
-            "notifications": "Notificações",
+            "home": "Inicio",
             "infos": "Informações"
         }
     },
