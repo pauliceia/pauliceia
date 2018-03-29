@@ -6,7 +6,7 @@
             <div class="container">
 
                 <router-link to="/" class="navbar-brand">
-                    <img :src="logo" title="logo of pauliceia" alt="logo of pauliceia" />
+                    <img src="/static/images/logo.png" title="logo of pauliceia" alt="logo of pauliceia" />
                 </router-link>
 
                 <!-- BUTTON MOBILE -->
@@ -56,8 +56,6 @@
 import LogAvatar from '@/views/components/application/LogAvatar'
 import dropLanguage from '@/views/components/application/DropLanguage'
 
-import logo from '@/views/assets/images/logo.png'
-
 import { mapState } from 'vuex'
 export default {
     components: {
@@ -69,7 +67,6 @@ export default {
     },
     data() {
         return {
-            logo,
             logado: true
         }
     },
