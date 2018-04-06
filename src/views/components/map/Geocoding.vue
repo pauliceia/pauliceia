@@ -2,14 +2,16 @@
     <section class="box" v-show="boxGeocoding">
         
         <form @submit.prevent="search">
-            <div class="input-group">
-                <input type="text" class="form-control" ref="geocoding_search" autofocus v-model="inputSearch" :placeholder="$t('map.geocoding.placeholder')" />
-                <div class="input-group-append">
-                    <button class="btn btn-secondary">
-                        <md-icon>search</md-icon> 
-                    </button>
+                <label for="searchGeocoding" class="label"> {{ $t('map.geocoding.label') }}:</label>
+
+                <div class="input-group">               
+                    <input type="text" class="form-control" ref="geocoding_search" autofocus v-model="inputSearch" :placeholder="$t('map.geocoding.placeholder')" />
+                    <div class="input-group-append">
+                        <button class="btn btn-search">
+                            Search
+                        </button>
+                    </div>
                 </div>
-            </div>
         </form>
         
     </section>    
@@ -84,12 +86,18 @@ export default {
         right: 20px
         z-index: 1
 
-        .btn-secondary
-            background: #58595b !important
-            border-bottom: 1px solid #4b4c4e !important
+        .label
+            font-size: 1.3em
+            padding-left: 5px
+            color: #333
 
-        .btn-secondary:hover
-            background: #4b4c4e !important
+        .btn-search
+            background: #f15a29
+            border-bottom: 1px solid #f15a29
+            color: #FFF
+
+        .btn-search:hover
+            background: rgba(#f15a29, 0.7)
 
     input:focus
         border-color: rgba(#58595b, 0.2) !important

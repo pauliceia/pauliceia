@@ -15,6 +15,7 @@
     },
     "map":{
         "geocoding": {
+            "label":  "Procure um Endereço",
             "placeholder": "nome da rua, número, ano"
         },
         "sidebar": {
