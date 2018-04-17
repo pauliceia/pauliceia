@@ -25,6 +25,10 @@
                 "newproject": "NEW PROJECT"
             },
             "viewinfo": "View Info"          
+        },
+        "addLayer": {
+            "title": "ADD NEW LAYERS",
+            "close": "close"
         }
     }
 }

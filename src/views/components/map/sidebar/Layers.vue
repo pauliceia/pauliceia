@@ -7,7 +7,7 @@
             <section class="box-layers">
 
                 <div class="row justify-content-center">
-                    <button class="col-md-4 btn btn-success">
+                    <button data-toggle="modal" data-target="#modalAddLayer" class="col-md-4 btn btn-success">
                         <md-icon>add_circle</md-icon>
                         <span class="title-button">ADD</span>
                     </button>

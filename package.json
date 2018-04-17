@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bootstrap": "^4.0.0",
+    "bootstrap-tree-view": "^1.8.0",
     "jquery": "^3.2.1",
     "nouislider": "^11.0.3",
     "openlayers": "^4.4.2",

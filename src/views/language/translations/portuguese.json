@@ -25,6 +25,10 @@
                 "newproject": "NOVO PROJETO"
             },
             "viewinfo": "Vizualizar Info"          
+        },
+        "addLayer": {
+            "title": "ADICIONE NOVAS CAMADAS",
+            "close": "fechar"
         }
     }
 }
