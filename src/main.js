@@ -13,9 +13,6 @@ import VueMaterial from 'vue-material'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 
-import 'bootstrap-tree-view/js/core.js'
-import 'bootstrap-tree-view/js/tree.js'
-
 import 'openlayers/dist/ol.css'
 import 'openlayers/dist/ol-debug.js'
 

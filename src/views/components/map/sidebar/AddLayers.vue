@@ -1,6 +1,6 @@
 <template>
     <div class="modal fade" id="modalAddLayer" data-backdrop="static" tabindex="-1" aria-labelledby="AddLayer">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ $t('map.addLayer.title') }}</h5>
@@ -22,11 +22,35 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="themes" role="tabpanel" aria-labelledby="themes-tab">
                             theme
-                            <div class="row">
-                                <div id="tree"></div>
-                            </div>
                         </div>
-                        <div class="tab-pane fade" id="author" role="tabpanel" aria-labelledby="author-tab">author filter</div>
+                        <div class="tab-pane fade" id="author" role="tabpanel" aria-labelledby="author-tab">
+                            author filter     
+
+                            <!-- <tree-menu 
+                                :nodes="tree.nodes" 
+                                :depth="0"   
+                                :label="tree.label"
+                                ></tree-menu>    -->
+
+                            <!-- <script type="text/x-template" id="tree-menu">
+                                <div class="tree-menu">
+                                    <div class="label-wrapper" @click="toggleChildren">
+                                    <div :style="indent" :class="labelClasses">
+                                        <i v-if="nodes" class="fa" :class="iconClasses"></i>
+                                        {{ label }}
+                                    </div>
+                                    </div>
+                                    <tree-menu 
+                                    v-if="showChildren"
+                                    v-for="node in nodes" 
+                                    :nodes="node.nodes" 
+                                    :label="node.label"
+                                    :depth="depth + 1"   
+                                    >
+                                    </tree-menu>
+                                </div>
+                            </script>                    -->
+                        </div>
                     </div>
                 </div>
 
@@ -72,17 +96,12 @@ export default {
         }
     },
     created() {
-        $('#tree').tree({
-            dataSource: this.children
-        });
     }
 }
 </script>
 
-<style lang="sass">
-    @import '~/bootstrap-tree-view/css/core.css'
-    @import '~/bootstrap-tree-view/css/tree.css'
 
+<style lang="sass">
     .nav-tabs
         .nav-item
             width: 50%
