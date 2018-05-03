@@ -22,12 +22,14 @@
             "title": "MENU",
             "layers": {
                 "title": "Camadas",
-                "newproject": "NOVO PROJETO"
+                "btn": "SELECIONE OUTRAS"
             },
             "viewinfo": "Vizualizar Info"          
         },
         "addLayer": {
-            "title": "ADICIONE NOVAS CAMADAS",
+            "title": "SELECIONE OUTRAS CAMADAS",
+            "subtitle": "Pesquise por tema, camada ou autor:",
+            "input": "pesquise aqui ...",
             "close": "fechar"
         }
     }

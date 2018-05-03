@@ -3,7 +3,9 @@ const state = {
     first: 1868,
     last: 1940
   },
-  boxGeocoding: true
+  layers: [],
+  boxGeocoding: true,
+  boxInfos: false
 }
 
 const mutations = {
@@ -13,7 +15,13 @@ const mutations = {
   },
   setBoxGeocoding (state, value) {
     state.boxGeocoding = value
-  }
+  },
+  setBoxInfos (state, value) {
+    state.boxInfos = value
+  },
+  setLayers (state, value) {
+    state.layers = value
+  },
 }
 
 const actions = {
@@ -22,6 +30,12 @@ const actions = {
   },
   setBoxGeocoding({commit}, value) {
     commit('setBoxGeocoding', value)
+  },
+  setBoxInfos({commit}, value) {
+    commit('setBoxInfos', value)
+  },
+  setLayers({commit}, value) {
+    commit('setLayers', value)
   }
 }
 

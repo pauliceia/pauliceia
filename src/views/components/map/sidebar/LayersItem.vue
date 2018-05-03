@@ -90,6 +90,9 @@ export default {
                     this.$root.olmap.getView().fit(extentEmpty, this.$root.olmap.getSize());
                 }
             })
+
+            this.$store.dispatch('map/setBoxGeocoding', false)
+            this.$store.dispatch('map/setBoxInfos', true)
         }
     }
 }

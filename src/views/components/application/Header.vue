@@ -73,6 +73,7 @@ export default {
     methods: {
         actGeocoding() {
             this.$store.dispatch('map/setBoxGeocoding', !this.boxGeocoding)
+            this.$store.dispatch('map/setBoxInfos', false)
         }
     }
 }

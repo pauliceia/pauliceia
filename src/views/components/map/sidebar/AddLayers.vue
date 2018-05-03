@@ -10,48 +10,11 @@
                 </div>
 
                 <div class="modal-body">
-                    <ul class="nav nav-tabs" id="tabFilter" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#themes" role="tab" aria-controls="themes" aria-selected="true">THEMES</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#author" role="tab" aria-controls="author" aria-selected="false">AUTHOR</a>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="themes" role="tabpanel" aria-labelledby="themes-tab">
-                            theme
-                        </div>
-                        <div class="tab-pane fade" id="author" role="tabpanel" aria-labelledby="author-tab">
-                            author filter     
-
-                            <!-- <tree-menu 
-                                :nodes="tree.nodes" 
-                                :depth="0"   
-                                :label="tree.label"
-                                ></tree-menu>    -->
-
-                            <!-- <script type="text/x-template" id="tree-menu">
-                                <div class="tree-menu">
-                                    <div class="label-wrapper" @click="toggleChildren">
-                                    <div :style="indent" :class="labelClasses">
-                                        <i v-if="nodes" class="fa" :class="iconClasses"></i>
-                                        {{ label }}
-                                    </div>
-                                    </div>
-                                    <tree-menu 
-                                    v-if="showChildren"
-                                    v-for="node in nodes" 
-                                    :nodes="node.nodes" 
-                                    :label="node.label"
-                                    :depth="depth + 1"   
-                                    >
-                                    </tree-menu>
-                                </div>
-                            </script>                    -->
-                        </div>
-                    </div>
+                    <p class="title-box">{{ $t('map.addLayer.subtitle') }}</p>
+                    <input type="text" class="form-control" v-model="search" :placeholder="$t('map.addLayer.input')"/>
+            
+                    <v-jstree :data="data" size="large" show-checkbox multiple allow-batch whole-row ref="tree" @item-click="itemClick"></v-jstree>    
+                    <button class="btn btn-block btn-outline-success" type="button" @click="updateListLayers()">SAVE</button>
                 </div>
 
                 <div class="modal-footer">
@@ -63,51 +26,75 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import VJstree from 'vue-jstree'
+
+import DataJson from '@/views/assets/js/indexThemesTest'
+import DataLayers from '@/views/assets/js/indexLayersTest'
 
 export default {
+    components: {
+        VJstree
+    },
     data() {
         return {
-            children: [
-                { name: 'hello' },
-                { name: 'wat' },
-                {
-                    name: 'child folder',
-                    children: [
-                        {
-                            name: 'child folder',
-                            children: [
-                                { name: 'hello' },
-                                { name: 'wat' }
-                            ]
-                        },
-                        { name: 'hello' },
-                        { name: 'wat' },
-                        {
-                            name: 'child folder',
-                            children: [
-                                { name: 'hello' },
-                                { name: 'wat' }
-                            ]
-                        }
-                    ]
-                }
-            ]
+            originalData: DataJson,
+            data: DataJson,
+            search: null,
+            selected: {}
         }
     },
-    created() {
+    methods: {
+        itemClick (node) {
+            // let indice = node.model.id.toString()
+            // this.selected = { ...this.selected, node.model.id }
+            // console.log(this.selected)
+        },
+        cleanString(s) {
+            return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        },
+        filterTreeview(search) {
+            let text = this.cleanString(this.search.toLowerCase())
+            const patt = new RegExp(text);
+
+            this.$refs.tree.handleRecursionNodeChilds(this.$refs.tree, (node) => {
+                if (text !== '' && node.model !== undefined) {
+                    const str = this.cleanString(node.model.text.toLowerCase())
+
+                    if (patt.test(str)) {
+                        node.$el.querySelector('.tree-anchor').style.color = 'green'
+                    } else {
+                        node.$el.querySelector('.tree-anchor').style.color = '#000'
+                    }
+
+                } else {
+                    node.$el.querySelector('.tree-anchor').style.color = '#000'
+                }
+            })
+        },
+        updateListLayers(){
+            // this.selected.forEach( id => {
+            //     let layer = DataLayers.filter( element => element.id == id)
+            //     if(layer[0] != null){
+            //         console.log(layer)
+            //     }
+            // })
+        }
+    },
+    watch: {
+        search(val) {
+            this.filterTreeview(val)
+        }
     }
 }
 </script>
 
 
-<style lang="sass">
-    .nav-tabs
-        .nav-item
-            width: 50%
-            text-align: center
-            .active
-                font-weight: 600
-            a:hover
-                text-decoration: none !important
+<style lang="sass" scoped>
+.modal-content
+    .modal-body
+        .btn
+            display: block
+            margin: 20px 0 10px 0
+        .title-box
+            color: #58595b !important
 </style>

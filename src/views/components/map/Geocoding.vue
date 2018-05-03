@@ -63,8 +63,6 @@ export default {
                 ol.extent.extend(extent, feature.getGeometry().getExtent());
                 this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
 
-                
-
             } catch (err) {
                 alert('ERROR: address not found')
             }

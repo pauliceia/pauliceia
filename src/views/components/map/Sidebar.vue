@@ -26,12 +26,8 @@
     </div>
 </template>
 <script>
-import Layers from '@/views/components/map/sidebar/Layers.vue'
-import ViewInfo from '@/views/components/map/sidebar/ViewInfo.vue'
-
-import {
-    overlayGroup
-} from '@/views/assets/js/map/overlayGroup'
+import Layers from '@/views/components/map/sidebar/Layers'
+import ViewInfo from '@/views/components/map/sidebar/ViewInfo'
 
 export default {
     components: {

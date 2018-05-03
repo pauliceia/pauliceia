@@ -10,6 +10,11 @@ const overlayGroupRasters = new ol.layer.Group({
   layers: []
 })
 
+const overlayGroupExternal = new ol.layer.Group({
+  title: 'overlays_external',
+  layers: []
+})
+
 const overlayGroup = new ol.layer.Group({
   title: 'overlays',
   layers: []
@@ -18,5 +23,6 @@ const overlayGroup = new ol.layer.Group({
 export {
   overlayGroupBase,
   overlayGroupRasters,
+  overlayGroupExternal,
   overlayGroup
 }

@@ -7,6 +7,8 @@
       <p-addLayers></p-addLayers>
       <p-layersRaster></p-layersRaster>
       <p-sidebar></p-sidebar>
+      
+      <p-boxinfo></p-boxinfo>
     </ol-map>
 
   </section>
@@ -19,6 +21,7 @@
   import AddLayers from '@/views/components/map/sidebar/AddLayers'
   import LayersRaster from '@/views/components/map/LayersRaster'
   import Sidebar from '@/views/components/map/Sidebar'
+  import BoxInfo from '@/views/components/map/BoxInfos'
 
   import {
     placeStyle,
@@ -26,8 +29,8 @@
   } from '@/views/assets/js/map/Styles'
 
   import {
-    overlayGroup,
-    overlayGroupBase
+    overlayGroupExternal,
+    overlayGroup
   } from '@/views/assets/js/map/overlayGroup'
 
   export default {
@@ -37,49 +40,10 @@
       'p-geocoding': Geocoding,
       'p-addLayers': AddLayers,
       'p-layersRaster': LayersRaster,
-      'p-sidebar': Sidebar
+      'p-sidebar': Sidebar,
+      'p-boxinfo': BoxInfo
     },
     created () {
-
-      let styleCache = {};
-      let vectorLayerPlaces = new ol.layer.Vector({
-        title: 'Places',
-        // source: new ol.source.Cluster({
-        //   distance: parseInt(60, 10),
-          source: new ol.source.Vector({
-            url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application%2Fjson',
-            format: new ol.format.GeoJSON(),
-            crossOrigin: 'anonymous',
-          // })
-        }),
-        style: placeStyle
-        // style: function(feature) {
-        //   var size = feature.get('features').length;
-        //   var style = styleCache[size];
-        //   if (!style) {
-        //     style = new ol.style.Style({
-        //       image: new ol.style.Circle({
-        //         radius: 10,
-        //         stroke: new ol.style.Stroke({
-        //           color: '#fff'
-        //         }),
-        //         fill: new ol.style.Fill({
-        //           color: '#3399CC'
-        //         })
-        //       }),
-        //       text: new ol.style.Text({
-        //         text: size.toString(),
-        //         fill: new ol.style.Fill({
-        //           color: '#fff'
-        //         })
-        //       })
-        //     });
-        //     styleCache[size] = style;
-        //   }
-        //   return style;
-        // }
-      });
-
       let vectorLayerStreets = new ol.layer.Vector({
         title: 'Streets',
         source: new ol.source.Vector({
@@ -95,8 +59,8 @@
         source: new ol.source.OSM()
       })
 
-      overlayGroupBase.getLayers().clear();  
-      overlayGroupBase.getLayers().push(
+      overlayGroupExternal.getLayers().clear();  
+      overlayGroupExternal.getLayers().push(
         osm
       )
       
@@ -104,9 +68,9 @@
       overlayGroup.getLayers().push(
         vectorLayerStreets
       )
-      overlayGroup.getLayers().push(
-        vectorLayerPlaces
-      )      
+      // overlayGroup.getLayers().push(
+      //   vectorLayerPlaces
+      // )      
 
     }
   }
