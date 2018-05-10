@@ -19,7 +19,7 @@
                     <p class="md-list-item-text">Notifications:</p>
                 </md-list-item>
 
-                <div v-for="test in 8">
+                <div v-for="test in 8" :key="test">
                     <div class="notification-box">
                         <p class="author">Beto Noronha</p>
                         <p class="date">05/02/2018</p>

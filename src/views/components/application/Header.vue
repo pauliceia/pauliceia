@@ -53,7 +53,7 @@
 import LogAvatar from '@/views/components/application/LogAvatar'
 import dropLanguage from '@/views/components/application/DropLanguage'
 
-import logo from '@/views/assets/images/logo.png'
+import logo from '@/views/assets/images/logo_pauliceia.png'
 
 import { mapState } from 'vuex'
 export default {
@@ -98,7 +98,7 @@ export default {
 
         .logo
             width: 100%
-            margin-top: -10px
+            margin-top: -5px
 
     .navbar-nav li a
         color: #DDD !important

@@ -13,8 +13,8 @@
                     <p class="title-box">{{ $t('map.addLayer.subtitle') }}</p>
                     <input type="text" class="form-control" v-model="search" :placeholder="$t('map.addLayer.input')"/>
             
-                    <v-jstree :data="data" size="large" show-checkbox multiple allow-batch whole-row ref="tree" @item-click="itemClick"></v-jstree>    
-                    <button class="btn btn-block btn-outline-success" type="button" @click="updateListLayers()">SAVE</button>
+                    <!--<v-jstree :data="data" size="large" show-checkbox multiple allow-batch whole-row ref="tree" @item-click="itemClick"></v-jstree>  -->
+                    <button class="btn btn-block btn-outline-success" type="button" @click="getSelectedTree()">{{ $t('map.addLayer.save') }}</button>
                 </div>
 
                 <div class="modal-footer">
@@ -40,15 +40,10 @@ export default {
             originalData: DataJson,
             data: DataJson,
             search: null,
-            selected: {}
+            selected: new Map()
         }
     },
     methods: {
-        itemClick (node) {
-            // let indice = node.model.id.toString()
-            // this.selected = { ...this.selected, node.model.id }
-            // console.log(this.selected)
-        },
         cleanString(s) {
             return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         },
@@ -71,13 +66,19 @@ export default {
                 }
             })
         },
-        updateListLayers(){
-            // this.selected.forEach( id => {
-            //     let layer = DataLayers.filter( element => element.id == id)
-            //     if(layer[0] != null){
-            //         console.log(layer)
-            //     }
-            // })
+        getSelectedTree(){
+            let vm = this
+            function readTree(tree, index){
+                if(tree.children.length > 0) {
+                    tree.children.forEach( (subtree, index) => readTree(subtree, index+1) )
+                } else {
+                    if(tree.selected) {
+                        vm.selected.set(tree.id, tree.id)
+                    }
+                }
+            }
+            this.data.forEach(aTree => readTree(aTree, 0))
+            updateListLayer()
         }
     },
     watch: {

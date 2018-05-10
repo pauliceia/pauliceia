@@ -4,7 +4,7 @@
     <ol-map class="map">
       <p-timeline></p-timeline>
       <p-geocoding></p-geocoding>
-      <p-addLayers></p-addLayers>
+      <p-selectLayers></p-selectLayers>
       <p-layersRaster></p-layersRaster>
       <p-sidebar></p-sidebar>
       
@@ -18,7 +18,7 @@
   import OlMap from '@/views/components/map/Ol-map'
   import Timeline from '@/views/components/map/Timeline'
   import Geocoding from '@/views/components/map/Geocoding'
-  import AddLayers from '@/views/components/map/sidebar/AddLayers'
+  import SelectLayers from '@/views/components/map/sidebar/SelectLayers'
   import LayersRaster from '@/views/components/map/LayersRaster'
   import Sidebar from '@/views/components/map/Sidebar'
   import BoxInfo from '@/views/components/map/BoxInfos'
@@ -38,7 +38,7 @@
       'ol-map': OlMap,
       'p-timeline': Timeline,
       'p-geocoding': Geocoding,
-      'p-addLayers': AddLayers,
+      'p-selectLayers': SelectLayers,
       'p-layersRaster': LayersRaster,
       'p-sidebar': Sidebar,
       'p-boxinfo': BoxInfo
@@ -68,9 +68,6 @@
       overlayGroup.getLayers().push(
         vectorLayerStreets
       )
-      // overlayGroup.getLayers().push(
-      //   vectorLayerPlaces
-      // )      
 
     }
   }
@@ -82,7 +79,7 @@
     left: 0
     right: 0
     bottom: 0
-    top: 73px
+    top: 84px
     background: #fff
   
   .ol-zoomslider-thumb, .ol-scale-line, .ol-zoom-in, .ol-zoom-out
