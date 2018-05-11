@@ -3,6 +3,7 @@ import Dashboard from '@/views/layouts/dashboard'
 
 //pages
 import DashHome from '@/views/pages/dashboard/home'
+import DashNewLayer from '@/views/pages/dashboard/newLayer'
 
 const dashRoutes = [
     {
@@ -14,6 +15,11 @@ const dashRoutes = [
         path: '/dashboard/home',
         name: 'Home',
         component: DashHome
+    },
+    {
+      path: '/dashboard/newLayer',
+      name: 'NewLayer',
+      component: DashNewLayer
     }
 ]
 
