@@ -6,9 +6,9 @@
 
 <script>
   import {
-    overlayGroupBase,
     overlayGroupRasters,
-    overlayGroup,
+    overlayGroupExternal,
+    overlayGroup
   } from '@/views/assets/js/map/overlayGroup'
 
   export default {
@@ -44,7 +44,7 @@
           new ol.control.ZoomSlider()
         ]),
         layers: [
-          overlayGroupBase,
+          overlayGroupExternal,
           overlayGroupRasters,
           overlayGroup
         ],

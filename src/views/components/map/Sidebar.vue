@@ -19,24 +19,16 @@
 
             <md-list>
                 <p-sidebar-layers></p-sidebar-layers>
-
-                <p-sidebar-viewinfo></p-sidebar-viewinfo>
             </md-list>
         </section>
     </div>
 </template>
 <script>
-import Layers from '@/views/components/map/sidebar/Layers.vue'
-import ViewInfo from '@/views/components/map/sidebar/ViewInfo.vue'
-
-import {
-    overlayGroup
-} from '@/views/assets/js/map/overlayGroup'
+import Layers from '@/views/components/map/sidebar/Layers'
 
 export default {
     components: {
-        'p-sidebar-layers': Layers,
-        'p-sidebar-viewinfo': ViewInfo
+        'p-sidebar-layers': Layers
     },
     data(){
         return {
@@ -47,9 +39,9 @@ export default {
         sidebar() {
             if (this.sidebarVisible == false) {
                 this.sidebarVisible = true
-                $('.ol-zoomslider').css("margin-left", "305px")
-                $('.ol-zoom').css("margin-left", "305px")
-                $('.ol-scale-line').css("margin-left", "305px")
+                $('.ol-zoomslider').css("margin-left", "335px")
+                $('.ol-zoom').css("margin-left", "335px")
+                $('.ol-scale-line').css("margin-left", "335px")
             }else{
                 this.sidebarVisible = false
                 $('.ol-zoomslider').css("margin-left", "0")
@@ -82,40 +74,14 @@ export default {
     .sidebar
         overflow: auto
         position: absolute
-        width: 300px
+        width: 330px
         height: 100%
         bottom: 0
         left: 0
         background: rgba(#58595b, 0.75)
         z-index: 1
         box-shadow: 2px 0 10px #666
-
-        .md-list
-            padding-top: 1px !important
-            cursor: pointer
-            color: #FFF
-
-            .md-list-item .md-list-item-text
-                text-transform: uppercase
-                font-weight: 600
-            .md-list-item:hover
-                background: rgba(#FFF, .1)
-                border-left: 2px solid #f15a29   
-
-            .md-icon
-                margin-right: 12px !important
-
-            //ACTIVE
-            .md-active
-                background: rgba(#FFF, .2)
-                border-left: 2px solid #f15a29
-                
-                .md-list-item-content
-                    background: rgba(#FFF, .3)
-
-            .md-active:hover
-                border-left: 1px solid #f15a29 
-
+        
     //SCROLL
     .sidebar::-webkit-scrollbar 
         width: 0.5em

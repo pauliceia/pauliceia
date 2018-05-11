@@ -81,6 +81,7 @@
             }
           })
         })
+        
       }
     }
   }
@@ -92,7 +93,7 @@
   #contentSlider {
     position: absolute;
     display: flex;
-    z-index: 10;
+    z-index: 2;
     bottom: 35px;
     height: 65px;
     width: 40%;

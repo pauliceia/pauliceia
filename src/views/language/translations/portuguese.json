@@ -19,15 +19,19 @@
             "placeholder": "nome da rua, número, ano"
         },
         "sidebar": {
-            "title": "MENU",
+            "title": "CAMADAS",
             "layers": {
-                "title": "Camadas",
-                "newproject": "NOVO PROJETO"
+                "btn": "SELECIONE OUTRAS",
+                "selected": "selecionadas",
+                "default": "padrão"
             },
             "viewinfo": "Vizualizar Info"          
         },
         "addLayer": {
-            "title": "ADICIONE NOVAS CAMADAS",
+            "title": "SELECIONE OUTRAS CAMADAS",
+            "subtitle": "Pesquise por tema, camada ou autor:",
+            "input": "pesquise aqui ...",
+            "save": "SALVAR",
             "close": "fechar"
         }
     }

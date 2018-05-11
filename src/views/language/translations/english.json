@@ -19,15 +19,19 @@
             "placeholder": "street name, number, year"
         },
         "sidebar": {
-            "title": "NAVIGATOR",
+            "title": "LAYERS",
             "layers": {
-                "title": "Layers",
-                "newproject": "NEW PROJECT"
+                "btn": "SELECT OTHERS",
+                "selected": "selected",
+                "default": "default"
             },
             "viewinfo": "View Info"          
         },
         "addLayer": {
-            "title": "ADD NEW LAYERS",
+            "title": "SELECT OTHERS LAYERS",
+            "subtitle": "Search by theme, layer or author:",
+            "input": "search here ...",
+            "save": "SAVE",
             "close": "close"
         }
     }
