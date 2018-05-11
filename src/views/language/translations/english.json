@@ -13,6 +13,12 @@
             "infos": "Information"
         }
     },
+    "login": {
+        "inputEmail": "Email address",
+        "inputPassword": "Password",
+        "register": "Register now",
+        "btnText": "Login" 
+    },
     "map":{
         "geocoding": {
             "label":  "Search Address",

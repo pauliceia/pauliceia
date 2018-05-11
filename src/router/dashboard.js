@@ -8,12 +8,14 @@ const dashRoutes = [
     {
         path: '/dashboard',
         redirect: '/dashboard/home',
-        component: Dashboard
+        component: Dashboard,
+        meta: { auth: true }
     },
     {
         path: '/dashboard/home',
         name: 'Home',
-        component: DashHome
+        component: DashHome,
+        meta: { auth: true }
     }
 ]
 
