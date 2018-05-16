@@ -6,7 +6,7 @@
         </p>
 
         <section class="sidebar" v-show="sidebarVisible">
-            <md-toolbar md-elevation="1" style="background: #FCFCFC; color: #f15a29;">
+            <md-toolbar md-elevation="1" style="background: #EEE; color: #f15a29;">
                 <md-icon>public</md-icon>
                 <span class="md-title nav-title">{{ $t('map.sidebar.title') }}</span>
 
@@ -80,7 +80,7 @@ export default {
         left: 0
         background: rgba(#58595b, 0.75)
         z-index: 1
-        box-shadow: 1px 1px 1px #666
+        box-shadow: 1px 1px 1px #CCC
         
     //SCROLL
     .sidebar::-webkit-scrollbar 

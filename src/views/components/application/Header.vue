@@ -94,7 +94,8 @@ export default {
 
         .navbar
             padding-left: 10%
-            padding-right: 10% 
+            padding-right: 10%
+            background: #EEE !important
 
             .navbar-brand
                 width: 120px
