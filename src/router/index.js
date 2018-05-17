@@ -18,7 +18,7 @@ const router = new Router({
  * auth: 'administrator' => administrator user
  */
 router.beforeEach((to, from, next) => {
-    if (to.name === 'Login' && store.state.auth.isUserLoggedIn) {
+    if ( (to.name === 'Login' || to.name === 'Register') && store.state.auth.isUserLoggedIn) {
         return next({
             path: '/dashboard'
         })

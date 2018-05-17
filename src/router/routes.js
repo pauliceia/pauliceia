@@ -4,6 +4,7 @@ import Application from '@/views/layouts/application'
 //pages
 import About from '@/views/pages/about'
 import Login from '@/views/pages/login'
+import Register from '@/views/pages/register'
 
 //routes
 import mapRoutes from '@/router/map'
@@ -28,6 +29,11 @@ const routes = [
           path: '/login', 
           name: 'Login',
           component: Login
+        },
+        {
+          path: '/register', 
+          name: 'Register',
+          component: Register
         },
         //routes of map
         ...mapRoutes,

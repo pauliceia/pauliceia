@@ -79,7 +79,7 @@
     left: 0
     right: 0
     bottom: 0
-    top: 84px
+    top: 85px
     background: #fff
   
   .ol-zoomslider-thumb, .ol-scale-line, .ol-zoom-in, .ol-zoom-out

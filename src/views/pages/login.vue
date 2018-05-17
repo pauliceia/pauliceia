@@ -8,18 +8,22 @@
             </div>
             
             <div class="card-body">
-                <form class="form-signin">
+                <div v-show="error != ''" class="alert alert-danger" role="alert">
+                    <strong>Error:</strong> {{ error }}
+                </div>
+
+                <form class="form-signin" @submit.prevent="loginSubmit">
                     <div class="form-label-group">
-                        <input type="email" name="inputEmail" class="form-control form-control-lg" placeholder="Email address" required autofocus>
+                        <input type="email" v-model="email" class="form-control form-control-lg" :placeholder="$t('login.inputEmail')" required autofocus>
                     </div>
                     <br />
                     <div class="form-label-group">
-                        <input type="password" name="inputPassword" class="form-control form-control-lg" placeholder="Password" required>
+                        <input type="password" v-model="password" class="form-control form-control-lg" :placeholder="$t('login.inputPassword')" required>
                     </div>
                     <br />
                     
-                    <router-link to="/register" class="register">Register now <-</router-link>
-                    <button type="button" class="btn btn-success btn-lg btn-block">Login</button>
+                    <router-link to="/register" class="register">{{ $t('login.register') }} <-</router-link>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">{{ $t('login.btnText') }}</button>
                 </form>
             </div>
 
@@ -47,37 +51,43 @@
 </template>
 
 <script>
-import Authentication from '@/middleware/Authentication'
+import Authentication from '@/middleware/User'
+import jsSHA from 'jssha'
 
 export default {
     data () {
         return {
             email: '',
             password: '',
-            errors: [ {
-                messages: []
-            } ]
+            error: ''
         }
     },
     methods: {
         async loginSubmit () {
             try {
-                const response = await Authentication.login({
-                    email: this.email,
-                    password: this.password
-                })
+                let password = new jsSHA("SHA-512", "TEXT")
+                password.update(this.password)
+                password = password.getHash('HEX')
+                let token = decodeURI(window.btoa(encodeURI(this.email+":"+password)))
 
-                this.$store.dispatch('auth/setToken', response.data.token)
-                this.$store.dispatch('auth/setUser', response.data.user)
+                const response = await Authentication.login(token)
+                if(response.status == 200) {
+                    this.$store.dispatch('auth/setToken', token)
 
-                let query = this.$route.query.redirect ? this.$route.query.redirect : '/dashboard';
+                    const response = await Authentication.getUser(`email=${this.email}`)
+                    this.$store.dispatch('auth/setUser', response.data.features[0].properties)
 
-                this.$router.push({
-                    path: query
-                })
+                    this.error = ''
 
+                    let query = this.$route.query.redirect ? this.$route.query.redirect : '/explore';
+                    this.$router.push({
+                        path: query
+                    })
+                }
+
+                
             } catch (error) {
-                this.errors = error.response.data.errors
+                this.error = "email or password incorrect!"
             }
         }
     }
