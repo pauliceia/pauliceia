@@ -6,7 +6,7 @@
         </md-list-item>
 
         <md-list-item :class="this.$route.path == '/dashboard/newLayer' ? 'active': ''" to="/dashboard/newLayer">
-            <md-icon>error</md-icon>
+            <md-icon>add_to_photos</md-icon>
             <span class="md-list-item-text">{{ $t('dashboard.nav.newLayer') }}</span>
         </md-list-item>
 
