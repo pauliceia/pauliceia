@@ -13,14 +13,29 @@
                   <input type="email" class="form-control" id="inputName" placeholder="Nome">
                 </div>
                 <div class="form-group col-md-6">
-                  <label class="mr-sm-2" for="inlineFormCustomSelect">Theme</label>
-                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                  <label class="mr-sm-2" for="themeSelect">Theme</label>
+                  <v-select multiple v-model="chosenTheme" :options="theme" track-by="name" label="name"
+                            id="themeSelect"></v-select>
+                  <!--<select class="custom-select mr-sm-2" id="themeSelect" @change="addTheme()">
                     <option selected>Choose...</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                    <option v-for="t in theme" :value="t.name">{{t.name}}</option>
+                  </select>-->
                 </div>
+              </div>
+              <div class="form-group">
+                <!--<label for="inputDescription">Chosen Themes</label>
+                <ol>
+                  <li v-for="(t, index) in chosenTheme">
+                    {{ t.name }}
+                    &nbsp; &nbsp;
+                    <a href="#" class="" @click="removeTheme(index)">x</a>
+                  </li>
+                </ol>-->
+              </div>
+              <div class="form-group">
+                <label for="userSelect">Collaborators</label>
+                <v-select multiple v-model="chosenUsers" :options="users" track-by="name" label="name"
+                          id="userSelect"></v-select>
               </div>
               <div class="form-group">
                 <label for="inputDescription">Description</label>
@@ -28,29 +43,77 @@
               </div>
               <div class="form-group">
                 <label for="inputReference">Reference</label>
-                <input type="text" class="form-control" id="inputReference" placeholder="">
-              </div>
-              <div class="form-group">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="Radios" id="Radios1" value="adress" checked>
-                  <label class="form-check-label" for="Radios1">
-                    Adress
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="Radios" id="Radios2" value="coordinates">
-                  <label class="form-check-label" for="Radios2">
-                    Coordinates
-                  </label>
+                <div class="form-row">
+                  <div class="form-group col-md-8">
+                    <input type="text" class="form-control" id="inputReference" placeholder="">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <a href="#" class="btn btn-primary" @click="addRef()">Add</a>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
-                <label for="fileUpload">File Input</label>
-                <input type="file" class="form-control-file" id="fileUpload">
-                <input type="file" id="csvFileInput" onchange="handleFiles(this.files)"
-                       accept=".csv">
+                <label for="inputReference">Added References</label>
+                <ol>
+                  <li v-for="(t, index) in addedRef">
+                    {{ t.name }}
+                    &nbsp; &nbsp;
+                    <a href="#" class="" @click="removeRef(index)">x</a>
+                  </li>
+                </ol>
               </div>
+              <div class="form-group">
+              </div>
+              <div class="form-group">
+                <label for="shpUpload">File Input</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">SHP File</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="shpUpload">
+                    <label class="custom-file-label" for="shpUpload">Choose file</label>
+                  </div>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">SHX File</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="shxUpload">
+                    <label class="custom-file-label" for="shxUpload">Choose file</label>
+                  </div>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">DBF File</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="dbfUpload">
+                    <label class="custom-file-label" for="dbfUpload">Choose file</label>
+                  </div>
+                </div>
 
+                <label for="shpUpload">Optional File Input</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">PRJ File</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="prjUpload">
+                    <label class="custom-file-label" for="prjUpload">Choose file</label>
+                  </div>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">CPG File</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="cpgUpload">
+                    <label class="custom-file-label" for="cpgUpload">Choose file</label>
+                  </div>
+                </div>
+              </div>
             </form>
             </p>
             <div class="row">
@@ -61,106 +124,58 @@
           </div>
         </div>
       </div>
-      <div id="dvCSV"> teste</div>
     </div>
   </p-dash-layout>
 </template>
 
 <script>
   import DashLayout from '@/views/layouts/dashboard'
+  import Vue from 'vue'
+  import vSelect from 'vue-select'
+
+  Vue.component('v-select', vSelect)
 
   export default {
     name: "newLayer",
     components: {
       "p-dash-layout": DashLayout
     },
+    data: function () {
+      return {
+        chosenTheme: [],
+        chosenUsers: [],
+        theme: [
+          {name: 'Igrejas'},
+          {name: 'Fábricas'},
+          {name: 'Restaurantes'}
+        ],
+        users: [
+          {name: 'Denis'},
+          {name: 'Gabriel'},
+          {name: 'Beto'},
+          {name: 'Rodrigo'},
+        ],
+        addedRef: [],
+      }
+    },
     methods: {
       Upload() {
-        var fileUpload = document.getElementById("fileUpload");
-        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
-        if (regex.test(fileUpload.value.toLowerCase())) {
-          if (typeof (FileReader) != "undefined") {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-              var table = document.createElement("table");
-              var rows = e.target.result.split("\n");
-              for (var i = 0; i < rows.length; i++) {
-                var row = table.insertRow(-1);
-                var cells = rows[i].split(",");
-                for (var j = 0; j < cells.length; j++) {
-                  var cell = row.insertCell(-1);
-                  cell.innerHTML = cells[j];
-                }
-              }
-              var dvCSV = document.getElementById("dvCSV");
-              dvCSV.innerHTML = "";
-              dvCSV.appendChild(table);
-            }
-            reader.readAsText(fileUpload.files[0]);
-          } else {
-            alert("This browser does not support HTML5.");
-          }
-        } else {
-          alert("Please upload a valid CSV file.");
-        }
-
       },
-    },
-    created: {
-      handleFiles(files) {
-        // Check for the various File API support.
-        if (window.FileReader) {
-          // FileReader are supported.
-          this.getAsText(files[0]);
-        } else {
-          alert('FileReader are not supported in this browser.');
-        }
+      /* removeTheme(index) {
+         //console.log(index)
+         this.chosenTheme.splice(index, 1)
+       },*/
+      /*addTheme() {
+         this.chosenTheme.push({name: document.getElementById("themeSelect").value})
+       },*/
+      removeRef(index) {
+        this.addedRef.splice(index, 1)
       },
-
-      getAsText(fileToRead) {
-        var reader = new FileReader();
-        // Handle errors load
-        reader.onload = this.loadHandler;
-        reader.onerror = this.errorHandler;
-        // Read file into memory as UTF-8
-        reader.readAsText(fileToRead);
-      },
-
-      loadHandler(event) {
-        var csv = event.target.result;
-        this.processData(csv);
-      },
-
-      processData(csv) {
-        var allTextLines = csv.split(/\r\n|\n/);
-        var lines = [];
-        while (allTextLines.length) {
-          lines.push(allTextLines.shift().split(','));
-        }
-        console.log(lines);
-        this.drawOutput(lines);
-      },
-
-      errorHandler(evt) {
-        if (evt.target.error.name == "NotReadableError") {
-          alert("Canno't read file !");
-        }
-      },
-
-      drawOutput(lines) {
-        //Clear previous data
-        document.getElementById("output").innerHTML = "";
-        var table = document.createElement("table");
-        for (var i = 0; i < lines.length; i++) {
-          var row = table.insertRow(-1);
-          for (var j = 0; j < lines[i].length; j++) {
-            var firstNameCell = row.insertCell(-1);
-            firstNameCell.appendChild(document.createTextNode(lines[i][j]));
-          }
-        }
-        document.getElementById("dvCSV").appendChild(table);
+      addRef() {
+        this.addedRef.push({name: document.getElementById("inputReference").value})
       }
-    }
+    },
+    created: {}
   }
 
 
