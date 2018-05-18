@@ -10,14 +10,15 @@
     "dashboard": {
         "nav": {
             "home": "Home",
-            "infos": "Information"
+            "infos": "Information",
+            "newLayer": "New Layer"
         }
     },
     "login": {
         "inputEmail": "Email address",
         "inputPassword": "Password",
         "register": "Register now",
-        "btnText": "Login" 
+        "btnText": "Login"
     },
     "map":{
         "geocoding": {
@@ -31,7 +32,7 @@
                 "selected": "selected",
                 "default": "default"
             },
-            "viewinfo": "View Info"          
+            "viewinfo": "View Info"
         },
         "addLayer": {
             "title": "SELECT OTHERS LAYERS",
