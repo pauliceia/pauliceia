@@ -8,15 +8,12 @@
             </div>
             
             <div class="card-body">
-                <div v-show="msgAlert.message != ''" :class="'alert '+msgAlert.type" role="alert">
-                    {{ msgAlert.message }}
-                </div>
 
                 <form class="form-signin" @submit.prevent="registerSubmit">
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label>Name</label>
-                            <input type="text" v-model="user.name" class="form-control form-control-lg" placeholder="Full Name">
+                            <input type="text" v-model="user.name" class="form-control form-control-lg" placeholder="Full Name" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label>E-mail</label>
@@ -27,23 +24,18 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Username</label>
-                            <input type="text" v-model="user.username" class="form-control form-control-lg" placeholder="Username" >
+                            <input type="text" v-model="user.username" class="form-control form-control-lg" placeholder="Username" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Passsword</label>
+                            <label>Password</label>
                             <input type="password" v-model="user.password" class="form-control form-control-lg" placeholder="Password" required>
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input type="checkbox" v-model="user.receive_notification_by_email" class="form-check-input">
-                            <label class="form-check-label" style="font-size: 1.2em">Receive notification by email</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" v-model="terms_agreed" class="form-check-input">
-                            <label class="form-check-label" style="font-size: 1.2em">I agree to the terms of use <a href="#" style="padding-left: 10px"> -> READ HERE <- </a></label>
-                        </div>
+                    <div class="box-check">
+                        <el-checkbox label="Receive notification by email" v-model="user.receive_notification_by_email"></el-checkbox>
+                        <br />
+                        <el-checkbox label="I agree to the terms of use." v-model="terms_agreed"></el-checkbox> <a href='#'> ( read here ) </a>
                     </div>
 
                     <button type="submit" disabled class="btn btn-success btn-lg btn-block" id="btn-register">Register</button>
@@ -83,7 +75,7 @@ export default {
             emailSuporte: 'suporte@pauliceia.com.br',
             msgAlert: {
                 type: '',
-                message: ''
+                message: 'Cadastro realizado com sucesso. Obrigado!'
             }
         }
     },
@@ -96,6 +88,8 @@ export default {
     },
     methods: {
         async registerSubmit () {
+            this.msgAlert.type = ''
+            this.msgAlert.message = ''
             try {
                 if(this.user.email == '' || this.user.username == '' || this.user.password == '') {
                     this.msgAlert = {
@@ -114,28 +108,50 @@ export default {
                         type: "User"
                     })
 
-                    this.msgAlert = {
-                        type: "alert-success",
-                        message: "SUCCESS: Registration almost finished! Access your EMAIL and follow the instructions."
-                    }
-                    // this.$store.dispatch('auth/setToken', token)
+                    this._msgBox(
+                        'SUCCESS',
+                        'Registration almost <strong>finished</strong>! Access your <strong>EMAIL</strong> and follow the instructions.',
+                        'success'
+                    )
 
-                    // const response = await Authentication.getUser(`email=${this.email}`)
-                    // this.$store.dispatch('auth/setUser', response.data.features[0].properties)
+                    this._cleanForm()
                 }
                 
             } catch (error) {
                 if( error.response == undefined || error.response.status == 500 ) 
-                    this.msgAlert = {
-                        type: "alert-danger",
-                        message: "ERROR: Internal Server Error - contact the administrator - "+this.emailSuporte
-                    }
+                    this._msgBox(
+                        'ERROR',
+                        'Internal Server Error - contact the administrator - '+this.emailSuporte,
+                        'error'
+                    )
                 else 
-                    this.msgAlert = {
-                        type: "alert-danger",
-                        message: "ERROR: email or username already exists in our system"
-                    }
+                    this._msgBox(
+                        'ERROR',
+                        '<strong>email</strong> or <strong>username</strong> already exists in our system',
+                        'error'
+                    )
             }
+        },
+        _cleanForm() {
+            let userClean = {
+                name: '',
+                email: '',
+                username: '',
+                password: '',
+                receive_notification_by_email: true,
+                terms_agreed: false,
+                can_add_layer: true
+            }
+            this.terms_agreed = false
+
+            this.user = userClean
+        },
+        _msgBox(title, msg, type) {
+            this.$alert(msg, title, {
+                dangerouslyUseHTMLString: true,
+                confirmButtonText: 'OK',
+                type
+            });
         }
     }
 
@@ -151,5 +167,8 @@ section
         color: #666
         text-align: center
         padding: 25px 0
+    
+    .box-check
+        padding: 10px
 
 </style>

@@ -25,6 +25,8 @@
 
 </template>
 <script>
+import User from '@/middleware/User'
+
 export default {
     name: 'p-logAvatar',
     props: [
@@ -32,12 +34,21 @@ export default {
     ],
     methods: {
         logout() {
+            User.logout()
+
             this.$store.dispatch('auth/setUser', null)
             this.$store.dispatch('auth/setToken', null)
 
             this.$router.push({
                 path: '/login'
             })
+
+            this.$message({
+                showClose: true,
+                dangerouslyUseHTMLString: true,
+                message: 'bye bye see you!',
+                type: 'success'
+            });
         }
     }
 }

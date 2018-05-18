@@ -64,7 +64,12 @@ export default {
                 this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
 
             } catch (err) {
-                alert('ERROR: address not found')
+                console.log(err.response)
+                this.$alert('address not found', 'SORRY', {
+                    dangerouslyUseHTMLString: true,
+                    confirmButtonText: 'OK',
+                    type: 'warning'
+                });
             }
             
         }

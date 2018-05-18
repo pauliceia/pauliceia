@@ -6,13 +6,13 @@
         </p>
 
         <section class="sidebar" v-show="sidebarVisible">
-            <md-toolbar md-elevation="1" style="background: #EEE; color: #f15a29;">
+            <md-toolbar md-elevation="1" style="background: #f36c3f; color: #FFF;">
                 <md-icon>public</md-icon>
                 <span class="md-title nav-title">{{ $t('map.sidebar.title') }}</span>
 
                 <div class="md-toolbar-section-end">
                     <md-button class="md-icon-button md-dense" @click="sidebar()">
-                        <md-icon style="color: #f15a29;">keyboard_arrow_left</md-icon>
+                        <md-icon style="color: #FFF;">keyboard_arrow_left</md-icon>
                     </md-button>
                 </div>
             </md-toolbar>
