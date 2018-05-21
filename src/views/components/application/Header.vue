@@ -36,7 +36,7 @@
                 </ul>
 
                 <button @click="actGeocoding()" v-show="this.$route.path == '/explore'" 
-                        :class="this.boxGeocoding ? 'btn-geocoding btn-active' : 'btn-geocoding'"><md-icon>search</md-icon></button>
+                        :class="this.boxGeocoding ? 'btn-geocoding btn-active' : 'btn-geocoding'"><md-icon>location_on</md-icon></button>
 
                 <div v-if="isUserLoggedIn">
                     <p-logAvatar :title="user ? user.name : ''"/>
@@ -85,7 +85,7 @@ export default {
 
 <style lang="sass" scoped>
     header
-        border-bottom: 1px solid #DDD
+        border-bottom: 1px solid #999
         
         .sub-nav
             width: 100%

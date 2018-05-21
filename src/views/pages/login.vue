@@ -8,9 +8,6 @@
             </div>
             
             <div class="card-body">
-                <div v-show="error != ''" class="alert alert-danger" role="alert">
-                    <strong>Error:</strong> {{ error }}
-                </div>
 
                 <form class="form-signin" @submit.prevent="loginSubmit">
                     <div class="form-label-group">
@@ -51,15 +48,14 @@
 </template>
 
 <script>
-import Authentication from '@/middleware/User'
+import User from '@/middleware/User'
 import jsSHA from 'jssha'
 
 export default {
     data () {
         return {
             email: '',
-            password: '',
-            error: ''
+            password: ''
         }
     },
     methods: {
@@ -70,25 +66,40 @@ export default {
                 password = password.getHash('HEX')
                 let token = decodeURI(window.btoa(encodeURI(this.email+":"+password)))
 
-                const response = await Authentication.login(token)
+                const response = await User.login(token)
                 if(response.status == 200) {
                     this.$store.dispatch('auth/setToken', token)
 
-                    const response = await Authentication.getUser(`email=${this.email}`)
+                    const response = await User.getUser(`email=${this.email}`)
                     this.$store.dispatch('auth/setUser', response.data.features[0].properties)
-
-                    this.error = ''
 
                     let query = this.$route.query.redirect ? this.$route.query.redirect : '/explore';
                     this.$router.push({
                         path: query
                     })
-                }
 
+                    this.$message({
+                        showClose: true,
+                        dangerouslyUseHTMLString: true,
+                        message: 'WELCOME <strong>'+response.data.features[0].properties.name+'</strong>!',
+                        type: 'success'
+                    });
+                }
                 
             } catch (error) {
-                this.error = "email or password incorrect!"
+                this._msgBox(
+                    'ERROR',
+                    '<strong>email</strong> or <strong>password</strong> incorrect!',
+                    'error'
+                )
             }
+        },
+        _msgBox(title, msg, type) {
+            this.$alert(msg, title, {
+                dangerouslyUseHTMLString: true,
+                confirmButtonText: 'OK',
+                type
+            });
         }
     }
 

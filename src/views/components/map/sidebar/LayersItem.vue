@@ -1,37 +1,45 @@
 <template>
     <div :class="boxView ? 'box-item active' : 'box-item'"> 
-        <switches v-model="layerStatus" :theme="theme ? theme: 'bootstrap'" :color="color"></switches> 
+        <el-switch v-model="layerStatus" :active-color="color"></el-switch>          
         
         <span>
             <b>{{ title.toUpperCase() }}</b>
             <span v-show="layerStatus && apps">                   
                 <button class="btn-view" @click="boxView =! boxView">
-                    <md-icon>apps</md-icon>
+                    <md-icon>settings</md-icon>
                 </button>
             </span>
         </span>
 
         <div v-show="boxView && layerStatus && apps" class="box-options">
-            <md-icon @click.native="extend()">center_focus_strong</md-icon>
-            <md-icon @click.native="infos()">assignment</md-icon>
-            <md-icon :class="getInfo ? 'active' : ''" @click.native="infosFeatures()">info</md-icon>
-            <input type="color" class="btn-color" v-model="colorVector" />
-            <md-icon>save_alt</md-icon>
+            <el-tooltip effect="dark" content="Zoom" placement="top-end">
+                <md-icon @click.native="extend()">center_focus_strong</md-icon>
+            </el-tooltip>
+
+            <el-tooltip effect="dark" content="Information" placement="top-end">
+                <md-icon @click.native="infos()">assignment</md-icon>
+            </el-tooltip>
+            
+            <el-tooltip effect="dark" content="Infos vector" placement="top-end">
+                <md-icon :class="getInfo ? 'active' : ''" @click.native="infosFeatures()">info</md-icon>
+            </el-tooltip>
+
+            <el-tooltip effect="dark" content="Edit Color" placement="top-end">
+                <input type="color" class="btn-color" v-model="colorVector" />
+            </el-tooltip>
+
+            <el-tooltip effect="dark" content="Download" placement="top-end">
+                <md-icon>save_alt</md-icon>
+            </el-tooltip>
         </div>
     </div>           
 </template>
 <script>
-import Switches from 'vue-switches'
-
 import {
     emptyStyle
 } from '@/views/assets/js/map/Styles'
 
 export default {
-    components: {
-        Switches
-    },
-    
     props: {
         status: Boolean,
         theme: String,
