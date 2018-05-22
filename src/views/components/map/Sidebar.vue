@@ -11,6 +11,16 @@
                 <span class="md-title nav-title">{{ $t('map.sidebar.title') }}</span>
 
                 <div class="md-toolbar-section-end">
+                    <div class="box-options">
+                        <el-tooltip effect="dark" 
+                                :content="$t('map.sidebar.btnAdd')"
+                                placement="bottom-end">
+                                    <md-button class="md-icon-button md-dense" @click="dialogVisible = true">
+                                        <md-icon style="color: #FFF;">add</md-icon>
+                                    </md-button>
+                        </el-tooltip>
+                    </div>
+
                     <md-button class="md-icon-button md-dense" @click="sidebar()">
                         <md-icon style="color: #FFF;">keyboard_arrow_left</md-icon>
                     </md-button>
@@ -21,18 +31,25 @@
                 <p-sidebar-layers></p-sidebar-layers>
             </md-list>
         </section>
+
+        <p-sidebar-addLayers :dialogVisible="dialogVisible"></p-sidebar-addLayers>
+
     </div>
 </template>
+
 <script>
 import Layers from '@/views/components/map/sidebar/Layers'
+import AddLayers from '@/views/components/map/sidebar/AddLayers'
 
 export default {
     components: {
-        'p-sidebar-layers': Layers
+        'p-sidebar-layers': Layers,
+        'p-sidebar-addLayers': AddLayers
     },
     data(){
         return {
-            sidebarVisible: false
+            sidebarVisible: false,
+            dialogVisible: false
         }
     },
     methods: {
@@ -53,7 +70,7 @@ export default {
 }
     
 </script>
-<style lang="sass">
+<style lang="sass" scoped>
     //SIDEBAR BUTTON
     .btn_sidebar
         position: absolute
@@ -82,6 +99,10 @@ export default {
         z-index: 1
         box-shadow: 1px 1px 1px #CCC
         
+        .box-options
+            margin-right: 20px
+            border-radius: 50%
+            background: rgba(#000, 0.08)
     //SCROLL
     .sidebar::-webkit-scrollbar 
         width: 0.5em

@@ -1,11 +1,24 @@
+// const placeStyle = new ol.style.Style({
+//   image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+//     anchor: [0.5, 46],
+//     anchorXUnits: 'fraction',
+//     anchorYUnits: 'pixels',
+//     src: 'https://openlayers.org/en/v4.4.2/examples/data/icon.png'
+//   }))
+// })
+
 const placeStyle = new ol.style.Style({
-  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-    anchor: [0.5, 46],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-    src: 'https://openlayers.org/en/v4.4.2/examples/data/icon.png'
-  }))
-})
+  image: new ol.style.Circle({
+      radius: 8,
+      stroke: new ol.style.Stroke({
+          color: 'white',
+          width: 2
+      }),
+      fill: new ol.style.Fill({
+          color: '#ff9999'
+      })
+  })
+});
 
 const placeStyleSearch = new ol.style.Style({
   image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
