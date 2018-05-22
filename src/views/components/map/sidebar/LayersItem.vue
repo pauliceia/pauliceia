@@ -4,6 +4,7 @@
         
         <span>
             <b>{{ title.toUpperCase() }}</b>
+            - <i>{{ theme }}</i>
             <span v-show="layerStatus && apps">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -12,23 +13,33 @@
         </span>
 
         <div v-show="boxView && layerStatus && apps" class="box-options">
-            <el-tooltip effect="dark" content="Zoom" placement="top-end">
+            <el-tooltip effect="dark" 
+                    :content="$t('map.sidebar.options.zoom')" 
+                    placement="top-end">
                 <md-icon @click.native="extend()">center_focus_strong</md-icon>
             </el-tooltip>
 
-            <el-tooltip effect="dark" content="Information" placement="top-end">
+            <el-tooltip effect="dark" 
+                    :content="$t('map.sidebar.options.infosLayer')" 
+                    placement="top-end">
                 <md-icon @click.native="infos()">assignment</md-icon>
             </el-tooltip>
             
-            <el-tooltip effect="dark" content="Infos vector" placement="top-end">
+            <el-tooltip effect="dark" 
+                    :content="$t('map.sidebar.options.infosVector')"
+                    placement="top-end">
                 <md-icon :class="getInfo ? 'active' : ''" @click.native="infosFeatures()">info</md-icon>
             </el-tooltip>
 
-            <el-tooltip effect="dark" content="Edit Color" placement="top-end">
+            <el-tooltip effect="dark" 
+                    :content="$t('map.sidebar.options.editColor')"
+                    placement="top-end">
                 <input type="color" class="btn-color" v-model="colorVector" />
             </el-tooltip>
 
-            <el-tooltip effect="dark" content="Download" placement="top-end">
+            <el-tooltip effect="dark" 
+                    :content="$t('map.sidebar.options.download')"
+                    placement="top-end">
                 <md-icon>save_alt</md-icon>
             </el-tooltip>
         </div>
@@ -46,6 +57,7 @@ export default {
         color: String,
         title: String,
         group: Object,
+        type: String,
         apps: {
             type: Boolean,
             default: true
@@ -64,8 +76,14 @@ export default {
     created(){
         this.layerStatus = this.status
         this.group.getLayers().forEach(sublayer => {
-            if (sublayer.get('title') === this.title && this.layerStatus && this.apps) {
-                this.colorVector = sublayer.getStyle().getStroke().getColor()
+            if (sublayer.get('title') === this.title && this.apps) {
+                
+                if(this.type == 'line') {
+                    this.colorVector = sublayer.getStyle().getStroke().getColor()  
+                } else if(this.type == 'point') {
+                    this.colorVector = sublayer.getStyle().getImage().getFill().getColor()                    
+                }
+
             }
         })
     },
@@ -79,12 +97,29 @@ export default {
         colorVector(val) {
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title && this.layerStatus) {
-                    let newStyle = new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: val,
-                            width: 3
+                    
+                    let newStyle = null
+                    if(this.type == 'line') {
+                        newStyle = new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: val,
+                                width: 3
+                            })
                         })
-                    })
+                    } else if(this.type == 'point') {
+                        newStyle = new ol.style.Style({
+                            image: new ol.style.Circle({
+                                radius: 8,
+                                stroke: new ol.style.Stroke({
+                                    color: 'white',
+                                    width: 2
+                                }),
+                                fill: new ol.style.Fill({
+                                    color: val
+                                })
+                            })
+                        })
+                    }
 
                     sublayer.getSource().getFeatures().map(features => {
                         if(features.getStyle() !== emptyStyle) features.setStyle(newStyle)
@@ -126,7 +161,7 @@ export default {
                         .forEach( feature => {
                             alert(feature.getProperties().name)
                         })
-                });
+                });                
             
             } else{
                 this.$root.olmap.removeInteraction(this.select);
@@ -141,7 +176,7 @@ export default {
 <style lang="sass" scoped>
 .box-item
     margin-top: 5px
-    padding: 10px 5px 5px 5px
+    padding: 5px
     
     span
         padding-left: 7.5px
@@ -153,7 +188,7 @@ export default {
             color: #FFF
             cursor: pointer
             float: right
-            margin-top: -4px
+            margin-top: -1px
 
         .btn-view:hover
             color: #CCC

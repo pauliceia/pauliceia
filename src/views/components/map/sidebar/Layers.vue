@@ -4,11 +4,16 @@
             <p-layers-item :status="layer.status" color="success" :title="layer.title" :group="vectorLayer"></p-layers-item>
             <hr style="padding: 0; margin-top: 0"/>
         </div>-->
-        <p-layers-item :status="true" color="#13ce66" title="Streets" :group="vectorLayer"></p-layers-item>
+        <p-layers-item :status="true" type="line"
+                theme="General" color="#13ce66" 
+                title="Streets" :group="vectorLayer"></p-layers-item>
+        <p-layers-item :status="false" type="point"
+                theme="General" color="#13ce66" 
+                title="Places" :group="vectorLayer"></p-layers-item>
 
         <hr class="divisor" /> 
 
-        <p-layers-item :status="true" color="blue" title="OSM" :group="externalLayers" :apps="false"></p-layers-item>                      
+        <p-layers-item :status="true" theme="Base" color="blue" title="OSM" :group="externalLayers" :apps="false"></p-layers-item>                      
                 
     </section>
 </template>

@@ -27,12 +27,14 @@
         },
         "sidebar": {
             "title": "LAYERS",
-            "layers": {
-                "btn": "SELECT OTHERS",
-                "selected": "selected",
-                "default": "default"
-            },
-            "viewinfo": "View Info"
+            "btnAdd": "SELECT OTHERS",
+            "options": {
+                "zoom": "Zoom",
+                "infosLayer": "Layer information",
+                "infosVector": "Vectors information",
+                "editColor": "Edit color",
+                "download": "Download"
+            } 
         },
         "addLayer": {
             "title": "SELECT OTHERS LAYERS",

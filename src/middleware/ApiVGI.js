@@ -6,7 +6,7 @@ export default () => {
     axios.create({
       baseURL: `http://localhost:8888/`,
       headers: {
-        'Authorization': `Basic ${store.state.auth.token}`
+        'Authorization': store.state.auth.token
       }
     }) :
     axios.create({

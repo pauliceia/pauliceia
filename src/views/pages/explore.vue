@@ -54,6 +54,16 @@
         style: streetsStyle
       });
 
+      let vectorLayerPlaces = new ol.layer.Vector({
+        title: 'Places',
+        source: new ol.source.Vector({
+          url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application%2Fjson',
+          format: new ol.format.GeoJSON(),
+          crossOrigin: 'anonymous',
+        }),
+        style: placeStyle
+      });
+
       let osm = new ol.layer.Tile({
         title: 'OSM',
         source: new ol.source.OSM()
@@ -67,6 +77,9 @@
       overlayGroup.getLayers().clear();
       overlayGroup.getLayers().push(
         vectorLayerStreets
+      )
+      overlayGroup.getLayers().push(
+        vectorLayerPlaces
       )
 
     }

@@ -34,8 +34,6 @@ export default {
     ],
     methods: {
         logout() {
-            User.logout()
-
             this.$store.dispatch('auth/setUser', null)
             this.$store.dispatch('auth/setToken', null)
 

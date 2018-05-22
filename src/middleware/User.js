@@ -2,25 +2,15 @@ import Api from '@/middleware/ApiVGI'
 
 export default {
 
-  login (token) {
-    return Api().get('/auth/login',
+  login (credentials) {
+    return Api().get('/api/auth/login',
       { 
         headers: { 
-          'Authorization': `Basic ${token}`,
+          'Authorization': `Basic ${credentials}`,
           'Content-type': 'application/json', 
           'Accept': 'application/json; charset=UTF-8'
         } 
       })
-  },
-
-  logout (token) {
-    return Api().get('/auth/logout/',
-    { 
-      headers: {
-        'Content-type': 'application/json', 
-        'Accept': 'application/json; charset=UTF-8'
-      } 
-    })
   },
 
   getUser(query){

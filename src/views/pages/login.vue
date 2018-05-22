@@ -64,12 +64,13 @@ export default {
                 let password = new jsSHA("SHA-512", "TEXT")
                 password.update(this.password)
                 password = password.getHash('HEX')
-                let token = decodeURI(window.btoa(encodeURI(this.email+":"+password)))
+                let credentials = decodeURI(window.btoa(encodeURI(this.email+":"+password)))
 
-                const response = await User.login(token)
+                const response = await User.login(credentials)
+                let token = response.headers.authorization
                 if(response.status == 200) {
                     this.$store.dispatch('auth/setToken', token)
-
+                    
                     const response = await User.getUser(`email=${this.email}`)
                     this.$store.dispatch('auth/setUser', response.data.features[0].properties)
 

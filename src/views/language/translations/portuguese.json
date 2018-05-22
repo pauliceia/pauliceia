@@ -27,12 +27,14 @@
         },
         "sidebar": {
             "title": "CAMADAS",
-            "layers": {
-                "btn": "SELECIONE OUTRAS",
-                "selected": "selecionadas",
-                "default": "padrão"
-            },
-            "viewinfo": "Vizualizar Info"
+            "btnAdd": "SELECIONE OUTRAS",
+            "options": {
+                "zoom": "Zoom",
+                "infosLayer": "Informações da camada",
+                "infosVector": "Informações dos vetores",
+                "editColor": "Mudar a cor",
+                "download": "Baixar .shp"
+            }        
         },
         "addLayer": {
             "title": "SELECIONE OUTRAS CAMADAS",
