@@ -34,7 +34,7 @@
               </div>
               <div class="form-group">
                 <label for="userSelect">Collaborators</label>
-                <v-select multiple v-model="chosenUsers" :options="users" track-by="name" label="name"
+                <v-select multiple v-model="chosenUsers" :options="users2" track-by="name" label="name"
                           id="userSelect"></v-select>
               </div>
               <div class="form-group">
@@ -65,52 +65,14 @@
               <div class="form-group">
               </div>
               <div class="form-group">
-                <label for="shpUpload">File Input</label>
+                <label for="Upload">File Input</label>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
-                    <span class="input-group-text">SHP File</span>
+                    <span class="input-group-text">ZIP File</span>
                   </div>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="shpUpload">
-                    <label class="custom-file-label" for="shpUpload">Choose file</label>
-                  </div>
-                </div>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">SHX File</span>
-                  </div>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="shxUpload">
-                    <label class="custom-file-label" for="shxUpload">Choose file</label>
-                  </div>
-                </div>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">DBF File</span>
-                  </div>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="dbfUpload">
-                    <label class="custom-file-label" for="dbfUpload">Choose file</label>
-                  </div>
-                </div>
-
-                <label for="shpUpload">Optional File Input</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">PRJ File</span>
-                  </div>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="prjUpload">
-                    <label class="custom-file-label" for="prjUpload">Choose file</label>
-                  </div>
-                </div>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">CPG File</span>
-                  </div>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="cpgUpload">
-                    <label class="custom-file-label" for="cpgUpload">Choose file</label>
+                    <input type="file" class="custom-file-input" id="Upload">
+                    <label class="custom-file-label" for="Upload">Choose file</label>
                   </div>
                 </div>
               </div>
@@ -118,6 +80,7 @@
             </p>
             <div class="row">
               <div class="col align-self-end">
+                <br>
                 <a href="#" class="btn btn-primary" @click="Upload()">Submit</a>
               </div>
             </div>
@@ -132,6 +95,7 @@
   import DashLayout from '@/views/layouts/dashboard'
   import Vue from 'vue'
   import vSelect from 'vue-select'
+  import Api from '@/middleware/ApiVGI'
 
   Vue.component('v-select', vSelect)
 
@@ -145,9 +109,9 @@
         chosenTheme: [],
         chosenUsers: [],
         theme: [
-          {name: 'Igrejas'},
-          {name: 'Fábricas'},
-          {name: 'Restaurantes'}
+          {name: 'Igrejas', theme_id: 201},
+          {name: 'Fábricas', theme_id: 221},
+          {name: 'Restaurantes', theme_id: 313}
         ],
         users: [
           {name: 'Denis'},
@@ -156,10 +120,29 @@
           {name: 'Rodrigo'},
         ],
         addedRef: [],
+        users2: []
       }
     },
     methods: {
       Upload() {
+        let layer = {
+          'type': 'Layer',
+          'properties': {
+            'layer_id': -1,
+            'f_table_name': document.getElementById("inputName").value,
+            'name': document.getElementById("inputName").value,
+            'description': document.getElementById("inputDescription").value,
+            'source_description': document.getElementById("inputName").value,
+            'reference': this.addedRef,
+            'theme': this.chosenTheme,
+          }
+        }
+
+        console.log(layer)
+        let response = Api().put('/api/layer/create/?is_to_create_feature_table=FALSE',
+          layer
+        )
+        console.log(response)
       },
       /* removeTheme(index) {
          //console.log(index)
@@ -175,7 +158,14 @@
         this.addedRef.push({name: document.getElementById("inputReference").value})
       }
     },
-    created: {}
+    beforeCreate() {
+      const vm = this
+      Api().get('/api/user').then(function (response) {
+        response.data.features.filter(e => {
+          vm.users2.push({name: e.properties.username})
+        })
+      })
+    }
   }
 
 
