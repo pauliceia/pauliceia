@@ -132,11 +132,12 @@
           }
         }
         //console.log(layer)
-        // let response = Api().put('/api/layer/create/?is_to_create_feature_table=FALSE',
-        //   layer
-        // )
 
-        console.log(document.getElementById("Upload").files[0])
+        let response = Api().put('/api/layer/create/?is_to_create_feature_table=FALSE',
+          layer
+        )
+
+        console.log(response)
 
         var file = document.getElementById("Upload").files[0]
         var r = new FileReader();
