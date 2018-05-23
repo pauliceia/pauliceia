@@ -34,7 +34,7 @@
               </div>
               <div class="form-group">
                 <label for="userSelect">Collaborators</label>
-                <v-select multiple v-model="chosenUsers" :options="users2" track-by="name" label="name"
+                <v-select multiple v-model="chosenUsers" :options="users" track-by="name" label="name"
                           id="userSelect"></v-select>
               </div>
               <div class="form-group">
@@ -71,7 +71,7 @@
                     <span class="input-group-text">ZIP File</span>
                   </div>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="Upload">
+                    <input type="file" class="custom-file-input" id="Upload" accept=".zip">
                     <label class="custom-file-label" for="Upload">Choose file</label>
                   </div>
                 </div>
@@ -113,14 +113,8 @@
           {name: 'Fábricas', theme_id: 221},
           {name: 'Restaurantes', theme_id: 313}
         ],
-        users: [
-          {name: 'Denis'},
-          {name: 'Gabriel'},
-          {name: 'Beto'},
-          {name: 'Rodrigo'},
-        ],
         addedRef: [],
-        users2: []
+        users: []
       }
     },
     methods: {
@@ -137,12 +131,29 @@
             'theme': this.chosenTheme,
           }
         }
+        //console.log(layer)
+        // let response = Api().put('/api/layer/create/?is_to_create_feature_table=FALSE',
+        //   layer
+        // )
 
-        console.log(layer)
-        let response = Api().put('/api/layer/create/?is_to_create_feature_table=FALSE',
-          layer
-        )
-        console.log(response)
+        console.log(document.getElementById("Upload").files[0])
+
+        var file = document.getElementById("Upload").files[0]
+        var r = new FileReader();
+        r.onload = function () {
+          let response = Api().put('/api/import/shp/?f_table_name=' + document.getElementById("inputName").value + '&?file_name=' + document.getElementById("Upload").files[0].name,
+            r.result
+          )
+          console.log(response)
+        }
+        r.readAsBinaryString(file);
+
+        //console.log(response)
+
+        // response = Api().put('/api/import/shp/?f_table_name='+document.getElementById("inputName").value+'&?file_name='+document.getElementById("Upload").files[0].name,
+        //   document.getElementById("Upload").files[0]
+        // )
+        // console.log(response)
       },
       /* removeTheme(index) {
          //console.log(index)
@@ -162,7 +173,7 @@
       const vm = this
       Api().get('/api/user').then(function (response) {
         response.data.features.filter(e => {
-          vm.users2.push({name: e.properties.username})
+          vm.users.push({name: e.properties.username})
         })
       })
     }
