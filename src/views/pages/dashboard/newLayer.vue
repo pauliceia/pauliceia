@@ -142,7 +142,7 @@
         var file = document.getElementById("Upload").files[0]
         var r = new FileReader();
         r.onload = function () {
-          let response = Api().put('/api/import/shp/?f_table_name=' + document.getElementById("inputName").value + '&?file_name=' + document.getElementById("Upload").files[0].name,
+          let response = Api().post('/api/import/shp/?f_table_name=' + document.getElementById("inputName").value + '&?file_name=' + document.getElementById("Upload").files[0].name,
             r.result
           )
           console.log(response)
