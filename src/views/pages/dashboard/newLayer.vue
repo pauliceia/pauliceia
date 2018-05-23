@@ -10,7 +10,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="inputName">Nome</label>
-                  <input type="email" class="form-control" id="inputName" placeholder="Nome">
+                  <input class="form-control" id="inputName" placeholder="Nome">
                 </div>
                 <div class="form-group col-md-6">
                   <label class="mr-sm-2" for="themeSelect">Theme</label>

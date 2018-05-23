@@ -10,19 +10,19 @@ const dashRoutes = [
         path: '/dashboard',
         redirect: '/dashboard/home',
         component: Dashboard,
-        meta: { auth: false }
+        meta: { auth: true }
     },
     {
         path: '/dashboard/home',
         name: 'Home',
         component: DashHome,
-        meta: { auth: false }
+        meta: { auth: true }
     },
     {
       path: '/dashboard/newLayer',
       name: 'NewLayer',
       component: DashNewLayer,
-      meta: { auth: false }
+      meta: { auth: true }
     }
 ]
 
