@@ -22,7 +22,7 @@
             <el-tooltip effect="dark" 
                     :content="$t('map.sidebar.options.infosLayer')" 
                     placement="top-end">
-                <md-icon @click.native="infos()">assignment</md-icon>
+                <md-icon @click.native="infosLayer()">assignment</md-icon>
             </el-tooltip>
             
             <el-tooltip effect="dark" 
@@ -142,9 +142,12 @@ export default {
                 }
             })
         },
-        infos(){
+        infosLayer(){
+            this.$store.dispatch('map/setBoxInfoVector', false)
             this.$store.dispatch('map/setBoxGeocoding', false)
-            this.$store.dispatch('map/setBoxInfos', true)
+            this.$store.dispatch('map/setBoxNotifications', false)
+            
+            this.$store.dispatch('map/setBoxInfoLayer', true)
         },
         infosFeatures(){
             this.getInfo = !this.getInfo

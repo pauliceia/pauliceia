@@ -26,6 +26,10 @@
 
             <hr />
             <div class="col-lg-12">
+                <div class="col-12 terms">
+                    <p>If you sign in with the social network, you automatically agree to the terms of the project.</p>
+                    <a data-toggle="modal" data-target="#modalTerms"> (read here) </a>
+                </div>
                 <div class="col-6 link-social">
                     <md-list-item class="btn btn-primary">
                         <md-icon>thumb_up</md-icon> 
@@ -42,16 +46,22 @@
             <!--/card-block-->
         </div>
         <!-- /form card login -->
-
+        
+        <p-terms></p-terms>
     </section>
    
 </template>
 
 <script>
 import User from '@/middleware/User'
+import Terms from  '@/views/components/Terms'
+
 import jsSHA from 'jssha'
 
 export default {
+    components: {
+        'p-terms': Terms
+    },
     data () {
         return {
             email: '',
@@ -110,6 +120,13 @@ export default {
 <style lang="sass" scoped>
 section
     padding-top: 50px
+
+.terms
+    text-align: center
+    padding: 10px 0 20px 0
+    a
+        color: #0099ff
+        cursor: pointer
 
 .link-social
     margin-top: -15px

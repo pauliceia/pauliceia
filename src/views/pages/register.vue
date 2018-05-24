@@ -35,7 +35,7 @@
                     <div class="box-check">
                         <el-checkbox label="Receive notification by email" v-model="user.receive_notification_by_email"></el-checkbox>
                         <br />
-                        <el-checkbox label="I agree to the terms of use." v-model="terms_agreed"></el-checkbox> <a href='#'> ( read here ) </a>
+                        <el-checkbox label="I agree to the terms of use." v-model="terms_agreed"></el-checkbox> <a data-toggle="modal" data-target="#modalTerms"> ( read here ) </a>
                     </div>
 
                     <button type="submit" disabled class="btn btn-success btn-lg btn-block" id="btn-register">Register</button>
@@ -51,15 +51,22 @@
             <!--/card-block-->
         </div>
         <!-- /form card login -->
+
+        <p-terms></p-terms>
     </section>
    
 </template>
 
 <script>
 import User from '@/middleware/User'
+import Terms from  '@/views/components/Terms'
+
 import jsSHA from 'jssha'
 
 export default {
+    components: {
+        'p-terms': Terms
+    },
     data () {
         return {
             user: {
@@ -170,5 +177,9 @@ section
     
     .box-check
         padding: 10px
+
+        a 
+            color: #0099ff
+            cursor: pointer
 
 </style>

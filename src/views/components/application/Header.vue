@@ -35,8 +35,20 @@
                     </li>
                 </ul>
 
-                <button @click="actGeocoding()" v-show="this.$route.path == '/explore'" 
-                        :class="this.boxGeocoding ? 'btn-geocoding btn-active' : 'btn-geocoding'"><md-icon>location_on</md-icon></button>
+                <div v-show="this.$route.path == '/explore'">
+                    <button @click="actInfoVector()"  
+                        :class="this.boxInfoVector ? 'btn-geocoding btn-active' : 'btn-geocoding'">
+                        <md-icon>info</md-icon>
+                    </button>
+                    <button @click="actNotifications()"  
+                        :class="this.boxNotifications ? 'btn-geocoding btn-active' : 'btn-geocoding'">
+                        <md-icon>notifications</md-icon>
+                    </button>
+                    <button @click="actGeocoding()"  
+                        :class="this.boxGeocoding ? 'btn-geocoding btn-active' : 'btn-geocoding'">
+                        <md-icon>location_on</md-icon>
+                    </button>
+                </div>
 
                 <div v-if="isUserLoggedIn">
                     <p-logAvatar :title="user ? user.name : ''"/>
@@ -65,7 +77,7 @@ export default {
 
     computed: {
         ...mapState('auth', ['isUserLoggedIn', 'user']),
-        ...mapState('map', ['boxGeocoding'])
+        ...mapState('map', ['boxGeocoding', 'boxInfoLayer', 'boxInfoVector', 'boxNotifications'])
     },
 
     data() {
@@ -75,9 +87,23 @@ export default {
     },
 
     methods: {
+        actInfoVector() {
+            this.$store.dispatch('map/setBoxInfoLayer', false)
+            this.$store.dispatch('map/setBoxGeocoding', false)
+            this.$store.dispatch('map/setBoxNotifications', false)
+            this.$store.dispatch('map/setBoxInfoVector', !this.boxInfoVector)
+        },
+        actNotifications() {
+            this.$store.dispatch('map/setBoxInfoLayer', false)
+            this.$store.dispatch('map/setBoxInfoVector', false)
+            this.$store.dispatch('map/setBoxGeocoding', false)
+            this.$store.dispatch('map/setBoxNotifications', !this.boxNotifications)
+        },
         actGeocoding() {
+            this.$store.dispatch('map/setBoxInfoLayer', false)
+            this.$store.dispatch('map/setBoxInfoVector', false)
+            this.$store.dispatch('map/setBoxNotifications', false)
             this.$store.dispatch('map/setBoxGeocoding', !this.boxGeocoding)
-            this.$store.dispatch('map/setBoxInfos', false)
         }
     }
 }

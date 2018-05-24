@@ -15,7 +15,7 @@
                         <el-tooltip effect="dark" 
                                 :content="$t('map.sidebar.btnAdd')"
                                 placement="bottom-end">
-                                    <md-button class="md-icon-button md-dense" @click="dialogVisible = true">
+                                    <md-button class="md-icon-button md-dense" data-toggle="modal" data-target="#modalAddLayer">
                                         <md-icon style="color: #FFF;">add</md-icon>
                                     </md-button>
                         </el-tooltip>
@@ -32,7 +32,7 @@
             </md-list>
         </section>
 
-        <p-sidebar-addLayers :dialogVisible="dialogVisible"></p-sidebar-addLayers>
+        <p-sidebar-addLayers></p-sidebar-addLayers>
 
     </div>
 </template>
@@ -48,8 +48,7 @@ export default {
     },
     data(){
         return {
-            sidebarVisible: false,
-            dialogVisible: false
+            sidebarVisible: false
         }
     },
     methods: {

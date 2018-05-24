@@ -1,37 +1,34 @@
 const data = [
     {
-        text: 'General',
-        selected: false,
+        label: 'General',
         children: [
             { 
-                text: 'Streets',
-                id: 1,
+                label: 'Streets',
                 icon: 'fa fa-map-o'
             }
         ]
     },
     {
-        text: 'Saúde Pública',
-        selected: false,
+        label: 'Saúde Pública',
         children: [
             {
-                text: 'Area Urbana',
+                label: 'Area Urbana',
                 children: [
                     {   
-                        text: 'TITULO - Nome do Pesquisador',
+                        label: 'TITULO - Nome do Pesquisador',
                         icon: 'fa fa-map-o'
                     },
                     { 
-                        text: 'TITULO - Nome do Pesquisador',
+                        label: 'TITULO - Nome do Pesquisador',
                         icon: 'fa fa-map-o'
                     }
                 ]
             },
             {
-                text: 'Area Rural',
+                label: 'Area Rural',
                 children: [
                     { 
-                        text: 'TITULO - Nome do Pesquisador',
+                        label: 'TITULO - Nome do Pesquisador',
                         icon: 'fa fa-map-o'
                     }
                 ]
@@ -39,23 +36,22 @@ const data = [
         ]
     },
     {
-        text: 'Crimes',
-        selected: false,
+        label: 'Crimes',
         children: [
             { 
-                text: 'TITULO - Nome do Pesquisador',
+                label: 'TITULO - Nome do Pesquisador',
                 icon: 'fa fa-map-o'
             },
             { 
-                text: 'TITULO - Nome do Pesquisador',
+                label: 'TITULO - Nome do Pesquisador',
                 icon: 'fa fa-map-o'
             },
             { 
-                text: 'TITULO - Nome do Pesquisador',
+                label: 'TITULO - Nome do Pesquisador',
                 icon: 'fa fa-map-o'
             },
             { 
-                text: 'TITULO - Nome do Pesquisador',
+                label: 'TITULO - Nome do Pesquisador',
                 icon: 'fa fa-map-o'
             }                       
         ]

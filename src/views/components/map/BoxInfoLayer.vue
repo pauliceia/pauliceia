@@ -1,9 +1,12 @@
 <template>
-    <div class="box-info" v-show="boxInfos">
+    <div class="box-info" v-show="boxInfoLayer">
         <header class="header">
             <h1>LAYER FULL TITLE</h1>
             <button class="btn" @click="closeBox()">
                 <md-icon>close</md-icon>
+            </button>
+            <button class="btn">
+                <md-icon>person_add</md-icon>
             </button>
         </header>
         <div class="body">
@@ -21,9 +24,17 @@
 
                 <div v-for="test in 8" :key="test">
                     <div class="notification-box">
-                        <p class="author">Beto Noronha</p>
-                        <p class="date">05/02/2018</p>
+
+                        <div style="display: flex; align-items: center;">
+                            <div class="photo">B</div>
+                            <div class="credentials">
+                                <p class="author">Beto Noronha</p>
+                                <p class="date">05/02/2018</p>
+                            </div>
+                        </div>
+                        
                         <p class="content">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                        <p class="comments">see more <-</p>
                     </div>
                 </div>
             </div>
@@ -36,11 +47,11 @@ import { mapState } from 'vuex'
 
 export default {
     computed: {
-      ...mapState('map', ['boxInfos'])
+      ...mapState('map', ['boxInfoLayer'])
     },
     methods: {
         closeBox() {
-            this.$store.dispatch('map/setBoxInfos', false)
+            this.$store.dispatch('map/setBoxInfoLayer', false)
         }
     }
 }
@@ -49,7 +60,7 @@ export default {
 <style lang="sass" scoped>
 .box-info
     position: absolute
-    top: 50px
+    top: 40px
     right: 0
     bottom: 120px
     overflow: auto
@@ -104,15 +115,39 @@ export default {
                 margin: 10px
                 background: rgba(#000, 0.1)
                 padding: 20px
-                p
-                    margin: 0 0 5px 0 !important
-                .author
-                    font-weight: 600
-                    font-size: 1.1em
-                .date
-                    color: #666
-                    font-size: 0.9em
+
+                .photo
+                    display: inline-block
+                    width: 40px
+                    padding: 10px
+                    text-align: center
+                    color: #FFF
+                    border-radius: 50%
+                    background: #666
+
+                .credentials
+                    display: inline-block
+                    margin: 0 0 0 10px
+                    .author
+                        font-weight: 600
+                        margin-top: 5px !important
+                        font-size: 1.1em
+                    .date
+                        color: #666
+                        font-size: 0.9em
+                    p
+                        margin: 0 0 5px 0 !important
+
                 .content
                     text-align: justify
+                    margin-top: 5px
+
+                .comments
+                    width: 100%
+                    text-align: right
+                    color: #0099ff
+                    cursor: pointer
+                    margin-top: -10px
+                    margin-bottom: 5px
 
 </style>

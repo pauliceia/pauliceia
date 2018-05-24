@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bootstrap": "^4.0.0",
+    "bootstrap-tree-view": "^1.8.0",
     "element-ui": "^2.3.9",
     "jquery": "^3.2.1",
     "jssha": "^2.3.1",
