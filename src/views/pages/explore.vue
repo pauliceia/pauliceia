@@ -24,7 +24,7 @@
 
   import BoxInfoLayer from '@/views/components/map/BoxInfoLayer'
   import BoxInfoVector from '@/views/components/map/BoxInfoVector'
-  import BoxInfoNotifications from '@/views/components/map/BoxInfoNotifications'
+  import BoxInfoNotifications from '@/views/components/map/BoxNotifications'
 
   import {
     placeStyle,

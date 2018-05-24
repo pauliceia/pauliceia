@@ -19,7 +19,7 @@
                     </div>
                     <br />
                     
-                    <router-link to="/register" class="register">{{ $t('login.register') }} <-</router-link>
+                    <router-link to="/register" class="register">{{ $t('login.register') }}</router-link>
                     <button type="submit" class="btn btn-success btn-lg btn-block">{{ $t('login.btnText') }}</button>
                 </form>
             </div>
