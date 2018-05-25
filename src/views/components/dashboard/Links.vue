@@ -6,8 +6,13 @@
         </md-list-item>
 
         <md-list-item :class="this.$route.path == '/dashboard/newLayer' ? 'active': ''" to="/dashboard/newLayer">
-            <md-icon>add_to_photos</md-icon>
+            <md-icon>layers</md-icon>
             <span class="md-list-item-text">{{ $t('dashboard.nav.newLayer') }}</span>
+        </md-list-item>
+
+        <md-list-item :class="this.$route.path == '/dashboard/newTheme' ? 'active': ''" to="/dashboard/newTheme">
+            <md-icon>add_to_photos</md-icon>
+            <span class="md-list-item-text">{{ $t('dashboard.nav.newTheme') }}</span>
         </md-list-item>
 
         <md-list-item :class="this.$route.path == '/dashboard/infos' ? 'active': ''" to="/dashboard/infos">

@@ -4,6 +4,8 @@ import Dashboard from '@/views/layouts/dashboard'
 //pages
 import DashHome from '@/views/pages/dashboard/home'
 import DashNewLayer from '@/views/pages/dashboard/newLayer'
+import DashNewTheme from '@/views/pages/dashboard/newTheme'
+import DashEditLayer from '@/views/pages/dashboard/editLayer'
 
 const dashRoutes = [
     {
@@ -22,6 +24,19 @@ const dashRoutes = [
       path: '/dashboard/newLayer',
       name: 'NewLayer',
       component: DashNewLayer,
+      meta: { auth: true }
+    },
+    {
+      path: '/dashboard/editLayer',
+      name: 'EditLayer',
+      component: DashEditLayer,
+      props: {layer_id: 0},
+      meta: { auth: true }
+    },
+    {
+      path: '/dashboard/newTheme',
+      name: 'NewTheme',
+      component: DashNewTheme,
       meta: { auth: true }
     }
 ]

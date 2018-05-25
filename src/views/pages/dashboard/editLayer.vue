@@ -1,10 +1,10 @@
 <template>
-  <p-dash-layout title="New Layer">
+  <p-dash-layout title="Edit Layer">
     <div class="row">
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">New Layer</h5>
+            <h5 class="card-title">Edit Layer</h5>
             <p class="card-text">
             <form>
               <div class="form-row">
@@ -16,21 +16,9 @@
                   <label class="mr-sm-2" for="themeSelect">Theme</label>
                   <v-select multiple v-model="chosenTheme" :options="theme" track-by="name" label="name"
                             id="themeSelect"></v-select>
-                  <!--<select class="custom-select mr-sm-2" id="themeSelect" @change="addTheme()">
-                    <option selected>Choose...</option>
-                    <option v-for="t in theme" :value="t.name">{{t.name}}</option>
-                  </select>-->
                 </div>
               </div>
               <div class="form-group">
-                <!--<label for="inputDescription">Chosen Themes</label>
-                <ol>
-                  <li v-for="(t, index) in chosenTheme">
-                    {{ t.name }}
-                    &nbsp; &nbsp;
-                    <a href="#" class="" @click="removeTheme(index)">x</a>
-                  </li>
-                </ol>-->
               </div>
               <div class="form-group">
                 <label for="userSelect">Collaborators</label>
@@ -56,7 +44,7 @@
                 <label for="inputReference">Added References</label>
                 <ol>
                   <li v-for="(t, index) in addedRef">
-                    {{ t.name }}
+                    {{ t.bibtex }}
                     &nbsp; &nbsp;
                     <a href="#" class="" @click="removeRef(index)">x</a>
                   </li>
@@ -81,7 +69,8 @@
             <div class="row">
               <div class="col align-self-end">
                 <br>
-                <a href="#" class="btn btn-primary" @click="Upload()">Submit</a>
+                <a href="#" class="btn btn-primary" @click="Upload()">Update</a>
+                <a href="#" class="btn btn-danger" @click="Delete()">Delete</a>
               </div>
             </div>
           </div>
@@ -96,6 +85,7 @@
   import Vue from 'vue'
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
+  import store from '@/store'
 
   Vue.component('v-select', vSelect)
 
@@ -114,7 +104,9 @@
           {name: 'Restaurantes', theme_id: 313}
         ],
         addedRef: [],
-        users: []
+        users: [],
+        layer: {},
+        layer_id: this.$route.params.layer_id
       }
     },
     methods: {
@@ -126,59 +118,26 @@
             'f_table_name': document.getElementById("inputName").value,
             'name': document.getElementById("inputName").value,
             'description': document.getElementById("inputDescription").value,
-            'source_description': document.getElementById("inputName").value,
+            'source_description': document.getElementById("inputDescription").value,
             'reference': this.addedRef,
             'theme': this.chosenTheme,
           }
         }
-        //console.log(layer)
 
-        let response = Api().put('/api/layer/create/?is_to_create_feature_table=FALSE',
-          layer
-        )
 
-        console.log(response)
-
-        var file = document.getElementById("Upload").files[0]
-
-        // var r = new FileReader();
-        // r.onload = function () {
-        //
-        //   const formData = new FormData();
-        //   formData.append('file', file);
-        //
-        //   let response = Api().post('/api/import/shp/?f_table_name=' + document.getElementById("inputName").value + '&?file_name=' + document.getElementById("Upload").files[0].name,
-        //     formData,
-        //     {
-        //       headers: {
-        //         'Content-Type': 'multipart/form-data'
-        //       }
-        //     }
-        //   )
-        //   console.log(r.result)
-        // }
-        // r.readAsBinaryString(file);
-
-        const formData = new FormData();
-        formData.append('File', file);
-
-        response = Api().post('/api/import/shp/?f_table_name=' + document.getElementById("inputName").value + '&?file_name=' + document.getElementById("Upload").files[0].name,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-        )
-        console.log(response)
+        this.$router.push({
+          path: '/dashboard/home'
+        })
       },
-      /* removeTheme(index) {
-         //console.log(index)
-         this.chosenTheme.splice(index, 1)
-       },*/
-      /*addTheme() {
-         this.chosenTheme.push({name: document.getElementById("themeSelect").value})
-       },*/
+      Delete() {
+        const vm = this;
+        Api().delete('/api/layer/delete/'+this.layer_id).then(function (response) {
+          console.log(response)
+        })
+        this.$router.push({
+          path: '/dashboard/home'
+        })
+      },
       removeRef(index) {
         this.addedRef.splice(index, 1)
       },
@@ -193,6 +152,23 @@
           vm.users.push({name: e.properties.username})
         })
       })
+
+      let id = this.$route.params.layer_id
+
+      Api().get('/api/layer').then(function (response) {
+        response.data.features.filter(e => {
+          if (e.properties.layer_id == id)
+            vm.layer = e.properties
+        })
+        //console.log(vm.layer)
+
+        document.getElementById("inputName").value = vm.layer.name
+        document.getElementById("inputDescription").value = vm.layer.description
+        vm.chosenTheme.push(vm.theme[0])
+        vm.chosenUsers.push(vm.users[3])
+        vm.addedRef = vm.layer.reference
+      })
+
     }
   }
 
