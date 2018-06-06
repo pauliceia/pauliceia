@@ -14,6 +14,8 @@
     emptyStyle
   } from '@/views/assets/js/map/Styles'
 
+  import 'nouislider/distribute/nouislider.css'
+
   export default {
     name: 'Timeline',
     data () {
@@ -88,8 +90,6 @@
 </script>
 
 <style>
-  @import "~nouislider/distribute/nouislider.css";
-
   #contentSlider {
     position: absolute;
     display: flex;

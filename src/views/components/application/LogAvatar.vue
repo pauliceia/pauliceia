@@ -27,6 +27,8 @@
 <script>
 import User from '@/middleware/User'
 
+import 'vue-material/dist/vue-material.min.css'
+
 export default {
     name: 'p-logAvatar',
     props: [
@@ -52,10 +54,7 @@ export default {
 }
 </script>
 <style lang="sass" scoped>
-    $color-nav: #454545
-
-    @import '~vue-material/dist/vue-material.min.css'
-    
+    $color-nav: #454545    
     .md-menu
         float: right
         margin: 0 !important

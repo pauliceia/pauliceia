@@ -5,7 +5,7 @@
       </md-speed-dial-target>
 
       <md-speed-dial-content>
-        <div v-for="layer of layers">
+        <div v-for="layer of layers" :key="layer.title">
             <md-button :class="layerSelected == layer.title ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster(layer.title)">{{ layer.title == 'saraBrasil30' ? '1930' : layer.title }}</md-button>  
         </div>
       </md-speed-dial-content>
@@ -16,6 +16,8 @@
 import {
     overlayGroupRasters
 } from '@/views/assets/js/map/overlayGroup'
+
+import 'vue-material/dist/vue-material.min.css'
 
 export default {
     name: "LayersRaster",
@@ -102,8 +104,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-    @import '~vue-material/dist/vue-material.min.css'
-
     .icon_primary
         background: #f15a29
         color: #FFF

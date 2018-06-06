@@ -45,8 +45,6 @@
                             </div>
                         </div>
                 </el-tab-pane>
-                
-                <el-tab-pane label="THEMES" name="third">Role</el-tab-pane>
             </el-tabs>
         </div>
     </div>
