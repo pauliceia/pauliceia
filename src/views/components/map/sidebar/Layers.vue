@@ -5,10 +5,10 @@
             <hr style="padding: 0; margin-top: 0"/>
         </div>-->
         <p-layers-item :status="true" type="line"
-                theme="General" color="#13ce66" 
+                theme="" color="#13ce66" 
                 title="Streets" :group="vectorLayer"></p-layers-item>
         <p-layers-item :status="false" type="point"
-                theme="General" color="#13ce66" 
+                theme="" color="#13ce66" 
                 title="Places" :group="vectorLayer"></p-layers-item>
 
         <hr class="divisor" /> 
