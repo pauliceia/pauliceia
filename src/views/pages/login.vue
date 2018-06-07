@@ -31,13 +31,13 @@
                     <a data-toggle="modal" data-target="#modalTerms"> (read here) </a>
                 </div>
                 <div class="col-6 link-social">
-                    <md-list-item class="btn btn-primary">
+                    <md-list-item class="btn btn-primary" @click="loginSocial('facebook')">
                         <md-icon>thumb_up</md-icon> 
                         <span class="md-list-item-text">Facebook</span>
                     </md-list-item>
                 </div>
                 <div class="col-6 link-social">
-                    <md-list-item class="btn btn-danger">
+                    <md-list-item class="btn btn-danger" @click="loginSocial('google')">
                         <md-icon>add_box</md-icon> 
                         <span class="md-list-item-text">Google+</span>
                     </md-list-item>
@@ -69,6 +69,9 @@ export default {
         }
     },
     methods: {
+        loginSocial(type) {
+            window.location = "http://localhost:8888/api/auth/"+type
+        },
         async loginSubmit () {
             try {
                 let password = new jsSHA("SHA-512", "TEXT")

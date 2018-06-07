@@ -43,6 +43,8 @@
                 <md-icon>save_alt</md-icon>
             </el-tooltip>
         </div>
+
+        <div id="popup" title="Welcome to OpenLayers"></div>
     </div>           
 </template>
 <script>
@@ -69,7 +71,9 @@ export default {
             boxView: false,
             layerStatus: true,
             colorVector: null,
-            getInfo: false
+            getInfo: false,
+            select: null,
+            overlay: null
         }
     },
 
@@ -159,10 +163,25 @@ export default {
                 this.select = new ol.interaction.Select();
                 this.$root.olmap.addInteraction(this.select);
 
+                let overlay = new ol.Overlay({
+                    element: document.getElementById('popup')
+                });
+                this.$root.olmap.addOverlay(overlay);
+
                 this.select.on('select', function(event) {
                     event.selected.filter( feature => ((feature.getId().split('.'))[0]) == titleLayer.toLowerCase() )
                         .forEach( feature => {
-                            alert(feature.getProperties().name)
+                            let element = overlay.getElement();
+                            let coordinate = feature.getGeometry().getFirstCoordinate();
+
+                            overlay.setPosition(coordinate);
+                            $(element).popover({
+                                'placement': 'top',
+                                'animation': true,
+                                'html': true,
+                                'content': '<p>The location you clicked was:</p><code>' + feature.getProperties().name + '</code>'
+                            });
+                            $(element).popover('show');
                         })
                 });                
             
@@ -215,4 +234,7 @@ export default {
 
 .box-item.active
     background: rgba(#FFF, 0.2)
+
+.popover-content 
+    min-width: 180px
 </style>

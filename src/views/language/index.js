@@ -17,6 +17,6 @@ Vue.i18n.add('en', english);
 Vue.i18n.add('pt', portuguese);
 
 // Set the start locale to use
-Vue.i18n.set('en');
+Vue.i18n.set('pt');
 
 export default store;
