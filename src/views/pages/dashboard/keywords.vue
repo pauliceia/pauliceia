@@ -1,10 +1,10 @@
 <template>
-  <p-dash-layout title="New Theme">
+  <p-dash-layout title="Keywords">
     <div class="row" style="height: 500px">
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">New Theme</h5>
+            <h5 class="card-title">New Keyword</h5>
             <p class="card-text">
             <form>
               <div class="form-row">
@@ -34,6 +34,24 @@
           </div>
         </div>
       </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">New Keyword</h5>
+            <div class="card-text">
+            <div class="row" v-for="k in keywords">
+              <div class="col-sm-9">{{ k.name }}</div>
+              <div class="col-sm-3">
+                <router-link :to="{name: 'keywords', params: {layer_id: layer.id}}">
+                  <md-icon>edit</md-icon>
+                </router-link>
+              </div>
+              <hr>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </p-dash-layout>
 </template>
@@ -43,13 +61,17 @@
   import Vue from 'vue'
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
+  import { mapState } from 'vuex'
 
   Vue.component('v-select', vSelect)
 
   export default {
-    name: "newTheme",
+    name: "keywords",
     components: {
       "p-dash-layout": DashLayout
+    },
+    computed: {
+      ...mapState('auth', ['isUserLoggedIn', 'user'])
     },
     data: function () {
       return {
@@ -61,7 +83,9 @@
           {name: 'Restaurantes', theme_id: 313}
         ],
         addedRef: [],
-        users: []
+        users: [],
+        keywords: [],
+        userCurrent: this.user
       }
     },
     methods: {
@@ -75,7 +99,9 @@
         response.data.features.filter(e => {
           vm.users.push({name: e.properties.username})
         })
+        console.log(vm.user)
       })
+
     }
   }
 

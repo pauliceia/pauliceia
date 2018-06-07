@@ -4,7 +4,7 @@ import Dashboard from '@/views/layouts/dashboard'
 //pages
 import DashHome from '@/views/pages/dashboard/home'
 import DashNewLayer from '@/views/pages/dashboard/newLayer'
-import DashNewTheme from '@/views/pages/dashboard/newTheme'
+import DashKeyword from '@/views/pages/dashboard/keywords'
 import DashEditLayer from '@/views/pages/dashboard/editLayer'
 
 const dashRoutes = [
@@ -34,9 +34,9 @@ const dashRoutes = [
       meta: { auth: true }
     },
     {
-      path: '/dashboard/newTheme',
-      name: 'NewTheme',
-      component: DashNewTheme,
+      path: '/dashboard/keywords',
+      name: 'Keyword',
+      component: DashKeyword,
       meta: { auth: true }
     }
 ]

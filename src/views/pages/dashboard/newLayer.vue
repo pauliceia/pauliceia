@@ -13,9 +13,10 @@
                   <input class="form-control" id="inputName" placeholder="Name">
                 </div>
                 <div class="form-group col-md-6">
-                  <label class="mr-sm-2" for="themeSelect">Theme</label>
-                  <v-select multiple v-model="chosenTheme" :options="theme" track-by="name" label="name"
-                            id="themeSelect"></v-select>
+                  <label class="mr-sm-2" for="keywordsSelect">Keywords</label>
+                  <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
+                            value="description"
+                            id="keywordsSelect"></v-select>
                   <!--<select class="custom-select mr-sm-2" id="themeSelect" @change="addTheme()">
                     <option selected>Choose...</option>
                     <option v-for="t in theme" :value="t.name">{{t.name}}</option>
@@ -44,8 +45,13 @@
               <div class="form-group">
                 <label for="inputReference">Reference</label>
                 <div class="form-row">
-                  <div class="form-group col-md-8">
-                    <input type="text" class="form-control" id="inputReference" placeholder="">
+                  <div class="form-group col-md-12">
+                    <v-select class="" v-model="auxRef" :options="references" track-by="description" label="description"
+                              id="inputReference"></v-select>
+                    <!--<input type="text" class="form-control" id="inputReference" placeholder="">
+                    <select class="form-control">
+                      <option v-for="r in references" :value="r.reference_id">{{r.description}}</option>
+                    </select>-->
                   </div>
                   <div class="form-group col-md-4">
                     <a href="#" class="btn btn-primary" @click="addRef()">Add</a>
@@ -55,9 +61,8 @@
               <div class="form-group">
                 <label for="inputReference">Added References</label>
                 <ol>
-                  <li v-for="(t, index) in addedRef">
-                    {{ t.name }}
-                    &nbsp; &nbsp;
+                  <li v-for="(t, index) in chosenRef">
+                    {{ t.description }}
                     <a href="#" class="" @click="removeRef(index)">x</a>
                   </li>
                 </ol>
@@ -106,15 +111,13 @@
     },
     data: function () {
       return {
-        chosenTheme: [],
         chosenUsers: [],
-        theme: [
-          {name: 'Igrejas', theme_id: 201},
-          {name: 'Fábricas', theme_id: 221},
-          {name: 'Restaurantes', theme_id: 313}
-        ],
-        addedRef: [],
-        users: []
+        references: [],
+        chosenRef: [],
+        auxRef: null,
+        users: [],
+        keywords: [],
+        chosenKeywords: []
       }
     },
     methods: {
@@ -180,10 +183,11 @@
          this.chosenTheme.push({name: document.getElementById("themeSelect").value})
        },*/
       removeRef(index) {
-        this.addedRef.splice(index, 1)
+        this.chosenRef.splice(index, 1)
       },
       addRef() {
-        this.addedRef.push({name: document.getElementById("inputReference").value})
+        this.chosenRef.push({description: this.auxRef.description, reference_id: this.auxRef.reference_id})
+        this.auxRef = null
       }
     },
     beforeCreate() {
@@ -191,6 +195,18 @@
       Api().get('/api/user').then(function (response) {
         response.data.features.filter(e => {
           vm.users.push({name: e.properties.username})
+        })
+      })
+
+      Api().get('/api/keyword').then(function (response) {
+        response.data.features.filter(e => {
+          vm.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
+        })
+      })
+
+      Api().get('/api/reference').then(function (response) {
+        response.data.features.filter(e => {
+          vm.references.push({description: e.properties.description, reference_id: e.properties.reference_id})
         })
       })
     }
