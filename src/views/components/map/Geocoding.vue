@@ -42,27 +42,39 @@ export default {
     methods: {
         async search () {
             try {
-                const result = await ApiMap.geolocationOne(this.inputSearch)
+                let regex = new RegExp(/\s*,\d{4}/);
+                let search = this.inputSearch.replace(/( )+/g, ' ');
 
-                let coordPoint = result.data[2][0].geom.substring(6).replace(")", "").split(" ")
-                let feature = new ol.Feature(new ol.geom.Point(coordPoint))
+                if(regex.test(search)){
+                    const result = await ApiMap.geolocationOne(search)
+
+                    let coordPoint = result.data[2][0].geom.substring(6).replace(")", "").split(" ")
+                    let feature = new ol.Feature(new ol.geom.Point(coordPoint))
+                    
+                    let layerSearch = new ol.layer.Vector({
+                        source: new ol.source.Vector({
+                            features: [feature]
+                        }),
+                        name: 'placesSearch',
+                        style: placeStyleSearch
+                    });
+
+                    overlayGroup.getLayers().push(
+                        layerSearch
+                    )
+
+                    let extent = ol.extent.createEmpty();
+                    ol.extent.extend(extent, feature.getGeometry().getExtent());
+                    this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
                 
-                let layerSearch = new ol.layer.Vector({
-                    source: new ol.source.Vector({
-                        features: [feature]
-                    }),
-                    name: 'placesSearch',
-                    style: placeStyleSearch
-                });
-
-                overlayGroup.getLayers().push(
-                    layerSearch
-                )
-
-                let extent = ol.extent.createEmpty();
-                ol.extent.extend(extent, feature.getGeometry().getExtent());
-                this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
-
+                } else{
+                    this.$alert('<strong>type it:</strong> street, number, year (0000)', 'INVÁLID FORMAT', {
+                        dangerouslyUseHTMLString: true,
+                        confirmButtonText: 'OK',
+                        type: 'warning'
+                    });
+                }
+                
             } catch (err) {
                 console.log(err.response)
                 this.$alert('address not found', 'SORRY', {
