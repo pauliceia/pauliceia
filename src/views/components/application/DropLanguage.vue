@@ -22,6 +22,8 @@
 import iconUSA from '@/views/assets/images/icons/usa.svg'
 import iconBrazil from '@/views/assets/images/icons/brazil.svg'
 
+import 'vue-material/dist/vue-material.min.css'
+
 export default {
     name: 'p-dropLanguage',
     data() {
@@ -39,8 +41,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-@import '~vue-material/dist/vue-material.min.css'
-
 .md-list
     padding: 0 5px !important
     cursor: pointer

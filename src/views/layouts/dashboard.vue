@@ -36,6 +36,7 @@
 
 <script>
 import DashLinks from '@/views/components/dashboard/Links'
+import 'vue-material/dist/vue-material.min.css'
 
 export default {
   name: 'Dashboard',
@@ -57,8 +58,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-  @import '~vue-material/dist/vue-material.min.css'
-
   .md-app
     min-height: 400px
 
