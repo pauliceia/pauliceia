@@ -43,10 +43,14 @@
 <script>
   import DashLayout from '@/views/layouts/dashboard'
   import Api from '@/middleware/ApiVGI'
+  import {mapState} from 'vuex'
 
   export default {
     components: {
       "p-dash-layout": DashLayout
+    },
+    computed: {
+      ...mapState('auth', ['isUserLoggedIn', 'user'])
     },
     data: function () {
       return {
@@ -83,14 +87,14 @@
       const vm = this
       Api().get('/api/layer').then(function (response) {
         response.data.features.filter(e => {
-          //if(e.properties.user_id_published_by == 1003)
+          //if(e.properties.user_id_published_by == vm.user.user_id)
           vm.layers.push({name: e.properties.name, id: e.properties.layer_id})
         })
       })
 
       Api().get('/api/user').then(function (response) {
         response.data.features.filter(e => {
-          vm.users.push({name: e.properties.username, id: e.properties.user_id})
+          vm.users.push(e.properties)
         })
         //console.log(vm.users)
       })

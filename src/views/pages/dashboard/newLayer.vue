@@ -35,7 +35,7 @@
               </div>
               <div class="form-group">
                 <label for="userSelect">Collaborators</label>
-                <v-select multiple v-model="chosenUsers" :options="users" track-by="name" label="name"
+                <v-select multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
                           id="userSelect"></v-select>
               </div>
               <div class="form-group">
@@ -101,6 +101,7 @@
   import Vue from 'vue'
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
+  import {mapState} from 'vuex'
 
   Vue.component('v-select', vSelect)
 
@@ -109,19 +110,30 @@
     components: {
       "p-dash-layout": DashLayout
     },
+    computed: {
+      ...mapState('auth', ['isUserLoggedIn', 'user'])
+    },
     data: function () {
       return {
         chosenUsers: [],
         references: [],
         chosenRef: [],
+        chosenRefID: [],
         auxRef: null,
         users: [],
         keywords: [],
-        chosenKeywords: []
+        chosenKeywords: [],
+        chosenKeywordsID: []
       }
     },
     methods: {
       Upload() {
+        const vm = this
+
+        this.chosenKeywords.forEach(e => {
+          this.chosenKeywordsID.push(e.keyword_id)
+        })
+
         let layer = {
           'type': 'Layer',
           'properties': {
@@ -129,18 +141,65 @@
             'f_table_name': document.getElementById("inputName").value,
             'name': document.getElementById("inputName").value,
             'description': document.getElementById("inputDescription").value,
-            'source_description': document.getElementById("inputName").value,
-            'reference': this.addedRef,
-            'theme': this.chosenTheme,
+            'source_description': document.getElementById("inputDescription").value,
+            'reference': this.chosenRefID,
+            'keyword': this.chosenKeywordsID,
+          },
+          'feature_table': {
+            'properties': {
+              'name': 'text',
+              'start_date': 'text',
+              'end_date': 'text'
+            },
+            'geometry': {
+              "type": "MultiPoint"
+            }
           }
         }
-        //console.log(layer)
 
-        let response = Api().put('/api/layer/create/?is_to_create_feature_table=FALSE',
+
+        Api().post('/api/layer/create/?is_to_create_feature_table=FALSE',
           layer
-        )
+        ).then(function (response) {
 
-        console.log(response)
+          //POST do usuario criador da layer
+          let user_layer = {
+            'properties': {
+              'is_the_creator': 'true',
+              'user_id': vm.user.user_id,
+              'layer_id': response.data.layer_id
+            },
+            'type': 'UserLayer'
+          }
+          console.log(user_layer)
+          Api().post('/api/user_layer/create',
+            user_layer
+          ).then(function (response) {
+            console.log(response)
+          })
+
+          //POST cada usuario colaborar da layer
+          vm.chosenUsers.forEach(u => {
+            let user_layer = {
+              'properties': {
+                'is_the_creator': 'false',
+                'user_id': u.user_id,
+                'layer_id': response.data.layer_id
+              },
+              'type': 'UserLayer'
+            }
+            console.log(user_layer)
+
+            Api().post('/api/user_layer/create',
+              user_layer
+            ).then(function (response) {
+              console.log(response)
+            })
+          })
+        })
+
+        this.chosenKeywordsID = null
+        this.chosenRefID = null
 
         var file = document.getElementById("Upload").files[0]
 
@@ -162,39 +221,38 @@
         // }
         // r.readAsBinaryString(file);
 
-        const formData = new FormData();
-        formData.append('File', file);
-
-        response = Api().post('/api/import/shp/?f_table_name=' + document.getElementById("inputName").value + '&?file_name=' + document.getElementById("Upload").files[0].name,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-        )
-        console.log(response)
+        // const formData = new FormData();
+        // formData.append('File', file);
+        //
+        // response = Api().post('/api/import/shp/?f_table_name=' + document.getElementById("inputName").value + '&?file_name=' + document.getElementById("Upload").files[0].name,
+        //   formData,
+        //   {
+        //     headers: {
+        //       'Content-Type': 'multipart/form-data'
+        //     }
+        //   }
+        // )
+        // console.log(response)
       },
-      /* removeTheme(index) {
-         //console.log(index)
-         this.chosenTheme.splice(index, 1)
-       },*/
-      /*addTheme() {
-         this.chosenTheme.push({name: document.getElementById("themeSelect").value})
-       },*/
       removeRef(index) {
         this.chosenRef.splice(index, 1)
+        this.chosenRefID.splice(index, 1)
       },
       addRef() {
-        this.chosenRef.push({description: this.auxRef.description, reference_id: this.auxRef.reference_id})
-        this.auxRef = null
+        if (this.auxRef != null) {
+
+          this.chosenRef.push({description: this.auxRef.description, reference_id: this.auxRef.reference_id})
+          this.chosenRefID.push(this.auxRef.reference_id)
+          this.auxRef = null
+        }
       }
     },
     beforeCreate() {
       const vm = this
       Api().get('/api/user').then(function (response) {
         response.data.features.filter(e => {
-          vm.users.push({name: e.properties.username})
+          if(e.properties.user_id !== vm.user.user_id)
+          vm.users.push(e.properties)
         })
       })
 

@@ -4,7 +4,7 @@
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Edit Layer</h5>
+            <h5 class="card-title">Layer</h5>
             <p class="card-text">
             <form>
               <div class="form-row">
@@ -13,12 +13,25 @@
                   <input class="form-control" id="inputName" placeholder="Name">
                 </div>
                 <div class="form-group col-md-6">
-                  <label class="mr-sm-2" for="themeSelect">Theme</label>
-                  <v-select multiple v-model="chosenTheme" :options="theme" track-by="name" label="name"
-                            id="themeSelect"></v-select>
+                  <label class="mr-sm-2" for="keywordsSelect">Keywords</label>
+                  <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
+                            value="description"
+                            id="keywordsSelect"></v-select>
+                  <!--<select class="custom-select mr-sm-2" id="themeSelect" @change="addTheme()">
+                    <option selected>Choose...</option>
+                    <option v-for="t in theme" :value="t.name">{{t.name}}</option>
+                  </select>-->
                 </div>
               </div>
               <div class="form-group">
+                <!--<label for="inputDescription">Chosen Themes</label>
+                <ol>
+                  <li v-for="(t, index) in chosenTheme">
+                    {{ t.name }}
+                    &nbsp; &nbsp;
+                    <a href="#" class="" @click="removeTheme(index)">x</a>
+                  </li>
+                </ol>-->
               </div>
               <div class="form-group">
                 <label for="userSelect">Collaborators</label>
@@ -32,8 +45,13 @@
               <div class="form-group">
                 <label for="inputReference">Reference</label>
                 <div class="form-row">
-                  <div class="form-group col-md-8">
-                    <input type="text" class="form-control" id="inputReference" placeholder="">
+                  <div class="form-group col-md-12">
+                    <v-select class="" v-model="auxRef" :options="references" track-by="description" label="description"
+                              id="inputReference"></v-select>
+                    <!--<input type="text" class="form-control" id="inputReference" placeholder="">
+                    <select class="form-control">
+                      <option v-for="r in references" :value="r.reference_id">{{r.description}}</option>
+                    </select>-->
                   </div>
                   <div class="form-group col-md-4">
                     <a href="#" class="btn btn-primary" @click="addRef()">Add</a>
@@ -43,9 +61,8 @@
               <div class="form-group">
                 <label for="inputReference">Added References</label>
                 <ol>
-                  <li v-for="(t, index) in addedRef">
-                    {{ t.bibtex }}
-                    &nbsp; &nbsp;
+                  <li v-for="(t, index) in chosenRef">
+                    {{ t.description }}
                     <a href="#" class="" @click="removeRef(index)">x</a>
                   </li>
                 </ol>
@@ -69,7 +86,7 @@
             <div class="row">
               <div class="col align-self-end">
                 <br>
-                <a href="#" class="btn btn-primary" @click="Upload()">Update</a>
+                <a href="#" class="btn btn-primary" @click="Upload()">Submit</a>
                 <a href="#" class="btn btn-danger" @click="Delete()">Delete</a>
               </div>
             </div>
@@ -85,32 +102,34 @@
   import Vue from 'vue'
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
-  import store from '@/store'
 
   Vue.component('v-select', vSelect)
 
   export default {
-    name: "newLayer",
+    name: "editLayer",
     components: {
       "p-dash-layout": DashLayout
     },
     data: function () {
       return {
-        chosenTheme: [],
         chosenUsers: [],
-        theme: [
-          {name: 'Igrejas', theme_id: 201},
-          {name: 'Fábricas', theme_id: 221},
-          {name: 'Restaurantes', theme_id: 313}
-        ],
-        addedRef: [],
+        references: [],
+        chosenRef: [],
+        chosenRefID: [],
+        auxRef: null,
         users: [],
-        layer: {},
+        keywords: [],
+        chosenKeywords: [],
+        chosenKeywordsID: [],
         layer_id: this.$route.params.layer_id
       }
     },
     methods: {
       Upload() {
+        this.chosenKeywords.forEach(e => {
+          this.chosenKeywordsID.push(e.keyword_id)
+        })
+
         let layer = {
           'type': 'Layer',
           'properties': {
@@ -119,19 +138,38 @@
             'name': document.getElementById("inputName").value,
             'description': document.getElementById("inputDescription").value,
             'source_description': document.getElementById("inputDescription").value,
-            'reference': this.addedRef,
-            'theme': this.chosenTheme,
+            'reference': this.chosenRefID,
+            'keyword': this.chosenKeywordsID,
+          },
+          'feature_table': {
+            'properties': {
+              'name': 'text',
+              'start_date': 'text',
+              'end_date': 'text'
+            },
+            'geometry': {
+              "type": "MultiPoint"
+            }
           }
         }
+        console.log(layer)
 
+        let response = Api().post('/api/layer/create/?is_to_create_feature_table=FALSE',
+          layer
+        )
+
+        this.chosenKeywordsID = null
+        this.chosenRefID = null
+        console.log(response)
 
         this.$router.push({
           path: '/dashboard/home'
         })
+
       },
       Delete() {
         const vm = this;
-        Api().delete('/api/layer/delete/'+this.layer_id).then(function (response) {
+        Api().delete('/api/layer/delete/' + this.layer_id).then(function (response) {
           console.log(response)
         })
         this.$router.push({
@@ -139,10 +177,16 @@
         })
       },
       removeRef(index) {
-        this.addedRef.splice(index, 1)
+        this.chosenRef.splice(index, 1)
+        this.chosenRefID.splice(index, 1)
       },
       addRef() {
-        this.addedRef.push({name: document.getElementById("inputReference").value})
+        if (this.auxRef != null) {
+
+          this.chosenRef.push({description: this.auxRef.description, reference_id: this.auxRef.reference_id})
+          this.chosenRefID.push(this.auxRef.reference_id)
+          this.auxRef = null
+        }
       }
     },
     beforeCreate() {
@@ -153,22 +197,45 @@
         })
       })
 
-      let id = this.$route.params.layer_id
-
-      Api().get('/api/layer').then(function (response) {
+      Api().get('/api/keyword').then(function (response) {
         response.data.features.filter(e => {
-          if (e.properties.layer_id == id)
-            vm.layer = e.properties
+          vm.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
         })
-        //console.log(vm.layer)
-
-        document.getElementById("inputName").value = vm.layer.name
-        document.getElementById("inputDescription").value = vm.layer.description
-        vm.chosenTheme.push(vm.theme[0])
-        vm.chosenUsers.push(vm.users[3])
-        vm.addedRef = vm.layer.reference
       })
 
+      Api().get('/api/reference').then(function (response) {
+        response.data.features.filter(e => {
+          vm.references.push({description: e.properties.description, reference_id: e.properties.reference_id})
+        })
+      })
+
+      let id = this.$route.params.layer_id
+
+      Api().get('/api/layer/?layer_id='+id).then(function (response) {
+        vm.layer = response.data.features[0].properties
+        //console.log(vm.layer)
+        document.getElementById("inputName").value = vm.layer.name
+        document.getElementById("inputDescription").value = vm.layer.description
+        vm.chosenKeywordsID = vm.layer.keyword
+        vm.chosenRefID = vm.layer.reference
+
+        vm.chosenKeywordsID.forEach(key => {
+          Api().get('/api/keyword/?keyword_id='+key).then(function (response) {
+            response.data.features.filter(e => {
+              vm.chosenKeywords.push(e.properties)
+            })
+          })
+        })
+
+        vm.chosenRefID.forEach(id => {
+          Api().get('/api/reference/?reference_id='+id).then(function (response) {
+            response.data.features.filter(e => {
+              vm.chosenRef.push(e.properties)
+            })
+          })
+        })
+
+      })
     }
   }
 
