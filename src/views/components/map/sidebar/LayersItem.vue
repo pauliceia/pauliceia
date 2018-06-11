@@ -44,7 +44,9 @@
             </el-tooltip>
         </div>
 
-        <div id="popup" title="Welcome to OpenLayers"></div>
+        <div id="popup" title="information of vector" class="ol-popup">
+            <div id="popup-content"></div>
+        </div>
     </div>           
 </template>
 <script>
@@ -157,37 +159,39 @@ export default {
             this.getInfo = !this.getInfo
 
             if(this.getInfo) {
-                let map = this.$root.olmap
-                let titleLayer = this.title
+                let vm = this
 
-                this.select = new ol.interaction.Select();
-                this.$root.olmap.addInteraction(this.select);
+                let map = vm.$root.olmap
+                let titleLayer = vm.title
 
-                let overlay = new ol.Overlay({
-                    element: document.getElementById('popup')
-                });
-                this.$root.olmap.addOverlay(overlay);
+                vm.select = new ol.interaction.Select()
+                map.addInteraction(vm.select)
 
-                this.select.on('select', function(event) {
+                vm.containerPopup = document.getElementById('popup')
+                $(vm.containerPopup).css( "display", "block" )
+                vm.contentPopup = document.getElementById('popup-content')                        
+
+                vm.overlay = new ol.Overlay({
+                    element: vm.containerPopup,
+                    autoPan: true
+                })
+                map.addOverlay(vm.overlay)
+
+                vm.select.on('select', function(event) {
                     event.selected.filter( feature => ((feature.getId().split('.'))[0]) == titleLayer.toLowerCase() )
-                        .forEach( feature => {
-                            let element = overlay.getElement();
-                            let coordinate = feature.getGeometry().getFirstCoordinate();
+                        .forEach( feat => {
+                            let coordinate = feat.getGeometry().getFirstCoordinate();
 
-                            overlay.setPosition(coordinate);
-                            $(element).popover({
-                                'placement': 'top',
-                                'animation': true,
-                                'html': true,
-                                'content': '<p>The location you clicked was:</p><code>' + feature.getProperties().name + '</code>'
-                            });
-                            $(element).popover('show');
+                            vm.contentPopup.innerHTML = '<p><strong>Nome:</strong> ' + feat.getProperties().name + '</p>'
+                            vm.overlay.setPosition(coordinate)
                         })
                 });                
             
             } else{
-                this.$root.olmap.removeInteraction(this.select);
+                this.$root.olmap.removeInteraction(this.select)
+                this.$root.olmap.removeOverlay(this.overlay)
                 this.select = null
+                this.overlay.setPosition(undefined)
             }
             
         }
@@ -235,6 +239,39 @@ export default {
 .box-item.active
     background: rgba(#FFF, 0.2)
 
-.popover-content 
-    min-width: 180px
+//POPUP
+.ol-popup
+    position: absolute
+    background-color: white
+    display: none
+    -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2))
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2))
+    padding: 15px
+    border-radius: 10px
+    border: 1px solid #cccccc
+    bottom: 12px
+    left: -50px
+    min-width: 280px
+
+.ol-popup:after, .ol-popup:before 
+    top: 100%
+    border: solid transparent
+    content: " "
+    height: 0
+    width: 0
+    position: absolute
+    pointer-events: none
+
+.ol-popup:after 
+    border-top-color: white
+    border-width: 10px
+    left: 48px
+    margin-left: -10px
+
+.ol-popup:before 
+    border-top-color: #cccccc
+    border-width: 11px
+    left: 48px
+    margin-left: -11px
+
 </style>
