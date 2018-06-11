@@ -1,18 +1,15 @@
 import axios from 'axios'
 import store from '@/store'
 
-export default () => {
-  let baseURL = 'http://localhost:8888/'
-  if(NODE_ENV == "production") baseURL = 'x'
-  
+export default () => {  
   return store.state.auth.token ? 
     axios.create({
-      baseURL,
+      baseURL: process.env.urlVGI,
       headers: {
         'Authorization': store.state.auth.token
       }
     }) :
     axios.create({
-      baseURL
+      baseURL: process.env.urlVGI
     })
 }

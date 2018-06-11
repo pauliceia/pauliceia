@@ -70,8 +70,7 @@ export default {
     },
     methods: {
         loginSocial(type) {
-            if(NODE_ENV == 'production') window.location = "x/api/auth/"+type
-            else window.location = "http://localhost:8888/api/auth/"+type
+            window.location = process.env.urlVGI+"/api/auth/"+type
         },
         async loginSubmit () {
             try {
