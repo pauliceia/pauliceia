@@ -44,9 +44,7 @@
             </el-tooltip>
         </div>
 
-        <div id="popup" title="information of vector" class="ol-popup">
-            <div id="popup-content"></div>
-        </div>
+        <div id="popup" class="ol-popup"></div>
     </div>           
 </template>
 <script>
@@ -161,37 +159,49 @@ export default {
             if(this.getInfo) {
                 let vm = this
 
-                let map = vm.$root.olmap
-                let titleLayer = vm.title
+                //CLEAN THE INTERACTIONS OF MAP
+                vm.$root.olmap.getInteractions().clear()
+                vm.$root.olmap.getOverlays().clear()
 
-                vm.select = new ol.interaction.Select()
-                map.addInteraction(vm.select)
+                //CREATE POPUP
+                $("#popup")
+                    .append(`<div id="popup-${vm.title}" title="information of vector">
+                        <div id="popup-content-${vm.title}"></div>
+                    </div>`)
 
-                vm.containerPopup = document.getElementById('popup')
+                //SELECT POPUP
+                vm.containerPopup = document.getElementById(`popup-${vm.title}`)
+                vm.contentPopup = document.getElementById(`popup-content-${vm.title}`) 
+                $(vm.containerPopup).addClass( "ol-popup" )
                 $(vm.containerPopup).css( "display", "block" )
-                vm.contentPopup = document.getElementById('popup-content')                        
-
+                
+                //CREATE INTERACTION AND OVERLAY
+                vm.select = new ol.interaction.Select()
                 vm.overlay = new ol.Overlay({
                     element: vm.containerPopup,
                     autoPan: true
                 })
-                map.addOverlay(vm.overlay)
-
+                vm.$root.olmap.addInteraction(vm.select)
+                vm.$root.olmap.addOverlay(vm.overlay)
+        
+                //WHEN CLICK ON THE VECTOR
                 vm.select.on('select', function(event) {
-                    event.selected.filter( feature => ((feature.getId().split('.'))[0]) == titleLayer.toLowerCase() )
+                    event.selected.filter( feature => ((feature.getId().split('.'))[0]) == vm.title.toLowerCase() )
                         .forEach( feat => {
                             let coordinate = feat.getGeometry().getFirstCoordinate();
-
-                            vm.contentPopup.innerHTML = '<p><strong>Nome:</strong> ' + feat.getProperties().name + '</p>'
+                            
+                            vm.contentPopup.innerHTML = ''
+                            $.each(feat.getProperties(), function(index, value) {
+                                if (typeof(value) !== 'object') vm.contentPopup.innerHTML += `<p style="margin:0; padding:0;"><strong>${index}:</strong> ${value} </p>`
+                            }); 
                             vm.overlay.setPosition(coordinate)
                         })
                 });                
             
             } else{
-                this.$root.olmap.removeInteraction(this.select)
-                this.$root.olmap.removeOverlay(this.overlay)
+                this.$root.olmap.getInteractions().clear()
+                this.$root.olmap.getOverlays().clear()
                 this.select = null
-                this.overlay.setPosition(undefined)
             }
             
         }

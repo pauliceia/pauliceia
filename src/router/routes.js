@@ -5,6 +5,7 @@ import Application from '@/views/layouts/application'
 import About from '@/views/pages/about'
 import Login from '@/views/pages/login'
 import Register from '@/views/pages/register'
+import Valid from '@/views/pages/valid'
 
 //routes
 import mapRoutes from '@/router/map'
@@ -34,6 +35,12 @@ const routes = [
           path: '/register', 
           name: 'Register',
           component: Register
+        },
+        {
+          path: '/valid/social', 
+          name: 'Valid',
+          component: Valid,
+          props: {header: true} 
         },
         //routes of map
         ...mapRoutes,
