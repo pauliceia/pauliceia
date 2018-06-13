@@ -160,12 +160,11 @@ export default {
                 let vm = this
 
                 //CLEAN THE INTERACTIONS OF MAP
-                vm.$root.olmap.getInteractions().clear()
                 vm.$root.olmap.getOverlays().clear()
 
                 //CREATE POPUP
                 $("#popup")
-                    .append(`<div id="popup-${vm.title}" title="information of vector">
+                    .append(`<div id="popup-${vm.title}" class="ol-popup" title="information of vector">
                         <div id="popup-content-${vm.title}"></div>
                     </div>`)
 
@@ -186,6 +185,7 @@ export default {
         
                 //WHEN CLICK ON THE VECTOR
                 vm.select.on('select', function(event) {
+                    vm.overlay.setPosition(undefined)
                     event.selected.filter( feature => ((feature.getId().split('.'))[0]) == vm.title.toLowerCase() )
                         .forEach( feat => {
                             let coordinate = feat.getGeometry().getFirstCoordinate();
@@ -199,7 +199,7 @@ export default {
                 });                
             
             } else{
-                this.$root.olmap.getInteractions().clear()
+                this.$root.olmap.removeInteraction(this.select)
                 this.$root.olmap.getOverlays().clear()
                 this.select = null
             }
@@ -213,7 +213,7 @@ export default {
 }
     
 </script>
-<style lang="sass" scoped>
+<style lang="sass">
 .box-item
     margin-top: 5px
     padding: 5px
