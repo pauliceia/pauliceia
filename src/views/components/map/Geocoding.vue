@@ -42,7 +42,7 @@ export default {
     methods: {
         async search () {
             try {
-                let regex = new RegExp(/\s*,\d{4}/);
+                let regex = new RegExp(/\s*,( )*\d{4}/);
                 let search = this.inputSearch.replace(/( )+/g, ' ');
 
                 if(regex.test(search)){
