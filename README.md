@@ -1,5 +1,4 @@
-# teste-vue
-
+# Paulicéia 2.0 (front-end)
 > A Vue.js project
 
 ## Build Setup
