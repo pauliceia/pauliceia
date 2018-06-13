@@ -15,24 +15,32 @@
                         v-model="filterText">
                     </el-input>
                     <br/>
-                    <br/>
-                    <el-tree
-                        class="filter-tree"
-                        :data="originalData"
-                        show-checkbox
-                        :props="defaultProps"
-                        :filter-node-method="filterNode"
-                        ref="tree2">
 
-                        <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <span v-if="!node.icon"><md-icon>folder_open</md-icon></span>
-                            <span v-if="node.icon"><md-icon>map</md-icon></span>
-                            <span :style="!node.icon ? 'color: green' : 'color: black'">{{ node.label }}</span>
-                        </span>
+                    <article v-for="layer in allLayers" :key="layer.id">
+                        <span :test="layerON = layers.some(id => id == layer.id)" />
+                        
+                        <div :class="layerON ? 'box-layer-info activated' : 'box-layer-info disabled'">
+                            <div class="infos">
+                                <p><strong>TITLE:</strong> {{ layer.title }}</p>
+                                <p><strong>AUTORES:</strong>
+                                    <span v-for="author in layer.authors" :key="author">
+                                        {{ author }}; 
+                                    </span> 
+                                </p>                            
+                                <p><strong>TAGS:</strong> 
+                                    <el-tag v-for="tag in layer.tags" :key="tag" style="margin-left: 5px">
+                                        {{ tag }}
+                                    </el-tag>
+                                </p>
+                            </div>
 
-                    </el-tree>
-
-                    <button class="btn btn-block btn-outline-success" type="button" @click="getSelectedTree()">{{ $t('map.addLayer.save') }}</button>
+                            <div class="btns">
+                                <el-button :type="layerON ? 'danger' : 'success'" round>
+                                    {{ layerON ? 'Destivar' : 'Ativar' }}
+                                </el-button>
+                            </div>
+                        </div>
+                    </article>
                 </div>
 
                 <div class="modal-footer">
@@ -46,41 +54,39 @@
 <script>
 import { mapState } from 'vuex'
 
-import DataJson from '@/views/assets/js/indexThemesTest'
+import DataJson from '@/views/assets/js/indexLayersTest'
 
 export default {
     watch: {
-      filterText(val) {
-        this.$refs.tree2.filter(val);
-      }
+        filterText(val){
+            if(val=='') this.allLayers = DataJson
+            else this.allLayers = DataJson.filter( infoLayer => 
+                infoLayer.title.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                infoLayer.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                infoLayer.tags.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0
+            )
+        }
     },
 
-    methods: {
-      filterNode(value, data) {
-        if (!value) return true;
-        else {
-            let label = data.label.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            value = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            
-            return label.indexOf(value) !== -1;
-        }
-      }
+    computed: {
+      ...mapState('map', ['layers'])
     },
 
     data() {
       return {
         filterText: '',
-        originalData: DataJson,
-        defaultProps: {
-          children: 'children',
-          label: 'label'
-        }
-      };
+        allLayers: [],
+        layerON: false
+      }
+    },
+
+    mounted() {
+        this.allLayers = DataJson
     }
   };
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .modal-content
     .modal-body
         .btn
@@ -88,4 +94,28 @@ export default {
             margin: 20px 0 10px 0
         .title-box
             color: #58595b !important
+        
+        .box-layer-info
+            padding: 10px
+            margin: 10px 0 0 0
+            border-radius: 10px
+            display: flex         
+            justify-content: center   
+            .infos
+                width: 75%
+                strong
+                    color: #333
+                    font-size: 0.9em
+                p
+                    margin: 5px
+            .btns
+                display: flex
+                align-items: center
+                align-content: center
+                width: 25%
+        .box-layer-info.activated
+            background: #d6f5d6
+        .box-layer-info.disabled
+            background: #ffd6cc
+
 </style>

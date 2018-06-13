@@ -4,7 +4,6 @@
         
         <span>
             <b>{{ title.toUpperCase() }}</b>
-            <i>{{ theme }}</i>
             <span v-show="layerStatus && apps">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -55,7 +54,6 @@ import {
 export default {
     props: {
         status: Boolean,
-        theme: String,
         color: String,
         title: String,
         group: Object,

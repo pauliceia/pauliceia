@@ -27,7 +27,7 @@
         },
         "sidebar": {
             "title": "CAMADAS",
-            "btnAdd": "SELECIONE OUTRAS",
+            "btnAdd": "GERENCIE OUTRAS",
             "options": {
                 "zoom": "Zoom",
                 "infosLayer": "Informações da camada",
@@ -37,7 +37,7 @@
             }        
         },
         "addLayer": {
-            "title": "SELECIONE OUTRAS CAMADAS",
+            "title": "GERENCIE OUTRAS CAMADAS",
             "subtitle": "Pesquise por tema, camada ou autor:",
             "input": "pesquise aqui ...",
             "save": "SALVAR",

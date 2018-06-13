@@ -3,7 +3,7 @@ const state = {
     first: 1868,
     last: 1940
   },
-  layers: [],
+  layers: [1,3],
   boxGeocoding: true,
   boxInfoLayer: false,
   boxNotifications: false,

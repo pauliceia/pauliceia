@@ -37,10 +37,9 @@ const routes = [
           component: Register
         },
         {
-          path: '/valid/social', 
+          path: '/valid/social/:token', 
           name: 'Valid',
-          component: Valid,
-          props: {header: true} 
+          component: Valid
         },
         //routes of map
         ...mapRoutes,
