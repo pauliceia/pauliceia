@@ -40,7 +40,7 @@
             <el-tooltip effect="dark" 
                     :content="$t('map.sidebar.options.download')"
                     placement="top-end">
-                <md-icon>save_alt</md-icon>
+                <md-icon @click.native="downloadSHP()">save_alt</md-icon>
             </el-tooltip>
         </div>
 
@@ -204,6 +204,10 @@ export default {
                 this.select = null
             }
             
+        },
+        downloadSHP() {
+            let link = 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+this.title.toLowerCase()+'&outputFormat=SHAPE-ZIP'
+            window.open(link, '_blank')
         }
     }
 }
