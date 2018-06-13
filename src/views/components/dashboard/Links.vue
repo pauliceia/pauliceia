@@ -5,6 +5,16 @@
             <span class="md-list-item-text">{{ $t('dashboard.nav.home') }}</span>
         </md-list-item>
 
+        <md-list-item :class="this.$route.path == '/dashboard/newLayer' ? 'active': ''" to="/dashboard/newLayer">
+            <md-icon>layers</md-icon>
+            <span class="md-list-item-text">{{ $t('dashboard.nav.newLayer') }}</span>
+        </md-list-item>
+
+        <md-list-item :class="this.$route.path == '/dashboard/keywords' ? 'active': ''" to="/dashboard/keywords">
+            <md-icon>add_to_photos</md-icon>
+            <span class="md-list-item-text">{{ $t('dashboard.nav.keywords') }}</span>
+        </md-list-item>
+
         <md-list-item :class="this.$route.path == '/dashboard/infos' ? 'active': ''" to="/dashboard/infos">
             <md-icon>error</md-icon>
             <span class="md-list-item-text">{{ $t('dashboard.nav.infos') }}</span>

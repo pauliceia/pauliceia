@@ -10,14 +10,15 @@
     "dashboard": {
         "nav": {
             "home": "Inicio",
-            "infos": "Informações"
+            "infos": "Informações",
+            "newLayer": "Nova Camada"
         }
     },
     "login": {
         "inputEmail": "E-mail",
         "inputPassword": "Senha",
         "register": "Registre-se agora",
-        "btnText": "Entrar" 
+        "btnText": "Entrar"
     },
     "map":{
         "geocoding": {
