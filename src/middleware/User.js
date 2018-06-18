@@ -28,7 +28,17 @@ export default {
   },
 
   register(user){
-    return Api().put('/api/user/create', user)
-  }
+    return Api().post('/api/user/create', user)
+  },
 
+  getUserByToken(token) {
+    return Api().get('/api/user_by_token/',
+    { 
+      headers: { 
+        'Authorization': token,
+        'Content-type': 'application/json', 
+        'Accept': 'application/json; charset=UTF-8'
+      } 
+    })
+  }
 }

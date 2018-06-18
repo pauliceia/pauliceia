@@ -3,7 +3,7 @@
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>          
         
         <span>
-            <b>{{ title.toUpperCase() }}</b>
+            <b>{{ title !== undefined ? title.toUpperCase() : nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() }}</b>
             <span v-show="layerStatus && apps">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -50,12 +50,14 @@
 import {
     emptyStyle
 } from '@/views/assets/js/map/Styles'
+import Map from '@/middleware/Map'
 
 export default {
     props: {
         status: Boolean,
         color: String,
         title: String,
+        id: Number,
         group: Object,
         type: String,
         apps: {
@@ -71,11 +73,12 @@ export default {
             colorVector: null,
             getInfo: false,
             select: null,
-            overlay: null
+            overlay: null,
+            nameLayer: ''
         }
     },
 
-    created(){
+    async created(){
         this.layerStatus = this.status
         this.group.getLayers().forEach(sublayer => {
             if (sublayer.get('title') === this.title && this.apps) {
@@ -88,6 +91,11 @@ export default {
 
             }
         })
+        
+        if(this.id !== undefined) {
+            let layers = await Map.getLayers('layer_id='+this.id)
+            this.nameLayer = layers.data.features[0].properties.name
+        }
     },
 
     watch: {

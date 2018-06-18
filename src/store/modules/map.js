@@ -3,7 +3,7 @@ const state = {
     first: 1868,
     last: 1940
   },
-  layers: [1,3],
+  layers: [],
   boxGeocoding: true,
   boxInfoLayer: false,
   boxNotifications: false,
@@ -27,8 +27,11 @@ const mutations = {
   setBoxInfoVector (state, value) {
     state.boxInfoVector = value
   },
-  setLayers (state, value) {
-    state.layers = value
+  setNewLayers (state, value) {
+    state.layers.push(value)
+  },
+  setRemoveLayers (state, value) {
+    state.layers.splice(state.layers.indexOf(value), 1)
   },
 }
 
@@ -48,8 +51,11 @@ const actions = {
   setBoxNotifications({commit}, value) {
     commit('setBoxNotifications', value)
   },
-  setLayers({commit}, value) {
-    commit('setLayers', value)
+  setNewLayers({commit}, value) {
+    commit('setNewLayers', value)
+  },
+  setRemoveLayers({commit}, value) {
+    commit('setRemoveLayers', value)
   }
 }
 

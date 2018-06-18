@@ -16,27 +16,25 @@
                     </el-input>
                     <br/>
 
-                    <article v-for="layer in allLayers" :key="layer.id">
-                        <span :test="layerON = layers.some(id => id == layer.id)" />
-                        
-                        <div :class="layerON ? 'box-layer-info activated' : 'box-layer-info disabled'">
+                    <article v-for="layer in listLayers" :key="layer.id">
+                        <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
                             <div class="infos">
-                                <p><strong>TITLE:</strong> {{ layer.title }}</p>
+                                <p><strong>TITLE:</strong> {{ layer.properties.name }}</p>
                                 <p><strong>AUTORES:</strong>
-                                    <span v-for="author in layer.authors" :key="author">
-                                        {{ author }}; 
+                                    <span v-for="author in layer.properties.authors" :key="author.properties.user_id">
+                                        {{ getAuthorName(author)[0].properties.name }};
                                     </span> 
-                                </p>                            
+                                </p>
                                 <p><strong>TAGS:</strong> 
-                                    <el-tag v-for="tag in layer.tags" :key="tag" style="margin-left: 5px">
-                                        {{ tag }}
+                                    <el-tag v-for="id in layer.properties.keyword" :key="id" style="margin-left: 5px">
+                                        {{ getTagName(id)[0].properties.name }}
                                     </el-tag>
                                 </p>
                             </div>
 
                             <div class="btns">
-                                <el-button :type="layerON ? 'danger' : 'success'" round>
-                                    {{ layerON ? 'Destivar' : 'Ativar' }}
+                                <el-button :type="layers.some(id => id == layer.properties.layer_id) ? 'danger' : 'success'" round @click="layers.some(id => id == layer.properties.layer_id) ? disabled(layer) : active(layer)">
+                                    {{ layers.some(id => id == layer.properties.layer_id) ? 'Desativar' : 'Ativar' }}
                                 </el-button>
                             </div>
                         </div>
@@ -54,17 +52,29 @@
 <script>
 import { mapState } from 'vuex'
 
-import DataJson from '@/views/assets/js/indexLayersTest'
+import Map from '@/middleware/Map'
+import {
+    overlayGroup
+} from '@/views/assets/js/map/overlayGroup'
 
 export default {
     watch: {
         filterText(val){
-            if(val=='') this.allLayers = DataJson
-            else this.allLayers = DataJson.filter( infoLayer => 
-                infoLayer.title.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                infoLayer.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                infoLayer.tags.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0
-            )
+            if(val=='') this.listLayers = this.allLayers
+            else {
+                this.listLayers = this.allLayers.filter( infoLayer => {
+                    infoLayer.properties.authorName = this.allAuthorsLayers.map( item => {
+                        if(infoLayer.properties.layer_id == item.properties.layer_id) return this.getAuthorName(item)[0].properties.name
+                    })
+                    infoLayer.properties.tagName = infoLayer.properties.keyword.map( id => {
+                        return this.getTagName(id)[0].properties.name
+                    })
+
+                    if( infoLayer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                        infoLayer.properties.authorName.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                        infoLayer.properties.tagName.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ) return infoLayer
+                } )
+            }
         }
     },
 
@@ -75,15 +85,68 @@ export default {
     data() {
       return {
         filterText: '',
+        listLayers: [],
         allLayers: [],
+        allKeywords: [],
+        allAuthorsLayers: [],
         layerON: false
       }
     },
 
-    mounted() {
-        this.allLayers = DataJson
+    async mounted() {
+        try {
+            let layers = await Map.getLayers(null)
+            this.allLayers = layers.data.features
+
+            let keywords = await Map.getKeyword()
+            this.allKeywords = keywords.data.features
+
+            let authors = await Map.getAuthors()
+            this.allAuthors = authors.data.features
+
+            let authors_layers = await Map.getAuthorsLayers()
+            this.allAuthorsLayers = authors_layers.data.features
+
+            this.listLayers = this.allLayers.map( layer => {
+                layer.properties.authors = this.allAuthorsLayers.filter( item => item.properties.layer_id == layer.properties.layer_id )
+                return layer
+            })
+
+        } catch (error) {
+            this.$alert('Serviço indisponível, tente mais tarde ou comunique nosso suporte!', 'Erro Interno', {
+                confirmButtonText: 'OK',
+                type: 'error'
+            });
+        }
+    },
+
+    methods: {
+        getTagName(id){
+            return this.allKeywords.filter( key => key.properties.keyword_id == id)
+        },
+        getAuthorName(item){
+            return this.allAuthors.filter( author => author.properties.user_id == item.properties.user_id )
+        },
+        disabled(layer) {
+            //remove of map
+            this.$store.dispatch('map/setRemoveLayers', layer.properties.layer_id)
+        },
+        active(layer) {
+            // let vectorLayer = new ol.layer.Vector({
+            //     title: layer.properties.f_table_name,
+            //     source: new ol.source.Vector({
+            //         url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=database:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson',
+            //         format: new ol.format.GeoJSON(),
+            //         crossOrigin: 'anonymous',
+            //     })
+            // });
+
+            // overlayGroup.getLayers().push( vectorLayer );
+            this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
+        }
     }
-  };
+    
+  }
 </script>
 
 <style lang="sass" scoped>

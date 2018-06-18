@@ -1,9 +1,11 @@
 <template>
     <section class="box-layers">
-        <!--<div v-for="layer in layers" :key="layer.id">
-            <p-layers-item :status="layer.status" color="success" :title="layer.title" :group="vectorLayer"></p-layers-item>
-            <hr style="padding: 0; margin-top: 0"/>
-        </div>-->
+        <div v-for="layerId in layers" :key="layerId">
+            <p-layers-item v-if="layerId !== undefined" :status="false" type="line"
+                color="#13ce66" 
+                :id="layerId" :group="vectorLayer"></p-layers-item>
+        </div> 
+
         <p-layers-item :status="true" type="line"
                 color="#13ce66" 
                 title="Streets" :group="vectorLayer"></p-layers-item>
@@ -12,14 +14,13 @@
                 title="Places" :group="vectorLayer"></p-layers-item>
 
         <hr class="divisor" /> 
-
         <p-layers-item :status="true" color="blue" title="OSM" :group="externalLayers" :apps="false"></p-layers-item>                      
                 
     </section>
 </template>
 <script>
 import LayersItem from '@/views/components/map/sidebar/LayersItem'
-import { mapState } from 'vuex'
+import { mapState } from 'vuex' 
 
 import {
     overlayGroup,
