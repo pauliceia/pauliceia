@@ -14,11 +14,12 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label class="mr-sm-2" for="keywordsSelect">Keywords</label>
+                  <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()"><md-icon>add_circle_outline</md-icon></button>
                   <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
                             value="description"
                             id="keywordsSelect"></v-select>
                   <!--<select class="custom-select mr-sm-2" id="themeSelect" @change="addTheme()">
-                    <option selected>Choose...</option>
+                    <option selected>Choose...</option>y
                     <option v-for="t in theme" :value="t.name">{{t.name}}</option>
                   </select>-->
                 </div>
@@ -46,8 +47,9 @@
                 <label for="inputReference">Reference</label>
                 <div class="form-row">
                   <div class="form-group col-md-12">
-                    <v-select class="" v-model="auxRef" :options="references" track-by="description" label="description"
-                              id="inputReference"></v-select>
+                    <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
+                    <!--<v-select class=""  :options="references" track-by="description" label="description"-->
+                              <!--id="inputReference"></v-select>-->
                     <!--<input type="text" class="form-control" id="inputReference" placeholder="">
                     <select class="form-control">
                       <option v-for="r in references" :value="r.reference_id">{{r.description}}</option>
@@ -63,7 +65,8 @@
                 <ol>
                   <li v-for="(t, index) in chosenRef">
                     {{ t.description }}
-                    <a href="#" class="" @click="removeRef(index)">x</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)"><md-icon>clear</md-icon></button>
                   </li>
                 </ol>
               </div>
@@ -76,8 +79,8 @@
                     <span class="input-group-text">ZIP File</span>
                   </div>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="Upload" accept=".zip">
-                    <label class="custom-file-label" for="Upload">Choose file</label>
+                    <input type="file" @change="updateName()" class="custom-file-input" id="Upload" accept=".zip">
+                    <label v-model="fname" class="custom-file-label" for="Upload" >{{fname}}</label>
                   </div>
                 </div>
               </div>
@@ -123,10 +126,20 @@
         users: [],
         keywords: [],
         chosenKeywords: [],
-        chosenKeywordsID: []
+        chosenKeywordsID: [],
+        fname: 'Choose file'
       }
     },
     methods: {
+      newKeyword(){
+        this.$router.push({
+          path: '/dashboard/keywords'
+        })
+
+      },
+      updateName(){
+        this.fname = document.getElementById("Upload").files[0].name
+      },
       Upload() {
         const vm = this
 
@@ -134,49 +147,32 @@
           this.chosenKeywordsID.push(e.keyword_id)
         })
 
+        let tableName = document.getElementById("inputName").value
+        if (tableName.indexOf(' ') == 0) tableName = tableName.slice(1)
+        if (tableName.lastIndexOf(' ') == tableName.length - 1) tableName = tableName.slice(0, tableName.length - 1)
+        tableName = tableName.split(" ").join("_")
+        tableName = tableName.toLocaleLowerCase()
+
         let layer = {
           'type': 'Layer',
           'properties': {
             'layer_id': -1,
-            'f_table_name': document.getElementById("inputName").value,
+            'f_table_name': tableName,
             'name': document.getElementById("inputName").value,
             'description': document.getElementById("inputDescription").value,
             'source_description': document.getElementById("inputDescription").value,
             'reference': this.chosenRefID,
             'keyword': this.chosenKeywordsID,
-          },
-          'feature_table': {
-            'properties': {
-              'name': 'text',
-              'start_date': 'text',
-              'end_date': 'text'
-            },
-            'geometry': {
-              "type": "MultiPoint"
-            }
           }
         }
+
+
+        var file = document.getElementById("Upload").files[0]
 
 
         Api().post('/api/layer/create/?is_to_create_feature_table=FALSE',
           layer
         ).then(function (response) {
-
-          //POST do usuario criador da layer
-          let user_layer = {
-            'properties': {
-              'is_the_creator': 'true',
-              'user_id': vm.user.user_id,
-              'layer_id': response.data.layer_id
-            },
-            'type': 'UserLayer'
-          }
-          console.log(user_layer)
-          Api().post('/api/user_layer/create',
-            user_layer
-          ).then(function (response) {
-            console.log(response)
-          })
 
           //POST cada usuario colaborar da layer
           vm.chosenUsers.forEach(u => {
@@ -188,62 +184,63 @@
               },
               'type': 'UserLayer'
             }
-            console.log(user_layer)
+            //console.log(user_layer)
 
             Api().post('/api/user_layer/create',
               user_layer
             ).then(function (response) {
-              console.log(response)
+              //console.log(response)
             })
+          })
+
+          Api().post('api/import/shp/?f_table_name=' + tableName + '&file_name=' + file.name,
+            file
+          ).then(function (response) {
+            //console.log(response)
           })
         })
 
-        this.chosenKeywordsID = null
-        this.chosenRefID = null
+        this.$router.push({
+          path: '/dashboard/home'
+        })
 
-        var file = document.getElementById("Upload").files[0]
-
-        // var r = new FileReader();
-        // r.onload = function () {
-        //
-        //   const formData = new FormData();
-        //   formData.append('file', file);
-        //
-        //   let response = Api().post('/api/import/shp/?f_table_name=' + document.getElementById("inputName").value + '&?file_name=' + document.getElementById("Upload").files[0].name,
-        //     formData,
-        //     {
-        //       headers: {
-        //         'Content-Type': 'multipart/form-data'
-        //       }
-        //     }
-        //   )
-        //   console.log(r.result)
-        // }
-        // r.readAsBinaryString(file);
-
-        // const formData = new FormData();
-        // formData.append('File', file);
-        //
-        // response = Api().post('/api/import/shp/?f_table_name=' + document.getElementById("inputName").value + '&?file_name=' + document.getElementById("Upload").files[0].name,
-        //   formData,
-        //   {
-        //     headers: {
-        //       'Content-Type': 'multipart/form-data'
-        //     }
-        //   }
-        // )
-        // console.log(response)
+        //this.chosenKeywordsID = null
+        //this.chosenRefID = null
       },
+
       removeRef(index) {
+        const vm = this
+        //console.log(vm.chosenRef[index].reference_id)
+        Api().delete('/api/reference/'+ vm.chosenRef[index].reference_id
+        ).then(function (response) {
+          //console.log(response)
+        })
         this.chosenRef.splice(index, 1)
         this.chosenRefID.splice(index, 1)
       },
       addRef() {
+        const vm = this
         if (this.auxRef != null) {
+          let ref_id
+          let ref = {
+            'type': 'Reference',
+            'properties':
+              {
+                'reference_id': -1,
+                'description': vm.auxRef
+              }
+          }
 
-          this.chosenRef.push({description: this.auxRef.description, reference_id: this.auxRef.reference_id})
-          this.chosenRefID.push(this.auxRef.reference_id)
-          this.auxRef = null
+          Api().post('/api/reference/create',
+            ref
+          ).then(function (response) {
+            ref_id = response.data.reference_id
+            vm.chosenRef.push({description: vm.auxRef, reference_id: ref_id})
+            //console.log(vm.chosenRef)
+            vm.chosenRefID.push(ref_id)
+            vm.auxRef = null
+
+          })
         }
       }
     },
@@ -251,8 +248,8 @@
       const vm = this
       Api().get('/api/user').then(function (response) {
         response.data.features.filter(e => {
-          if(e.properties.user_id !== vm.user.user_id)
-          vm.users.push(e.properties)
+          if (e.properties.user_id !== vm.user.user_id)
+            vm.users.push(e.properties)
         })
       })
 
@@ -262,11 +259,11 @@
         })
       })
 
-      Api().get('/api/reference').then(function (response) {
-        response.data.features.filter(e => {
-          vm.references.push({description: e.properties.description, reference_id: e.properties.reference_id})
-        })
-      })
+      // Api().get('/api/reference').then(function (response) {
+      //   response.data.features.filter(e => {
+      //     vm.references.push({description: e.properties.description, reference_id: e.properties.reference_id})
+      //   })
+      // })
     }
   }
 
@@ -274,5 +271,20 @@
 </script>
 
 <style lang="sass" scoped>
+  .add
+    top: -2px
+    display: inline-block
+    border: none
+    padding: 0px
+    margin: 0px
+    position: absolute
+
+  .del
+    top: 0px
+    display: inline-block
+    border: none
+    padding: 0px
+    margin: 0px
+    position: relative
 
 </style>

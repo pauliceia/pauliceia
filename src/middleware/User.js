@@ -4,22 +4,22 @@ export default {
 
   login (credentials) {
     return Api().get('/api/auth/login',
-      { 
-        headers: { 
+      {
+        headers: {
           'Authorization': `Basic ${credentials}`,
-          'Content-type': 'application/json', 
+          'Content-type': 'application/json',
           'Accept': 'application/json; charset=UTF-8'
-        } 
+        }
       })
   },
-  
+
   loginFacebook () {
     return Api().get('/api/auth/facebook/',
-    { 
-      headers: { 
+    {
+      headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json; charset=UTF-8'
-      } 
+      }
     })
   },
 
