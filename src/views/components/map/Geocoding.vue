@@ -5,7 +5,21 @@
                 <label for="searchGeocoding" class="label"> {{ $t('map.geocoding.label') }}:</label>
 
                 <div class="input-group">               
-                    <input type="text" class="form-control" ref="geocoding_search" autofocus v-model="inputSearch" :placeholder="$t('map.geocoding.placeholder')" />
+                    <el-autocomplete
+                        class="inline-input"
+                        style="flex: 1 1 auto"
+                        v-model="inputSearch"
+                        ref="geocoding_search"
+                        :fetch-suggestions="querySearch"
+                        :placeholder="$t('map.geocoding.placeholder')"
+                        :trigger-on-focus="false"
+                        @select="handleSelect"
+                        >
+                        <template slot-scope="{ item }">
+                            <div class="value">{{ item }}</div>
+                        </template>
+                    </el-autocomplete>
+
                     <div class="input-group-append">
                         <button class="btn btn-search">
                             Search
@@ -16,6 +30,7 @@
                             <md-icon>settings</md-icon>
                         </button>
                     </div>
+                    
                 </div>
 
                 <div class="box-multigeocoding" v-show="multigeocoding">
@@ -43,13 +58,37 @@ export default {
     data() {
         return {
             inputSearch: '',
-            multigeocoding: false
+            multigeocoding: false,
+            placesList: []
         }
     },
+    
     computed: {
+        
       ...mapState('map', ['boxGeocoding'])
     },
+
+    async mounted(){
+        try {
+            let response = await ApiMap.getPlacesList()
+            this.placesList = response.data
+        } catch(_) {
+            this.$alert('Serviço de GEOCODING indisponível, tente mais tarde ou comunique nosso suporte!', 'Erro Interno', {
+                confirmButtonText: 'OK',
+                type: 'error'
+            });
+        }
+    },
+
     methods: {
+        querySearch(queryString, cb) {
+            let links = this.placesList
+            let results = queryString ? links.filter( link => link.toLowerCase().indexOf(queryString.toLowerCase()) >= 0 ) : links
+            cb(results)
+        },
+        handleSelect(item) {
+            this.inputSearch = item
+        },
         async search () {
             try {
                 let regex = new RegExp(/\s*,( )*\d{4}/);

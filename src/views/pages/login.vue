@@ -11,10 +11,12 @@
 
                 <form class="form-signin" @submit.prevent="loginSubmit">
                     <div class="form-label-group">
+                        <label>E-mail</label>
                         <input type="email" v-model="email" class="form-control form-control-lg" :placeholder="$t('login.inputEmail')" required autofocus>
                     </div>
                     <br />
                     <div class="form-label-group">
+                        <label>Senha</label>
                         <input type="password" v-model="password" class="form-control form-control-lg" :placeholder="$t('login.inputPassword')" required>
                     </div>
                     <br />

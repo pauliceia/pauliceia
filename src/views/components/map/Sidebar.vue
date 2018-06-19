@@ -7,8 +7,7 @@
 
         <section class="sidebar" v-show="sidebarVisible">
             <md-toolbar md-elevation="1" style="background: #f36c3f; color: #FFF;">
-                <md-icon>public</md-icon>
-                <span class="md-title nav-title">{{ $t('map.sidebar.title') }}</span>
+                <span class="md-title nav-title"><strong>{{ $t('map.sidebar.title') }}</strong></span>
 
                 <div class="md-toolbar-section-end">
                     <div class="box-options">
@@ -16,7 +15,7 @@
                                 :content="$t('map.sidebar.btnAdd')"
                                 placement="bottom-end">
                                     <md-button class="md-icon-button md-dense" data-toggle="modal" data-target="#modalAddLayer">
-                                        <md-icon style="color: #FFF;">add</md-icon>
+                                        <md-icon style="color: #FFF;">iso</md-icon>
                                     </md-button>
                         </el-tooltip>
                     </div>
@@ -98,6 +97,10 @@ export default {
         z-index: 1
         box-shadow: 1px 1px 1px #CCC
         
+        .nav-title
+            font-size: 1.25em
+            text-shadow: 1px 2px 1px #58595b
+            
         .box-options
             margin-right: 20px
             border-radius: 50%
