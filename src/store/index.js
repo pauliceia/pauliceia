@@ -11,7 +11,7 @@ export default new Vuex.Store({
   modules,
   plugins: [
     createPersistedState({
-      key: 'keytest',
+      keyCripto: process.env.urlVGI,
       paths: ['auth']
     })
   ],

@@ -21,5 +21,9 @@ export default {
 
   getAuthorsLayers() {
     return ApiVGI().get(`/api/user_layer/`)
+  },
+
+  getPlacesList() {
+    return ApiGeocoding().get('/placeslist')
   }
 }

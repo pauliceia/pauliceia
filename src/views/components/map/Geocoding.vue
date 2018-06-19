@@ -11,6 +11,15 @@
                             Search
                         </button>
                     </div>
+                    <div class="input-group-append">
+                        <button type="button" class="btn" @click="multigeocoding = !multigeocoding">
+                            <md-icon>settings</md-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box-multigeocoding" v-show="multigeocoding">
+                    configurações
                 </div>
         </form>
         
@@ -33,7 +42,8 @@ import {
 export default {
     data() {
         return {
-            inputSearch: ''
+            inputSearch: '',
+            multigeocoding: false
         }
     },
     computed: {
@@ -113,6 +123,13 @@ export default {
 
         .btn-search:hover
             background: rgba(#f15a29, 0.7)
+            
+        .box-multigeocoding
+            width: 100%
+            background: #FFF
+            padding: 25px
+            border: 1px solid #CCC
+            border-top: none
 
     input:focus
         border-color: rgba(#58595b, 0.2) !important
