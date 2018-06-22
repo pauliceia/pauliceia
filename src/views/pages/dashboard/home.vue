@@ -24,11 +24,31 @@
           <div class="card-body">
             <div class="card-text">
               <div class="row" v-for="layer in layers">
-                <div class="col-sm-9">{{ layer.name }}</div>
-                <div class="col-sm-3">
-                  <router-link :to="{name: 'EditLayer', params: {layer_id: layer.id}}">
-                    <md-icon>edit</md-icon>
-                  </router-link>
+                <div class="col-sm-8">{{ layer.name }}</div>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editeLayer(layer.id)"><md-icon>create</md-icon></button>
+                </div>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.id)"><md-icon>clear</md-icon></button>
+                </div>
+                <hr>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card  ">
+          <div class="card-header text-center">
+            Shared Layers
+          </div>
+          <div class="card-body">
+            <div class="card-text">
+              <div class="row" v-for="layer in layers">
+                <div class="col-sm-8">{{ layer.name }}</div>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editeLayer(layer.id)"><md-icon>create</md-icon></button>
+                </div>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.id)"><md-icon>clear</md-icon></button>
                 </div>
                 <hr>
               </div>
@@ -83,6 +103,24 @@
         shownNotif: []
       }
     },
+    methods: {
+      deleteLayer(id){
+        const vm = this;
+        Api().delete('/api/layer/' + id).then(function (response) {
+          console.log(response)
+          Api().get('/api/layer').then(function (response) {
+            vm.layers = []
+            response.data.features.filter(e => {
+              //if(e.properties.user_id_published_by == vm.user.user_id)
+              vm.layers.push({name: e.properties.name, id: e.properties.layer_id})
+            })
+          })
+        })
+      },
+      editeLayer(id){
+        this.$router.push({name: 'EditLayer', params: {layer_id: id}})
+      }
+    },
     beforeCreate() {
       const vm = this
       Api().get('/api/layer').then(function (response) {
@@ -103,5 +141,12 @@
 </script>
 
 <style lang="sass" scoped>
+  .add
+    top: 0px
+    display: inline-block
+    border: none
+    padding: 0px
+    margin: 0px
+    position: absolute
 
 </style>

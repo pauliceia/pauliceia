@@ -9,7 +9,15 @@
             <form>
               <div class="form-row">
                 <div class="form-group col-md-10">
-                  <label for="inputName">Name</label>
+                  <label for="inputName">Name</label>&nbsp;
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              content="this is content, this is content, this is content"
+                              type="primary">
+                    <button type="button"  slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
                   <input class="form-control" id="inputName">
                 </div>
 
@@ -68,21 +76,36 @@
     },
     methods: {
       Upload() {
+        const vm = this
         let keyword = {
           'type': 'Keyword',
           'properties': {
             'keyword_id': -1,
             'name': document.getElementById("inputName").value,
-            'parent_id': this.user
+            'parent_id': 1001
           }
         }
         console.log(keyword)
 
-        let response = Api().post('/api/keyword/create',
+        Api().post('/api/keyword/create',
           keyword
-        )
+        ).then(function (response) {
+          console.log(response)
 
-        console.log(response)
+          Api().get('/api/keyword').then(function (response) {
+            response.data.features.filter(e => {
+              //console.log(e.properties)
+            })
+            Api().get('/api/keyword/?user_id_creator=' + vm.user.user_id).then(function (response) {
+              vm.keywords = []
+              response.data.features.filter(e => {
+                vm.keywords.push(e.properties)
+              })
+            })
+          })
+        })
+
+
       },
     },
     beforeCreate() {
@@ -105,5 +128,11 @@
 
 <style lang="sass" scoped>
 
+  .info
+    top: -1px
+    border: none
+    padding: 0px
+    margin: 0px
+    position: relative
 
 </style>
