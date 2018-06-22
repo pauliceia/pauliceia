@@ -33,14 +33,12 @@ export default {
 
   getUserByToken(token) {
     return Api().get('/api/user_by_token/',
-    { 
-      headers: { 
+    {
+      headers: {
         'Authorization': token,
-        'Content-type': 'application/json', 
+        'Content-type': 'application/json',
         'Accept': 'application/json; charset=UTF-8'
-      } 
+      }
     })
   }
-}
-
 }

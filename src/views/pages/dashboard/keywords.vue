@@ -9,7 +9,15 @@
             <form>
               <div class="form-row">
                 <div class="form-group col-md-10">
-                  <label for="inputName">Name</label>
+                  <label for="inputName">Name</label>&nbsp;
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              content="this is content, this is content, this is content"
+                              type="primary">
+                    <button type="button"  slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
                   <input class="form-control" id="inputName">
                 </div>
 
@@ -120,5 +128,11 @@
 
 <style lang="sass" scoped>
 
+  .info
+    top: -1px
+    border: none
+    padding: 0px
+    margin: 0px
+    position: relative
 
 </style>

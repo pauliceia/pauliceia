@@ -9,51 +9,75 @@
             <form>
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="inputName">Name</label>
+                  <label for="inputName">Name</label>&nbsp;
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              content="this is content, this is content, this is content"
+                              type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
                   <input class="form-control" id="inputName" placeholder="Name">
                 </div>
                 <div class="form-group col-md-6">
                   <label class="mr-sm-2" for="keywordsSelect">Keywords</label>
-                  <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()"><md-icon>add_circle_outline</md-icon></button>
+                  <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
+                    <md-icon>add_circle_outline</md-icon>
+                  </button>
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              content="this is content, this is content, this is content"
+                              type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
                   <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
                             value="description"
                             id="keywordsSelect"></v-select>
-                  <!--<select class="custom-select mr-sm-2" id="themeSelect" @change="addTheme()">
-                    <option selected>Choose...</option>y
-                    <option v-for="t in theme" :value="t.name">{{t.name}}</option>
-                  </select>-->
                 </div>
               </div>
               <div class="form-group">
-                <!--<label for="inputDescription">Chosen Themes</label>
-                <ol>
-                  <li v-for="(t, index) in chosenTheme">
-                    {{ t.name }}
-                    &nbsp; &nbsp;
-                    <a href="#" class="" @click="removeTheme(index)">x</a>
-                  </li>
-                </ol>-->
               </div>
               <div class="form-group">
-                <label for="userSelect">Collaborators</label>
+                <label for="userSelect">Collaborators</label>&nbsp;
+                <el-popover class="info" placement="top-start" width="200"
+                            trigger="hover"
+                            content="this is content, this is content, this is content"
+                            type="primary">
+                  <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                  </button>
+                </el-popover>
                 <v-select multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
                           id="userSelect"></v-select>
               </div>
               <div class="form-group">
-                <label for="inputDescription">Description</label>
+                <label for="inputDescription">Description</label>&nbsp;
+                <el-popover class="info" placement="top-start" width="200"
+                            trigger="hover"
+                            content="this is content, this is content, this is content"
+                            type="primary">
+                  <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                  </button>
+                </el-popover>
                 <textarea class="form-control" id="inputDescription" rows="3"></textarea>
               </div>
               <div class="form-group">
-                <label for="inputReference">Reference</label>
+                <label for="inputReference">Reference</label>&nbsp;
+                <el-popover class="info" placement="top-start" width="200"
+                            trigger="hover"
+                            content="this is content, this is content, this is content"
+                            type="primary">
+                  <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                  </button>
+                </el-popover>
                 <div class="form-row">
                   <div class="form-group col-md-12">
                     <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
-                    <!--<v-select class=""  :options="references" track-by="description" label="description"-->
-                              <!--id="inputReference"></v-select>-->
-                    <!--<input type="text" class="form-control" id="inputReference" placeholder="">
-                    <select class="form-control">
-                      <option v-for="r in references" :value="r.reference_id">{{r.description}}</option>
-                    </select>-->
                   </div>
                   <div class="form-group col-md-4">
                     <a href="#" class="btn btn-primary" @click="addRef()">Add</a>
@@ -66,22 +90,46 @@
                   <li v-for="(t, index) in chosenRef">
                     {{ t.description }}
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)"><md-icon>clear</md-icon></button>
+                    <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
+                      <md-icon>clear</md-icon>
+                    </button>
                   </li>
                 </ol>
               </div>
               <div class="form-group">
               </div>
-              <div class="form-group">
-                <label for="Upload">File Input</label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">ZIP File</span>
+              <div class="form-row">
+                <div class="form-group col-md-9">
+                  <label for="Upload">File Input</label>&nbsp;
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              content="this is content, this is content, this is content"
+                              type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">ZIP File</span>
+                    </div>
+                    <div class="custom-file">
+                      <input type="file" @change="updateName()" class="custom-file-input" id="Upload" accept=".zip">
+                      <label v-model="fname" class="custom-file-label" for="Upload">{{fname}}</label>
+                    </div>
                   </div>
-                  <div class="custom-file">
-                    <input type="file" @change="updateName()" class="custom-file-input" id="Upload" accept=".zip">
-                    <label v-model="fname" class="custom-file-label" for="Upload" >{{fname}}</label>
-                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="Upload">EPSG</label>
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              content="this is content, this is content, this is content"
+                              type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
+                  <input class="form-control" id="inputEpsg">
                 </div>
               </div>
             </form>
@@ -131,13 +179,13 @@
       }
     },
     methods: {
-      newKeyword(){
+      newKeyword() {
         this.$router.push({
           path: '/dashboard/keywords'
         })
 
       },
-      updateName(){
+      updateName() {
         this.fname = document.getElementById("Upload").files[0].name
       },
       Upload() {
@@ -148,6 +196,7 @@
         })
 
         let tableName = document.getElementById("inputName").value
+        let epsg = document.getElementById("inputEpsg").value
         if (tableName.indexOf(' ') == 0) tableName = tableName.slice(1)
         if (tableName.lastIndexOf(' ') == tableName.length - 1) tableName = tableName.slice(0, tableName.length - 1)
         tableName = tableName.split(" ").join("_")
@@ -173,6 +222,8 @@
         Api().post('/api/layer/create/?is_to_create_feature_table=FALSE',
           layer
         ).then(function (response) {
+          console.log("Layer")
+          console.log(response)
 
           //POST cada usuario colaborar da layer
           vm.chosenUsers.forEach(u => {
@@ -193,10 +244,29 @@
             })
           })
 
-          Api().post('api/import/shp/?f_table_name=' + tableName + '&file_name=' + file.name,
-            file
+          let changeset = {
+            'properties': {
+              'changeset_id': -1,
+              'layer_id': response.data.layer_id,
+              'description': 'Creating layer_' + response.data.layer_id
+            },
+            'type': 'Changeset'
+          }
+
+          Api().post('/api/changeset/create',
+            changeset
           ).then(function (response) {
-            //console.log(response)
+            console.log("Changeset")
+            console.log(response)
+
+            Api().post('api/import/shp/?f_table_name=' + tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id +
+              '&epsg=' + epsg,
+              file
+            ).then(function (response) {
+              console.log("Import")
+              console.log(response)
+            })
+
           })
         })
 
@@ -207,11 +277,10 @@
         //this.chosenKeywordsID = null
         //this.chosenRefID = null
       },
-
       removeRef(index) {
         const vm = this
         //console.log(vm.chosenRef[index].reference_id)
-        Api().delete('/api/reference/'+ vm.chosenRef[index].reference_id
+        Api().delete('/api/reference/' + vm.chosenRef[index].reference_id
         ).then(function (response) {
           //console.log(response)
         })
@@ -272,7 +341,8 @@
 
 <style lang="sass" scoped>
   .add
-    top: -2px
+    top: -1px
+    left: 110px
     display: inline-block
     border: none
     padding: 0px
@@ -282,6 +352,13 @@
   .del
     top: 0px
     display: inline-block
+    border: none
+    padding: 0px
+    margin: 0px
+    position: relative
+
+  .info
+    top: -1px
     border: none
     padding: 0px
     margin: 0px

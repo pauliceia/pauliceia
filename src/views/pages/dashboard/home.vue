@@ -36,6 +36,25 @@
             </div>
           </div>
         </div>
+        <div class="card  ">
+          <div class="card-header text-center">
+            Shared Layers
+          </div>
+          <div class="card-body">
+            <div class="card-text">
+              <div class="row" v-for="layer in layers">
+                <div class="col-sm-8">{{ layer.name }}</div>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editeLayer(layer.id)"><md-icon>create</md-icon></button>
+                </div>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.id)"><md-icon>clear</md-icon></button>
+                </div>
+                <hr>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </p-dash-layout>
