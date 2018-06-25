@@ -33,7 +33,7 @@
                     <a data-toggle="modal" data-target="#modalTerms"> (read here) </a>
                 </div>
                 <div class="col-6 link-social">
-                    <md-list-item class="btn btn-primary" @click="loginSocial('facebook')">
+                    <md-list-item class="btn btn-primary">
                         <md-icon>thumb_up</md-icon> 
                         <span class="md-list-item-text">Facebook</span>
                     </md-list-item>
@@ -75,9 +75,11 @@ export default {
             try{
                 auth2.grantOfflineAccess().then(signInCallback => {
                     User.loginGoogle(signInCallback.code).then( response => {
+
                         if(response.status == 200) {
                             let token = response.data.token                            
                             const response = User.getUserByToken(token).then( response => {
+                                
                                 if(response.status == 200){
                                     this.$store.dispatch('auth/setToken', token)
                                     this.$store.dispatch('auth/setUser', response.data.properties)
@@ -92,8 +94,10 @@ export default {
                                         path: '/explore'
                                     })
                                 }
+
                             });
                         }
+
                     })
                 });
             } catch(error) {

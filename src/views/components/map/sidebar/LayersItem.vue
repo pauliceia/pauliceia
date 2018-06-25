@@ -3,7 +3,7 @@
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>          
         
         <span>
-            <b>{{ title !== undefined ? title.toUpperCase() : nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() }}</b>
+            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() : title.toUpperCase() }}</b>
             <span v-show="layerStatus && apps">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -80,22 +80,14 @@ export default {
 
     async created(){
         this.layerStatus = this.status
-        this.group.getLayers().forEach(sublayer => {
-            if (sublayer.get('title') === this.title && this.apps) {
-                
-                if(this.type == 'line') {
-                    this.colorVector = sublayer.getStyle().getStroke().getColor()  
-                } else if(this.type == 'point') {
-                    this.colorVector = sublayer.getStyle().getImage().getFill().getColor()                    
-                }
-
-            }
-        })
         
         if(this.id !== undefined) {
             let layers = await Map.getLayers('layer_id='+this.id)
             this.nameLayer = layers.data.features[0].properties.name
+            this.title = layers.data.features[0].properties.f_table_name
         }
+
+        this.getColor()
     },
 
     watch: {
@@ -141,6 +133,19 @@ export default {
     },
 
     methods: {
+        getColor() {
+            this.group.getLayers().forEach(sublayer => {
+                if (sublayer.get('title') === this.title && this.apps) {
+                    
+                    if(this.type == 'line') {
+                        this.colorVector = sublayer.getStyle().getStroke().getColor()  
+                    } else if(this.type == 'point') {
+                        this.colorVector = sublayer.getStyle().getImage().getFill().getColor()                    
+                    }
+
+                }
+            })
+        },
         extend(){
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title && this.layerStatus && this.apps) {                    

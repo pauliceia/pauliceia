@@ -1,7 +1,7 @@
 <template>
     <section class="box-layers">
         <div v-for="layerId in layers" :key="layerId">
-            <p-layers-item v-if="layerId !== undefined" :status="false" type="line"
+            <p-layers-item v-if="layerId !== undefined" :status="true" type="line"
                 color="#13ce66" 
                 :id="layerId" :group="vectorLayer"></p-layers-item>
         </div> 
