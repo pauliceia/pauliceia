@@ -96,25 +96,34 @@ export default {
 
                 if(regex.test(search)){
                     const result = await ApiMap.geolocationOne(search)
+                    console.log(result)
+                    if(result.status >= 300) {
+                        this.$alert('Erro programado', 'erro programado', {
+                            dangerouslyUseHTMLString: true,
+                            confirmButtonText: 'OK',
+                            type: 'warning'
+                        });
 
-                    let coordPoint = result.data[2][0].geom.substring(6).replace(")", "").split(" ")
-                    let feature = new ol.Feature(new ol.geom.Point(coordPoint))
-                    
-                    let layerSearch = new ol.layer.Vector({
-                        source: new ol.source.Vector({
-                            features: [feature]
-                        }),
-                        name: 'placesSearch',
-                        style: placeStyleSearch
-                    });
+                    } else {
+                        let coordPoint = result.data[1][0].geom.substring(6).replace(")", "").split(" ")
+                        let feature = new ol.Feature(new ol.geom.Point(coordPoint))
+                        
+                        let layerSearch = new ol.layer.Vector({
+                            source: new ol.source.Vector({
+                                features: [feature]
+                            }),
+                            name: 'placesSearch',
+                            style: placeStyleSearch
+                        });
 
-                    overlayGroup.getLayers().push(
-                        layerSearch
-                    )
+                        overlayGroup.getLayers().push(
+                            layerSearch
+                        )
 
-                    let extent = ol.extent.createEmpty();
-                    ol.extent.extend(extent, feature.getGeometry().getExtent());
-                    this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
+                        let extent = ol.extent.createEmpty();
+                        ol.extent.extend(extent, feature.getGeometry().getExtent());
+                        this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
+                    }                   
                 
                 } else{
                     this.$alert('<strong>type it:</strong> street, number, year (0000)', 'INVÁLID FORMAT', {
@@ -124,12 +133,11 @@ export default {
                     });
                 }
                 
-            } catch (err) {
-                console.log(err.response)
-                this.$alert('address not found', 'SORRY', {
+            } catch (error) {
+                this.$alert('Erro ao geocodificar', 'Erro', {
                     dangerouslyUseHTMLString: true,
                     confirmButtonText: 'OK',
-                    type: 'warning'
+                    type: 'error'
                 });
             }
             

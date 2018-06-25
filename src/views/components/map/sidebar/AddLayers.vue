@@ -132,16 +132,16 @@ export default {
             this.$store.dispatch('map/setRemoveLayers', layer.properties.layer_id)
         },
         active(layer) {
-            // let vectorLayer = new ol.layer.Vector({
-            //     title: layer.properties.f_table_name,
-            //     source: new ol.source.Vector({
-            //         url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=database:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson',
-            //         format: new ol.format.GeoJSON(),
-            //         crossOrigin: 'anonymous',
-            //     })
-            // });
+            let vectorLayer = new ol.layer.Vector({
+                title: layer.properties.f_table_name,
+                source: new ol.source.Vector({
+                    url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=postgres:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson',
+                    format: new ol.format.GeoJSON(),
+                    crossOrigin: 'anonymous',
+                })
+            });
 
-            // overlayGroup.getLayers().push( vectorLayer );
+            overlayGroup.getLayers().push( vectorLayer );
             this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
         }
     }

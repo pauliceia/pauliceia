@@ -39,12 +39,11 @@
                     </md-list-item>
                 </div>
                 <div class="col-6 link-social">
-                    <md-list-item class="btn btn-danger" @click="loginSocial('google')">
+                    <md-list-item class="btn btn-danger" @click="LoginSocialGoogle()">
                         <md-icon>add_box</md-icon> 
                         <span class="md-list-item-text">Google+</span>
                     </md-list-item>
                 </div>
-                <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
             </div>
             <!--/card-block-->
         </div>
@@ -72,8 +71,38 @@ export default {
         }
     },
     methods: {
-        loginSocial(type) {
-            window.location = process.env.urlVGI+"/api/auth/"+type
+        async LoginSocialGoogle(){
+            try{
+                auth2.grantOfflineAccess().then(signInCallback => {
+                    User.loginGoogle(signInCallback.code).then( response => {
+                        if(response.status == 200) {
+                            let token = response.data.token                            
+                            const response = User.getUserByToken(token).then( response => {
+                                if(response.status == 200){
+                                    this.$store.dispatch('auth/setToken', token)
+                                    this.$store.dispatch('auth/setUser', response.data.properties)
+
+                                    this.$message({
+                                            showClose: true,
+                                            dangerouslyUseHTMLString: true,
+                                            message: 'WELCOME <strong>'+response.data.properties.name+'</strong>!',
+                                            type: 'success'
+                                        });
+                                    this.$router.push({
+                                        path: '/explore'
+                                    })
+                                }
+                            });
+                        }
+                    })
+                });
+            } catch(error) {
+                this._msgBox(
+                    'ERROR',
+                    'Erro ao efetuar o login social!',
+                    'error'
+                )
+            }
         },
         async loginSubmit () {
             try {

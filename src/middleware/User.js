@@ -13,14 +13,8 @@ export default {
       })
   },
 
-  loginFacebook () {
-    return Api().get('/api/auth/facebook/',
-    {
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json; charset=UTF-8'
-      }
-    })
+  loginGoogle (code) {
+    return Api().get('/api/auth/google/'+code)
   },
 
   getUser(query){
