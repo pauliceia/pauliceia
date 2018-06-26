@@ -117,12 +117,23 @@ export default {
                         type: "User"
                     })
 
+                    let idUser = response.data.user_id
+                    const infoUser = await User.getUser('user_id='+idUser)
+
+                    this.$store.dispatch('auth/setUser', infoUser.data.features[0].properties)
+                    
                     this.loading.close()
-                    this._msgBox(
-                        'SUCCESS',
-                        'Registration almost <strong>finished</strong>! Access your <strong>EMAIL</strong> and follow the instructions.',
-                        'success'
-                    )
+                    let query = '/login';
+                    this.$router.push({
+                        path: query
+                    })
+
+                    this.$notify({
+                        title: 'SUCESSO',
+                        dangerouslyUseHTMLString: true,
+                        message: 'Olá <strong>'+infoUser.data.features[0].properties.name+'</strong>, cadastro realizado com sucesso! Realize o login para acessar o sistema.',
+                        type: 'success'
+                    });
 
                     this._cleanForm()
                 }
