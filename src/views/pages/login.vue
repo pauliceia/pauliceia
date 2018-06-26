@@ -67,29 +67,32 @@ export default {
     data () {
         return {
             email: '',
-            password: ''
+            password: '',
+            loading: null
         }
     },
     methods: {
         async LoginSocialGoogle(){
             try{
+                this._openFullScreen()
                 auth2.grantOfflineAccess().then(signInCallback => {
                     User.loginGoogle(signInCallback.code).then( response => {
 
                         if(response.status == 200) {
-                            let token = response.data.token                            
-                            const response = User.getUserByToken(token).then( response => {
-                                
+                            let token = response.data.token                      
+                            User.getUserByToken(token).then( responseUser => {
+
                                 if(response.status == 200){
                                     this.$store.dispatch('auth/setToken', token)
-                                    this.$store.dispatch('auth/setUser', response.data.properties)
+                                    this.$store.dispatch('auth/setUser', responseUser.data.properties)
 
                                     this.$message({
-                                            showClose: true,
-                                            dangerouslyUseHTMLString: true,
-                                            message: 'WELCOME <strong>'+response.data.properties.name+'</strong>!',
-                                            type: 'success'
-                                        });
+                                        showClose: true,
+                                        dangerouslyUseHTMLString: true,
+                                        message: 'WELCOME <strong>'+responseUser.data.properties.name+'</strong>!',
+                                        type: 'success'
+                                    });
+                                    this.loading.close()
                                     this.$router.push({
                                         path: '/explore'
                                     })
@@ -110,6 +113,8 @@ export default {
         },
         async loginSubmit () {
             try {
+                this._openFullScreen()
+
                 let password = new jsSHA("SHA-512", "TEXT")
                 password.update(this.password)
                 password = password.getHash('HEX')
@@ -122,7 +127,8 @@ export default {
                     
                     const response = await User.getUser(`email=${this.email}`)
                     this.$store.dispatch('auth/setUser', response.data.features[0].properties)
-
+                    
+                    this.loading.close()
                     let query = this.$route.query.redirect ? this.$route.query.redirect : '/explore';
                     this.$router.push({
                         path: query
@@ -137,9 +143,12 @@ export default {
                 }
                 
             } catch (error) {
+                let msg = ''
+                if(error.response.status == 404) msg = '<strong>E-mail</strong> ou <strong>password</strong> incorreto!'
+                else if(error.response.status == 409) msg = 'Você ainda <strong>não</strong> confirmou seu e-mail, acesse sua caixa de e-mail e confirme-o seguindo instruções!'
                 this._msgBox(
                     'ERROR',
-                    '<strong>email</strong> or <strong>password</strong> incorrect!',
+                    msg,
                     'error'
                 )
             }
@@ -149,6 +158,15 @@ export default {
                 dangerouslyUseHTMLString: true,
                 confirmButtonText: 'OK',
                 type
+            });
+            this.loading.close()
+        },
+        _openFullScreen() {
+            this.loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
             });
         }
     }

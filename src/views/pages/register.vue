@@ -78,6 +78,7 @@ export default {
                 terms_agreed: false,
                 can_add_layer: true
             },
+            loading: '',
             terms_agreed: false,
             emailSuporte: 'suporte@pauliceia.com.br',
             msgAlert: {
@@ -97,6 +98,7 @@ export default {
         async registerSubmit () {
             this.msgAlert.type = ''
             this.msgAlert.message = ''
+            this._openFullScreen()
             try {
                 if(this.user.email == '' || this.user.username == '' || this.user.password == '') {
                     this.msgAlert = {
@@ -115,6 +117,7 @@ export default {
                         type: "User"
                     })
 
+                    this.loading.close()
                     this._msgBox(
                         'SUCCESS',
                         'Registration almost <strong>finished</strong>! Access your <strong>EMAIL</strong> and follow the instructions.',
@@ -158,6 +161,15 @@ export default {
                 dangerouslyUseHTMLString: true,
                 confirmButtonText: 'OK',
                 type
+            });
+            this.loading.close()
+        },
+        _openFullScreen() {
+            this.loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
             });
         }
     }
