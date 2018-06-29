@@ -104,6 +104,7 @@ export default {
                     })
                 });
             } catch(error) {
+                console.log(error)
                 this._msgBox(
                     'ERROR',
                     'Erro ao efetuar o login social!',
