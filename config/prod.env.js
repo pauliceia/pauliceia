@@ -2,5 +2,7 @@
 module.exports = {
   NODE_ENV: '"production"',
   urlVGI: '"x"',
-  keyCripto: 'keyprod'
+  keyCripto: '"keytest"',
+  urlGeoserver: '"y"',
+  urlGeocoding: '"z"'
 }

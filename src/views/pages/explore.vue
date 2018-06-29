@@ -51,7 +51,7 @@
       let vectorLayerStreets = new ol.layer.Vector({
         title: 'Streets',
         source: new ol.source.Vector({
-          url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:streets&outputFormat=application%2Fjson',
+          url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:streets&outputFormat=application%2Fjson',
           format: new ol.format.GeoJSON(),
           crossOrigin: 'anonymous',
         }),
@@ -61,7 +61,7 @@
       let vectorLayerPlaces = new ol.layer.Vector({
         title: 'Places',
         source: new ol.source.Vector({
-          url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application%2Fjson',
+          url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application%2Fjson',
           format: new ol.format.GeoJSON(),
           crossOrigin: 'anonymous',
         }),
