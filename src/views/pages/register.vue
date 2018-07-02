@@ -128,12 +128,11 @@ export default {
                         path: query
                     })
 
-                    this.$notify({
-                        title: 'SUCESSO',
-                        dangerouslyUseHTMLString: true,
-                        message: 'Olá <strong>'+infoUser.data.features[0].properties.name+'</strong>, cadastro realizado com sucesso! Realize o login para acessar o sistema.',
-                        type: 'success'
-                    });
+                    this._msgBox(
+                        'SUCESSO',
+                        'Olá <strong>'+infoUser.data.features[0].properties.name+'</strong>, seu cadastro está quase pronto. Basta acessar seu e-mail e seguir as instruções.',
+                        'success'
+                    )
 
                     this._cleanForm()
                 }

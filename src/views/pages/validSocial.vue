@@ -29,7 +29,7 @@ export default {
             this.$message({
                 showClose: true,
                 dangerouslyUseHTMLString: true,
-                message: 'Erro ao efetuar o login',
+                message: 'Erro ao efetuar o login. Link inválido!',
                 type: 'error'
             });
             this.$router.push({
