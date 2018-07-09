@@ -3,7 +3,7 @@
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>          
         
         <span>
-            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() : title.toUpperCase() }}</b>
+            <b>{{ nameLayer != '' ? ( nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() ) : title.toUpperCase() }}</b>
             <span v-show="layerStatus && apps">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -48,7 +48,8 @@
 </template>
 <script>
 import {
-    emptyStyle
+    emptyStyle,
+    streetsStyle
 } from '@/views/assets/js/map/Styles'
 import Map from '@/middleware/Map'
 
@@ -56,7 +57,10 @@ export default {
     props: {
         status: Boolean,
         color: String,
-        title: String,
+        titleInit: {
+            type: String,
+            required: false
+        },
         id: Number,
         group: Object,
         type: String,
@@ -69,6 +73,7 @@ export default {
     data() {
         return {
             boxView: false,
+            title: '',
             layerStatus: true,
             colorVector: null,
             getInfo: false,
@@ -78,10 +83,11 @@ export default {
         }
     },
 
-    async created(){
+    async mounted(){
         this.layerStatus = this.status
-        
-        if(this.id !== undefined) {
+        this.title = this.titleInit
+
+        if(this.id != undefined) {
             let layers = await Map.getLayers('layer_id='+this.id)
             this.nameLayer = layers.data.features[0].properties.name
             this.title = layers.data.features[0].properties.f_table_name
@@ -136,8 +142,8 @@ export default {
         getColor() {
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title && this.apps) {
-                    
                     if(this.type == 'line') {
+                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(streetsStyle)
                         this.colorVector = sublayer.getStyle().getStroke().getColor()  
                     } else if(this.type == 'point') {
                         this.colorVector = sublayer.getStyle().getImage().getFill().getColor()                    

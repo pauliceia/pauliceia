@@ -2,19 +2,19 @@
     <section class="box-layers">
         <div v-for="layerId in layers" :key="layerId">
             <p-layers-item v-if="layerId !== undefined" :status="true" type="line"
-                color="#13ce66" 
+                color="#13ce66" titleInit=""
                 :id="layerId" :group="vectorLayer"></p-layers-item>
         </div> 
 
         <p-layers-item :status="true" type="line"
                 color="#13ce66" 
-                title="Streets" :group="vectorLayer"></p-layers-item>
+                titleInit="Streets" :group="vectorLayer"></p-layers-item>
         <p-layers-item :status="false" type="point"
                 color="#13ce66" 
-                title="Places" :group="vectorLayer"></p-layers-item>
+                titleInit="Places" :group="vectorLayer"></p-layers-item>
 
         <hr class="divisor" /> 
-        <p-layers-item :status="true" color="blue" title="OSM" :group="externalLayers" :apps="false"></p-layers-item>                      
+        <p-layers-item :status="true" color="blue" titleInit="OSM" :group="externalLayers" :apps="false"></p-layers-item>                      
                 
     </section>
 </template>
