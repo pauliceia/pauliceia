@@ -15,5 +15,5 @@ export default new Vuex.Store({
       paths: ['auth']
     })
   ],
-  strict: process.env.NODE_ENV !== 'production'
+  strict: false
 })

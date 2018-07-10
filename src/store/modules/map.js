@@ -32,7 +32,7 @@ const mutations = {
   },
   setRemoveLayers (state, value) {
     state.layers.splice(state.layers.indexOf(value), 1)
-  },
+  }
 }
 
 const actions = {

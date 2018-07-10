@@ -84,6 +84,7 @@ export default {
 
     data() {
       return {
+        loading: '',
         filterText: '',
         listLayers: [],
         allLayers: [],
@@ -128,21 +129,39 @@ export default {
             return this.allAuthors.filter( author => author.properties.user_id == item.properties.user_id )
         },
         disabled(layer) {
-            //remove of map
-            this.$store.dispatch('map/setRemoveLayers', layer.properties.layer_id)
+            overlayGroup.getLayers().forEach(sublayer => {
+                if(sublayer != undefined && sublayer.get('id') != undefined && sublayer.get('id') == layer.properties.layer_id) {
+                    overlayGroup.getLayers().remove(sublayer)
+                    this.$store.dispatch('map/setRemoveLayers', layer.properties.layer_id)
+                    return true
+                }
+            })
         },
         active(layer) {
+            this._openFullScreen()
+            const vm = this
             let vectorLayer = new ol.layer.Vector({
                 title: layer.properties.f_table_name,
                 source: new ol.source.Vector({
-                    url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=postgres:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson',
+                    url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson',
                     format: new ol.format.GeoJSON(),
                     crossOrigin: 'anonymous',
-                })
+                }),
+                zIndex: vm.layers.length+2,
+                id: layer.properties.layer_id
             });
 
             overlayGroup.getLayers().push( vectorLayer );
             this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
+            this.loading.close()
+        },
+        _openFullScreen() {
+            this.loading = this.$loading({
+                lock: true,
+                text: 'Construindo Mapa',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
         }
     }
     

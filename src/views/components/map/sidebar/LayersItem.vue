@@ -1,5 +1,6 @@
 <template>
-    <div :class="boxView ? 'box-item active' : 'box-item'"> 
+    <div :class="boxView ? 'box-item active' : 'box-item'">
+        <span class="move-icon"><slot></slot></span>
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>          
         
         <span>
@@ -234,6 +235,13 @@ export default {
 .box-item
     margin-top: 5px
     padding: 5px
+
+    .move-icon
+        cursor: pointer
+        margin: 0
+        padding: 3px
+    .move-icon:hover
+        color: #f15a29
     
     span
         padding-left: 7.5px

@@ -51,17 +51,18 @@
       let vectorLayerStreets = new ol.layer.Vector({
         title: 'Streets',
         source: new ol.source.Vector({
-          url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:streets&outputFormat=application%2Fjson',
+          url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:streets&outputFormat=application/json',
           format: new ol.format.GeoJSON(),
           crossOrigin: 'anonymous',
         }),
-        style: streetsStyle
+        style: streetsStyle,
+        zIndex: 0
       });
 
       let vectorLayerPlaces = new ol.layer.Vector({
         title: 'Places',
         source: new ol.source.Vector({
-          url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application%2Fjson',
+          url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application/json',
           format: new ol.format.GeoJSON(),
           crossOrigin: 'anonymous',
         }),

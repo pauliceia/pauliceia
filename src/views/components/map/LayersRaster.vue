@@ -23,6 +23,7 @@ export default {
     name: "LayersRaster",
     data() {
         return {
+            loading: '',
             layerSelected: 'saraBrasil30',
             layers: [
                 {
@@ -78,6 +79,7 @@ export default {
     },
     methods: {
         selectLayerRaster(layer) {
+            this._openFullScreen()
             if(overlayGroupRasters.getLayers().getLength() > 0) overlayGroupRasters.getLayers().pop();
             overlayGroupRasters.getLayers().push(
                 new ol.layer.Tile({
@@ -97,6 +99,15 @@ export default {
                 })
             )
             this.layerSelected = layer
+            this.loading.close()
+        },
+        _openFullScreen() {
+            this.loading = this.$loading({
+                lock: true,
+                text: 'Construindo Mapa',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
         }
     }
 }
