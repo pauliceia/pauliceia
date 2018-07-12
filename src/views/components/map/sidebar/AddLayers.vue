@@ -11,7 +11,7 @@
 
                 <div class="modal-body">
                     <el-input
-                        placeholder="Search Here"
+                        :placeholder="$t('map.addLayer.input')"
                         v-model="filterText">
                     </el-input>
                     <br/>
@@ -19,13 +19,13 @@
                     <article v-for="layer in listLayers" :key="layer.id">
                         <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
                             <div class="infos">
-                                <p><strong>TITLE:</strong> {{ layer.properties.name }}</p>
-                                <p><strong>AUTORES:</strong>
+                                <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.properties.name }}</p>
+                                <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
                                     <span v-for="author in layer.properties.authors" :key="author.properties.user_id">
                                         {{ getAuthorName(author)[0].properties.name }};
                                     </span> 
                                 </p>
-                                <p><strong>TAGS:</strong> 
+                                <p><strong>{{ $t('map.addLayer.box.lbTags') }}:</strong> 
                                     <el-tag v-for="id in layer.properties.keyword" :key="id" style="margin-left: 5px">
                                         {{ getTagName(id)[0].properties.name }}
                                     </el-tag>
@@ -34,7 +34,7 @@
 
                             <div class="btns">
                                 <el-button :type="layers.some(id => id == layer.properties.layer_id) ? 'danger' : 'success'" round @click="layers.some(id => id == layer.properties.layer_id) ? disabled(layer) : active(layer)">
-                                    {{ layers.some(id => id == layer.properties.layer_id) ? 'Desativar' : 'Ativar' }}
+                                    {{ layers.some(id => id == layer.properties.layer_id) ? $t('map.addLayer.btns.disable') : $t('map.addLayer.btns.active') }}
                                 </el-button>
                             </div>
                         </div>

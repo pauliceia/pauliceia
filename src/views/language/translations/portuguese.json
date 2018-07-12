@@ -18,12 +18,28 @@
         "inputEmail": "E-mail",
         "inputPassword": "Senha",
         "register": "Registre-se agora",
-        "btnText": "Entrar"
+        "btnText": "Entrar",
+        "terms": "Se você fizer login via rede social, estará automaticamente concordando com os termos do projeto.",
+        "lbReadme": "leia os termos aqui"
+    },
+    "register": {
+        "title": "Cadastrar",
+        "lbName": "Nome",
+        "lbEmail": "E-mail",
+        "lbUsername": "Nome de usuário",
+        "lbPassword": "Senha",
+        "lbCheckNotification": "Receber notificações por e-mail",
+        "lbCheckAgree": "Eu concordo com os termos de uso.",
+        "lbReadme": "leia os termos aqui",
+        "btnTitle": "Cadastrar",
+        "lbToLogin": "Você já está cadastrado?",
+        "lbToLoginLink": "CLIQUE AQUI"
     },
     "map":{
         "geocoding": {
             "label":  "Procure um Endereço",
-            "placeholder": "nome da rua, número, ano"
+            "placeholder": "nome da rua, número, ano",
+            "btnText": "Pesquisar"
         },
         "sidebar": {
             "title": "CAMADAS",
@@ -38,10 +54,31 @@
         },
         "addLayer": {
             "title": "GERENCIE OUTRAS CAMADAS",
-            "subtitle": "Pesquise por tema, camada ou autor:",
-            "input": "pesquise aqui ...",
-            "save": "SALVAR",
-            "close": "fechar"
+            "input": "Pesquise por tema, camada ou autor:",
+            "close": "fechar",
+            "box": {
+                "lbTitle": "TITULO",
+                "lbAuthors": "AUTORES",
+                "lbTags": "TAGS"
+            },
+            "btns": {
+                "active": "Ativar",
+                "disable": "Desativar"
+            }
+        },
+        "viewInfo": {
+            "btnFollow": "Seguir Camada",
+            "lbDescription": "DESCRIÇÃO",
+            "lbTags": "TAGS",
+            "lbAuthors": "AUTORERS",
+            "lbDate": "DATA DE CRIAÇÃO",
+            "lbNotifications": "Notificações"
+        },
+        "viewInfoVector": {
+            "title": "Selecione as informações",
+            "btnFeature": "Vetor",
+            "btnBox": "Box",
+            "btnClean": "Limpar"
         }
     }
 }

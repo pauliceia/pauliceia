@@ -1,16 +1,16 @@
 <template>
     <div class="box-info" v-show="boxInfoVector">
         <header class="header">
-            <h1>SELECT INFORMATION</h1>
+            <h1>{{ $t('map.viewInfoVector.title').toUpperCase() }}</h1>
             <button class="btn" @click="closeBox()">
                 <md-icon>close</md-icon>
             </button>
         </header>
         <div class="body">
             <div class="row justify-content-md-center">
-                <button class="btn btn-success">FEATURE</button> 
-                <button class="btn btn-secondary">BOX</button> 
-                <button class="btn btn-danger">CLEAN</button>
+                <button class="btn btn-success">{{ $t('map.viewInfoVector.btnFeature').toUpperCase() }}</button> 
+                <button class="btn btn-secondary">{{ $t('map.viewInfoVector.btnBox').toUpperCase() }}</button> 
+                <button class="btn btn-danger">{{ $t('map.viewInfoVector.btnClean').toUpperCase() }}</button>
             </div>
         </div>
     </div>

@@ -165,11 +165,17 @@ export default {
             })
         },
         infosLayer(){
-            this.$store.dispatch('map/setBoxInfoVector', false)
-            this.$store.dispatch('map/setBoxGeocoding', false)
-            this.$store.dispatch('map/setBoxNotifications', false)
-            
-            this.$store.dispatch('map/setBoxInfoLayer', true)
+            if(this.id != null && this.id !== undefined) {
+                this.$store.dispatch('map/setBoxInfoVector', false)
+                this.$store.dispatch('map/setBoxGeocoding', false)
+                this.$store.dispatch('map/setBoxNotifications', false)
+                
+                this.$store.dispatch('map/setBoxInfoLayer', true)
+                this.$store.dispatch('map/setIdInfoLayer', this.id)
+            } else {
+                this.$store.dispatch('map/setBoxInfoLayer', false)
+                this.$store.dispatch('map/setIdInfoLayer', null)
+            }
         },
         infosFeatures(){
             this.getInfo = !this.getInfo

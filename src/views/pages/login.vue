@@ -11,12 +11,12 @@
 
                 <form class="form-signin" @submit.prevent="loginSubmit">
                     <div class="form-label-group">
-                        <label>E-mail</label>
+                        <label>{{ $t('login.inputEmail') }}</label>
                         <input type="email" v-model="email" class="form-control form-control-lg" :placeholder="$t('login.inputEmail')" required autofocus>
                     </div>
                     <br />
                     <div class="form-label-group">
-                        <label>Senha</label>
+                        <label>{{ $t('login.inputPassword') }}</label>
                         <input type="password" v-model="password" class="form-control form-control-lg" :placeholder="$t('login.inputPassword')" required>
                     </div>
                     <br />
@@ -29,8 +29,8 @@
             <hr />
             <div class="col-lg-12">
                 <div class="col-12 terms">
-                    <p>If you sign in with the social network, you automatically agree to the terms of the project.</p>
-                    <a data-toggle="modal" data-target="#modalTerms"> (read here) </a>
+                    <p>{{ $t('login.terms') }}</p>
+                    <a data-toggle="modal" data-target="#modalTerms"> ({{ $t('login.lbReadme') }}) </a>
                 </div>
                 <div class="col-6 link-social">
                     <md-list-item class="btn btn-primary" @click="loginSocial('facebook')">

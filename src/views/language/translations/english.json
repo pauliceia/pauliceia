@@ -18,12 +18,28 @@
         "inputEmail": "Email address",
         "inputPassword": "Password",
         "register": "Register now",
-        "btnText": "Login"
+        "btnText": "Login",
+        "terms": "If you sign in with the social network, you automatically agree to the terms of the project.",
+        "lbReadme": "read the terms here"
+    },
+    "register": {
+        "title": "Register",
+        "lbName": "Name",
+        "lbEmail": "Email address",
+        "lbUsername": "Username",
+        "lbPassword": "Password",
+        "lbCheckNotification": "Receive notification by email",
+        "lbCheckAgree": "I agreeto the termsof use.",
+        "lbReadme": "read the terms here",
+        "btnTitle": "Register",
+        "lbToLogin": "Are you already registered?",
+        "lbToLoginLink": "CLICK HERE"
     },
     "map":{
         "geocoding": {
             "label":  "Search Address",
-            "placeholder": "street name, number, year"
+            "placeholder": "street name, number, year",
+            "btnText": "Search"
         },
         "sidebar": {
             "title": "LAYERS",
@@ -38,10 +54,31 @@
         },
         "addLayer": {
             "title": "SELECT OTHERS LAYERS",
-            "subtitle": "Search by theme, layer or author:",
-            "input": "search here ...",
-            "save": "SAVE",
-            "close": "close"
+            "input": "Search by theme, layer or author:",
+            "close": "close",
+            "box": {
+                "lbTitle": "TITLE",
+                "lbAuthors": "AUTHORS",
+                "lbTags": "TAGS"
+            },
+            "btns": {
+                "active": "Active",
+                "disable": "Disable"
+            }
+        },
+        "viewInfo": {
+            "btnFollow": "Follow Layer",
+            "lbDescription": "DESCRIPTION",
+            "lbTags": "TAGS",
+            "lbAuthors": "AUTHORS",
+            "lbDate": "CREATION DATE",
+            "lbNotifications": "Notifications"
+        },
+        "viewInfoVector": {
+            "title": "Select Information",
+            "btnFeature": "Feature",
+            "btnBox": "Box",
+            "btnClean": "Clean"
         }
     }
 }

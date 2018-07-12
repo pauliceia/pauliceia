@@ -7,7 +7,8 @@ const state = {
   boxGeocoding: true,
   boxInfoLayer: false,
   boxNotifications: false,
-  boxInfoVector: false
+  boxInfoVector: false,
+  idInfoLayer: null
 }
 
 const mutations = {
@@ -32,6 +33,9 @@ const mutations = {
   },
   setRemoveLayers (state, value) {
     state.layers.splice(state.layers.indexOf(value), 1)
+  },
+  setIdInfoLayer (state, value) {
+    state.idInfoLayer = value
   }
 }
 
@@ -56,6 +60,9 @@ const actions = {
   },
   setRemoveLayers({commit}, value) {
     commit('setRemoveLayers', value)
+  },
+  setIdInfoLayer ({commit}, value) {
+    commit('setIdInfoLayer', value)
   }
 }
 

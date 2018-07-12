@@ -22,7 +22,7 @@
 
                     <div class="input-group-append">
                         <button class="btn btn-search">
-                            Search
+                            {{ $t('map.geocoding.btnText') }}
                         </button>
                     </div>
                     <div class="input-group-append">

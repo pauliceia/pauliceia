@@ -1,25 +1,39 @@
 <template>
     <div class="box-info" v-show="boxInfoLayer">
         <header class="header">
-            <h1>LAYER FULL TITLE</h1>
+            <h1>{{ infos.name }}</h1>
             <button class="btn" @click="closeBox()">
                 <md-icon>close</md-icon>
             </button>
-            <button class="btn">
-                <md-icon>person_add</md-icon>
-            </button>
+            <el-tooltip effect="dark" 
+                    :content="$t('map.viewInfo.btnFollow')" 
+                    placement="top-end">
+
+                <button class="btn" @click="followLayer()">
+                    <md-icon>person_add</md-icon>
+                </button>
+            </el-tooltip>
+            
         </header>
         <div class="body">
             <ul class="description">
-                <li><b>THEME:</b> Saúde Pública</li>
-                <li><b>DESCRIPTION:</b> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</li>
-                <li><b>CREATION DATE:</b> 02/01/2018</li>
-                <li><b>AUTHOR:</b> Carlos Alberto Noronha</li>
+                <li><b> {{ $t('map.viewInfo.lbTags') }}:</b> 
+                    <el-tag v-show="layer != null" v-for="id in infos.keywords" :key="id" style="margin-left: 5px">
+                        {{ getTagName(id)[0].properties.name }}
+                    </el-tag>
+                </li>
+                <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b> {{ infos.description }} </li>
+                <li><b>{{ $t('map.viewInfo.lbDate') }}:</b> {{ infos.date }}</li>
+                <li><b>{{ $t('map.viewInfo.lbAuthors') }}:</b> 
+                    <span v-show="layer != null" v-for="author in infos.authors" :key="author.properties.user_id">
+                        {{ getAuthorName(author)[0].properties.name }};
+                    </span> 
+                </li>
             </ul>
             <div class="nofitication">
                 <md-list-item>
                     <md-icon>notifications</md-icon>
-                    <p class="md-list-item-text">Notifications:</p>
+                    <p class="md-list-item-text">{{ $t('map.viewInfo.lbNotifications') }}:</p>
                 </md-list-item>
 
                 <div v-for="test in 8" :key="test">
@@ -44,14 +58,83 @@
 
 <script>
 import { mapState } from 'vuex'
+import Map from '@/middleware/Map'
 
 export default {
     computed: {
-      ...mapState('map', ['boxInfoLayer'])
+      ...mapState('map', ['boxInfoLayer', 'idInfoLayer'])
     },
+
+    watch: {
+        idInfoLayer(val) {
+            if(val != null){
+                this.id = val
+                this._getInfos()
+            }
+        }
+    },
+
+    data() {
+        return {
+            id: null,
+            layer: null,
+            allKeywords: [],
+            allAuthors: [],
+            allAuthorsLayers: [],
+            infos: {
+                name: '',
+                date: '',
+                description: ''
+            }
+        }
+    },
+
+    async created() {
+        let keywords = await Map.getKeyword()
+        this.allKeywords = keywords.data.features
+
+        let authors = await Map.getAuthors()
+        this.allAuthors = authors.data.features
+
+        let authors_layers = await Map.getAuthorsLayers()
+        this.allAuthorsLayers = authors_layers.data.features
+    },
+
     methods: {
         closeBox() {
             this.$store.dispatch('map/setBoxInfoLayer', false)
+            this.$store.dispatch('map/setIdInfoLayer', null)
+        },
+        followLayer() {
+            this.$alert('Desculpe, mas essa função ainda não está disponível em nosso sistema. Aguarde novas implementações!', 'INDISPONÍVEL', {
+                confirmButtonText: 'OK',
+                type: "warning"
+            });
+        },
+        getTagName(id){
+            return this.allKeywords.filter( key => key.properties.keyword_id == id)
+        },
+        getAuthorName(item){
+            return this.allAuthors.filter( author => author.properties.user_id == item.properties.user_id )
+        },
+        async _getInfos() {
+            let layers = await Map.getLayers('layer_id='+this.id)
+            this.layer = layers.data.features[0].properties
+            
+            this.infos.name = this.layer.name
+            this.infos.description = this.layer.description
+            this.infos.keywords = this.layer.keyword
+            this.infos.authors = this.allAuthorsLayers.filter( item => item.properties.layer_id == this.layer.layer_id )
+
+            this.infos.date = this._getDate(this.layer.created_at)
+        },
+        _getDate(date) {
+            let dateParsed = date.split('-')
+            if(this.$i18n.locale() == "pt") {
+                return dateParsed[2].split(" ")[0] + "/" + dateParsed[1] + "/" + dateParsed[0]
+            } else {
+                return dateParsed[1] + "/" + dateParsed[2].split(" ")[0] + "/" + dateParsed[0]
+            }
         }
     }
 }

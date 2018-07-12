@@ -4,7 +4,7 @@
         <!-- form card login -->
         <div class="card rounded">
             <div class="card-header">
-                <h3 class="mb-0">Register</h3>
+                <h3 class="mb-0">{{ $t('register.title') }}</h3>
             </div>
             
             <div class="card-body">
@@ -12,40 +12,40 @@
                 <form class="form-signin" @submit.prevent="registerSubmit">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label>Name</label>
-                            <input type="text" v-model="user.name" class="form-control form-control-lg" placeholder="Full Name" required>
+                            <label>{{ $t('register.lbName') }}</label>
+                            <input type="text" v-model="user.name" class="form-control form-control-lg" :placeholder="$t('register.lbName')" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label>E-mail</label>
-                            <input type="email" v-model="user.email" class="form-control form-control-lg" placeholder="E-mail address" required>
+                            <label>{{ $t('register.lbEmail') }}</label>
+                            <input type="email" v-model="user.email" class="form-control form-control-lg" :placeholder="$t('register.lbEmail')" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Username</label>
-                            <input type="text" v-model="user.username" class="form-control form-control-lg" placeholder="Username" required>
+                            <label>{{ $t('register.lbUsername') }}</label>
+                            <input type="text" v-model="user.username" class="form-control form-control-lg" :placeholder="$t('register.lbUsername')" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Password</label>
-                            <input type="password" v-model="user.password" class="form-control form-control-lg" placeholder="Password" required>
+                            <label>{{ $t('register.lbPassword') }}</label>
+                            <input type="password" v-model="user.password" class="form-control form-control-lg" :placeholder="$t('register.lbPassword')" required>
                         </div>
                     </div>
                     
                     <div class="box-check">
-                        <el-checkbox label="Receive notification by email" v-model="user.receive_notification_by_email"></el-checkbox>
+                        <el-checkbox :label="$t('register.lbCheckNotification')" v-model="user.receive_notification_by_email"></el-checkbox>
                         <br />
-                        <el-checkbox label="I agree to the terms of use." v-model="terms_agreed"></el-checkbox> <a data-toggle="modal" data-target="#modalTerms"> ( read here ) </a>
+                        <el-checkbox :label="$t('register.lbCheckAgree')" v-model="terms_agreed"></el-checkbox> <a data-toggle="modal" data-target="#modalTerms"> ( {{ $t('register.lbReadme') }} ) </a>
                     </div>
 
-                    <button type="submit" disabled class="btn btn-success btn-lg btn-block" id="btn-register">Register</button>
+                    <button type="submit" disabled class="btn btn-success btn-lg btn-block" id="btn-register">{{ $t('register.btnTitle') }}</button>
                 </form>
             </div>
 
             <hr />
             <div class="col-lg-12">
-                <p class="title-to-login">Are you already registered?
-                    <router-link to="/login">CLICK HERE</router-link>
+                <p class="title-to-login">{{ $t('register.lbToLogin') }}
+                    <router-link to="/login">{{ $t('register.lbToLoginLink') }}</router-link>
                 </p>
             </div>
             <!--/card-block-->
