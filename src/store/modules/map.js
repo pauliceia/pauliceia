@@ -8,7 +8,8 @@ const state = {
   boxInfoLayer: false,
   boxNotifications: false,
   boxInfoVector: false,
-  idInfoLayer: null
+  idInfoLayer: null,
+  idInfoFeatureLayer: null
 }
 
 const mutations = {
@@ -36,6 +37,9 @@ const mutations = {
   },
   setIdInfoLayer (state, value) {
     state.idInfoLayer = value
+  },
+  setIdInfoFeatureLayer (state, value) {
+    state.idInfoFeatureLayer = value
   }
 }
 
@@ -63,6 +67,9 @@ const actions = {
   },
   setIdInfoLayer ({commit}, value) {
     commit('setIdInfoLayer', value)
+  },
+  setIdInfoFeatureLayer ({commit}, value) {
+    commit('setIdInfoFeatureLayer', value)
   }
 }
 

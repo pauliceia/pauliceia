@@ -28,7 +28,7 @@
             <el-tooltip effect="dark" 
                     :content="$t('map.sidebar.options.infosVector')"
                     placement="top-end">
-                <md-icon :class="getInfo ? 'active' : ''" @click.native="infosFeatures()">info</md-icon>
+                <md-icon :class="getInfo ? 'active' : ''" @click.native="setStatusGetInfo()">info</md-icon>
             </el-tooltip>
 
             <el-tooltip effect="dark" 
@@ -48,6 +48,7 @@
     </div>           
 </template>
 <script>
+import { mapState } from 'vuex'
 import {
     emptyStyle,
     streetsStyle
@@ -69,6 +70,10 @@ export default {
             type: Boolean,
             default: true
         }
+    },
+
+    computed: {
+        ...mapState('map', ['idInfoFeatureLayer'])
     },
 
     data() {
@@ -136,6 +141,15 @@ export default {
                     sublayer.setStyle(newStyle)
                 }
             })
+        },
+        idInfoFeatureLayer(val){
+            if(val == this.title) {
+                this.getInfo = true
+                this._getInfosFeatures()
+            } else {
+                this.getInfo = false
+                this._clearInteractions()
+            }
         }
     },
 
@@ -177,61 +191,61 @@ export default {
                 this.$store.dispatch('map/setIdInfoLayer', null)
             }
         },
-        infosFeatures(){
-            this.getInfo = !this.getInfo
-
-            if(this.getInfo) {
-                let vm = this
-
-                //CLEAN THE INTERACTIONS OF MAP
-                vm.$root.olmap.getOverlays().clear()
-
-                //CREATE POPUP
-                $("#popup")
-                    .append(`<div id="popup-${vm.title}" class="ol-popup" title="information of vector">
-                        <div id="popup-content-${vm.title}"></div>
-                    </div>`)
-
-                //SELECT POPUP
-                vm.containerPopup = document.getElementById(`popup-${vm.title}`)
-                vm.contentPopup = document.getElementById(`popup-content-${vm.title}`) 
-                $(vm.containerPopup).addClass( "ol-popup" )
-                $(vm.containerPopup).css( "display", "block" )
-                
-                //CREATE INTERACTION AND OVERLAY
-                vm.select = new ol.interaction.Select()
-                vm.overlay = new ol.Overlay({
-                    element: vm.containerPopup,
-                    autoPan: true
-                })
-                vm.$root.olmap.addInteraction(vm.select)
-                vm.$root.olmap.addOverlay(vm.overlay)
-        
-                //WHEN CLICK ON THE VECTOR
-                vm.select.on('select', function(event) {
-                    vm.overlay.setPosition(undefined)
-                    event.selected.filter( feature => ((feature.getId().split('.'))[0]) == vm.title.toLowerCase() )
-                        .forEach( feat => {
-                            let coordinate = feat.getGeometry().getFirstCoordinate();
-                            
-                            vm.contentPopup.innerHTML = ''
-                            $.each(feat.getProperties(), function(index, value) {
-                                if (typeof(value) !== 'object') vm.contentPopup.innerHTML += `<p style="margin:0; padding:0;"><strong>${index}:</strong> ${value} </p>`
-                            }); 
-                            vm.overlay.setPosition(coordinate)
-                        })
-                });                
-            
-            } else{
-                this.$root.olmap.removeInteraction(this.select)
-                this.$root.olmap.getOverlays().clear()
-                this.select = null
-            }
-            
+        setStatusGetInfo() {
+            if(this.getInfo == true) this.$store.dispatch('map/setIdInfoFeatureLayer', null)
+            else this.$store.dispatch('map/setIdInfoFeatureLayer', this.title)
         },
         downloadSHP() {
             let link = 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+this.title.toLowerCase()+'&outputFormat=SHAPE-ZIP'
             window.open(link, '_blank')
+        },
+        _getInfosFeatures(){
+            let vm = this
+
+            //CLEAN THE INTERACTIONS OF MAP
+            vm.$root.olmap.getOverlays().clear()
+
+            //CREATE POPUP
+            $("#popup")
+                .append(`<div id="popup-${vm.title}" class="ol-popup" title="information of vector">
+                    <div id="popup-content-${vm.title}"></div>
+                </div>`)
+
+            //SELECT POPUP
+            vm.containerPopup = document.getElementById(`popup-${vm.title}`)
+            vm.contentPopup = document.getElementById(`popup-content-${vm.title}`) 
+            $(vm.containerPopup).addClass( "ol-popup" )
+            $(vm.containerPopup).css( "display", "block" )
+            
+            //CREATE INTERACTION AND OVERLAY
+            vm.select = new ol.interaction.Select()
+            vm.overlay = new ol.Overlay({
+                element: vm.containerPopup,
+                autoPan: true
+            })
+            vm.$root.olmap.addInteraction(vm.select)
+            vm.$root.olmap.addOverlay(vm.overlay)
+    
+            //WHEN CLICK ON THE VECTOR
+            vm.select.on('select', function(event) {
+                vm.overlay.setPosition(undefined)
+                event.selected.filter( feature => ((feature.getId().split('.'))[0]) == vm.title.toLowerCase() )
+                    .forEach( feat => {
+                        let coordinate = feat.getGeometry().getFirstCoordinate();
+                        
+                        vm.contentPopup.innerHTML = ''
+                        $.each(feat.getProperties(), function(index, value) {
+                            if (typeof(value) !== 'object') vm.contentPopup.innerHTML += `<p style="margin:0; padding:0;"><strong>${index}:</strong> ${value} </p>`
+                        }); 
+                        vm.overlay.setPosition(coordinate)
+                    })
+            });                
+        },
+        _clearInteractions(){
+            this.$root.olmap.removeInteraction(this.select)
+            this.$root.olmap.removeOverlay(this.overlay)
+            this.select = null
+            this.overlay = null
         }
     }
 }
