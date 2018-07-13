@@ -41,7 +41,7 @@
             "placeholder": "nome da rua, número, ano",
             "btnText": "Pesquisar"
         },
-        "sidebar": {
+        "sidebarLayer": {
             "title": "CAMADAS",
             "btnAdd": "GERENCIE OUTRAS",
             "options": {
@@ -51,6 +51,9 @@
                 "editColor": "Mudar a cor",
                 "download": "Baixar .shp"
             }        
+        },
+        "sidebarEdit": {
+            "title": "EDITOR"      
         },
         "addLayer": {
             "title": "GERENCIE OUTRAS CAMADAS",

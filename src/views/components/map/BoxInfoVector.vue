@@ -69,6 +69,7 @@ export default {
                 vm.result = []
                 event.selected
                     .forEach( feat => {
+                        vm.result.push({ key: "id", value: feat.getId().split('.')[1]})
                         $.each(feat.getProperties(), function(index, value) {
                             if (typeof(value) !== 'object') {
                                 vm.result.push({
@@ -81,7 +82,7 @@ export default {
         },
         clear() {
             this.$store.dispatch('map/setIdInfoFeatureLayer', null)
-            this.$root.olmap.getInteractions().clear()
+            this.$root.olmap.removeInteraction(this.select)
             this.$root.olmap.getOverlays().clear()
             this.result = []
         }

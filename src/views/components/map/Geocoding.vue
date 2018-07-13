@@ -64,8 +64,7 @@ export default {
     },
     
     computed: {
-        
-      ...mapState('map', ['boxGeocoding'])
+        ...mapState('map', ['boxGeocoding'])
     },
 
     async mounted(){

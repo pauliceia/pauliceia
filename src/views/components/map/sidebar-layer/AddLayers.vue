@@ -105,7 +105,7 @@ export default {
             let authors = await Map.getAuthors()
             this.allAuthors = authors.data.features
 
-            let authors_layers = await Map.getAuthorsLayers()
+            let authors_layers = await Map.getAuthorsLayers(null)
             this.allAuthorsLayers = authors_layers.data.features
 
             this.listLayers = this.allLayers.map( layer => {

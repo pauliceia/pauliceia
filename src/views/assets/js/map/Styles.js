@@ -7,7 +7,7 @@
 //   }))
 // })
 
-const placeStyle = new ol.style.Style({
+const pointStyle = new ol.style.Style({
   image: new ol.style.Circle({
       radius: 8,
       stroke: new ol.style.Stroke({
@@ -30,7 +30,7 @@ const placeStyleSearch = new ol.style.Style({
   }))
 })
 
-const streetsStyle = new ol.style.Style({
+const lineStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
     //NOT put 'string color', put 'hexadecimal color'
     color: '#0000ff',
@@ -43,8 +43,8 @@ const emptyStyle = new ol.style.Style({
 })
 
 export {
-  placeStyle,
+  pointStyle,
   placeStyleSearch,
-  streetsStyle,
+  lineStyle,
   emptyStyle
 }

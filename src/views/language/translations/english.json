@@ -41,7 +41,7 @@
             "placeholder": "street name, number, year",
             "btnText": "Search"
         },
-        "sidebar": {
+        "sidebarLayer": {
             "title": "LAYERS",
             "btnAdd": "SELECT OTHERS",
             "options": {
@@ -51,6 +51,9 @@
                 "editColor": "Edit color",
                 "download": "Download"
             } 
+        },
+        "sidebarEdit": {
+            "title": "EDIT"      
         },
         "addLayer": {
             "title": "SELECT OTHERS LAYERS",

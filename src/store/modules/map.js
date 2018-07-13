@@ -9,7 +9,8 @@ const state = {
   boxNotifications: false,
   boxInfoVector: false,
   idInfoLayer: null,
-  idInfoFeatureLayer: null
+  idInfoFeatureLayer: null,
+  sidebar: null
 }
 
 const mutations = {
@@ -40,6 +41,9 @@ const mutations = {
   },
   setIdInfoFeatureLayer (state, value) {
     state.idInfoFeatureLayer = value
+  },
+  setSidebar (state, value) {
+    state.sidebar = value
   }
 }
 
@@ -70,6 +74,9 @@ const actions = {
   },
   setIdInfoFeatureLayer ({commit}, value) {
     commit('setIdInfoFeatureLayer', value)
+  },
+  setSidebar ({commit}, value) {
+    commit('setSidebar', value)
   }
 }
 

@@ -14,31 +14,31 @@
 
         <div v-show="boxView && layerStatus && apps" class="box-options">
             <el-tooltip effect="dark" 
-                    :content="$t('map.sidebar.options.zoom')" 
+                    :content="$t('map.sidebarLayer.options.zoom')" 
                     placement="top-end">
                 <md-icon @click.native="extend()">center_focus_strong</md-icon>
             </el-tooltip>
 
             <el-tooltip effect="dark" 
-                    :content="$t('map.sidebar.options.infosLayer')" 
+                    :content="$t('map.sidebarLayer.options.infosLayer')" 
                     placement="top-end">
                 <md-icon @click.native="infosLayer()">assignment</md-icon>
             </el-tooltip>
             
             <el-tooltip effect="dark" 
-                    :content="$t('map.sidebar.options.infosVector')"
+                    :content="$t('map.sidebarLayer.options.infosVector')"
                     placement="top-end">
                 <md-icon :class="getInfo ? 'active' : ''" @click.native="setStatusGetInfo()">info</md-icon>
             </el-tooltip>
 
             <el-tooltip effect="dark" 
-                    :content="$t('map.sidebar.options.editColor')"
+                    :content="$t('map.sidebarLayer.options.editColor')"
                     placement="top-end">
                 <input type="color" class="btn-color" v-model="colorVector" />
             </el-tooltip>
 
             <el-tooltip effect="dark" 
-                    :content="$t('map.sidebar.options.download')"
+                    :content="$t('map.sidebarLayer.options.download')"
                     placement="top-end">
                 <md-icon @click.native="downloadSHP()">save_alt</md-icon>
             </el-tooltip>
@@ -51,7 +51,8 @@
 import { mapState } from 'vuex'
 import {
     emptyStyle,
-    streetsStyle
+    lineStyle,
+    pointStyle
 } from '@/views/assets/js/map/Styles'
 import Map from '@/middleware/Map'
 
@@ -158,12 +159,12 @@ export default {
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title && this.apps) {
                     if(this.type == 'line') {
-                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(streetsStyle)
+                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(lineStyle)
                         this.colorVector = sublayer.getStyle().getStroke().getColor()  
                     } else if(this.type == 'point') {
+                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
                         this.colorVector = sublayer.getStyle().getImage().getFill().getColor()                    
                     }
-
                 }
             })
         },
@@ -234,6 +235,7 @@ export default {
                         let coordinate = feat.getGeometry().getFirstCoordinate();
                         
                         vm.contentPopup.innerHTML = ''
+                        vm.contentPopup.innerHTML = `<p style="margin:0; padding:0;"><strong>id:</strong> ${feat.getId().split('.')[1]} </p>`
                         $.each(feat.getProperties(), function(index, value) {
                             if (typeof(value) !== 'object') vm.contentPopup.innerHTML += `<p style="margin:0; padding:0;"><strong>${index}:</strong> ${value} </p>`
                         }); 

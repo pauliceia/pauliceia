@@ -2,28 +2,28 @@
     <section class="box-layers">
         <div v-sortable="{ handle: '.handle', onEnd: reorder }">
             <div v-for="layerId in layers.slice().reverse()" :key="layerId">
-            <p-layers-item v-if="layerId !== undefined" :status="true" type="line"
+            <p-sidebarLayer-item v-if="layerId !== undefined" :status="true" type="line"
                     color="#13ce66" titleInit=""
                     :id="layerId" :group="vectorLayer">
                     <i class="el-icon-rank handle"></i>
-                </p-layers-item>
+                </p-sidebarLayer-item>
             </div> 
         </div>  
 
-        <p-layers-item :status="false" type="point"
+        <p-sidebarLayer-item :status="false" type="point"
                 color="#13ce66" 
-                titleInit="Places" :group="vectorLayer"></p-layers-item>
-        <p-layers-item :status="true" type="line"
+                titleInit="Places" :group="vectorLayer"></p-sidebarLayer-item>
+        <p-sidebarLayer-item :status="true" type="line"
                 color="#13ce66" 
-                titleInit="Streets" :group="vectorLayer"></p-layers-item>
+                titleInit="Streets" :group="vectorLayer"></p-sidebarLayer-item>
 
         <hr class="divisor" /> 
-        <p-layers-item :status="true" color="blue" titleInit="OSM" :group="externalLayers" :apps="false"></p-layers-item>                    
+        <p-sidebarLayer-item :status="true" color="blue" titleInit="OSM" :group="externalLayers" :apps="false"></p-sidebarLayer-item>                    
                 
     </section>
 </template>
 <script>
-import LayersItem from '@/views/components/map/sidebar/LayersItem'
+import LayersItem from '@/views/components/map/sidebar-layer/LayersItem'
 import { mapState } from 'vuex'
 
 import {
@@ -34,7 +34,7 @@ import {
 
 export default {
     components: {
-        'p-layers-item': LayersItem
+        'p-sidebarLayer-item': LayersItem
     },
 
     computed: {

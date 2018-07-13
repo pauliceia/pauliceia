@@ -1,18 +1,18 @@
 <template>
     <div>
-        <p class="btn_sidebar" v-show="!sidebarVisible" @click="sidebar()">
+        <p class="btn_sidebar" v-show="sidebar == null" @click="sidebarActive()">
             <md-icon>keyboard_arrow_right</md-icon>
-            <b>{{ $t('map.sidebar.title')}}</b>
+            <b>{{ $t('map.sidebarLayer.title')}}</b>
         </p>
 
-        <section class="sidebar" v-show="sidebarVisible">
+        <section class="sidebar" v-show="sidebar == 'layer'">
             <md-toolbar md-elevation="1" style="background: #f36c3f; color: #FFF;">
-                <span class="md-title nav-title"><strong>{{ $t('map.sidebar.title') }}</strong></span>
+                <span class="md-title nav-title"><strong>{{ $t('map.sidebarLayer.title') }}</strong></span>
 
                 <div class="md-toolbar-section-end">
                     <div class="box-options">
                         <el-tooltip effect="dark" 
-                                :content="$t('map.sidebar.btnAdd')"
+                                :content="$t('map.sidebarLayer.btnAdd')"
                                 placement="bottom-end">
                                     <md-button class="md-icon-button md-dense" data-toggle="modal" data-target="#modalAddLayer">
                                         <md-icon style="color: #FFF;">iso</md-icon>
@@ -20,49 +20,50 @@
                         </el-tooltip>
                     </div>
 
-                    <md-button class="md-icon-button md-dense" @click="sidebar()">
+                    <md-button class="md-icon-button md-dense" @click="sidebarDisable()">
                         <md-icon style="color: #FFF;">keyboard_arrow_left</md-icon>
                     </md-button>
                 </div>
             </md-toolbar>
 
             <md-list>
-                <p-sidebar-layers></p-sidebar-layers>
+                <p-sidebarLayer-layers></p-sidebarLayer-layers>
             </md-list>
         </section>
 
-        <p-sidebar-addLayers></p-sidebar-addLayers>
+        <p-sidebarLayer-addLayers></p-sidebarLayer-addLayers>
 
     </div>
 </template>
 
 <script>
-import Layers from '@/views/components/map/sidebar/Layers'
-import AddLayers from '@/views/components/map/sidebar/AddLayers'
+import Layers from '@/views/components/map/sidebar-layer/Layers'
+import AddLayers from '@/views/components/map/sidebar-layer/AddLayers'
+
+import { mapState } from 'vuex'
 
 export default {
     components: {
-        'p-sidebar-layers': Layers,
-        'p-sidebar-addLayers': AddLayers
+        'p-sidebarLayer-layers': Layers,
+        'p-sidebarLayer-addLayers': AddLayers
     },
-    data(){
-        return {
-            sidebarVisible: false
-        }
+
+    computed: {
+        ...mapState('map', ['sidebar'])
     },
+
     methods: {
-        sidebar() {
-            if (this.sidebarVisible == false) {
-                this.sidebarVisible = true
-                $('.ol-zoomslider').css("margin-left", "335px")
-                $('.ol-zoom').css("margin-left", "335px")
-                $('.ol-scale-line').css("margin-left", "335px")
-            }else{
-                this.sidebarVisible = false
-                $('.ol-zoomslider').css("margin-left", "0")
-                $('.ol-zoom').css("margin-left", "0")
-                $('.ol-scale-line').css("margin-left", "0")
-            }
+        sidebarActive() {
+            this.$store.dispatch('map/setSidebar', 'layer')
+            $('.ol-zoomslider').css("margin-left", "335px")
+            $('.ol-zoom').css("margin-left", "335px")
+            $('.ol-scale-line').css("margin-left", "335px")
+        },
+        sidebarDisable() {
+            this.$store.dispatch('map/setSidebar', null)
+            $('.ol-zoomslider').css("margin-left", "0")
+            $('.ol-zoom').css("margin-left", "0")
+            $('.ol-scale-line').css("margin-left", "0")
         }
     }
 }

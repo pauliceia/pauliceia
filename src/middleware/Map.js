@@ -19,8 +19,9 @@ export default {
     return ApiVGI().get(`/api/user/`)
   },
 
-  getAuthorsLayers() {
-    return ApiVGI().get(`/api/user_layer/`)
+  getAuthorsLayers(query) {
+    if(query != null) return ApiVGI().get(`/api/user_layer/?${query}`)
+    else return ApiVGI().get('/api/user_layer/')
   },
 
   getPlacesList() {

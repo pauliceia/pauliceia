@@ -5,7 +5,8 @@
       <p-timeline></p-timeline>
       <p-geocoding></p-geocoding>
       <p-layersRaster></p-layersRaster>
-      <p-sidebar></p-sidebar>
+      <p-sidebarLayer></p-sidebarLayer>
+      <p-sidebarEdit></p-sidebarEdit>
       
       <p-boxinfolayer></p-boxinfolayer>
       <p-boxinfovector></p-boxinfovector>
@@ -20,15 +21,16 @@
   import Timeline from '@/views/components/map/Timeline'
   import Geocoding from '@/views/components/map/Geocoding'
   import LayersRaster from '@/views/components/map/LayersRaster'
-  import Sidebar from '@/views/components/map/Sidebar'
+  import SidebarLayer from '@/views/components/map/SidebarLayer'
+  import SidebarEdit from '@/views/components/map/SidebarEdit'
 
   import BoxInfoLayer from '@/views/components/map/BoxInfoLayer'
   import BoxInfoVector from '@/views/components/map/BoxInfoVector'
   import BoxInfoNotifications from '@/views/components/map/BoxNotifications'
 
   import {
-    placeStyle,
-    streetsStyle
+    pointStyle,
+    lineStyle
   } from '@/views/assets/js/map/Styles'
 
   import {
@@ -42,11 +44,13 @@
       'p-timeline': Timeline,
       'p-geocoding': Geocoding,
       'p-layersRaster': LayersRaster,
-      'p-sidebar': Sidebar,
+      'p-sidebarLayer': SidebarLayer,
+      'p-sidebarEdit': SidebarEdit,
       'p-boxinfolayer': BoxInfoLayer,
       'p-boxinfovector': BoxInfoVector,
       'p-boxnotifications': BoxInfoNotifications
     },
+
     created () {
       let vectorLayerStreets = new ol.layer.Vector({
         title: 'Streets',
@@ -55,7 +59,7 @@
           format: new ol.format.GeoJSON(),
           crossOrigin: 'anonymous',
         }),
-        style: streetsStyle,
+        style: lineStyle,
         zIndex: 0
       });
 
@@ -66,7 +70,7 @@
           format: new ol.format.GeoJSON(),
           crossOrigin: 'anonymous',
         }),
-        style: placeStyle
+        style: pointStyle
       });
 
       let osm = new ol.layer.Tile({
