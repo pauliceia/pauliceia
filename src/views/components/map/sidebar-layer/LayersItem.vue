@@ -253,7 +253,7 @@ export default {
 }
     
 </script>
-<style lang="sass">
+<style lang="sass" scoped>
 .box-item
     margin-top: 5px
     padding: 5px

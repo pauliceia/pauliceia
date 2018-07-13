@@ -15,15 +15,29 @@
                     </md-button>
                 </div>
             </md-toolbar>
-        </section>
 
+            <p-sidebarEdit-layers></p-sidebarEdit-layers>
+
+            <p-sidebarEdit-functions></p-sidebarEdit-functions>
+
+            <p-sidebarEdit-attributes></p-sidebarEdit-attributes>
+        </section>
     </div>
 </template>
 
 <script>
+import Layers from '@/views/components/map/sidebar-edit/Layers'
+import Functions from '@/views/components/map/sidebar-edit/Functions'
+import Attributes from '@/views/components/map/sidebar-edit/Attributes'
 import { mapState } from 'vuex'
 
 export default {
+    components: {
+        'p-sidebarEdit-layers': Layers,
+        'p-sidebarEdit-functions': Functions,
+        'p-sidebarEdit-attributes': Attributes
+    },
+
     computed: {
         ...mapState('auth', ['isUserLoggedIn']),
         ...mapState('map', ['sidebar'])
