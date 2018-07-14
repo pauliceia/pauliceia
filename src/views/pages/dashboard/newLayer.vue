@@ -146,13 +146,96 @@
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">New Layer</h5>
+            <h5 class="card-title">Time Columns</h5>
             <div class="card-text">
-            <form>
-              <div class="form-row">
-                
-              </div>
-            </form>
+              <form>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="inputName">Start Date</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <input class="form-control" v-model="startDate" type="date" id="start_date">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="userSelect">Start Date Column</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <v-select multiple v-model="startColumnsName" :options="columnsName" track-by="" label=""
+                              id="start_date_column_name"></v-select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="userSelect">Start Date Mask</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <v-select v-model="startDateMask" :options="dateMask" track-by="mask" label="mask"
+                              id="start_date_mask"></v-select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="inputName">End Date</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <input class="form-control" type="date" v-model="endDate" id="end_date">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="userSelect">End Date Column</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <v-select multiple v-model="endColumnsName" :options="columnsName" track-by="" label=""
+                              id="end_date_column_name"></v-select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="userSelect">End Date Mask</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <v-select v-model="endDateMask" :options="dateMask" track-by="mask" label="mask"
+                              id="end_date_mask"></v-select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col align-self-end">
+                    <br>
+                    <a href="#" class="btn btn-primary" @click="Upload2()">Submit</a>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -167,8 +250,12 @@
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
   import {mapState} from 'vuex'
+  import lang from 'element-ui/lib/locale/lang/en'
+  import locale from 'element-ui/lib/locale'
 
   Vue.component('v-select', vSelect)
+  // configure language
+  locale.use(lang)
 
   export default {
     name: "newLayer",
@@ -180,6 +267,7 @@
     },
     data: function () {
       return {
+        tableName: null,
         chosenUsers: [],
         references: [],
         chosenRef: [],
@@ -189,7 +277,16 @@
         keywords: [],
         chosenKeywords: [],
         chosenKeywordsID: [],
-        fname: 'Choose file'
+        fname: 'Choose file',
+        columns: null,
+        columnsName: [],
+        startColumnsName: null,
+        endColumnsName: null,
+        dateMask: [],
+        startDateMask: null,
+        endDateMask: null,
+        startDate: null,
+        endDate: null,
       }
     },
     methods: {
@@ -202,6 +299,31 @@
       updateName() {
         this.fname = document.getElementById("Upload").files[0].name
       },
+      Upload2(){
+        let timeColumn = {
+          'properties': {
+            'f_table_name': this.tableName,
+            'start_date': this.startDate,
+            'end_date': this.endDate,
+            'end_date_column_name': this.endColumnsName[0],
+            'start_date_column_name': this.startColumnsName[0],
+            'start_date_mask_id': this.startDateMask.mask_id,
+            'end_date_mask_id': this.endDateMask.mask_id,
+          },
+          'type': 'TemporalColumns'
+        }
+        console.log(timeColumn)
+        Api().post('/api/temporal_columns/create',
+          timeColumn
+        ).then(function (response) {
+          console.log(response)
+        })
+
+        //this.$router.push({
+        //  path: '/dashboard/home'
+        //})
+
+      },
       Upload() {
         const vm = this
 
@@ -209,6 +331,7 @@
           this.chosenKeywordsID.push(e.keyword_id)
         })
 
+        this.tableName = document.getElementById("inputName").value
         let tableName = document.getElementById("inputName").value
         let epsg = document.getElementById("inputEpsg").value
         if (tableName.indexOf(' ') == 0) tableName = tableName.slice(1)
@@ -236,8 +359,8 @@
         Api().post('/api/layer/create',
           layer
         ).then(function (response) {
-          console.log("Layer")
-          console.log(response)
+          //console.log("Layer")
+          //console.log(response)
 
           //POST cada usuario colaborar da layer
           vm.chosenUsers.forEach(u => {
@@ -270,23 +393,39 @@
           Api().post('/api/changeset/create',
             changeset
           ).then(function (response) {
-            console.log("Changeset")
-            console.log(response)
+            //console.log("Changeset")
+            //console.log(response)
 
             Api().post('api/import/shp/?f_table_name=' + tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id +
               '&epsg=' + epsg,
               file
             ).then(function (response) {
-              console.log("Import")
-              console.log(response)
-            })
+              //console.log("Import")
+              //console.log(response)
 
+              //Pega as colunas do shapefile enviado
+              Api().get('/api/feature_table/?f_table_name='+tableName).then(function (response) {
+                response.data.features.filter(e => {
+                  //console.log(vm.columns)
+                  vm.columns = e.properties
+                  Object.getOwnPropertyNames(e.properties).forEach(c => {
+                    if(c !== 'geom' && c !== '__ob__' && c !== 'changeset_id' ){
+                      vm.columnsName.push(c)
+                    }
+                  })
+                  //console.log(vm.columnsName)
+                })
+              })
+
+
+
+            })
           })
         })
-
-        this.$router.push({
-          path: '/dashboard/home'
-        })
+        //
+        //this.$router.push({
+        //  path: '/dashboard/home'
+        //})
 
         //this.chosenKeywordsID = null
         //this.chosenRefID = null
@@ -340,6 +479,14 @@
         response.data.features.filter(e => {
           vm.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
         })
+      })
+
+
+      Api().get('/api/mask').then(function (response) {
+        response.data.features.filter(e => {
+          vm.dateMask.push(e.properties)
+        })
+        //console.log(vm.dateMask)
       })
 
       // Api().get('/api/reference').then(function (response) {
