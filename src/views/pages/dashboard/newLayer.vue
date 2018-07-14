@@ -143,6 +143,20 @@
           </div>
         </div>
       </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">New Layer</h5>
+            <div class="card-text">
+            <form>
+              <div class="form-row">
+                
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </p-dash-layout>
 </template>
@@ -219,7 +233,7 @@
         var file = document.getElementById("Upload").files[0]
 
 
-        Api().post('/api/layer/create/?is_to_create_feature_table=FALSE',
+        Api().post('/api/layer/create',
           layer
         ).then(function (response) {
           console.log("Layer")
