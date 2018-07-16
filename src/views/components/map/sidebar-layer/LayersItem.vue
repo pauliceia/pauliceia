@@ -4,7 +4,7 @@
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>          
         
         <span>
-            <b>{{ nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() }}</b>
+            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() : title.toUpperCase() }}</b>
             <span v-show="layerStatus && apps">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -66,7 +66,6 @@ export default {
         },
         id: Number,
         group: Object,
-        type: String,
         apps: {
             type: Boolean,
             default: true
@@ -81,6 +80,7 @@ export default {
         return {
             boxView: false,
             title: '',
+            type: '',
             layerStatus: true,
             colorVector: null,
             getInfo: false,
@@ -90,7 +90,7 @@ export default {
         }
     },
 
-    async mounted(){
+    async mounted() {
         this.layerStatus = this.status
         this.title = this.titleInit
 
@@ -104,24 +104,26 @@ export default {
     },
 
     watch: {
+        //active and disable layer
         layerStatus(val) {
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title) sublayer.setVisible(this.layerStatus)
             })
         },
+        //edit color of layer
         colorVector(val) {
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title && this.layerStatus) {
                     
                     let newStyle = null
-                    if(this.type == 'line') {
+                    if(this.type == 'MultiLineString') {
                         newStyle = new ol.style.Style({
                             stroke: new ol.style.Stroke({
                                 color: val,
                                 width: 3
                             })
                         })
-                    } else if(this.type == 'point') {
+                    } else if(this.type == 'Point') {
                         newStyle = new ol.style.Style({
                             image: new ol.style.Circle({
                                 radius: 8,
@@ -143,6 +145,7 @@ export default {
                 }
             })
         },
+        //active 'info attrib' feature
         idInfoFeatureLayer(val){
             if(val == this.title) {
                 this.getInfo = true
@@ -158,10 +161,13 @@ export default {
         getColor() {
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title && this.apps) {
-                    if(this.type == 'line') {
+                    this.type = sublayer.getSource().getFeatures()[0].getGeometry().getType()
+                    
+                    if(this.type == 'MultiLineString') {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(lineStyle)
                         this.colorVector = sublayer.getStyle().getStroke().getColor()  
-                    } else if(this.type == 'point') {
+
+                    } else if(this.type == 'Point') {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
                         this.colorVector = sublayer.getStyle().getImage().getFill().getColor()                    
                     }
@@ -208,15 +214,27 @@ export default {
 
             //CREATE POPUP
             $("#popup")
-                .append(`<div id="popup-${vm.title}" class="ol-popup" title="information of vector">
+                .append(`<div id="popup-${vm.title}" title="information of vector">
                     <div id="popup-content-${vm.title}"></div>
                 </div>`)
 
             //SELECT POPUP
             vm.containerPopup = document.getElementById(`popup-${vm.title}`)
-            vm.contentPopup = document.getElementById(`popup-content-${vm.title}`) 
-            $(vm.containerPopup).addClass( "ol-popup" )
-            $(vm.containerPopup).css( "display", "block" )
+            vm.contentPopup = document.getElementById(`popup-content-${vm.title}`)
+            $(vm.containerPopup).css({
+                "display": "block",
+                "position": "absolute",
+                "background-color": "white",
+                "-webkit-filter": "drop-shadow(0 1px 4px rgba(0,0,0,0.2))",
+                "filter": "drop-shadow(0 1px 4px rgba(0,0,0,0.2))",
+                "padding": "15px",
+                "border-radius": "10px",
+                "border": "1px solid #cccccc",
+                "bottom": "12px",
+                "left": "-50px",
+                "min-width": "280px"
+            })
+            $(vm.containerPopup).addClass("ol-popup")
             
             //CREATE INTERACTION AND OVERLAY
             vm.select = new ol.interaction.Select()
@@ -300,7 +318,7 @@ export default {
 .box-item.active
     background: rgba(#FFF, 0.2)
 
-//POPUP
+//POPUP    
 .ol-popup
     position: absolute
     background-color: white
