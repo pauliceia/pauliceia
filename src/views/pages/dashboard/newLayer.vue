@@ -1,7 +1,7 @@
 <template>
   <p-dash-layout title="New Layer">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-6" v-if="shapeCorrect === false">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">New Layer</h5>
@@ -144,7 +144,7 @@
         </div>
       </div>
       <div class="col-sm-6">
-        <div class="card">
+        <div class="card" v-if="shapeCorrect">
           <div class="card-body">
             <h5 class="card-title">Time Columns</h5>
             <div class="card-text">
@@ -287,6 +287,8 @@
         endDateMask: null,
         startDate: null,
         endDate: null,
+        shapeCorrect: false,
+        fullscreenLoading: false
       }
     },
     methods: {
@@ -319,9 +321,9 @@
           console.log(response)
         })
 
-        //this.$router.push({
-        //  path: '/dashboard/home'
-        //})
+        this.$router.push({
+          path: '/dashboard/home'
+        })
 
       },
       Upload() {
@@ -355,6 +357,12 @@
 
         var file = document.getElementById("Upload").files[0]
 
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
 
         Api().post('/api/layer/create',
           layer
@@ -400,7 +408,7 @@
               '&epsg=' + epsg,
               file
             ).then(function (response) {
-              //console.log("Import")
+              console.log("Import ok")
               //console.log(response)
 
               //Pega as colunas do shapefile enviado
@@ -413,6 +421,8 @@
                       vm.columnsName.push(c)
                     }
                   })
+                  vm.shapeCorrect = true;
+                  loading.close();
                   //console.log(vm.columnsName)
                 })
               })
@@ -461,13 +471,14 @@
             //console.log(vm.chosenRef)
             vm.chosenRefID.push(ref_id)
             vm.auxRef = null
-
           })
         }
       }
     },
     beforeCreate() {
       const vm = this
+
+      this.shapeCorrect = false
       Api().get('/api/user').then(function (response) {
         response.data.features.filter(e => {
           if (e.properties.user_id !== vm.user.user_id)
