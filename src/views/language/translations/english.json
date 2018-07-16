@@ -50,7 +50,8 @@
                 "infosVector": "Vectors information",
                 "editColor": "Edit color",
                 "download": "Download"
-            } 
+            },
+            "msgEmpty": "Add layers to the view on the map!"
         },
         "sidebarEdit": {
             "title": "EDIT"      

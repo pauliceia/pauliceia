@@ -151,9 +151,11 @@ export default {
                 id: layer.properties.layer_id
             });
 
-            overlayGroup.getLayers().push( vectorLayer );
-            this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
-            this.loading.close()
+            overlayGroup.getLayers().push( vectorLayer )
+            setTimeout( _ => { 
+                vm.$store.dispatch('map/setNewLayers', layer.properties.layer_id);
+                vm.loading.close();
+            }, 500);
         },
         _openFullScreen() {
             this.loading = this.$loading({

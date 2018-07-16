@@ -50,7 +50,8 @@
                 "infosVector": "Informações dos vetores",
                 "editColor": "Mudar a cor",
                 "download": "Baixar .shp"
-            }        
+            },
+            "msgEmpty": "Adicione as camadas para a visualização no mapa!"
         },
         "sidebarEdit": {
             "title": "EDITOR"      
