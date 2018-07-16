@@ -52,27 +52,6 @@
     },
 
     created () {
-      let vectorLayerStreets = new ol.layer.Vector({
-        title: 'Streets',
-        source: new ol.source.Vector({
-          url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:streets&outputFormat=application/json',
-          format: new ol.format.GeoJSON(),
-          crossOrigin: 'anonymous',
-        }),
-        style: lineStyle,
-        zIndex: 0
-      });
-
-      let vectorLayerPlaces = new ol.layer.Vector({
-        title: 'Places',
-        source: new ol.source.Vector({
-          url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:places&outputFormat=application/json',
-          format: new ol.format.GeoJSON(),
-          crossOrigin: 'anonymous',
-        }),
-        style: pointStyle
-      });
-
       let osm = new ol.layer.Tile({
         title: 'OSM',
         source: new ol.source.OSM()
@@ -83,14 +62,6 @@
         osm
       )
       
-      overlayGroup.getLayers().clear();
-      overlayGroup.getLayers().push(
-        vectorLayerStreets
-      )
-      overlayGroup.getLayers().push(
-        vectorLayerPlaces
-      )
-
     }
   }
 </script>

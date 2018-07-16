@@ -4,7 +4,7 @@
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>          
         
         <span>
-            <b>{{ nameLayer != '' ? ( nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() ) : title.toUpperCase() }}</b>
+            <b>{{ nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() }}</b>
             <span v-show="layerStatus && apps">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>

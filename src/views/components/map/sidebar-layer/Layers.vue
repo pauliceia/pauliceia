@@ -7,15 +7,15 @@
                     :id="layerId" :group="vectorLayer">
                     <i class="el-icon-rank handle"></i>
                 </p-sidebarLayer-item>
-            </div> 
-        </div>  
-
-        <p-sidebarLayer-item :status="false" type="point"
-                color="#13ce66" 
-                titleInit="Places" :group="vectorLayer"></p-sidebarLayer-item>
-        <p-sidebarLayer-item :status="true" type="line"
-                color="#13ce66" 
-                titleInit="Streets" :group="vectorLayer"></p-sidebarLayer-item>
+            </div>
+            <div v-if="layers.length == 0">
+                <el-alert
+                    title="Adicione as camadas para a visualização no mapa!"
+                    type="info"
+                    center :closable="false"
+                    show-icon />
+            </div>
+        </div>
 
         <hr class="divisor" /> 
         <p-sidebarLayer-item :status="true" color="blue" titleInit="OSM" :group="externalLayers" :apps="false"></p-sidebarLayer-item>                    
