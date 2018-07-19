@@ -14,7 +14,7 @@ export default {
                 this.$notify({
                     title: 'SUCESSO',
                     dangerouslyUseHTMLString: true,
-                    message: 'Olá, seu e-mail foi validado com <strong>sucesso</strong>! Agora é só realize o <i>login</i> para acessar o sistema.',
+                    message: this.$t('validEmail.msgSuccess'),
                     type: 'success'
                 });
                 this.$router.push({
@@ -26,7 +26,7 @@ export default {
             this.$message({
                 showClose: true,
                 dangerouslyUseHTMLString: true,
-                message: 'Erro ao efetuar a validação do seu E-mail. Link inválido!',
+                message: this.$t('validEmail.msgErr'),
                 type: 'error'
             });
             this.$router.push({

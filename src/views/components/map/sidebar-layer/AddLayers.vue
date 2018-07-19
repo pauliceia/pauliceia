@@ -99,7 +99,7 @@ export default {
             let layers = await Map.getLayers(null)
             this.allLayers = layers.data.features
 
-            let keywords = await Map.getKeyword()
+            let keywords = await Map.getKeywords()
             this.allKeywords = keywords.data.features
 
             let authors = await Map.getAuthors()
@@ -114,7 +114,7 @@ export default {
             })
 
         } catch (error) {
-            this.$alert('Serviço indisponível, tente mais tarde ou comunique nosso suporte!', 'Erro Interno', {
+            this.$alert(this.$t('map.addLayer.msg.errMsg'), this.$t('map.addLayer.msg.errTitle'), {
                 confirmButtonText: 'OK',
                 type: 'error'
             });

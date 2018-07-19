@@ -11,8 +11,12 @@ export default {
     else return ApiVGI().get(`/api/layer/`)
   },
 
-  getKeyword() {
+  getKeywords() {
     return ApiVGI().get(`/api/keyword/`)
+  },
+
+  getReferences() {
+    return ApiVGI().get(`/api/reference/`)
   },
 
   getAuthors() {

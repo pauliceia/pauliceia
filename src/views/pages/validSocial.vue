@@ -17,7 +17,7 @@ export default {
                 this.$message({
                         showClose: true,
                         dangerouslyUseHTMLString: true,
-                        message: 'WELCOME <strong>'+response.data.properties.name+'</strong>!',
+                        message: this.$t('validSocial.msgSuccess')+' <strong>'+response.data.properties.name+'</strong>!',
                         type: 'success'
                     });
                 this.$router.push({
@@ -29,7 +29,7 @@ export default {
             this.$message({
                 showClose: true,
                 dangerouslyUseHTMLString: true,
-                message: 'Erro ao efetuar o login. Link inválido!',
+                message: this.$t('validSocial.msgErr'),
                 type: 'error'
             });
             this.$router.push({

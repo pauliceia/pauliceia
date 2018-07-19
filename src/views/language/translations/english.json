@@ -5,7 +5,8 @@
         "login": "Sign In",
         "profile": "My Profile",
         "dashboard": "Dashboard",
-        "logout": "Logout"
+        "logout": "Logout",
+        "msgLogout": "bye bye see you!"
     },
     "dashboard": {
         "nav": {
@@ -20,7 +21,12 @@
         "register": "Register now",
         "btnText": "Login",
         "terms": "If you sign in with the social network, you automatically agree to the terms of the project.",
-        "lbReadme": "read the terms here"
+        "lbReadme": "read the terms here",
+        "msg": {
+            "success": "WELCOME",
+            "err404": "<strong>Email</strong> or <strong>password</strong> incorrect!",
+            "err409": "You have <strong>not yet confirmed your email</strong>, access your email box and confirm it by following instructions!"
+        }
     },
     "register": {
         "title": "Register",
@@ -33,7 +39,21 @@
         "lbReadme": "read the terms here",
         "btnTitle": "Register",
         "lbToLogin": "Are you already registered?",
-        "lbToLoginLink": "CLICK HERE"
+        "lbToLoginLink": "CLICK HERE",
+        "msg": {
+            "success": "your registration is almost ready. Just access your email and follow the instructions.",
+            "emptyField": "ERROR: complete all fields!",
+            "err500": "Error internal server - contact your administrator",
+            "err409": "<strong>email</strong> or <strong>username</strong> already exists in our system."
+        }
+    },
+    "validEmail": {
+        "msgSuccess": "Hello, your email was <strong>successfully</strong> validated! Now just <i>log in</i> to access the system.",
+        "msgErr": "Error while validating your Email. Invalid link!" 
+    },
+    "validSocial": {
+        "msgSuccess": "WELCOME",
+        "msgErr": "Error logging in. Invalid link!" 
     },
     "map":{
         "geocoding": {
@@ -68,6 +88,10 @@
             "btns": {
                 "active": "Active",
                 "disable": "Disable"
+            },
+            "msg": {
+                "errTitle": "Internal Error",
+                "errMsg": "Service not available, try again later or report our support!"
             }
         },
         "viewInfo": {
@@ -76,6 +100,7 @@
             "lbTags": "TAGS",
             "lbAuthors": "AUTHORS",
             "lbDate": "CREATION DATE",
+            "lbReferences": "REFERENCES",
             "lbNotifications": "Notifications"
         },
         "viewInfoVector": {

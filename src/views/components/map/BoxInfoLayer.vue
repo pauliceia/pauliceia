@@ -29,6 +29,11 @@
                         {{ getAuthorName(author)[0].properties.name }};
                     </span> 
                 </li>
+                <li><b>{{ $t('map.viewInfo.lbReferences') }}:</b> 
+                    <span v-show="layer != null" v-for="id in infos.references" :key="id">
+                        {{ getReferenceDescription(id)[0].properties.description }};
+                    </span> 
+                </li>
             </ul>
             <div class="nofitication">
                 <md-list-item>
@@ -81,6 +86,7 @@ export default {
             allKeywords: [],
             allAuthors: [],
             allAuthorsLayers: [],
+            allReferences: [],
             infos: {
                 name: '',
                 date: '',
@@ -90,11 +96,14 @@ export default {
     },
 
     async created() {
-        let keywords = await Map.getKeyword()
+        let keywords = await Map.getKeywords()
         this.allKeywords = keywords.data.features
 
         let authors = await Map.getAuthors()
         this.allAuthors = authors.data.features
+
+        let references = await Map.getReferences()
+        this.allReferences = references.data.features
 
         let authors_layers = await Map.getAuthorsLayers(null)
         this.allAuthorsLayers = authors_layers.data.features
@@ -114,6 +123,9 @@ export default {
         getTagName(id){
             return this.allKeywords.filter( key => key.properties.keyword_id == id)
         },
+        getReferenceDescription(id){
+            return this.allReferences.filter( reference => reference.properties.reference_id == id)
+        },
         getAuthorName(item){
             return this.allAuthors.filter( author => author.properties.user_id == item.properties.user_id )
         },
@@ -124,6 +136,7 @@ export default {
             this.infos.name = this.layer.name
             this.infos.description = this.layer.description
             this.infos.keywords = this.layer.keyword
+            this.infos.references = this.layer.reference
             this.infos.authors = this.allAuthorsLayers.filter( item => item.properties.layer_id == this.layer.layer_id )
 
             this.infos.date = this._getDate(this.layer.created_at)

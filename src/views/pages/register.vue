@@ -80,11 +80,7 @@ export default {
             },
             loading: '',
             terms_agreed: false,
-            emailSuporte: 'suporte@pauliceia.com.br',
-            msgAlert: {
-                type: '',
-                message: 'Cadastro realizado com sucesso. Obrigado!'
-            }
+            emailSuporte: 'suporte@pauliceia.com.br'
         }
     },
     watch: {
@@ -96,15 +92,14 @@ export default {
     },
     methods: {
         async registerSubmit () {
-            this.msgAlert.type = ''
-            this.msgAlert.message = ''
             this._openFullScreen()
             try {
                 if(this.user.email == '' || this.user.username == '' || this.user.password == '') {
-                    this.msgAlert = {
-                        type: "alert-danger",
-                        message: "ERROR: complete all fields"
-                    }
+                    this._msgBox(
+                        'ERROR',
+                        this.$t('register.msg.emptyField'),
+                        'error'
+                    )
 
                 } else {
                     let password = new jsSHA("SHA-512", "TEXT")
@@ -130,7 +125,7 @@ export default {
 
                     this._msgBox(
                         'SUCESSO',
-                        'Olá <strong>'+infoUser.data.features[0].properties.name+'</strong>, seu cadastro está quase pronto. Basta acessar seu e-mail e seguir as instruções.',
+                        '<strong>'+infoUser.data.features[0].properties.name+'</strong>, '+this.$t('register.msg.success'),
                         'success'
                     )
 
@@ -141,13 +136,13 @@ export default {
                 if( error.response == undefined || error.response.status == 500 ) 
                     this._msgBox(
                         'ERROR',
-                        'Internal Server Error - contact the administrator - '+this.emailSuporte,
+                        this.$t('register.msg.err500')+' - '+this.emailSuporte,
                         'error'
                     )
                 else 
                     this._msgBox(
                         'ERROR',
-                        '<strong>email</strong> or <strong>username</strong> already exists in our system',
+                        this.$t('register.msg.err409'),
                         'error'
                     )
             }

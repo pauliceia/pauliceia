@@ -101,15 +101,15 @@ export default {
                     this.$message({
                         showClose: true,
                         dangerouslyUseHTMLString: true,
-                        message: 'WELCOME <strong>'+response.data.features[0].properties.name+'</strong>!',
+                        message: this.$t('login.msg.success')+' <strong>'+response.data.features[0].properties.name+'</strong>!',
                         type: 'success'
                     });
                 }
                 
             } catch (error) {
                 let msg = ''
-                if(error.response.status == 404) msg = '<strong>E-mail</strong> ou <strong>password</strong> incorreto!'
-                else if(error.response.status == 409) msg = 'Você ainda <strong>não</strong> confirmou seu e-mail, acesse sua caixa de e-mail e confirme-o seguindo instruções!'
+                if(error.response.status == 404) msg = this.$t('login.msg.err404')
+                else if(error.response.status == 409) msg = this.$t('login.msg.err409')
                 this._msgBox(
                     'ERROR',
                     msg,

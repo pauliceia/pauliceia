@@ -15,11 +15,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import {
-    emptyStyle,
-    lineStyle,
-    pointStyle
-} from '@/views/assets/js/map/Styles'
+
 import Map from '@/middleware/Map'
 
 export default {

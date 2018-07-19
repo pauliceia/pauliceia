@@ -12,6 +12,14 @@
                         <p-sidebarEdit-item :id="layerId" />
                     </div>
                 </el-radio-group>
+
+                <div v-if="myLayersId.length == 0">
+                    <el-alert
+                        title="Você não possui camadas associadas ao seu usuário, adicione para poder editar!"
+                        type="info"
+                        center :closable="false"
+                        show-icon />
+                </div>
             </div>
 
             <div v-else>
@@ -49,7 +57,7 @@ export default {
 
     data(){
         return {
-            myLayersId: null,
+            myLayersId: [],
             layerIdSelected: null
         }
     },
@@ -57,7 +65,8 @@ export default {
     async mounted() {
         if(this.user != null && this.user.user_id != undefined && this.user.user_id != null) {
             let response = await Map.getAuthorsLayers('user_id='+this.user.user_id)
-            this.myLayersId = response.data.features.map( layer => layer.properties.layer_id )
+            if(response.status == 200)
+                this.myLayersId = response.data.features.map( layer => layer.properties.layer_id )
         }
     },
 

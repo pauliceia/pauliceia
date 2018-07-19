@@ -13,10 +13,10 @@
                 <button class="btn btn-danger" @click="clear()">{{ $t('map.viewInfoVector.btnClean').toUpperCase() }}</button>
             </div>
 
-            <div class="result" v-if="result[0]">
+            <div class="result" v-if="resultProperties[0]">
                 <p>Atributos da Feature:</p>
-                <table class="table">
-                    <tr v-for="element in result" :key="element.key">
+                <table class="table" v-for="resultAttr in resultProperties">
+                    <tr v-for="element in resultAttr" :key="element.key">
                         <td><strong><i>{{ element.key }}:</i></strong></td>
                         <td>{{ element.value }}</td>
                     </tr>
@@ -29,6 +29,13 @@
 <script>
 import { mapState } from 'vuex'
 
+import {
+    overlayGroup
+} from '@/views/assets/js/map/overlayGroup'
+import {
+    emptyStyle
+} from '@/views/assets/js/map/Styles'
+
 export default {
     computed: {
       ...mapState('map', ['boxInfoVector', 'idInfoFeatureLayer'])
@@ -37,14 +44,16 @@ export default {
     data() {
         return {
             select: null,
-            result: []
+            resultVectors: [],
+            resultProperties: []
         }
     },
 
     watch: {
         idInfoFeatureLayer(val){
             if(val != null) {
-                this.result = []
+                this.resultVectors = []
+                this.resultProperties = []
                 this.$root.olmap.removeInteraction(this.select)
             }
         }
@@ -54,9 +63,9 @@ export default {
         closeBox() {
             this.$store.dispatch('map/setBoxInfoVector', false)
         },
-        getFeature() {
+        async getFeature() {
             //REMOVE INTERATIONS
-            if(!this.result[0]){
+            if(!this.resultVectors[0]){
                 this.clear()
 
                 //ADD INTERACTION 
@@ -66,25 +75,52 @@ export default {
 
             const vm = this
             this.select.on('select', (event) => {
-                vm.result = []
-                event.selected
-                    .forEach( feat => {
-                        vm.result.push({ key: "id", value: feat.getId().split('.')[1]})
-                        $.each(feat.getProperties(), function(index, value) {
-                            if (typeof(value) !== 'object') {
-                                vm.result.push({
-                                    key: index, value
-                                })
-                            }
-                        });
+                vm.resultVectors = []
+                let featureSelected = event.selected[0]
+
+                if(featureSelected !== undefined) {
+                    //selecionando as features com a mesma geometria
+                    vm.resultVectors.push(featureSelected)
+                    overlayGroup.getLayers().forEach(sublayer => {
+                        if(sublayer != undefined && sublayer.get('id') != undefined) {
+
+                            sublayer.getSource().getFeatures().forEach(feat => {
+                                let formatWKT = new ol.format.WKT();
+                                let featSelectWKT = formatWKT.writeFeature(featureSelected);
+                                let featWKT = formatWKT.writeFeature(feat)
+
+                                if( (featWKT == featSelectWKT) && (JSON.stringify(feat.getStyle()) !== JSON.stringify(emptyStyle)) && feat.getId() != featureSelected.getId() ){
+                                    vm.resultVectors.push(feat)
+                                }
+                            })
+                        }
                     })
+
+                    //definindo lista de properties de cada vetor
+                    vm.resultProperties = vm.resultVectors.map( feat => {
+                            let result = []
+                            result.push({ key: "id", value: feat.getId().split('.')[1]})
+                            $.each(feat.getProperties(), function(index, value) {
+                                if (typeof(value) !== 'object') {
+                                    result.push({
+                                        key: index, value
+                                    })
+                                }
+                            });
+                            return result
+                        })
+                } else {
+                    this.resultVectors = []
+                    this.resultProperties = []
+                }
             });
         },
         clear() {
             this.$store.dispatch('map/setIdInfoFeatureLayer', null)
             this.$root.olmap.removeInteraction(this.select)
             this.$root.olmap.getOverlays().clear()
-            this.result = []
+            this.resultVectors = []
+            this.resultProperties = []
         }
     }
 }

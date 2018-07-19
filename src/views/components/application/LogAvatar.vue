@@ -46,7 +46,7 @@ export default {
             this.$message({
                 showClose: true,
                 dangerouslyUseHTMLString: true,
-                message: 'bye bye see you!',
+                message: this.$t('nav.msgLogout'),
                 type: 'success'
             });
         }
