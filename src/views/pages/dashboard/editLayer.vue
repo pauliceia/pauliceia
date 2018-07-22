@@ -230,6 +230,8 @@
         vm.chosenKeywordsID = vm.layer.keyword
         vm.chosenRefID = vm.layer.reference
 
+        console.log(vm.layer)
+
         vm.chosenKeywordsID.forEach(key => {
           Api().get('/api/keyword/?keyword_id=' + key).then(function (response) {
             response.data.features.filter(e => {
@@ -237,8 +239,7 @@
             })
           })
         })
-
-        vm.chosenRefID.forEach(id => {
+        if(vm.chosenRefID != null) vm.chosenRefID.forEach(id => {
           Api().get('/api/reference/?reference_id=' + id).then(function (response) {
             response.data.features.filter(e => {
               vm.chosenRef.push(e.properties)
