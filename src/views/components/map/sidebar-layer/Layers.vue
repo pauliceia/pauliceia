@@ -4,7 +4,7 @@
             <div v-for="layerId in layers.slice().reverse()" :key="layerId">
                 <p-sidebarLayer-item v-if="layerId !== undefined" :status="true"
                     color="#13ce66" titleInit="" :id="layerId" :group="vectorLayer">
-                    <i class="el-icon-rank handle"></i>
+                    <i class="el-icon-sort handle"></i>
                 </p-sidebarLayer-item>
             </div>
 
