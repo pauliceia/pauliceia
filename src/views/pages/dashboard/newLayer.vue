@@ -333,13 +333,43 @@
           this.chosenKeywordsID.push(e.keyword_id)
         })
 
-        this.tableName = document.getElementById("inputName").value
+
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+
+
+        //POST de cada referência
+
+        /*vm.chosenRef.forEach(r => {
+          let ref = {
+            'type': 'Reference',
+            'properties':
+              {
+                'reference_id': -1,
+                'description': r.description
+              }
+          }
+
+          Api().post('/api/reference/create',
+            ref
+          ).then(function (response) {
+            vm.auxRef = null
+            vm.chosenRefID.push(response.data.reference_id)
+            console.log(response)
+          })
+        })*/
+
         let tableName = document.getElementById("inputName").value
         let epsg = document.getElementById("inputEpsg").value
         if (tableName.indexOf(' ') == 0) tableName = tableName.slice(1)
         if (tableName.lastIndexOf(' ') == tableName.length - 1) tableName = tableName.slice(0, tableName.length - 1)
         tableName = tableName.split(" ").join("_")
         tableName = tableName.toLocaleLowerCase()
+        this.tableName = tableName
 
         let layer = {
           'type': 'Layer',
@@ -354,15 +384,9 @@
           }
         }
 
+        console.log(layer)
 
         var file = document.getElementById("Upload").files[0]
-
-        const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        })
 
         Api().post('/api/layer/create',
           layer
@@ -426,17 +450,9 @@
                   //console.log(vm.columnsName)
                 })
               })
-
-
-
             })
           })
         })
-        //
-        //this.$router.push({
-        //  path: '/dashboard/home'
-        //})
-
         //this.chosenKeywordsID = null
         //this.chosenRefID = null
       },
@@ -447,12 +463,17 @@
         ).then(function (response) {
           //console.log(response)
         })
+
+
         this.chosenRef.splice(index, 1)
         this.chosenRefID.splice(index, 1)
       },
       addRef() {
         const vm = this
         if (this.auxRef != null) {
+
+          //vm.chosenRef.push({description: vm.auxRef})
+
           let ref_id
           let ref = {
             'type': 'Reference',
@@ -473,6 +494,7 @@
             vm.auxRef = null
           })
         }
+        //this.auxRef = null
       }
     },
     beforeCreate() {
