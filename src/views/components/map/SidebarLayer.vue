@@ -6,7 +6,7 @@
         </p>
 
         <section class="sidebar" v-show="sidebar == 'layer'">
-            <md-toolbar md-elevation="1" style="background: #f36c3f; color: #FFF;">
+            <md-toolbar md-elevation="1" style="background: #f36c3f; color: #FFF; ">
                 <span class="md-title nav-title"><strong>{{ $t('map.sidebarLayer.title') }}</strong></span>
 
                 <div class="md-toolbar-section-end">
@@ -26,7 +26,7 @@
                 </div>
             </md-toolbar>
 
-            <md-list>
+            <md-list class="layers">
                 <p-sidebarLayer-layers></p-sidebarLayer-layers>
             </md-list>
         </section>
@@ -55,15 +55,9 @@ export default {
     methods: {
         sidebarActive() {
             this.$store.dispatch('map/setSidebar', 'layer')
-            $('.ol-zoomslider').css("margin-left", "335px")
-            $('.ol-zoom').css("margin-left", "335px")
-            $('.ol-scale-line').css("margin-left", "335px")
         },
         sidebarDisable() {
             this.$store.dispatch('map/setSidebar', null)
-            $('.ol-zoomslider').css("margin-left", "0")
-            $('.ol-zoom').css("margin-left", "0")
-            $('.ol-scale-line').css("margin-left", "0")
         }
     }
 }
@@ -88,32 +82,44 @@ export default {
     
     //SIDEBAR BOX
     .sidebar
-        overflow: auto
+        overflow: hidden
         position: absolute
         width: 330px
-        height: 100%
-        bottom: 0
-        left: 0
+        top: 15px
+        padding-bottom: 13px
+        border-radius: 15px
+        min-height: 50%
+        max-height: 90%
+        left: 50px
         background: rgba(#58595b, 0.75)
         z-index: 1
         box-shadow: 1px 1px 1px #CCC
         
-        .nav-title
-            font-size: 1.25em
-            text-shadow: 1px 2px 1px #58595b
+        .md-toolbar
+            min-height: 50px !important
+            .nav-title
+                font-size: 1.1em
+                padding-left: 10px
+                text-shadow: 1px 2px 1px #58595b
+        
+        .layers
+            overflow: auto
+            max-height: 50%
             
         .box-options
             margin-right: 20px
             border-radius: 50%
             background: rgba(#000, 0.08)
+            
     //SCROLL
-    .sidebar::-webkit-scrollbar 
+    .sidebar::-webkit-scrollbar
         width: 0.5em
  
-    .sidebar::-webkit-scrollbar-track 
+    .sidebar::-webkit-scrollbar-track
+        margin-top: 25px !important
         -webkit-box-shadow: inset 0 0 6px rgba(#000, 0.1)
 
-    .sidebar::-webkit-scrollbar-thumb 
-        background-color: rgba(#000, 0.1)
+    .sidebar::-webkit-scrollbar-thumb
+        background-color: rgba(#000, 0.5)
         outline: 1px solid red
 </style>
