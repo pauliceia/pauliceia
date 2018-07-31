@@ -127,7 +127,6 @@ export default {
             return this.allReferences.filter( reference => reference.properties.reference_id == id)
         },
         getAuthorName(item){
-            console.log(item.properties)
             return this.allAuthors.filter( author => author.properties.user_id == item.properties.user_id )
         },
         async _getInfos() {

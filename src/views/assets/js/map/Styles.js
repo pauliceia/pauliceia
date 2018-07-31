@@ -21,11 +21,11 @@ const pointStyle = new ol.style.Style({
 });
 
 const polygonStyle = new ol.style.Style({
-  stroke: new Stroke({
+  stroke: new ol.style.Stroke({
     color: '#000000',
     width: 3
   }),
-  fill: new Fill({
+  fill: new ol.style.Fill({
     color: '#FFFFFF'
   })
 });
