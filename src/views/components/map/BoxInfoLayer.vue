@@ -95,18 +95,18 @@ export default {
         }
     },
 
-    async mounted() {
+    async created() {
         let keywords = await Map.getKeywords()
         this.allKeywords = keywords.data.features
 
         let authors = await Map.getAuthors()
         this.allAuthors = authors.data.features
 
-        let authors_layers = await Map.getAuthorsLayers(null)
-        this.allAuthorsLayers = authors_layers.data.features
-
         let references = await Map.getReferences()
         this.allReferences = references.data.features
+
+        let authors_layers = await Map.getAuthorsLayers(null)
+        this.allAuthorsLayers = authors_layers.data.features
     },
 
     methods: {

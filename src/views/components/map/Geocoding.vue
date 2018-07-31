@@ -38,10 +38,16 @@
             
             <label for="searchGeocoding" class="label">Procure um ou mais Endereços via CSV:</label> <br><br>
             
-            <div style="width: 95%; float:left; margin-left: 2%;">
-                <div id="a" style="width: 20%; height: 100%; float:left;">    <label>...</label> <br>                            </div>
-                <div id="b" style="width: 80%; height: 100%; float:left;" @click="upload()">   <button class="btn btn-upload">Upload</button>     </div>
-            </div> <br><br><br>
+            <label class="file-select">
+                <!-- We can't use a normal button element here, as it would become the target of the label. -->
+                <div class="select-button">
+                <!-- Display the filename if a file has been selected. -->
+                <span v-if="value" id="uploadFile">Selected File: {{value.name}}</span>
+                <span v-else>Select File</span>
+                </div>
+                <!-- Now, the file input that we hide. -->
+                <input type="file" @change="handleFileChange"/>
+            </label><br><br><br>
 
             <button class="btn btn-download" @click="download()">Download</button>                
 
@@ -52,6 +58,7 @@
 </template>
 
 <script>
+
 import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
 
@@ -63,6 +70,12 @@ import {
     placeStyle,
     placeStyleSearch
 } from '@/views/assets/js/map/Styles'
+
+import {
+    CSV2JSON,
+    CSVToArray,
+    getUrl
+} from '@/views/assets/js/map/multiplegeocode'
 
 export default {
     data() {
@@ -97,12 +110,37 @@ export default {
         },
         handleSelect(item) {
             this.inputSearch = item
-        },
-        upload(){
-            alert('começando upload')
+        },    
+        handleFileChange(e) {
+            this.$emit('input', e.target.files[0])
+
+            var reader = new FileReader();
+            reader.onload = function () {
+                var text = reader.result;
+                var node = document.getElementById('output');
+                csv = text;
+                alert("CSV \n" + text);
+                //var json = CSV2JSON(csv);
+                //alert(json);
+            };
+            reader.readAsText(e.target.files[0]);
         },
         download(){
-            alert('fazendo download')
+
+            alert(csv)
+            //fetch(getUrl())
+            //.then(function (response) {
+                //response.text().then(function (responseText) {
+                //create .zip
+                //var zip = new JSZip();
+                //zip.file("geocode.geo.json", responseText);
+                //zip.generateAsync({type:"blob"})
+                //.then(function(content) {
+                    // see FileSaver.js
+                //saveAs(content, "geocode.zip");
+                    //});
+                //});
+            //});
         },
         async search () {
             try {
