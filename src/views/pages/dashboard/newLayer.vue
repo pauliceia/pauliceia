@@ -458,6 +458,7 @@
                 let msg = ''
                 if (cause.response.status == 409) msg = "File is not a zip file."
                 else if (cause.response.status == 400) msg = "Invalid ZIP! It is necessary to exist a ShapeFile (.shp) inside de ZIP."
+                else if (cause.response.status == 500) msg = "invalid SRID! Please be sure that it is a valid SRID."
                 else msg = cause.toString()
                 console.log(cause.response)
                 vm.$message.error(msg)
