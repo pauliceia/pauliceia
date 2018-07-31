@@ -95,18 +95,18 @@ export default {
         }
     },
 
-    async created() {
+    async mounted() {
         let keywords = await Map.getKeywords()
         this.allKeywords = keywords.data.features
 
         let authors = await Map.getAuthors()
         this.allAuthors = authors.data.features
 
-        let references = await Map.getReferences()
-        this.allReferences = references.data.features
-
         let authors_layers = await Map.getAuthorsLayers(null)
         this.allAuthorsLayers = authors_layers.data.features
+
+        let references = await Map.getReferences()
+        this.allReferences = references.data.features
     },
 
     methods: {
@@ -127,6 +127,7 @@ export default {
             return this.allReferences.filter( reference => reference.properties.reference_id == id)
         },
         getAuthorName(item){
+            console.log(item.properties)
             return this.allAuthors.filter( author => author.properties.user_id == item.properties.user_id )
         },
         async _getInfos() {

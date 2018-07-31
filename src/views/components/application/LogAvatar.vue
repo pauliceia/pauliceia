@@ -63,7 +63,7 @@ export default {
         border-radius: 50px
         background: rgba(#000, 0.07)
         min-width: 0 !important
-        height: 52px !important
+        height: 53px !important
 
     .md-avatar.md-large
         min-width: 0 !important
