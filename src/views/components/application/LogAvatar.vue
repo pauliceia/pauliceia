@@ -62,6 +62,12 @@ export default {
     .md-button
         border-radius: 50px
         background: rgba(#000, 0.07)
+        min-width: 0 !important
+        height: 52px !important
+
+    .md-avatar.md-large
+        min-width: 0 !important
+        min-height: 0 !important
     
     .md-menu-content
         background: rgba(255,255,255,0.7)
