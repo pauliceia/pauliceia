@@ -136,6 +136,16 @@ export default {
                                 })
                             })
                         })
+                    } else {
+                        newStyle = new ol.style.Style({
+                            stroke: new Stroke({
+                                color: '#000000',
+                                width: 3
+                            }),
+                            fill: new Fill({
+                                color: val
+                            })
+                        })
                     }
 
                     sublayer.getSource().getFeatures().map(features => {
@@ -169,7 +179,11 @@ export default {
 
                     } else if(this.type == 'Point') {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
-                        this.colorVector = sublayer.getStyle().getImage().getFill().getColor()                    
+                        this.colorVector = sublayer.getStyle().getImage().getFill().getColor()             
+
+                    } else {
+                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
+                        this.colorVector = sublayer.getStyle().getFill().getColor() 
                     }
                 }
             })

@@ -20,6 +20,16 @@ const pointStyle = new ol.style.Style({
   })
 });
 
+const polygonStyle = new ol.style.Style({
+  stroke: new Stroke({
+    color: '#000000',
+    width: 3
+  }),
+  fill: new Fill({
+    color: '#FFFFFF'
+  })
+});
+
 const placeStyleSearch = new ol.style.Style({
   image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 29],
@@ -44,6 +54,7 @@ const emptyStyle = new ol.style.Style({
 
 export {
   pointStyle,
+  polygonStyle,
   placeStyleSearch,
   lineStyle,
   emptyStyle
