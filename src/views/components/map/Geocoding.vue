@@ -1,42 +1,52 @@
 <template>
     <section class="box" v-show="boxGeocoding">
         
+        <label for="searchGeocoding" class="label"> {{ $t('map.geocoding.label') }}:</label>
+
         <form @submit.prevent="search">
-                <label for="searchGeocoding" class="label"> {{ $t('map.geocoding.label') }}:</label>
+            <div class="input-group">               
+                <el-autocomplete
+                    class="inline-input"
+                    style="flex: 1 1 auto"
+                    v-model="inputSearch"
+                    ref="geocoding_search"
+                    :fetch-suggestions="querySearch"
+                    :placeholder="$t('map.geocoding.placeholder')"
+                    :trigger-on-focus="false"
+                    @select="handleSelect"
+                    >
+                    <template slot-scope="{ item }">
+                        <div class="value">{{ item }}</div>
+                    </template>
+                </el-autocomplete>
 
-                <div class="input-group">               
-                    <el-autocomplete
-                        class="inline-input"
-                        style="flex: 1 1 auto"
-                        v-model="inputSearch"
-                        ref="geocoding_search"
-                        :fetch-suggestions="querySearch"
-                        :placeholder="$t('map.geocoding.placeholder')"
-                        :trigger-on-focus="false"
-                        @select="handleSelect"
-                        >
-                        <template slot-scope="{ item }">
-                            <div class="value">{{ item }}</div>
-                        </template>
-                    </el-autocomplete>
-
-                    <div class="input-group-append">
-                        <button class="btn btn-search">
-                            {{ $t('map.geocoding.btnText') }}
-                        </button>
-                    </div>
-                    <div class="input-group-append">
-                        <button type="button" class="btn" @click="multigeocoding = !multigeocoding">
-                            <md-icon>settings</md-icon>
-                        </button>
-                    </div>
-                    
+            <div class="input-group-append">
+                    <button class="btn btn-search">
+                        {{ $t('map.geocoding.btnText') }}
+                    </button>
                 </div>
-
-                <div class="box-multigeocoding" v-show="multigeocoding">
-                    configurações
+                <div class="input-group-append">
+                    <button type="button" class="btn" @click="multigeocoding = !multigeocoding">
+                        <md-icon>settings</md-icon>
+                    </button>
                 </div>
+                
+            </div>
         </form>
+
+        <div class="box-multigeocoding" v-show="multigeocoding">
+            
+            <label for="searchGeocoding" class="label">Procure um ou mais Endereços via CSV:</label> <br><br>
+            
+            <div style="width: 95%; float:left; margin-left: 2%;">
+                <div id="a" style="width: 20%; height: 100%; float:left;">    <label>...</label> <br>                            </div>
+                <div id="b" style="width: 80%; height: 100%; float:left;" @click="upload()">   <button class="btn btn-upload">Upload</button>     </div>
+            </div> <br><br><br>
+
+            <button class="btn btn-download" @click="download()">Download</button>                
+
+        </div>
+        
         
     </section>    
 </template>
@@ -87,6 +97,12 @@ export default {
         },
         handleSelect(item) {
             this.inputSearch = item
+        },
+        upload(){
+            alert('começando upload')
+        },
+        download(){
+            alert('fazendo download')
         },
         async search () {
             try {
@@ -169,7 +185,24 @@ export default {
 
         .btn-search:hover
             background: rgba(#f15a29, 0.7)
+
+        .btn-upload
+            background: #f15a29
+            border-bottom: 1px solid #f15a29
+            color: #FFF
+
+        .btn-upload:hover
+            background: rgba(#f15a29, 0.7)
+
+        .btn-download
+            background: #f15a29
+            border-bottom: 1px solid #f15a29
+            color: #FFF
+
+        .btn-download:hover
+            background: rgba(#f15a29, 0.7)
             
+
         .box-multigeocoding
             width: 100%
             background: #FFF

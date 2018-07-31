@@ -9,13 +9,13 @@
         <div class="body">
             <div class="row justify-content-md-center">
                 <button class="btn btn-success" @click="getFeature()">{{ $t('map.viewInfoVector.btnFeature').toUpperCase() }}</button> 
-                <button class="btn btn-secondary">{{ $t('map.viewInfoVector.btnBox').toUpperCase() }}</button> 
+                <button class="btn btn-secondary" @click="getBox()">{{ $t('map.viewInfoVector.btnBox').toUpperCase() }}</button> 
                 <button class="btn btn-danger" @click="clear()">{{ $t('map.viewInfoVector.btnClean').toUpperCase() }}</button>
             </div>
 
             <div class="result" v-if="resultProperties[0]">
                 <p>Atributos da Feature:</p>
-                <table class="table" v-for="resultAttr in resultProperties">
+                <table class="table" v-for="resultAttr in resultProperties" :key="resultAttr.id">
                     <tr v-for="element in resultAttr" :key="element.key">
                         <td><strong><i>{{ element.key }}:</i></strong></td>
                         <td>{{ element.value }}</td>
@@ -44,6 +44,7 @@ export default {
     data() {
         return {
             select: null,
+            box: null,
             resultVectors: [],
             resultProperties: []
         }
@@ -55,6 +56,7 @@ export default {
                 this.resultVectors = []
                 this.resultProperties = []
                 this.$root.olmap.removeInteraction(this.select)
+                this.$root.olmap.removeInteraction(this.box)
             }
         }
     },
@@ -115,9 +117,26 @@ export default {
                 }
             });
         },
+        async getBox() {
+            if(!this.resultVectors[0]){
+                this.clear()
+
+                //ADD INTERACTION 
+                this.box = new ol.interaction.DragBox()
+                this.$root.olmap.addInteraction(this.box)
+            }
+            
+            let vm = this
+            this.box.on('boxend', (event) => {
+                let extent = vm.box.getGeometry().getExtent()
+
+                console.log(extent)
+            })
+        },
         clear() {
             this.$store.dispatch('map/setIdInfoFeatureLayer', null)
             this.$root.olmap.removeInteraction(this.select)
+            this.$root.olmap.removeInteraction(this.box)
             this.$root.olmap.getOverlays().clear()
             this.resultVectors = []
             this.resultProperties = []
