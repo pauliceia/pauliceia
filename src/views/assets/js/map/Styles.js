@@ -26,7 +26,7 @@ const polygonStyle = new ol.style.Style({
     width: 3
   }),
   fill: new ol.style.Fill({
-    color: '#FFFFFF'
+    color: 'rgba(255,255,255,0.2)'
   })
 });
 

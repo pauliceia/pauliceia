@@ -34,7 +34,7 @@
             <el-tooltip effect="dark" 
                     :content="$t('map.sidebarLayer.options.editColor')"
                     placement="top-end">
-                <input type="color" class="btn-color" v-model="colorVector" />
+                    <el-color-picker v-model="colorVector" show-alpha size="medium"></el-color-picker>
             </el-tooltip>
 
             <el-tooltip effect="dark" 
@@ -52,6 +52,7 @@ import { mapState } from 'vuex'
 import {
     emptyStyle,
     lineStyle,
+    polygonStyle,
     pointStyle
 } from '@/views/assets/js/map/Styles'
 import Map from '@/middleware/Map'
@@ -112,47 +113,50 @@ export default {
         },
         //edit color of layer
         colorVector(val) {
-            this.group.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === this.title && this.layerStatus) {
-                    
-                    let newStyle = null
-                    if(this.type == 'MultiLineString') {
-                        newStyle = new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                                color: val,
-                                width: 3
-                            })
-                        })
-                    } else if(this.type == 'Point') {
-                        newStyle = new ol.style.Style({
-                            image: new ol.style.Circle({
-                                radius: 8,
+            if(val == null) 
+                this.colorVector = "rgba(255,255,255,0)"
+            else
+                this.group.getLayers().forEach(sublayer => {
+                    if (sublayer.get('title') === this.title && this.layerStatus) {
+                        
+                        let newStyle = null
+                        if(this.type == 'MultiLineString') {
+                            newStyle = new ol.style.Style({
                                 stroke: new ol.style.Stroke({
-                                    color: 'white',
-                                    width: 2
+                                    color: val,
+                                    width: 3
+                                })
+                            })
+                        } else if(this.type == 'Point') {
+                            newStyle = new ol.style.Style({
+                                image: new ol.style.Circle({
+                                    radius: 8,
+                                    stroke: new ol.style.Stroke({
+                                        color: 'white',
+                                        width: 2
+                                    }),
+                                    fill: new ol.style.Fill({
+                                        color: val
+                                    })
+                                })
+                            })
+                        } else if(this.type == 'MultiPolygon') {
+                            newStyle = new ol.style.Style({
+                                stroke: new ol.style.Stroke({
+                                    color: '#000000',
+                                    width: 3
                                 }),
                                 fill: new ol.style.Fill({
                                     color: val
                                 })
                             })
-                        })
-                    } else {
-                        newStyle = new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                                color: '#000000',
-                                width: 3
-                            }),
-                            fill: new ol.style.Fill({
-                                color: val
-                            })
-                        })
-                    }
+                        }
 
-                    sublayer.getSource().getFeatures().map(features => {
-                        if(features.getStyle() !== emptyStyle) features.setStyle(newStyle)
-                    });
-                    sublayer.setStyle(newStyle)
-                }
+                        sublayer.getSource().getFeatures().map(features => {
+                            if(features.getStyle() !== emptyStyle) features.setStyle(newStyle)
+                        });
+                        sublayer.setStyle(newStyle)
+                    }
             })
         },
         //active 'info attrib' feature
@@ -181,8 +185,8 @@ export default {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
                         this.colorVector = sublayer.getStyle().getImage().getFill().getColor()             
 
-                    } else {
-                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
+                    } else if(this.type == 'MultiPolygon') {
+                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(polygonStyle)
                         this.colorVector = sublayer.getStyle().getFill().getColor() 
                     }
                 }
