@@ -41,7 +41,8 @@ function CSVToArray(strData, strDelimiter) {
 
 //BUILD THE URL
 function getUrl(json){
-    var webServiceAdress = "http://www.pauliceia.dpi.inpe.br";
+    var webServiceAdress = "127.0.0.1:3000";
+    json = encodeURIComponent(json);
     return webServiceAdress +'/api/geocoding/multiplegeolocation/'+json+'/json';
 }
 

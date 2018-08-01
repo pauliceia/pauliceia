@@ -121,7 +121,7 @@ export default {
                 fetch(getUrl(json))
                 .then(function (response) {
                     response.text().then(function (responseText) {
-                    alert(responseText);
+                    //alert(responseText);
                     });
                 });
             };
