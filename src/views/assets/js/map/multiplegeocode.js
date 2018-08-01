@@ -1,5 +1,4 @@
 //CSV TO JSON
-export
 function CSV2JSON(csv) {
       var array = CSVToArray(csv);
       var objArray = [];
@@ -14,6 +13,7 @@ function CSV2JSON(csv) {
       var str = json.replace(/},/g, "},\r\n");
       return str;
 }
+
 //CSV TO ARRAY
 function CSVToArray(strData, strDelimiter) {
       strDelimiter = (strDelimiter || ",");
@@ -41,13 +41,12 @@ function CSVToArray(strData, strDelimiter) {
 
 //BUILD THE URL
 function getUrl(json){
-    var webServiceAdress = "http://localhost:3000";
+    var webServiceAdress = "http://www.pauliceia.dpi.inpe.br";
     return webServiceAdress +'/api/geocoding/multiplegeolocation/'+json+'/json';
 }
 
 export {
-  overlayGroupBase,
-  overlayGroupRasters,
-  overlayGroupExternal,
-  overlayGroup
+    CSV2JSON,
+    CSVToArray,
+    getUrl
 }

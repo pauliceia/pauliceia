@@ -35,9 +35,6 @@
         </form>
 
         <div class="box-multigeocoding" v-show="multigeocoding">
-            
-            <label for="searchGeocoding" class="label">Procure um ou mais Endereços via CSV:</label> <br><br>
-            
             <label class="file-select">
                 <!-- We can't use a normal button element here, as it would become the target of the label. -->
                 <div class="select-button">
@@ -47,7 +44,7 @@
                 </div>
                 <!-- Now, the file input that we hide. -->
                 <input type="file" @change="handleFileChange"/>
-            </label><br><br><br>
+            </label><br><br>
 
             <button class="btn btn-download" @click="download()">Download</button>                
 
@@ -118,16 +115,19 @@ export default {
             reader.onload = function () {
                 var text = reader.result;
                 var node = document.getElementById('output');
-                csv = text;
-                alert("CSV \n" + text);
-                //var json = CSV2JSON(csv);
-                //alert(json);
+                var csv = text;
+                var json = CSV2JSON(csv);
+                alert(getUrl(json));
+                fetch(getUrl(json))
+                .then(function (response) {
+                    response.text().then(function (responseText) {
+                    alert(responseText);
+                    });
+                });
             };
             reader.readAsText(e.target.files[0]);
         },
-        download(){
-
-            alert(csv)
+        download(){ 
             //fetch(getUrl())
             //.then(function (response) {
                 //response.text().then(function (responseText) {
