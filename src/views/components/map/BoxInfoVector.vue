@@ -57,6 +57,8 @@ export default {
                 this.resultProperties = []
                 this.$root.olmap.removeInteraction(this.select)
                 this.$root.olmap.removeInteraction(this.box)
+                this.select = null
+                this.box = null
             }
         }
     },
@@ -67,7 +69,7 @@ export default {
         },
         async getFeature() {
             //REMOVE INTERATIONS
-            if(!this.resultVectors[0]){
+            if(this.select == null){
                 this.clear()
 
                 //ADD INTERACTION 
@@ -98,19 +100,7 @@ export default {
                         }
                     })
 
-                    //definindo lista de properties de cada vetor
-                    vm.resultProperties = vm.resultVectors.map( feat => {
-                            let result = []
-                            result.push({ key: "id", value: feat.getId().split('.')[1]})
-                            $.each(feat.getProperties(), function(index, value) {
-                                if (typeof(value) !== 'object') {
-                                    result.push({
-                                        key: index, value
-                                    })
-                                }
-                            });
-                            return result
-                        })
+                    vm.defineListProps(vm.resultVectors)
                 } else {
                     this.resultVectors = []
                     this.resultProperties = []
@@ -118,24 +108,52 @@ export default {
             });
         },
         async getBox() {
-            if(!this.resultVectors[0]){
+            if(this.resultVectors[0] != undefined){
                 this.clear()
-
-                //ADD INTERACTION 
-                this.box = new ol.interaction.DragBox()
-                this.$root.olmap.addInteraction(this.box)
             }
+
+            //ADD INTERACTION 
+            this.box = new ol.interaction.DragBox()
+            this.$root.olmap.addInteraction(this.box)
             
             let vm = this
             this.box.on('boxend', (event) => {
                 let extent = vm.box.getGeometry().getExtent()
 
-                console.log(extent)
+                overlayGroup.getLayers().forEach(sublayer => {
+                    if(sublayer != undefined && sublayer.get('id') != undefined && sublayer.getVisible() == true) {
+                        
+                        sublayer.getSource().forEachFeatureIntersectingExtent(extent, feature => {
+                            if(JSON.stringify(feature.getStyle()) !== JSON.stringify(emptyStyle) ){
+                                vm.resultVectors.push(feature)
+                            }
+                        })
+                    }
+                })
+
+                vm.defineListProps(vm.resultVectors)
+                this.$root.olmap.removeInteraction(this.box)
+            })
+        },
+        defineListProps(resultVectors) {
+            this.resultProperties = resultVectors.map( feat => {
+                let result = []
+                result.push({ key: "id", value: feat.getId().split('.')[1]})
+                $.each(feat.getProperties(), function(index, value) {
+                    if (typeof(value) !== 'object') {
+                        result.push({
+                            key: index, value
+                        })
+                    }
+                });
+                return result
             })
         },
         clear() {
             this.$store.dispatch('map/setIdInfoFeatureLayer', null)
             this.$root.olmap.removeInteraction(this.select)
+            this.select = null
+            this.box = null
             this.$root.olmap.removeInteraction(this.box)
             this.$root.olmap.getOverlays().clear()
             this.resultVectors = []
