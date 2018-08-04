@@ -5,14 +5,14 @@
         
         <span>
             <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() : title.toUpperCase() }}</b>
-            <span v-show="layerStatus && apps">                   
+            <span v-show="layerStatus">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
                 </button>
             </span>
         </span>
 
-        <div v-show="boxView && layerStatus && apps" class="box-options">
+        <div v-show="boxView && layerStatus" class="box-options">
             <el-tooltip effect="dark" 
                     :content="$t('map.sidebarLayer.options.zoom')" 
                     placement="top-end">
@@ -66,11 +66,7 @@ export default {
             required: false
         },
         id: Number,
-        group: Object,
-        apps: {
-            type: Boolean,
-            default: true
-        }
+        group: Object
     },
 
     computed: {
@@ -174,7 +170,7 @@ export default {
     methods: {
         getColor() {
             this.group.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === this.title && this.apps) {
+                if (sublayer.get('title') === this.title) {
                     this.type = sublayer.getSource().getFeatures()[0].getGeometry().getType()
                     
                     if(this.type == 'MultiLineString') {
@@ -194,7 +190,7 @@ export default {
         },
         extend(){
             this.group.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === this.title && this.layerStatus && this.apps) {                    
+                if (sublayer.get('title') === this.title && this.layerStatus) {                    
                     let extentLayer = sublayer.getSource().getExtent();
                     let extentEmpty = ol.extent.createEmpty();
 
