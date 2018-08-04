@@ -110,37 +110,29 @@ export default {
         },    
         handleFileChange(e) {
             this.$emit('input', e.target.files[0])
-
             var reader = new FileReader();
             reader.onload = function () {
                 var text = reader.result;
                 var node = document.getElementById('output');
                 var csv = text;
                 var json = CSV2JSON(csv);
+                app.url = getUrl(json);
+
                 alert(getUrl(json));
-                fetch(getUrl(json))
-                .then(function (response) {
-                    response.text().then(function (responseText) {
-                    //alert(responseText);
-                    });
-                });
+                //Acessar a variavel 'app.url' via request e pegar geojson 
+                //Plotar no mapa o geojson
+            
             };
             reader.readAsText(e.target.files[0]);
         },
-        download(){ 
-            //fetch(getUrl())
-            //.then(function (response) {
-                //response.text().then(function (responseText) {
-                //create .zip
-                //var zip = new JSZip();
-                //zip.file("geocode.geo.json", responseText);
-                //zip.generateAsync({type:"blob"})
-                //.then(function(content) {
-                    // see FileSaver.js
-                //saveAs(content, "geocode.zip");
-                    //});
-                //});
-            //});
+        download(){
+
+            alert(app.url);
+            //Acessar a variavel 'app.url' via request e pegar geojson
+            //Acessar rota para converter geojson em shapefile
+            //Escrever shapefile
+            //Disponibilizar para download
+
         },
         async search () {
             try {
