@@ -117,18 +117,21 @@ export default {
                 var csv = text;
                 var json = CSV2JSON(csv);
                 app.url = getUrl(json);
+                fetch('http://www.pauliceia.dpi.inpe.br/api/geocoding/geolocation/rua alfredo maia, 62, 1938/json')
+                    .then(function (response) {
+                    response.text().then(function (responseText) {
+                        app.content = responseText;
 
-                alert(getUrl(json));
-                //Acessar a variavel 'app.url' via request e pegar geojson 
-                //Plotar no mapa o geojson
-            
+                        //Plotar no mapa o geojson
+                        //alert(responseText);
+                    });
+                });
             };
             reader.readAsText(e.target.files[0]);
         },
         download(){
 
-            alert(app.url);
-            //Acessar a variavel 'app.url' via request e pegar geojson
+            alert(app.content);
             //Acessar rota para converter geojson em shapefile
             //Escrever shapefile
             //Disponibilizar para download
