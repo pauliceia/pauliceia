@@ -10,7 +10,7 @@
             <div class="row justify-content-md-center">
                 <button class="btn btn-success" @click="getFeature()">{{ $t('map.viewInfoVector.btnFeature').toUpperCase() }}</button> 
                 <button class="btn btn-secondary" @click="getBox()">{{ $t('map.viewInfoVector.btnBox').toUpperCase() }}</button> 
-                <button class="btn btn-danger" @click="clear()">{{ $t('map.viewInfoVector.btnClean').toUpperCase() }}</button>
+                <button class="btn btn-danger" @click="_clearInteractions()">{{ $t('map.viewInfoVector.btnClean').toUpperCase() }}</button>
             </div>
 
             <div class="result" v-if="resultProperties[0]">
@@ -38,7 +38,8 @@ import {
 
 export default {
     computed: {
-      ...mapState('map', ['boxInfoVector', 'idInfoFeatureLayer'])
+      ...mapState('map', ['boxInfoVector', 'idInfoFeatureLayer']),
+      ...mapState('edit', ['layerId'])
     },
 
     data() {
@@ -52,13 +53,15 @@ export default {
 
     watch: {
         idInfoFeatureLayer(val){
+            //alguma feature de uma camada foi selecionada para visualização
             if(val != null) {
-                this.resultVectors = []
-                this.resultProperties = []
-                this.$root.olmap.removeInteraction(this.select)
-                this.$root.olmap.removeInteraction(this.box)
-                this.select = null
-                this.box = null
+                this._clearInteractions()
+            }
+        },
+        layerId(val){
+            //alguma camada foi selecionada p/ edição
+            if(val != null) {
+                this._clearInteractions()
             }
         }
     },
@@ -70,7 +73,9 @@ export default {
         async getFeature() {
             //REMOVE INTERATIONS
             if(this.select == null){
-                this.clear()
+                this.$store.dispatch('map/setIdInfoFeatureLayer', null)
+                this.$store.dispatch('edit/setLayerId', null)
+                this._clearInteractions()
 
                 //ADD INTERACTION 
                 this.select = new ol.interaction.Select()
@@ -109,7 +114,9 @@ export default {
         },
         async getBox() {
             if(this.resultVectors[0] != undefined){
-                this.clear()
+                this.$store.dispatch('map/setIdInfoFeatureLayer', null)
+                this.$store.dispatch('edit/setLayerId', null)                
+                this._clearInteractions()
             }
 
             //ADD INTERACTION 
@@ -149,8 +156,7 @@ export default {
                 return result
             })
         },
-        clear() {
-            this.$store.dispatch('map/setIdInfoFeatureLayer', null)
+        _clearInteractions() {
             this.$root.olmap.removeInteraction(this.select)
             this.select = null
             this.box = null

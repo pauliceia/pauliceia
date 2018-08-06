@@ -8,7 +8,9 @@ const state = {
   boxInfoLayer: false,
   boxNotifications: false,
   boxInfoVector: false,
+  //informação do layer
   idInfoLayer: null,
+  //id da layer que está ativa a funaçã INFO FEATURE
   idInfoFeatureLayer: null,
   sidebar: null
 }
