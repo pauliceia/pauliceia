@@ -120,10 +120,9 @@ export default {
                 fetch('http://www.pauliceia.dpi.inpe.br/api/geocoding/geolocation/rua alfredo maia, 62, 1938/json')
                     .then(function (response) {
                     response.text().then(function (responseText) {
-                        app.content = responseText;
-
+                        app.geojson = responseText;
                         //Plotar no mapa o geojson
-                        //alert(responseText);
+                        
                     });
                 });
             };
@@ -131,7 +130,7 @@ export default {
         },
         download(){
 
-            alert(app.content);
+            alert(app.geojson);
             //Acessar rota para converter geojson em shapefile
             //Escrever shapefile
             //Disponibilizar para download
