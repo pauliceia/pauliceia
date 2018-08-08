@@ -35,13 +35,15 @@
         </form>
 
         <div class="box-multigeocoding" v-show="multigeocoding">
-            
-            <label for="searchGeocoding" class="label">Procure um ou mais Endereços via CSV:</label> <br><br>
-            
-            <div style="width: 95%; float:left; margin-left: 2%;">
-                <div id="a" style="width: 20%; height: 100%; float:left;">    <label>...</label> <br>                            </div>
-                <div id="b" style="width: 80%; height: 100%; float:left;" @click="upload()">   <button class="btn btn-upload">Upload</button>     </div>
-            </div> <br><br><br>
+            <label class="file-select">
+                <!-- We can't use a normal button element here, as it would become the target of the label. -->
+                <div class="select-button">
+                <!-- Display the filename if a file has been selected. -->
+                <span id="uploadFile">Selected File:</span>
+                </div>
+                <!-- Now, the file input that we hide. -->
+                <input type="file" @change="handleFileChange"/>
+            </label><br><br>
 
             <button class="btn btn-download" @click="download()">Download</button>                
 
@@ -52,6 +54,7 @@
 </template>
 
 <script>
+
 import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
 
@@ -64,12 +67,23 @@ import {
     placeStyleSearch
 } from '@/views/assets/js/map/Styles'
 
+import {
+    CSV2JSON,
+    CSVToArray,
+    getUrl
+} from '@/views/assets/js/map/multiplegeocode'
+
+import {
+    overlayGroupGeolocation
+} from '@/views/assets/js/map/overlayGroup'
+
 export default {
     data() {
         return {
             inputSearch: '',
             multigeocoding: false,
-            placesList: []
+            placesList: [],
+            geojson: ''
         }
     },
     
@@ -97,12 +111,53 @@ export default {
         },
         handleSelect(item) {
             this.inputSearch = item
-        },
-        upload(){
-            alert('começando upload')
+        },    
+        handleFileChange(e) {
+            let vm = this
+
+            this.$emit('input', e.target.files[0])
+            let reader = new FileReader();
+            reader.onload = async _ => {
+                let text = reader.result;
+                let node = document.getElementById('output');
+                let csv = text;
+                let json = CSV2JSON(csv);
+
+                try {
+                    let response = await ApiMap.geolocationMultiple(encodeURIComponent(json));
+                    vm.geojson = response.data
+                    
+                    let vectorLayer = new ol.layer.Vector({
+                        title: "multipligeolocation",
+                        source: new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).readFeatures(vm.geojson)
+                        }),
+                        name: 'placesSearchMultiple',
+                        style: placeStyleSearch
+                    });
+                    overlayGroupGeolocation.getLayers().clear()
+                    overlayGroupGeolocation.getLayers().push(vectorLayer)
+
+                } catch( error ){
+                    this.$alert('Não foi possível ler o arquivo CSV', 'Erro no arquivo', {
+                        confirmButtonText: 'OK',
+                        type: 'error'
+                    });
+                }
+            }
+            reader.readAsText(e.target.files[0]);
         },
         download(){
-            alert('fazendo download')
+
+            console.log(this.geojson);
+            this.$alert('Função ainda não implentada!', 'Download', {
+                confirmButtonText: 'OK',
+                type: 'warning'
+            });
+            //Acessar rota para converter geojson em shapefile
+            //Escrever shapefile
+            //Disponibilizar para download
+
         },
         async search () {
             try {
@@ -130,8 +185,8 @@ export default {
                             name: 'placesSearch',
                             style: placeStyleSearch
                         });
-
-                        overlayGroup.getLayers().push(
+                        overlayGroupGeolocation.getLayers().clear()
+                        overlayGroupGeolocation.getLayers().push(
                             layerSearch
                         )
 

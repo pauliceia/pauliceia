@@ -1,7 +1,7 @@
 import 'openlayers/dist/ol-debug.js'
 
-const overlayGroupBase = new ol.layer.Group({
-  title: 'overlays_base',
+const overlayGroupGeolocation = new ol.layer.Group({
+  title: 'overlays_geolocation',
   layers: []
 })
 
@@ -21,7 +21,7 @@ const overlayGroup = new ol.layer.Group({
 })
 
 export {
-  overlayGroupBase,
+  overlayGroupGeolocation,
   overlayGroupRasters,
   overlayGroupExternal,
   overlayGroup

@@ -18,7 +18,7 @@
                       <md-icon class="icon">error_outline</md-icon>
                     </button>
                   </el-popover>
-                  <input class="form-control" id="inputName" placeholder="Name" required>
+                  <input class="form-control" id="inputName" placeholder="Name">
                 </div>
                 <div class="form-group col-md-6">
                   <label class="mr-sm-2" for="keywordsSelect">Keywords</label>
@@ -35,7 +35,7 @@
                   </el-popover>
                   <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
                             value="description"
-                            id="keywordsSelect" required></v-select>
+                            id="keywordsSelect"></v-select>
                 </div>
               </div>
               <div class="form-group">
@@ -267,7 +267,6 @@
     },
     data: function () {
       return {
-        layer_id: null,
         tableName: null,
         chosenUsers: [],
         references: [],
@@ -297,6 +296,7 @@
         this.$router.push({
           path: '/dashboard/keywords'
         })
+
       },
       updateName() {
         this.fname = document.getElementById("Upload").files[0].name
@@ -331,132 +331,133 @@
       },
       Upload() {
         const vm = this
-        this.chosenKeywordsID = []
+
         this.chosenKeywords.forEach(e => {
           this.chosenKeywordsID.push(e.keyword_id)
         })
 
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
 
-        let tableName2 = document.getElementById("inputName").value
-        let epsg = document.getElementById("inputEpsg").value
-        if (tableName2.indexOf(' ') == 0) tableName2 = tableName.slice(1)
-        if (tableName2.lastIndexOf(' ') == tableName2.length - 1) tableName2 = tableName2.slice(0, tableName2.length - 1)
-        tableName2 = tableName2.split(" ").join("_")
-        tableName2 = tableName2.toLocaleLowerCase()
-        this.tableName = tableName2
-        let file = document.getElementById("Upload").files[0]
 
-        if(this.chosenKeywordsID.length === 0){
-          let msg = "It's necessary have at least one keyword"
-          vm.$message.error(msg)
-        }
-        else if(epsg === ''){
-          let msg = "EPSG is missing"
-          vm.$message.error(msg)
-        }
-        else if(file === undefined){
-          let msg = "File is missing"
-          vm.$message.error(msg)
-        }
-        else {
-          const loading = this.$loading({
-            lock: true,
-            text: 'Loading',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-          })
+        //POST de cada referência
 
-          let layer = {
-            'type': 'Layer',
-            'properties': {
-              'layer_id': -1,
-              'f_table_name': this.tableName,
-              'name': document.getElementById("inputName").value,
-              'description': document.getElementById("inputDescription").value,
-              'source_description': document.getElementById("inputDescription").value,
-              'reference': this.chosenRefID,
-              'keyword': this.chosenKeywordsID,
-            }
+        /*vm.chosenRef.forEach(r => {
+          let ref = {
+            'type': 'Reference',
+            'properties':
+              {
+                'reference_id': -1,
+                'description': r.description
+              }
           }
 
-          console.log(layer)
-
-          Api().post('/api/layer/create',
-            layer
+          Api().post('/api/reference/create',
+            ref
           ).then(function (response) {
+            vm.auxRef = null
+            vm.chosenRefID.push(response.data.reference_id)
+            console.log(response)
+          })
+        })*/
 
-            vm.layer_id = response.data.layer_id
-            vm.chosenUsers.forEach(u => {          //POST cada usuario colaborar da layer
-              let user_layer = {
-                'properties': {
-                  'is_the_creator': 'false',
-                  'user_id': u.user_id,
-                  'layer_id': response.data.layer_id
-                },
-                'type': 'UserLayer'
-              }
-              Api().post('/api/user_layer/create',
-                user_layer
-              )//.then(function (response) {})
 
-            })
+        let tableName = document.getElementById("inputName").value
+        let epsg = document.getElementById("inputEpsg").value
+        if (tableName.indexOf(' ') == 0) tableName = tableName.slice(1)
+        if (tableName.lastIndexOf(' ') == tableName.length - 1) tableName = tableName.slice(0, tableName.length - 1)
+        tableName = tableName.split(" ").join("_")
+        tableName = tableName.toLocaleLowerCase()
+        this.tableName = tableName
 
-            let changeset = {
+        let layer = {
+          'type': 'Layer',
+          'properties': {
+            'layer_id': -1,
+            'f_table_name': tableName,
+            'name': document.getElementById("inputName").value,
+            'description': document.getElementById("inputDescription").value,
+            'source_description': document.getElementById("inputDescription").value,
+            'reference': this.chosenRefID,
+            'keyword': this.chosenKeywordsID,
+          }
+        }
+
+        console.log(layer)
+
+        var file = document.getElementById("Upload").files[0]
+
+        Api().post('/api/layer/create',
+          layer
+        ).then(function (response) {
+          //console.log("Layer")
+          //console.log(response)
+
+          //POST cada usuario colaborar da layer
+          vm.chosenUsers.forEach(u => {
+            let user_layer = {
               'properties': {
-                'changeset_id': -1,
-                'layer_id': response.data.layer_id,
-                'description': 'Creating layer_' + response.data.layer_id
+                'is_the_creator': 'false',
+                'user_id': u.user_id,
+                'layer_id': response.data.layer_id
               },
-              'type': 'Changeset'
+              'type': 'UserLayer'
             }
+            //console.log(user_layer)
 
-            Api().post('/api/changeset/create',
-              changeset
+            Api().post('/api/user_layer/create',
+              user_layer
             ).then(function (response) {
+              //console.log(response)
+            })
+          })
 
-              Api().post('api/import/shp/?f_table_name=' + vm.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id +
-                '&epsg=' + epsg,
-                file
-              ).then(function (response) {
-                console.log("Import ok")
+          let changeset = {
+            'properties': {
+              'changeset_id': -1,
+              'layer_id': response.data.layer_id,
+              'description': 'Creating layer_' + response.data.layer_id
+            },
+            'type': 'Changeset'
+          }
 
-                Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then(function (response) {    //Pega as colunas do shapefile enviado
-                  response.data.features.filter(e => {
-                    //console.log(vm.columns)
-                    vm.columns = e.properties
-                    Object.getOwnPropertyNames(e.properties).forEach(c => {
-                      if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
-                        vm.columnsName.push(c)
-                      }
-                    })
-                    vm.shapeCorrect = true;
-                    loading.close();
-                    //console.log(vm.columnsName)
+          Api().post('/api/changeset/create',
+            changeset
+          ).then(function (response) {
+            //console.log("Changeset")
+            //console.log(response)
+
+            Api().post('api/import/shp/?f_table_name=' + tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id +
+              '&epsg=' + epsg,
+              file
+            ).then(function (response) {
+              console.log("Import ok")
+              //console.log(response)
+
+              //Pega as colunas do shapefile enviado
+              Api().get('/api/feature_table/?f_table_name='+tableName).then(function (response) {
+                response.data.features.filter(e => {
+                  //console.log(vm.columns)
+                  vm.columns = e.properties
+                  Object.getOwnPropertyNames(e.properties).forEach(c => {
+                    if(c !== 'geom' && c !== '__ob__' && c !== 'changeset_id' ){
+                      vm.columnsName.push(c)
+                    }
                   })
+                  vm.shapeCorrect = true;
+                  loading.close();
+                  //console.log(vm.columnsName)
                 })
-              }, function (cause) {
-                loading.close()
-                Api().delete('/api/layer/'+vm.layer_id)
-
-                let msg = ''
-                if (cause.response.status == 409) msg = "File is not a zip file."
-                else if (cause.response.status == 400) msg = "Invalid ZIP! It is necessary to exist a ShapeFile (.shp) inside de ZIP."
-                else if (cause.response.status == 500) msg = "invalid SRID! Please be sure that it is a valid SRID."
-                else msg = cause.toString()
-                console.log(cause.response)
-                vm.$message.error(msg)
               })
             })
-          }, function (cause) {
-            loading.close()
-            let msg = ''
-            if (cause.response.status == 409) msg = "Layer name already exists!"
-            else if (cause.response.status == 401) msg = "It is necessary an Authorization valid!"
-            else msg = cause.toString()
-            console.log(cause.response)
-            vm.$message.error(msg)
           })
-        }
+        })
+        //this.chosenKeywordsID = null
+        //this.chosenRefID = null
       },
       removeRef(index) {
         const vm = this
@@ -503,7 +504,6 @@
           })
         }
         //this.auxRef = null
-        //document.getElementById("Upload").focus();
       }
     },
     beforeCreate() {

@@ -6,6 +6,7 @@
 
 <script>
   import {
+    overlayGroupGeolocation,
     overlayGroupRasters,
     overlayGroupExternal,
     overlayGroup
@@ -46,7 +47,8 @@
         layers: [
           overlayGroupExternal,
           overlayGroupRasters,
-          overlayGroup
+          overlayGroup,
+          overlayGroupGeolocation
         ],
         view: this.view
       })
