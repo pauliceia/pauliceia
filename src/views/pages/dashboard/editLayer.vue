@@ -83,6 +83,103 @@
           </div>
         </div>
       </div>
+      <div class="col-sm-6">
+        <div class="card" v-if="shapeCorrect">
+          <div class="card-body">
+            <h5 class="card-title">Time Columns</h5>
+            <div class="card-text">
+              <form>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="inputName">Start Date</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <input class="form-control" v-model="startDate" type="date" id="start_date">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="userSelect">Start Date Column</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <v-select multiple v-model="startColumnsName" :options="columnsName" track-by="" label=""
+                              id="start_date_column_name"></v-select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="userSelect">Start Date Mask</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <v-select v-model="startDateMask" :options="dateMask" track-by="mask" label="mask"
+                              id="start_date_mask"></v-select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="inputName">End Date</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <input class="form-control" type="date" v-model="endDate" id="end_date">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="userSelect">End Date Column</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <v-select multiple v-model="endColumnsName" :options="columnsName" track-by="" label=""
+                              id="end_date_column_name"></v-select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="userSelect">End Date Mask</label>&nbsp;
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                content="this is content, this is content, this is content"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <v-select v-model="endDateMask" :options="dateMask" track-by="mask" label="mask"
+                              id="end_date_mask"></v-select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col align-self-end">
+                    <br>
+                    <a href="#" class="btn btn-primary" @click="Upload2()">Submit</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </p-dash-layout>
 </template>
@@ -106,59 +203,115 @@
     },
     data: function () {
       return {
+        tableName: null,
         chosenUsers: [],
         references: [],
         chosenRef: [],
         chosenRefID: [],
         auxRef: null,
         users: [],
+        usersAux: [],
         keywords: [],
         chosenKeywords: [],
         chosenKeywordsID: [],
+        fname: 'Choose file',
+        columns: null,
+        columnsName: [],
+        startColumnsName: null,
+        endColumnsName: null,
+        dateMask: [],
+        startDateMask: null,
+        endDateMask: null,
+        startDate: null,
+        endDate: null,
+        shapeCorrect: false,
+        fullscreenLoading: false,
         layer_id: this.$route.params.layer_id
       }
     },
     methods: {
       Upload() {
+        const vm = this
+        this.chosenKeywordsID = []
         this.chosenKeywords.forEach(e => {
           this.chosenKeywordsID.push(e.keyword_id)
         })
 
-        let layer = {
-          'type': 'Layer',
-          'properties': {
-            'layer_id': -1,
-            'f_table_name': document.getElementById("inputName").value,
-            'name': document.getElementById("inputName").value,
-            'description': document.getElementById("inputDescription").value,
-            'source_description': document.getElementById("inputDescription").value,
-            'reference': this.chosenRefID,
-            'keyword': this.chosenKeywordsID,
-          },
-          'feature_table': {
+        //if(this.chosenRefID == null) this.chosenRefID = []
+
+        if (this.chosenKeywordsID.length === 0) {
+          let msg = "It's necessary have at least one keyword"
+          vm.$message.error(msg)
+        }
+        else {
+          const loading = this.$loading({
+            lock: true,
+            text: 'Loading',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          })
+
+
+          let layer = {
+            'type': 'Layer',
             'properties': {
-              'name': 'text',
-              'start_date': 'text',
-              'end_date': 'text'
-            },
-            'geometry': {
-              "type": "MultiPoint"
+              'layer_id': vm.layer_id,
+              'f_table_name': document.getElementById("inputName").value,
+              'name': document.getElementById("inputName").value,
+              'description': document.getElementById("inputDescription").value,
+              'source_description': document.getElementById("inputDescription").value,
+              'reference': this.chosenRefID,
+              'keyword': this.chosenKeywordsID,
             }
           }
+          //vm.tableName = document.getElementById("inputName").value
+          console.log(layer)
+
+          vm.usersAux.forEach(u => {
+            Api().delete('/api/user_layer/?layer_id=' + vm.layer_id + '&user_id=' + u.user_id)
+          })
+
+          Api().put('/api/layer',
+            layer
+          ).then(function (response) {
+
+            vm.chosenUsers.forEach(u => {          //POST cada usuario colaborar da layer
+              let user_layer = {
+                'properties': {
+                  'is_the_creator': 'false',
+                  'user_id': u.user_id,
+                  'layer_id': vm.layer_id
+                },
+                'type': 'UserLayer'
+              }
+
+
+              Api().post('/api/user_layer/create',
+                user_layer
+              )//.then(function (response) {})
+            })
+
+
+            Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then(function (response) {    //Pega as colunas do shapefile enviado
+              response.data.features.filter(e => {
+                //console.log(vm.columns)
+                vm.columns = e.properties
+                Object.getOwnPropertyNames(e.properties).forEach(c => {
+                  if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
+                    vm.columnsName.push(c)
+                  }
+                })
+                vm.shapeCorrect = true;
+                loading.close();
+                //console.log(vm.columnsName)
+              })
+            })
+          })
+
+          // this.$router.push({
+          //   path: '/dashboard/home'
+          // })
         }
-        console.log(layer)
-
-        // let response = Api().post('/api/layer/create/?is_to_create_feature_table=FALSE',
-        //   layer
-        // )
-
-        this.chosenKeywordsID = null
-        this.chosenRefID = null
-        console.log(response)
-
-        this.$router.push({
-          path: '/dashboard/home'
-        })
       },
       Delete() {
         const vm = this;
@@ -200,7 +353,12 @@
             //console.log(vm.chosenRef)
             vm.chosenRefID.push(ref_id)
             vm.auxRef = null
-
+          }, function (cause) {
+            let msg = ''
+            if (cause.response.status == 400) msg = "Reference text already exists!"
+            else msg = cause.toString()
+            console.log(cause.response)
+            vm.$message.error(msg)
           })
         }
       }
@@ -228,7 +386,9 @@
         document.getElementById("inputName").value = vm.layer.name
         document.getElementById("inputDescription").value = vm.layer.description
         vm.chosenKeywordsID = vm.layer.keyword
-        vm.chosenRefID = vm.layer.reference
+        if(vm.layer.reference !== null) vm.chosenRefID = vm.layer.reference
+        else vm.chosenRefID = []
+        vm.tableName = vm.layer.f_table_name
 
         console.log(vm.layer)
 
@@ -239,10 +399,10 @@
             })
           })
         })
-        if(vm.chosenRefID != null) vm.chosenRefID.forEach(id => {
+        vm.chosenRefID.forEach(id => {
           Api().get('/api/reference/?reference_id=' + id).then(function (response) {
             response.data.features.filter(e => {
-              vm.chosenRef.push(e.properties)
+              vm.chosenRef.push({description: e.properties.description, reference_id: e.properties.reference_id})
             })
           })
         })
@@ -255,9 +415,10 @@
               if (response.data.features[0].properties.user_id !== vm.user.user_id)
                 vm.chosenUsers.push(response.data.features[0].properties)
             })
+            if (u.properties.user_id !== vm.user.user_id)
+              vm.usersAux.push(u.properties)
           })
         })
-
       })
     }
   }
