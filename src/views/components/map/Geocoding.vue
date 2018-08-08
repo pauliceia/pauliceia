@@ -39,8 +39,7 @@
                 <!-- We can't use a normal button element here, as it would become the target of the label. -->
                 <div class="select-button">
                 <!-- Display the filename if a file has been selected. -->
-                <span v-if="value" id="uploadFile">Selected File: {{value.name}}</span>
-                <span v-else>Select File</span>
+                <span id="uploadFile">Selected File:</span>
                 </div>
                 <!-- Now, the file input that we hide. -->
                 <input type="file" @change="handleFileChange"/>
@@ -74,12 +73,17 @@ import {
     getUrl
 } from '@/views/assets/js/map/multiplegeocode'
 
+import {
+    overlayGroupGeolocation
+} from '@/views/assets/js/map/overlayGroup'
+
 export default {
     data() {
         return {
             inputSearch: '',
             multigeocoding: false,
-            placesList: []
+            placesList: [],
+            geojson: ''
         }
     },
     
@@ -109,28 +113,47 @@ export default {
             this.inputSearch = item
         },    
         handleFileChange(e) {
+            let vm = this
+
             this.$emit('input', e.target.files[0])
-            var reader = new FileReader();
-            reader.onload = function () {
-                var text = reader.result;
-                var node = document.getElementById('output');
-                var csv = text;
-                var json = CSV2JSON(csv);
-                app.url = getUrl(json);
-                fetch('http://www.pauliceia.dpi.inpe.br/api/geocoding/geolocation/rua alfredo maia, 62, 1938/json')
-                    .then(function (response) {
-                    response.text().then(function (responseText) {
-                        app.geojson = responseText;
-                        //Plotar no mapa o geojson
-                        
+            let reader = new FileReader();
+            reader.onload = async _ => {
+                let text = reader.result;
+                let node = document.getElementById('output');
+                let csv = text;
+                let json = CSV2JSON(csv);
+
+                try {
+                    let response = await ApiMap.geolocationMultiple(encodeURIComponent(json));
+                    vm.geojson = response.data
+                    
+                    let vectorLayer = new ol.layer.Vector({
+                        title: "multipligeolocation",
+                        source: new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).readFeatures(vm.geojson)
+                        }),
+                        name: 'placesSearchMultiple',
+                        style: placeStyleSearch
                     });
-                });
-            };
+                    overlayGroupGeolocation.getLayers().clear()
+                    overlayGroupGeolocation.getLayers().push(vectorLayer)
+
+                } catch( error ){
+                    this.$alert('Não foi possível ler o arquivo CSV', 'Erro no arquivo', {
+                        confirmButtonText: 'OK',
+                        type: 'error'
+                    });
+                }
+            }
             reader.readAsText(e.target.files[0]);
         },
         download(){
 
-            alert(app.geojson);
+            console.log(this.geojson);
+            this.$alert('Função ainda não implentada!', 'Download', {
+                confirmButtonText: 'OK',
+                type: 'warning'
+            });
             //Acessar rota para converter geojson em shapefile
             //Escrever shapefile
             //Disponibilizar para download
@@ -162,8 +185,8 @@ export default {
                             name: 'placesSearch',
                             style: placeStyleSearch
                         });
-
-                        overlayGroup.getLayers().push(
+                        overlayGroupGeolocation.getLayers().clear()
+                        overlayGroupGeolocation.getLayers().push(
                             layerSearch
                         )
 

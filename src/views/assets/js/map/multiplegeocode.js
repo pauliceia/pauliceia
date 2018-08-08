@@ -39,13 +39,6 @@ function CSVToArray(strData, strDelimiter) {
       return (arrData);
 } 
 
-//BUILD THE URL
-function getUrl(json){
-    var webServiceAdress = 'http://www.pauliceia.dpi.inpe.br';
-    json = encodeURIComponent(json);
-    return webServiceAdress +'/api/geocoding/multiplegeolocation/'+json+'/json';
-}
-
 export {
     CSV2JSON,
     CSVToArray,
