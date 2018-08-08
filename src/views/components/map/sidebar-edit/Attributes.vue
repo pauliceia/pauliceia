@@ -1,9 +1,18 @@
 <template>
-    <section class="box-attr" v-show="attr != null">
+    <section class="box-attr" v-show="attr !== null">
         <p class="title">
             <i class="el-icon-caret-right" style="color: red"></i>
             Altere as informações:
         </p>
+        <div class="form-attr">
+            <div v-for="prop in properties" :key="prop != undefined ? prop.key : null">
+                <div v-if="prop != undefined">
+                    <label>{{ prop.key }}:</label>
+                    <input type="text" :name="prop.key" :value="prop.value" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <el-button type="primary" icon="el-icon-check" @click="saveAttr()" round>SALVAR</el-button>
+        </div>
     </section>
 </template>
 
@@ -13,6 +22,34 @@ import { mapState } from 'vuex'
 export default {
     computed: {
         ...mapState('edit', ['attr'])
+    },
+
+    data() {
+        return {
+            properties: null
+        }
+    },
+
+    watch: {
+        attr(val) {
+            if(val != null)
+                this.properties = Object.keys(val).map( index => {
+                    if(index != "geometry" && index != "changeset_id" && index != "version")
+                        return {key: index, value: val[index]}
+                })
+            else 
+                this.properties = null
+        }
+    },
+
+    methods: {
+        saveAttr() {
+            this.$alert("Função ainda não implementada", "OPSSS", {
+                dangerouslyUseHTMLString: true,
+                confirmButtonText: 'OK',
+                type: "warning"
+            })
+        }
     }
 }
 </script>
@@ -30,13 +67,15 @@ export default {
         font-size: 1.2em
         font-weight: 700
 
-.box-attr::-webkit-scrollbar 
-    width: 0.5em
+    .form-attr
+        padding: 0px 15px
 
-.box-attr::-webkit-scrollbar-track 
-    -webkit-box-shadow: inset 0 0 6px rgba(#000, 0.4)
-
-.box-attr::-webkit-scrollbar-thumb 
-    background-color: rgba(#000, 0.4)
-    outline: 1px solid red
+        label
+            margin: 0px 0 2.5px 0
+        input 
+            margin-bottom: 8px
+        .el-button
+            display: block
+            float: right
+            margin: 10px 0 -5px 0 !important
 </style>

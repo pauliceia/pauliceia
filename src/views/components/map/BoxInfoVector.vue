@@ -10,7 +10,7 @@
             <div class="row justify-content-md-center">
                 <button class="btn btn-success" @click="getFeature()">{{ $t('map.viewInfoVector.btnFeature').toUpperCase() }}</button> 
                 <button class="btn btn-secondary" @click="getBox()">{{ $t('map.viewInfoVector.btnBox').toUpperCase() }}</button> 
-                <button class="btn btn-danger" @click="clear()">{{ $t('map.viewInfoVector.btnClean').toUpperCase() }}</button>
+                <button class="btn btn-danger" @click="_clearInteractions()">{{ $t('map.viewInfoVector.btnClean').toUpperCase() }}</button>
             </div>
 
             <div class="result" v-if="resultProperties[0]">
@@ -38,7 +38,8 @@ import {
 
 export default {
     computed: {
-      ...mapState('map', ['boxInfoVector', 'idInfoFeatureLayer'])
+      ...mapState('map', ['boxInfoVector', 'idInfoFeatureLayer']),
+      ...mapState('edit', ['layerId'])
     },
 
     data() {
@@ -52,11 +53,15 @@ export default {
 
     watch: {
         idInfoFeatureLayer(val){
+            //alguma feature de uma camada foi selecionada para visualização
             if(val != null) {
-                this.resultVectors = []
-                this.resultProperties = []
-                this.$root.olmap.removeInteraction(this.select)
-                this.$root.olmap.removeInteraction(this.box)
+                this._clearInteractions()
+            }
+        },
+        layerId(val){
+            //alguma camada foi selecionada p/ edição
+            if(val != null) {
+                this._clearInteractions()
             }
         }
     },
@@ -67,8 +72,10 @@ export default {
         },
         async getFeature() {
             //REMOVE INTERATIONS
-            if(!this.resultVectors[0]){
-                this.clear()
+            if(this.select == null){
+                this.$store.dispatch('map/setIdInfoFeatureLayer', null)
+                this.$store.dispatch('edit/setLayerId', null)
+                this._clearInteractions()
 
                 //ADD INTERACTION 
                 this.select = new ol.interaction.Select()
@@ -98,19 +105,7 @@ export default {
                         }
                     })
 
-                    //definindo lista de properties de cada vetor
-                    vm.resultProperties = vm.resultVectors.map( feat => {
-                            let result = []
-                            result.push({ key: "id", value: feat.getId().split('.')[1]})
-                            $.each(feat.getProperties(), function(index, value) {
-                                if (typeof(value) !== 'object') {
-                                    result.push({
-                                        key: index, value
-                                    })
-                                }
-                            });
-                            return result
-                        })
+                    vm.defineListProps(vm.resultVectors)
                 } else {
                     this.resultVectors = []
                     this.resultProperties = []
@@ -118,24 +113,53 @@ export default {
             });
         },
         async getBox() {
-            if(!this.resultVectors[0]){
-                this.clear()
-
-                //ADD INTERACTION 
-                this.box = new ol.interaction.DragBox()
-                this.$root.olmap.addInteraction(this.box)
+            if(this.resultVectors[0] != undefined){
+                this.$store.dispatch('map/setIdInfoFeatureLayer', null)
+                this.$store.dispatch('edit/setLayerId', null)                
+                this._clearInteractions()
             }
+
+            //ADD INTERACTION 
+            this.box = new ol.interaction.DragBox()
+            this.$root.olmap.addInteraction(this.box)
             
             let vm = this
             this.box.on('boxend', (event) => {
                 let extent = vm.box.getGeometry().getExtent()
 
-                console.log(extent)
+                overlayGroup.getLayers().forEach(sublayer => {
+                    if(sublayer != undefined && sublayer.get('id') != undefined && sublayer.getVisible() == true) {
+                        
+                        sublayer.getSource().forEachFeatureIntersectingExtent(extent, feature => {
+                            if(JSON.stringify(feature.getStyle()) !== JSON.stringify(emptyStyle) ){
+                                vm.resultVectors.push(feature)
+                            }
+                        })
+                    }
+                })
+
+                vm.defineListProps(vm.resultVectors)
+                this.$root.olmap.removeInteraction(this.box)
             })
         },
-        clear() {
-            this.$store.dispatch('map/setIdInfoFeatureLayer', null)
+        defineListProps(resultVectors) {
+            this.resultProperties = resultVectors.map( feat => {
+                let result = []
+                result.push({ key: "id", value: feat.getId().split('.')[1]})
+                $.each(feat.getProperties(), function(index, value) {
+                    if (typeof(value) !== 'object') {
+                        result.push({
+                            key: index, value
+                        })
+                    }
+                });
+                return result
+            })
+        },
+        _clearInteractions() {
             this.$root.olmap.removeInteraction(this.select)
+            this.select = null
+            this.box = null
             this.$root.olmap.removeInteraction(this.box)
             this.$root.olmap.getOverlays().clear()
             this.resultVectors = []

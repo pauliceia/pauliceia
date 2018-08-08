@@ -1,7 +1,8 @@
 const state = {
     layerId: null,
     typeGeometry: null,
-    attr: null
+    attr: null,
+    featureSelected: null
 }
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
     },
     setAttr (state, value) {
         state.attr = value
+    },
+    setFeatureSelected (state, value) {
+        state.featureSelected = value
     }
 }
 
@@ -25,6 +29,9 @@ const actions = {
     },
     setAttr ({commit}, value) {
         commit('setAttr', value)
+    },
+    setFeatureSelected ({commit}, value) {
+        commit('setFeatureSelected', value)
     }
 }
 

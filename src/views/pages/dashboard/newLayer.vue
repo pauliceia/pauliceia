@@ -302,6 +302,8 @@
         this.fname = document.getElementById("Upload").files[0].name
       },
       Upload2(){
+
+        const vm = this
         let timeColumn = {
           'properties': {
             'f_table_name': this.tableName,
@@ -314,11 +316,12 @@
           },
           'type': 'TemporalColumns'
         }
-        console.log(timeColumn)
+        //console.log(timeColumn)
         Api().post('/api/temporal_columns/create',
           timeColumn
         ).then(function (response) {
-          console.log(response)
+          //console.log(response)
+          vm.$message.success("The layer was added with success!")
         })
 
         this.$router.push({
@@ -332,7 +335,6 @@
         this.chosenKeywords.forEach(e => {
           this.chosenKeywordsID.push(e.keyword_id)
         })
-
 
         const loading = this.$loading({
           lock: true,
@@ -362,6 +364,7 @@
             console.log(response)
           })
         })*/
+
 
         let tableName = document.getElementById("inputName").value
         let epsg = document.getElementById("inputEpsg").value
@@ -492,6 +495,12 @@
             //console.log(vm.chosenRef)
             vm.chosenRefID.push(ref_id)
             vm.auxRef = null
+          }, function (cause) {
+            let msg = ''
+            if (cause.response.status == 400) msg = "Reference text already exists!"
+            else msg = cause.toString()
+            console.log(cause.response)
+            vm.$message.error(msg)
           })
         }
         //this.auxRef = null

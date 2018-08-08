@@ -17,13 +17,14 @@
             </div>
         </div>
 
-        <hr class="divisor" /> 
-        <p-sidebarLayer-item :status="true" color="blue" titleInit="OSM" :group="externalLayers" :apps="false"></p-sidebarLayer-item>                    
+        <hr class="divisor" />
+        <p-sidebarLayer-item-static :group="externalLayers"></p-sidebarLayer-item-static>
                 
     </section>
 </template>
 <script>
 import LayersItem from '@/views/components/map/sidebar-layer/LayersItem'
+import LayersItemStatic from '@/views/components/map/sidebar-layer/LayersItemStatic'
 import { mapState } from 'vuex'
 
 import {
@@ -34,7 +35,8 @@ import {
 
 export default {
     components: {
-        'p-sidebarLayer-item': LayersItem
+        'p-sidebarLayer-item': LayersItem,
+        'p-sidebarLayer-item-static': LayersItemStatic
     },
 
     computed: {
