@@ -3,7 +3,12 @@
     <md-menu class="mt-2 mt-md-0" md-size="medium" md-align-trigger>
         <md-button md-menu-trigger>
             <md-avatar class="md-avatar-icon md-large">
-                {{ title[0] }}
+                <div class="logo" v-if="logo != ''">
+                    <img :src="logo" />
+                </div>
+                <div class="logo" v-else>
+                    {{ name[0] }}
+                </div>
             </md-avatar>
         </md-button>
         
@@ -32,7 +37,7 @@ import 'vue-material/dist/vue-material.min.css'
 export default {
     name: 'p-logAvatar',
     props: [
-        'title'
+        'name', 'logo'
     ],
     methods: {
         logout() {

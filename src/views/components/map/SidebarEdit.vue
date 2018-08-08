@@ -73,7 +73,7 @@ export default {
     
     //SIDEBAR BOX
     .sidebar
-        overflow: hidden
+        overflow: auto
         position: absolute
         width: 330px
         top: 15px
@@ -98,13 +98,15 @@ export default {
             border-radius: 50%
             background: rgba(#000, 0.08)
     //SCROLL
-    .sidebar::-webkit-scrollbar 
+    .sidebar::-webkit-scrollbar
         width: 0.5em
  
-    .sidebar::-webkit-scrollbar-track 
+    .sidebar::-webkit-scrollbar-track
+        margin-top: 4px
         -webkit-box-shadow: inset 0 0 6px rgba(#000, 0.1)
 
-    .sidebar::-webkit-scrollbar-thumb 
-        background-color: rgba(#000, 0.1)
+    .sidebar::-webkit-scrollbar-thumb
+        background-color: rgba(#000, 0.5)
         outline: 1px solid red
+        border-radius: 0 25px 0 0 !important
 </style>
