@@ -316,11 +316,11 @@
           },
           'type': 'TemporalColumns'
         }
-        console.log(timeColumn)
+        //console.log(timeColumn)
         Api().post('/api/temporal_columns/create',
           timeColumn
         ).then(function (response) {
-          console.log(response)
+          //console.log(response)
           vm.$message.success("The layer was added with success!")
         })
 
@@ -379,7 +379,7 @@
             }
           }
 
-          //console.log(layer)
+          console.log(layer)
 
           Api().post('/api/layer/create',
             layer

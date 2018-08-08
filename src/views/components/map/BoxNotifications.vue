@@ -6,55 +6,19 @@
           <md-icon>close</md-icon>
         </button>
       </header>
-      <div class="body">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="GENERAL" name="first">
-            <div class="nofitication">
-              <div v-for="n in notif">
-                <div class="notification-box">
-
-                  <div style="display: flex; align-items: center;">
-                    <div class="photo">B</div>
-                    <div class="credentials">
-                      <p class="author">{{n.name}}</p>
-                      <p class="date">{{n.date}}</p>
-                    </div>
-                  </div>
-
-                  <p class="content">{{n.description}}</p>
-                  <p class="comments">Answer</p>
-                </div>
-              </div>
-            </div>
-          </el-tab-pane>
-
-          <el-tab-pane label="FOLLOWING" name="second">
-            <div v-for="test in 8" :key="test">
-              <div class="notification-box">
-
-                <div style="display: flex; align-items: center;">
-                  <div class="photo">C</div>
-                  <div class="credentials">
-                    <p class="author">Carlos Noronha</p>
-                    <p class="date">05/02/2018</p>
-                  </div>
-                </div>
-
-                <p class="content">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                <p class="comments">see more</p>
-              </div>
-            </div>
-          </el-tab-pane>
-        </el-tabs>
-      </div>
+      <p-notifications></p-notifications>
     </div>
 </template>
 
 <script>
   import Api from '@/middleware/ApiVGI'
   import { mapState } from 'vuex'
+  import Notifications from '@/views/components/dashboard/Notifications'
 
 export default {
+    components: {
+      'p-notifications': Notifications
+    },
     computed: {
       ...mapState('map', ['boxNotifications']),
       ...mapState('auth', ['isUserLoggedIn', 'user'])

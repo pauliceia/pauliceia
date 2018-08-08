@@ -386,7 +386,8 @@
         document.getElementById("inputName").value = vm.layer.name
         document.getElementById("inputDescription").value = vm.layer.description
         vm.chosenKeywordsID = vm.layer.keyword
-        vm.chosenRefID = vm.layer.reference
+        if(vm.layer.reference !== null) vm.chosenRefID = vm.layer.reference
+        else vm.chosenRefID = []
         vm.tableName = vm.layer.f_table_name
 
         console.log(vm.layer)
@@ -398,7 +399,7 @@
             })
           })
         })
-        if (vm.chosenRefID != null) vm.chosenRefID.forEach(id => {
+        vm.chosenRefID.forEach(id => {
           Api().get('/api/reference/?reference_id=' + id).then(function (response) {
             response.data.features.filter(e => {
               vm.chosenRef.push({description: e.properties.description, reference_id: e.properties.reference_id})
