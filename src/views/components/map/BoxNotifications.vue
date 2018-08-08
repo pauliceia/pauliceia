@@ -69,7 +69,8 @@ export default {
     padding: 20px 20px
     background: rgba(#FFF, 0.95)
     z-index: 1
-    max-width: 45%
+    max-width: 40%
+    min-width: 40%
 
     .header
         width: 100%

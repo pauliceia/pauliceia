@@ -54,7 +54,8 @@ const emptyStyle = new ol.style.Style({
 
 export {
   pointStyle,
-  placeStyleSearch,
+  polygonStyle,
   lineStyle,
+  placeStyleSearch,
   emptyStyle
 }

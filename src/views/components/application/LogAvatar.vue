@@ -2,7 +2,7 @@
 
     <md-menu class="mt-2 mt-md-0" md-size="medium" md-align-trigger>
         <md-button md-menu-trigger>
-            <md-avatar class="md-avatar-icon md-large">
+            <md-avatar class="md-avatar-icon">
                 <div class="logo" v-if="logo != ''">
                     <img :src="logo" />
                 </div>
@@ -67,6 +67,8 @@ export default {
     .md-button
         border-radius: 50px
         background: rgba(#000, 0.07)
+        min-width: 0 !important
+        height: 50px
     
     .md-menu-content
         background: rgba(255,255,255,0.7)
