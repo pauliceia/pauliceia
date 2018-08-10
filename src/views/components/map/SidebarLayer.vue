@@ -117,10 +117,11 @@ export default {
  
     .sidebar::-webkit-scrollbar-track
         margin-top: 4px
+        margin-bottom: 4px
         -webkit-box-shadow: inset 0 0 6px rgba(#000, 0.1)
 
     .sidebar::-webkit-scrollbar-thumb
         background-color: rgba(#000, 0.5)
         outline: 1px solid red
-        border-radius: 0 25px 0 0 !important
+        border-radius: 0 25px 25px 0 !important
 </style>
