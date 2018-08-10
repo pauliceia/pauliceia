@@ -9,7 +9,7 @@
                 </p>
                 <el-radio-group v-model="layerIdSelected">
                     <div class="layers" v-for="layerId in myLayersId" :key="layerId">
-                        <p-sidebarEdit-item :id="layerId" />
+                        <p-sidebarEdit-item :id="layerId" @finishEdit="id => closeChangeset(id)" />
                     </div>
                 </el-radio-group>
 
@@ -58,7 +58,8 @@ export default {
     data(){
         return {
             myLayersId: [],
-            layerIdSelected: null
+            layerIdSelected: null,
+            description: ''
         }
     },
 
@@ -72,7 +73,66 @@ export default {
 
     methods: {
         _alterLayer(layerId) {
-            this.$store.dispatch('edit/setLayerId', layerId)
+            if(layerId != null) {
+                this._createChangeset(layerId)
+            }
+            // } else {
+            //     this.$alert('Você está editando outra layer, favor finalize a primeira antes!', 'Erro', {
+            //         dangerouslyUseHTMLString: true,
+            //         confirmButtonText: 'OK',
+            //         type: 'error'
+            //     });
+            // }
+        },
+        _createChangeset(layerId){
+            const vm = this
+            const h = this.$createElement
+
+            this.$msgbox({
+                title: 'Inicializando modificação de uma Layer',
+                message: h('p', null, [
+                    h('span', null, 'Adicione um titulo para suas alterações:'),
+                ]),
+                showInput: true,
+                inputValue: vm.description,
+                showCancelButton: true,
+                confirmButtonText: 'INICIALIZAR',
+                cancelButtonText: 'CANCELAR',
+                beforeClose: (action, instance, done) => {
+                    if (action === 'confirm') {
+                        instance.confirmButtonLoading = true
+                        instance.confirmButtonText = 'Loading...'
+                        
+                        if(instance.inputValue != '') {
+                            //chama função para criar changeset
+                            vm.$store.dispatch('edit/setLayerId', layerId)
+
+                            //limpar interactions
+                            instance.inputValue = ''
+                            done()
+                            instance.confirmButtonLoading = false
+                        } else {
+                            console.log('preecha o titulo...')
+                        }              
+
+                    } else {
+                        instance.inputValue = ''
+                        vm.layerIdSelected = null
+                        done()
+                    }
+                }
+            }).then(_ => {
+                this.$message({
+                    type: 'info',
+                    message: 'Edição inicializada com sucesso, ao terminar não se esqueça de clicar no botão "FINALIZAR", para concluir!'
+                });
+            });
+        },
+        closeChangeset(id){
+            //chama função para finalizar changeset
+
+            this.layerIdSelected = null
+            this.$store.dispatch('edit/setLayerId', null)
         }
     }
 
