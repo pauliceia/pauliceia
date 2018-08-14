@@ -12,7 +12,7 @@
           <br>
         </div>
         <div class="nofitication">
-          <div v-for="n in notif">
+          <div v-for="n in notifG">
             <div class="notification-box">
 
               <div style="display: flex; align-items: center;">
@@ -30,7 +30,36 @@
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="FOLLOWING" name="second">
+      <el-tab-pane label="PERSONAL" name="second">
+        <div class="notification-box">
+          <textarea class="form-control" v-model="txtNotif" id="inputReference2" rows="3"></textarea>
+          <br>
+          <div style="right: 30px; position: absolute">
+            <a href="#" class="btn btn-primary" @click="addNotif2()">Submit</a>
+          </div>
+          <br>
+          <br>
+        </div>
+        <div class="nofitication">
+          <div v-for="n in notifP">
+            <div class="notification-box">
+
+              <div style="display: flex; align-items: center;">
+                <div class="photo">B</div>
+                <div class="credentials">
+                  <p class="author">{{n.name}}</p>
+                  <p class="date">{{n.date}}</p>
+                </div>
+              </div>
+
+              <p class="content">{{n.description}}</p>
+              <p class="comments">Answer</p>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane label="FOLLOWING" name="thrid">
         <div v-for="test in 8" :key="test">
           <div class="notification-box">
 
@@ -72,11 +101,13 @@
       return {
         activeName: 'first',
         notifications: [],
-        notif: [],
+        notifG: [],
+        notifP: [],
         txtNotif: null,
         keyword_id: null,
         notification_id_parent: null,
         layer_id: null,
+        notificationsP: [],
       }
     },
     methods: {
@@ -102,14 +133,14 @@
         Api().post('/api/notification/create',
           notification
         ).then(function (response) {
-          console.log(response)
+          //console.log(response)
           vm.updateNotif()
           vm.txtNotif = null
         })
       },
       updateNotif(){
         const vm = this
-        this. notif = []
+        this.notifG = []
         Api().get('/api/notification/').then(function (response) {
           //Api().get('/api/notification/?notification_id=' + vm.user.user_id).then(function (response) {
           Api().get('/api/notification/').then(function (response) {
@@ -117,7 +148,7 @@
               vm.notifications.push(e.properties)
 
               Api().get('/api/user/?user_id=' + e.properties.user_id_creator).then(function (response) {
-                vm.notif.push({
+                vm.notifG.push({
                   'description': e.properties.description,
                   'name': response.data.features[0].properties.name,
                   'date': e.properties.created_at
@@ -128,38 +159,87 @@
 
             console.log(response.data.features)
             //console.log(vm.notifications)
-
-            vm.notif.sort(function(a,b){
-              return new Date(a.date).getTime() - new Date(b.date).getTime()
+            console.log(vm.notifG)
+            vm.notifG.sort(function(a,b){
+              return a.properties.notification_id - b.properties.notification_id
             });
           })
         })
-
       }
     },
-    beforeCreate() {
-      const vm = this
-      Api().get('/api/notification/').then(function (response) {
-        //Api().get('/api/notification/?notification_id=' + vm.user.user_id).then(function (response) {
-        Api().get('/api/notification/').then(function (response) {
-          response.data.features.filter(e => {
-            vm.notifications.push(e.properties)
 
-            Api().get('/api/user/?user_id=' + e.properties.user_id_creator).then(function (response) {
-              vm.notif.push({
-                'description': e.properties.description,
-                'name': response.data.features[0].properties.name,
-                'date': e.properties.created_at.toString()
-              })
-            })
-          })
-          console.log(response.data.features)
-          //console.log(vm.notifications)
-          vm.notif.sort(function(a,b){
-            return new Date(a.date).getDate() - new Date(b.date).getDate()
-          });
-        })
-      })
+    async mounted() {
+      const vm = this
+      try {
+        // let notifications = await Api().get('/api/notification/?layer_id=NULL&keyword_id=NULL&notification_id_parent=NULL')
+        // let notifG = await notifications.data.features.map(async notification => {
+        //
+        //   let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
+        //   return {
+        //     'description': notification.properties.description,
+        //     'name': userInfo.data.features[0].properties.name,
+        //     'date': notification.properties.created_at,
+        //     'type': 'general',
+        //     'notification_id': notification.properties.notification_id,
+        //   }
+        //
+        // })
+        //
+        // Promise.all(notifG).map( not => {
+        //   console.log(not)
+        // })
+
+        //vm.notifG = notifG
+
+        // await response.data.features.filter(async e => {
+        //     vm.notifications.push(e.properties)
+        //
+        //     let teste = await Api().get('/api/user/?user_id=' + e.properties.user_id_creator)
+        //     vm.notifG.push({
+        //       'description': e.properties.description,
+        //       'name': teste.data.features[0].properties.name,
+        //       'date': e.properties.created_at,
+        //       'type': 'general',
+        //       'notification_id': e.properties.notification_id,
+        //     })
+        //   })
+        //   // console.log(response.data.features)
+        //   vm.notifG.sort(function(a,b){
+        //     console.log(a.date)
+        //     console.log(b.date)
+        //     return new Date(a.date) - new Date(b.date)
+        //   })
+
+
+        // Api().get('/api/notification/?user_id_creator='+vm.user.user_id).then(function (responseU) {
+        //   responseU.data.features.forEach(f => {
+        //
+        //     Api().get('/api/notification/?notification_id_parent=' + f.properties.notification_id).then(function (response) {
+        //       response.data.features.filter(e => {
+        //         vm.notificationsP.push(e.properties)
+        //
+        //         Api().get('/api/user/?user_id=' + e.properties.user_id_creator).then(function (response) {
+        //           vm.notifP.push({
+        //             'description': e.properties.description,
+        //             'name': response.data.features[0].properties.name,
+        //             'date': e.properties.created_at,
+        //             'type': 'general',
+        //             'notification_id': e.properties.notification_id,
+        //           })
+        //         })
+        //       })
+        //       console.log(response.data.features)
+        //       //console.log(vm.notifications)
+        //       vm.notifG.sort(function (a, b) {
+        //         return a.properties.notification_id - b.properties.notification_id
+        //       })
+        //     })
+        //   })
+        // })
+      } catch( error ) {
+        console.log(error)
+      }
+
     }
   }
 </script>
