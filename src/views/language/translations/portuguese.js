@@ -1,4 +1,6 @@
-{
+import termsPT from './termsPT-BR'
+
+export default {
     "nav": {
         "explore": "Navegue",
         "about": "Sobre",
@@ -62,24 +64,24 @@
             "btnText": "Pesquisar"
         },
         "sidebarLayer": {
-            "title": "CAMADAS",
-            "btnAdd": "GERENCIE OUTRAS",
+            "title": "Camadas",
+            "btnAdd": "Adicionar e remover camadas",
             "options": {
                 "zoom": "Zoom",
                 "infosLayer": "Informações da camada",
-                "infosVector": "Informações dos vetores",
+                "infosVector": "Informações sobre os objetos",
                 "editColor": "Mudar a cor",
                 "download": "Baixar .shp"
             },
             "msgEmpty": "Adicione as camadas para a visualização no mapa!"
         },
         "sidebarEdit": {
-            "title": "EDITOR"      
+            "title": "Editor"      
         },
         "addLayer": {
-            "title": "GERENCIE OUTRAS CAMADAS",
+            "title": "Adicionar e remover camadas",
             "input": "Pesquise por tema, camada ou autor:",
-            "close": "fechar",
+            "close": "Fechar",
             "box": {
                 "lbTitle": "TITULO",
                 "lbAuthors": "AUTORES",
@@ -105,9 +107,13 @@
         },
         "viewInfoVector": {
             "title": "Selecione as informações",
-            "btnFeature": "Vetor",
-            "btnBox": "Box",
+            "btnFeature": "Por localização",
+            "btnBox": "Por região",
             "btnClean": "Limpar"
         }
+    },
+    "terms": {
+        "title": "TERMOS DE USO",
+        "text": termsPT
     }
 }

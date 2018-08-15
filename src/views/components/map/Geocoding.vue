@@ -1,8 +1,13 @@
 <template>
     <section class="box" v-show="boxGeocoding">
-        
-        <label for="searchGeocoding" class="label"> {{ $t('map.geocoding.label') }}:</label>
 
+        <header class="header">
+            <h1>{{ $t('map.geocoding.label') }}:</h1>
+            <button class="btn" @click="closeBox()">
+                <md-icon>close</md-icon>
+            </button>
+        </header>
+    
         <form @submit.prevent="search">
             <div class="input-group">               
                 <el-autocomplete
@@ -159,6 +164,9 @@ export default {
             //Disponibilizar para download
 
         },
+        closeBox() {
+            this.$store.dispatch('map/setBoxGeocoding', false)
+        },
         async search () {
             try {
                 let regex = new RegExp(/\s*,( )*\d{4}/);
@@ -219,19 +227,36 @@ export default {
 
 <style lang="sass">
     .box
-        padding: 10px
-        border-radius: 10px
-        background: rgba(#FFF, 0.7)
         position: absolute
-        left: 60%
         top: 20px
         right: 20px
+        border-radius: 10px
+        overflow: auto
+        padding: 10px
+        background: rgba(#FFF, 0.7)
         z-index: 1
+        max-width: 40%
+        min-width: 40%
 
-        .label
-            font-size: 1.3em
-            padding-left: 5px
-            color: #333
+        .header
+            width: 100%
+            h1
+                padding: 5px 5px 10px 5px 
+                font-size: 1.3em
+                font-weight: 400
+                font-family: 'Roboto' !important
+                display: inline-block
+                margin: 0 !important
+
+            .btn
+                margin: 3px !important
+                padding: 2px !important
+                background: none
+                border: none
+                float: right
+                display: inline-block
+            .btn:hover
+                background: rgba(#000, 0.1)
 
         .btn-search
             background: #f15a29

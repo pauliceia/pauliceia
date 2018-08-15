@@ -1,7 +1,7 @@
 <template>
     <section>
         <div class="box-item" v-for="layer in layers" :key="layer.title">
-            <el-switch v-model="layer.status" @click.native="modifyLayer(layer)"></el-switch>
+            <el-switch v-model="layer.status" @click.native="modifyLayer(layer)" :active-color="color"></el-switch>
             <span><b>{{ layer.title }}</b></span>
         </div>
     </section>     
@@ -12,7 +12,8 @@ import Map from '@/middleware/Map'
 
 export default {
     props: {
-        group: Object
+        group: Object,
+        color: String
     },
 
     data() {
@@ -24,7 +25,7 @@ export default {
                 },
                 {
                     status: false,
-                    title: "GOOGLE MAPS"
+                    title: "Google Maps"
                 }
             ]
         }
@@ -57,5 +58,5 @@ export default {
         margin-top: -5px !important
     span
         padding-left: 7.5px
-        font-size: 1.1em
+        font-size: 1.2em
 </style>

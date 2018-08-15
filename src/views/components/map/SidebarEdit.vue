@@ -64,7 +64,9 @@ export default {
         padding: 8px 30px
         background: rgba(#f15a29, 0.8)
         color: #FFF
+        font-size: 1.1em
         border-radius: 10px
+        letter-spacing: 0.8px
         cursor: pointer
         b
             text-shadow: 1px 2px 1px #58595b
@@ -89,7 +91,8 @@ export default {
         .md-toolbar
             min-height: 50px !important
             .nav-title
-                font-size: 1.1em
+                font-size: 1.15em
+                letter-spacing: 0.8px
                 padding-left: 10px
                 text-shadow: 1px 2px 1px #58595b
             

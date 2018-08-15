@@ -12,32 +12,32 @@ const dashRoutes = [
         path: '/dashboard',
         redirect: '/dashboard/home',
         component: Dashboard,
-        //meta: { auth: true }
+        meta: { auth: true }
     },
     {
         path: '/dashboard/home',
         name: 'Home',
         component: DashHome,
-        //meta: { auth: true }
+        meta: { auth: true }
     },
     {
       path: '/dashboard/newLayer',
       name: 'NewLayer',
       component: DashNewLayer,
-      //meta: { auth: true }
+      meta: { auth: true }
     },
     {
       path: '/dashboard/editLayer',
       name: 'EditLayer',
       component: DashEditLayer,
       props: {layer_id: 0},
-      //meta: { auth: true }
+      meta: { auth: true }
     },
     {
       path: '/dashboard/keywords',
       name: 'Keyword',
       component: DashKeyword,
-      //meta: { auth: true }
+      meta: { auth: true }
     }
 ]
 
