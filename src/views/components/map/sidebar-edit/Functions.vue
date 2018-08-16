@@ -44,7 +44,9 @@ export default {
 
     watch: {
         layerId(val){
-            this._getLayer(val)
+            if(val != null) {
+                this._getLayer(val)
+            }
         }
     },
 
