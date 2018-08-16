@@ -20,41 +20,17 @@ export default {
       'p-notifications': Notifications
     },
     computed: {
-      ...mapState('map', ['boxNotifications']),
-      ...mapState('auth', ['isUserLoggedIn', 'user'])
+      ...mapState('map', ['boxNotifications'])
     },
     data() {
       return {
-        activeName: 'first',
-        notifications: [],
-        notif: [],
+        activeName: 'first'
       };
     },
     methods: {
         closeBox() {
             this.$store.dispatch('map/setBoxNotifications', false)
         },
-        handleClick(tab, event) {
-            // console.log(tab, event);
-        }
-    },
-    beforeCreate() {
-      const vm = this
-      Api().get('/api/notification/').then(function (response) {
-        //Api().get('/api/notification/?notification_id=' + vm.user.user_id).then(function (response) {
-        Api().get('/api/notification/').then(function (response) {
-          response.data.features.filter(e => {
-            vm.notifications.push(e.properties)
-
-            Api().get('/api/user/?user_id='+e.properties.user_id_creator).then(function (response) {
-              vm.notif.push({'description': e.properties.description, 'name':response.data.features[0].properties.name, 'date': e.properties.created_at})
-              //console.log(response.data.features[0].properties.name)
-            })
-
-          })
-          //console.log(vm.notifications)
-        })
-      })
     }
 }
 </script>
