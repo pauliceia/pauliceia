@@ -1,49 +1,80 @@
 <template>
-  <p-dash-layout title="Edit Layer">
+  <p-dash-layout :title="$t('dashboard.nav.layer')">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-6"  v-if="shapeCorrect === false">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Layer</h5>
+            <h5 class="card-title">{{ $t('dashboard.editLayer.layer') }}</h5>
             <p class="card-text">
             <form>
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="inputName">Name</label>
-                  <input class="form-control" id="inputName" placeholder="Name" disabled>
+                  <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              :content= " $t('dashboard.newLayer.nameD')"
+                              type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
+                  <input class="form-control" id="inputName" disabled>
                 </div>
                 <div class="form-group col-md-6">
-                  <label class="mr-sm-2" for="keywordsSelect">Keywords</label>
+                  <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              :content="$t('dashboard.newLayer.keywordsD')"
+                              type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
+                  <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
+                    <md-icon>add_circle_outline</md-icon>
+                  </button>
                   <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
                             value="description"
                             id="keywordsSelect"></v-select>
-                  <!--<select class="custom-select mr-sm-2" id="themeSelect" @change="addTheme()">
-                    <option selected>Choose...</option>
-                    <option v-for="t in theme" :value="t.name">{{t.name}}</option>
-                  </select>-->
                 </div>
               </div>
               <div class="form-group">
-                <!--<label for="inputDescription">Chosen Themes</label>
-                <ol>
-                  <li v-for="(t, index) in chosenTheme">
-                    {{ t.name }}
-                    &nbsp; &nbsp;
-                    <a href="#" class="" @click="removeTheme(index)">x</a>
-                  </li>
-                </ol>-->
               </div>
               <div class="form-group">
-                <label for="userSelect">Collaborators</label>
+                <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>
+                <el-popover class="info" placement="top-start" width="200"
+                            trigger="hover"
+                            :content="$t('dashboard.newLayer.collaboratorsD')"
+                            type="primary">
+                  <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                  </button>
+                </el-popover>
                 <v-select multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
                           id="userSelect"></v-select>
               </div>
               <div class="form-group">
-                <label for="inputDescription">Description</label>
+                <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>
+                <el-popover class="info" placement="top-start" width="200"
+                            trigger="hover"
+                            :content="$t('dashboard.newLayer.descriptionD')"
+                            type="primary">
+                  <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                  </button>
+                </el-popover>
                 <textarea class="form-control" id="inputDescription" rows="3"></textarea>
               </div>
               <div class="form-group">
-                <label for="inputReference">Reference</label>
+                <label for="inputReference">{{ $t('dashboard.newLayer.reference') }}</label>
+                <el-popover class="info" placement="top-start" width="200"
+                            trigger="hover"
+                            :content="$t('dashboard.newLayer.referenceD')"
+                            type="primary">
+                  <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                  </button>
+                </el-popover>
                 <div class="form-row">
                   <div class="form-group col-md-12">
                     <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
@@ -53,12 +84,13 @@
                     </select>-->
                   </div>
                   <div class="form-group col-md-4">
-                    <a href="#" class="btn btn-primary" @click="addRef()">Add</a>
+                    <a href="#" class="btn btn-primary" @click="addRef()">{{ $t('dashboard.newLayer.add') }}</a>
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                <label for="inputReference">Added References</label>
+                <label for="inputReference">{{ $t('dashboard.newLayer.addedReferences') }}</label>
+
                 <ol>
                   <li v-for="(t, index) in chosenRef">
                     {{ t.description }}
@@ -76,8 +108,8 @@
             <div class="row">
               <div class="col align-self-end">
                 <br>
-                <a href="#" class="btn btn-primary" @click="Upload()">Submit</a>
-                <a href="#" class="btn btn-danger" @click="Delete()">Delete</a>
+                <a href="#" class="btn btn-primary" @click="Upload()">{{ $t('dashboard.newLayer.submit') }}</a>
+                <a href="#" class="btn btn-danger" @click="Delete()">{{ $t('dashboard.editLayer.delete') }}</a>
               </div>
             </div>
           </div>
@@ -86,12 +118,12 @@
       <div class="col-sm-6">
         <div class="card" v-if="shapeCorrect">
           <div class="card-body">
-            <h5 class="card-title">Time Columns</h5>
+            <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
             <div class="card-text">
               <form>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="inputName">Start Date</label>&nbsp;
+                    <label for="inputName">{{ $t('dashboard.newLayer.startDate') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
                                 content="this is content, this is content, this is content"
@@ -103,7 +135,7 @@
                     <input class="form-control" v-model="startDate" type="date" id="start_date">
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="userSelect">Start Date Column</label>&nbsp;
+                    <label for="userSelect">{{ $t('dashboard.newLayer.startDateColumn') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
                                 content="this is content, this is content, this is content"
@@ -112,11 +144,11 @@
                         <md-icon class="icon">error_outline</md-icon>
                       </button>
                     </el-popover>
-                    <v-select multiple v-model="startColumnsName" :options="columnsName" track-by="" label=""
+                    <v-select v-model="startColumnsName" :options="columnsName" track-by="" label=""
                               id="start_date_column_name"></v-select>
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="userSelect">Start Date Mask</label>&nbsp;
+                    <label for="userSelect">{{ $t('dashboard.newLayer.startDateMask') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
                                 content="this is content, this is content, this is content"
@@ -131,7 +163,7 @@
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="inputName">End Date</label>&nbsp;
+                    <label for="inputName">{{ $t('dashboard.newLayer.endDate') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
                                 content="this is content, this is content, this is content"
@@ -143,7 +175,7 @@
                     <input class="form-control" type="date" v-model="endDate" id="end_date">
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="userSelect">End Date Column</label>&nbsp;
+                    <label for="userSelect">{{ $t('dashboard.newLayer.endDateColumn') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
                                 content="this is content, this is content, this is content"
@@ -152,11 +184,11 @@
                         <md-icon class="icon">error_outline</md-icon>
                       </button>
                     </el-popover>
-                    <v-select multiple v-model="endColumnsName" :options="columnsName" track-by="" label=""
+                    <v-select v-model="endColumnsName" :options="columnsName" track-by="" label=""
                               id="end_date_column_name"></v-select>
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="userSelect">End Date Mask</label>&nbsp;
+                    <label for="userSelect">{{ $t('dashboard.newLayer.endDateMask') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
                                 content="this is content, this is content, this is content"
@@ -172,7 +204,7 @@
                 <div class="form-row">
                   <div class="col align-self-end">
                     <br>
-                    <a href="#" class="btn btn-primary" @click="Upload2()">Submit</a>
+                    <a href="#" class="btn btn-primary" @click="Upload2()">{{ $t('dashboard.newLayer.submit') }}</a>
                   </div>
                 </div>
               </form>
@@ -226,10 +258,66 @@
         endDate: null,
         shapeCorrect: false,
         fullscreenLoading: false,
-        layer_id: this.$route.params.layer_id
+        layer_id: this.$route.params.layer_id,
+        startDateMask_mask_id: null,
+        endDateMask_mask_id: null
       }
     },
     methods: {
+      newKeyword() {
+        const vm = this
+        this.$router.push({
+          name: 'Keyword',
+          params: {name: "EditLayer", layer_id: vm.layer_id}
+        })
+      },
+      Upload2(){
+
+        const vm = this
+        if(this.startDate === null || this.endDate === null){
+          let msg = "Date is missing"
+          vm.$message.error(msg)
+        }
+        else if(this.endColumnsName.length === 0 || this.startColumnsName.length === 0){
+          let msg = "Column name is missing"
+          vm.$message.error(msg)
+        }
+        else if(this.startDateMask === null || this.endDateMask === null){
+          let msg = "Mask is missing"
+          vm.$message.error(msg)
+        }
+        else {
+
+          let timeColumn = {
+            'properties': {
+              'f_table_name': this.tableName,
+              'start_date': this.startDate,
+              'end_date': this.endDate,
+              'end_date_column_name': this.endColumnsName,
+              'start_date_column_name': this.startColumnsName,
+              'start_date_mask_id': this.startDateMask.mask_id,
+              'end_date_mask_id': this.endDateMask.mask_id,
+            },
+            'type': 'TemporalColumns'
+          }
+          //console.log(timeColumn)
+          Api().put('/api/temporal_columns',
+            timeColumn
+          ).then(function (response) {
+            vm.$message.success("The layer was updated with success!")
+            vm.$router.push({
+              path: '/dashboard/home'
+            })
+          }, function (cause) {
+            let msg = ''
+            if (cause.response.status === 403) msg = "Just the owner of layer or administrator can create/update a time columns."
+            else if (cause.response.status === 401) msg = "It is necessary an Authorization valid!"
+            else msg = cause.toString()
+            console.log(cause.response)
+            vm.$message.error(msg)
+          })
+        }
+      },
       Upload() {
         const vm = this
         this.chosenKeywordsID = []
@@ -256,7 +344,7 @@
             'type': 'Layer',
             'properties': {
               'layer_id': vm.layer_id,
-              'f_table_name': document.getElementById("inputName").value,
+              'f_table_name': vm.tableName,
               'name': document.getElementById("inputName").value,
               'description': document.getElementById("inputDescription").value,
               'source_description': document.getElementById("inputDescription").value,
@@ -265,7 +353,7 @@
             }
           }
           //vm.tableName = document.getElementById("inputName").value
-          console.log(layer)
+          //console.log(layer)
 
           vm.usersAux.forEach(u => {
             Api().delete('/api/user_layer/?layer_id=' + vm.layer_id + '&user_id=' + u.user_id)
@@ -285,12 +373,10 @@
                 'type': 'UserLayer'
               }
 
-
               Api().post('/api/user_layer/create',
                 user_layer
               )//.then(function (response) {})
             })
-
 
             Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then(function (response) {    //Pega as colunas do shapefile enviado
               response.data.features.filter(e => {
@@ -304,8 +390,25 @@
                 vm.shapeCorrect = true;
                 loading.close();
                 //console.log(vm.columnsName)
+              }, function (cause) {
+                loading.close()
+                let msg = ''
+                msg = cause.toString()
+                vm.$message.error(msg)
               })
+            }, function (cause) {
+              loading.close()
+              let msg = ''
+              msg = cause.toString()
+              vm.$message.error(msg)
             })
+          }, function (cause) {
+            loading.close()
+            let msg = ''
+            if (cause.response.status === 403) msg = "The owner of layer or administrator are who can manage a layer."
+            else if (cause.response.status === 401) msg = "It is necessary an Authorization valid!"
+            else msg = cause.toString()
+            vm.$message.error(msg)
           })
 
           // this.$router.push({
@@ -355,7 +458,7 @@
             vm.auxRef = null
           }, function (cause) {
             let msg = ''
-            if (cause.response.status == 400) msg = "Reference text already exists!"
+            if (cause.response.status === 400) msg = "Reference text already exists!"
             else msg = cause.toString()
             console.log(cause.response)
             vm.$message.error(msg)
@@ -363,63 +466,101 @@
         }
       }
     },
-    beforeCreate() {
+    mounted() {
       const vm = this
 
       let id = this.$route.params.layer_id
 
-      Api().get('/api/user').then(function (response) {
-        response.data.features.filter(e => {
-          vm.users.push(e.properties)
+      if (id === undefined) {
+        vm.$router.push({
+          path: '/dashboard/home'
         })
-      })
+      }
+      else {
 
-      Api().get('/api/keyword').then(function (response) {
-        response.data.features.filter(e => {
-          vm.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
+        Api().get('/api/user').then(function (response) {
+          response.data.features.filter(e => {
+            vm.users.push(e.properties)
+          })
         })
-      })
 
-      Api().get('/api/layer/?layer_id=' + id).then(function (response) {
-        vm.layer = response.data.features[0].properties
-        //console.log(vm.layer)
-        document.getElementById("inputName").value = vm.layer.name
-        document.getElementById("inputDescription").value = vm.layer.description
-        vm.chosenKeywordsID = vm.layer.keyword
-        if(vm.layer.reference !== null) vm.chosenRefID = vm.layer.reference
-        else vm.chosenRefID = []
-        vm.tableName = vm.layer.f_table_name
+        Api().get('/api/keyword').then(function (response) {
+          response.data.features.filter(e => {
+            vm.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
+          })
+        })
 
-        console.log(vm.layer)
+        Api().get('/api/layer/?layer_id=' + id).then(function (response) {
+          vm.layer = response.data.features[0].properties
+          //console.log(vm.layer)
+          document.getElementById("inputName").value = vm.layer.name
+          document.getElementById("inputDescription").value = vm.layer.description
+          vm.chosenKeywordsID = vm.layer.keyword
+          if (vm.layer.reference !== null) vm.chosenRefID = vm.layer.reference
+          else vm.chosenRefID = []
+          vm.tableName = vm.layer.f_table_name
 
-        vm.chosenKeywordsID.forEach(key => {
-          Api().get('/api/keyword/?keyword_id=' + key).then(function (response) {
+          //console.log(vm.layer)
+
+          vm.chosenKeywordsID.forEach(key => {
+            Api().get('/api/keyword/?keyword_id=' + key).then(function (response) {
+              response.data.features.filter(e => {
+                vm.chosenKeywords.push(e.properties)
+              })
+            })
+          })
+          vm.chosenRefID.forEach(id => {
+            Api().get('/api/reference/?reference_id=' + id).then(function (response) {
+              response.data.features.filter(e => {
+                vm.chosenRef.push({description: e.properties.description, reference_id: e.properties.reference_id})
+              })
+            })
+          })
+
+          Api().get('/api/user_layer/?layer_id=' + id).then(function (response) {
+            //console.log(response.data.features)
+            response.data.features.forEach(u => {
+              Api().get('/api/user/?user_id=' + u.properties.user_id).then(function (response) {
+                //console.log(response.data.features)
+                if (response.data.features[0].properties.user_id !== vm.user.user_id)
+                  vm.chosenUsers.push(response.data.features[0].properties)
+              })
+              if (u.properties.user_id !== vm.user.user_id)
+                vm.usersAux.push(u.properties)
+            })
+          })
+
+          Api().get('/api/mask').then(function (response) {
             response.data.features.filter(e => {
-              vm.chosenKeywords.push(e.properties)
+              vm.dateMask.push(e.properties)
             })
           })
-        })
-        vm.chosenRefID.forEach(id => {
-          Api().get('/api/reference/?reference_id=' + id).then(function (response) {
-            response.data.features.filter(e => {
-              vm.chosenRef.push({description: e.properties.description, reference_id: e.properties.reference_id})
-            })
-          })
-        })
 
-        Api().get('/api/user_layer/?layer_id=' + id).then(function (response) {
-          //console.log(response.data.features)
-          response.data.features.forEach(u => {
-            Api().get('/api/user/?user_id=' + u.properties.user_id).then(function (response) {
-              //console.log(response.data.features)
-              if (response.data.features[0].properties.user_id !== vm.user.user_id)
-                vm.chosenUsers.push(response.data.features[0].properties)
+          Api().get('/api/temporal_columns/?f_table_name=' + vm.layer.f_table_name).then(function (response) {
+            //console.log(response.data.features[0])
+            vm.startDate = response.data.features[0].properties.start_date
+            vm.endDate = response.data.features[0].properties.end_date
+            vm.endColumnsName = response.data.features[0].properties.end_date_column_name
+            vm.startColumnsName = response.data.features[0].properties.start_date_column_name
+            vm.startDateMask_mask_id = response.data.features[0].properties.start_date_mask_id
+            vm.endDateMask_mask_id = response.data.features[0].properties.end_date_mask_id
+
+            Api().get('/api/mask/?mask_id=' + response.data.features[0].properties.start_date_mask_id).then(function (response) {
+              response.data.features.filter(e => {
+                vm.startDateMask = e.properties
+              })
             })
-            if (u.properties.user_id !== vm.user.user_id)
-              vm.usersAux.push(u.properties)
+
+            Api().get('/api/mask/?mask_id=' + response.data.features[0].properties.end_date_mask_id).then(function (response) {
+              response.data.features.filter(e => {
+                vm.endDateMask = e.properties
+              })
+            })
+
+
           })
         })
-      })
+      }
     }
   }
 
@@ -428,12 +569,14 @@
 
 <style lang="sass" scoped>
   .add
-    top: -2px
+    top: -1px
+    left: 0px
     display: inline-block
     border: none
     padding: 0px
     margin: 0px
-    position: absolute
+    position: relative
+    border-radius: 30px
 
   .del
     top: 0px
@@ -442,4 +585,12 @@
     padding: 0px
     margin: 0px
     position: relative
+
+  .info
+    top: -1px
+    border: none
+    padding: 0px
+    margin: 0px
+    position: relative
+    border-radius: 30px
 </style>

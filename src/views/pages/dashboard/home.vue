@@ -1,10 +1,10 @@
 <template>
-  <p-dash-layout title="Dashboard">
+  <p-dash-layout :title="$t('dashboard.home.dashboard')">
     <div class="row">
       <div class="col-sm-8">
         <div class="card  text-center">
           <div class="card-header">
-            Notifications
+            {{ $t('dashboard.home.notifications') }}
           </div>
           <div class="card-body">
             <p-notifications></p-notifications>
@@ -14,7 +14,7 @@
       <div class="col-sm-4">
         <div class="card  ">
           <div class="card-header text-center">
-            My Layers
+            {{ $t('dashboard.home.myLayers') }}
           </div>
           <div class="card-body">
             <div class="card-text">
@@ -33,7 +33,7 @@
         </div>
         <div class="card  ">
           <div class="card-header text-center">
-            Shared Layers
+            {{ $t('dashboard.home.sharedLayers') }}
           </div>
           <div class="card-body">
             <div class="card-text">
