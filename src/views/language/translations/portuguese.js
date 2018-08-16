@@ -14,7 +14,55 @@ export default {
         "nav": {
             "home": "Inicio",
             "infos": "Informações",
-            "newLayer": "Nova Camada"
+            "newLayer": "Nova Camada",
+            "keywords": "Palavras-chave",
+            "layer": "Camadas"
+        },
+        "home":{
+            "dashboard": "Painel de Controle",
+            "notifications": "Notificações",
+            "myLayers": "Minhas Camadas",
+            "sharedLayers": "Camadas Compartilhadas"
+        },
+        "newLayer": {
+            "name": "Nome",
+            "keywords": "Palavras-chave",
+            "collaborators": "Colaboradores",
+            "description": "Descrição",
+            "reference": "Referência",
+            "addedReferences": "Referências Adicionadas",
+            "add": "Adicionar",
+            "submit": "Enviar",
+            "fileInput": "Arquivo de Entrada",
+            "zipFile": "Arquivo ZIP",
+            "nameD": "Nome da camada. Ela é única no sistema.",
+            "keywordsD": "Palavra-chave é uma etiqueta/rótulo relacionado a camada, que indica qual tipo ela pertence, como ruas, endereços, crimes e etc.",
+            "collaboratorsD": "Colaboradores são as pessoas que poderão adicionar, editar ou remover os vetores da camada. Vetores são as geometrias da camada, como um ponto, linha ou polígono.",
+            "descriptionD": "Descrição é uma descrição/informação sobre a camada.",
+            "referenceD": "Referência é a fonte daquele dado, se ele é de um livro, artigo, dissertação ou etc. Ele deve estar no formato ABNT.",
+            "epsgD": "É a projeção do Shapefile, um número inteiro, por exemplo 4326.",
+            "fileInputD": "O arquivo que será inserido é um arquivo compactado ZIP que contém o Shapefile para ser enviado. Dentro deste arquivo ZIP deve conter todos os arquivos de um Shapefile, como o “.shp”, “.prj”, “.dbf” e etc.",
+            "zipFileD": "Arquivo ZIP",
+            "chooseFile": "Escolha o arquivo",
+            "temporalColumns": "Dados Temporias",
+            "startDate": "Data Inicial",
+            "endDate": "Data Final",
+            "startDateColumn": "Coluna da Data Inicial",
+            "endDateColumn": "Coluna da Data Final",
+            "startDateMask": "Máscara da Data Inicial",
+            "endDateMask": "Máscara da Data Final"
+        },
+        "editLayer": {
+            "delete": "Deletar",
+            "layer": "Edição Camada",
+            "editLayer": "Editar Camada"
+        },
+        "keywords":{
+            "keywords": "Palavras-chave",
+            "newKeyword": "Novas Palavras-Chave",
+            "myKeywords": "Minhas Palavras-Chave",
+            "name": "Nome",
+            "nameD": "NameD"
         }
     },
     "login": {
@@ -51,11 +99,11 @@ export default {
     },
     "validEmail": {
         "msgSuccess": "Olá, seu e-mail foi validado com <strong>sucesso</strong>! Agora é só realizar o <i>login</i> para acessar o sistema.",
-        "msgErr": "Erro ao efetuar a validação do seu E-mail. Link inválido!" 
+        "msgErr": "Erro ao efetuar a validação do seu E-mail. Link inválido!"
     },
     "validSocial": {
         "msgSuccess": "BEM-VINDO",
-        "msgErr": "Erro ao efetuar o login. Link inválido!" 
+        "msgErr": "Erro ao efetuar o login. Link inválido!"
     },
     "map":{
         "geocoding": {

@@ -10,10 +10,10 @@
         </md-button>
         
         <md-menu-content>
-            <md-menu-item to="/dashboard/profile">
-                <md-icon>person</md-icon>
-                <span class="md-list-item-text">{{ $t('nav.profile') }}</span>
-            </md-menu-item>
+            <!--<md-menu-item to="/dashboard/profile">-->
+                <!--<md-icon>person</md-icon>-->
+                <!--<span class="md-list-item-text">{{ $t('nav.profile') }}</span>-->
+            <!--</md-menu-item>-->
             <md-menu-item to="/dashboard">
                 <md-icon>home</md-icon>
                 <span class="md-list-item-text">{{ $t('nav.dashboard') }}</span>

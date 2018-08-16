@@ -1,23 +1,26 @@
 <template>
-  <p-dash-layout title="Keywords">
+  <p-dash-layout :title="$t('dashboard.keywords.keywords')">
     <div class="row" style="height: 500px">
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">New Keyword</h5>
+            <h5 class="card-title">{{ $t('dashboard.keywords.newKeyword') }}</h5>
             <p class="card-text">
             <form>
               <div class="form-row">
                 <div class="form-group col-md-10">
-                  <label for="inputName">Name</label>&nbsp;
+                  <label for="inputName">{{ $t('dashboard.keywords.name') }}</label>&nbsp;
                   <el-popover class="info" placement="top-start" width="200"
                               trigger="hover"
-                              content="this is content, this is content, this is content"
+                              :content="$t('dashboard.keywords.nameD')"
                               type="primary">
                     <button type="button"  slot="reference" class="btn btn-outline-primary info">
                       <md-icon class="icon">error_outline</md-icon>
                     </button>
                   </el-popover>
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="back()">
+                    <md-icon>arrow_back</md-icon>
+                  </button>
                   <input class="form-control" id="inputName">
                 </div>
 
@@ -33,7 +36,7 @@
       <div class="col-sm-4">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">My Keywords</h5>
+            <h5 class="card-title">{{ $t('dashboard.keywords.myKeywords') }}</h5>
             <div class="card-text">
               <div class="row" v-for="k in keywords">
                 <div class="col-sm-9">{{ k.name }}</div>
@@ -72,9 +75,28 @@
     data: function () {
       return {
         keywords: [],
+        name: this.$route.params.name,
+        layer_id: this.$route.params.layer_id
       }
     },
     methods: {
+      back(){
+        const vm = this
+        if (vm.name === undefined) vm.name = 'Home'
+
+        if(vm.name === 'EditLayer'){
+          this.$router.push({
+            name: vm.name,
+            params: {'layer_id': vm.layer_id}
+          })
+        }
+        else{
+          this.$router.push({
+            name: vm.name
+          })
+        }
+
+      },
       Upload() {
         const vm = this
         let keyword = {
@@ -108,7 +130,7 @@
 
       },
     },
-    beforeCreate() {
+    mounted() {
       const vm = this
       Api().get('/api/keyword').then(function (response) {
         response.data.features.filter(e => {
@@ -127,6 +149,16 @@
 </script>
 
 <style lang="sass" scoped>
+  .add
+    bottom: 20px
+    left: 95%
+    display: inline-block
+    border: none
+    padding: 0px
+    margin: 0px
+    zoom: 200%
+    position: relative
+    border-radius: 20px
 
   .info
     top: -1px
@@ -134,5 +166,7 @@
     padding: 0px
     margin: 0px
     position: relative
+    border-radius: 30px
+
 
 </style>
