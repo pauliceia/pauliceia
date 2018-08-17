@@ -2,13 +2,23 @@
     <section class="box" v-show="boxGeocoding">
 
         <header class="header">
-            <h1>{{ $t('map.geocoding.label') }}:</h1>
+            <h1>{{ $t('map.geocoding.label.search') }}: 
+
+            <el-popover class="info" placement="top-start" width="450"
+                        trigger="hover"
+                        :content= "$t('map.geocoding.popupInfo.search')"
+                        type="primary">
+                <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                </button>
+            </el-popover></h1>
+
             <button class="btn" @click="closeBox()">
                 <md-icon>close</md-icon>
             </button>
         </header>
     
-        <form @submit.prevent="search">
+        <form @submit.prevent="search">            
             <div class="input-group">               
                 <el-autocomplete
                     class="inline-input"
@@ -40,20 +50,28 @@
         </form>
 
         <div class="box-multigeocoding" v-show="multigeocoding">
+            <h1>{{ $t('map.geocoding.label.geocoding') }}: 
+
+            <el-popover class="info" placement="bottom-start" width="450"
+                        trigger="hover"
+                        type="primary">
+                <div v-html="$t('map.geocoding.popupInfo.geocoding')"/>
+                <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                </button>
+            </el-popover></h1>
+            <br>
+
             <label class="file-select">
                 <!-- We can't use a normal button element here, as it would become the target of the label. -->
                 <div class="select-button">
-                <!-- Display the filename if a file has been selected. -->
-                <span id="uploadFile">Selected File:</span>
                 </div>
                 <!-- Now, the file input that we hide. -->
                 <input type="file" @change="handleFileChange"/>
             </label><br><br>
 
             <button class="btn btn-download" @click="download()">Download</button>                
-
-        </div>
-        
+        </div>    
         
     </section>    
 </template>
@@ -138,7 +156,8 @@ export default {
                             features: (new ol.format.GeoJSON()).readFeatures(vm.geojson)
                         }),
                         name: 'placesSearchMultiple',
-                        style: placeStyleSearch
+                        style: placeStyleSearch,
+                        zIndex: 999
                     });
                     overlayGroupGeolocation.getLayers().clear()
                     overlayGroupGeolocation.getLayers().push(vectorLayer)
@@ -191,7 +210,8 @@ export default {
                                 features: [feature]
                             }),
                             name: 'placesSearch',
-                            style: placeStyleSearch
+                            style: placeStyleSearch,
+                            zIndex: 999
                         });
                         overlayGroupGeolocation.getLayers().clear()
                         overlayGroupGeolocation.getLayers().push(
@@ -241,12 +261,20 @@ export default {
         .header
             width: 100%
             h1
-                padding: 5px 5px 10px 5px 
+                padding: 5px 5px 1px 5px 
                 font-size: 1.3em
                 font-weight: 400
                 font-family: 'Roboto' !important
                 display: inline-block
                 margin: 0 !important
+            
+            .info
+                top: -7px !important
+                border: none
+                position: relative
+                border-radius: 30px
+            .info:hover
+                background: #008ae6 !important
 
             .btn
                 margin: 3px !important
@@ -266,19 +294,10 @@ export default {
         .btn-search:hover
             background: rgba(#f15a29, 0.7)
 
-        .btn-upload
-            background: #f15a29
-            border-bottom: 1px solid #f15a29
-            color: #FFF
-
-        .btn-upload:hover
-            background: rgba(#f15a29, 0.7)
-
         .btn-download
             background: #f15a29
             border-bottom: 1px solid #f15a29
             color: #FFF
-
         .btn-download:hover
             background: rgba(#f15a29, 0.7)
             
@@ -289,6 +308,28 @@ export default {
             padding: 25px
             border: 1px solid #CCC
             border-top: none
+            .file-select
+                padding: 10px 0px 0px 0px
+            h1
+                padding: 5px 5px 1px 0px 
+                font-size: 1.3em
+                font-weight: 400
+                font-family: 'Roboto' !important
+                display: inline-block
+                margin: 0 !important
+            
+            .info
+                top: -7px !important
+                border: none
+                margin: 0
+                padding: 0
+                border-radius: 30px
+            .info:hover
+                background: #008ae6
+
+            .btn
+            .btn:hover
+
 
     input:focus
         border-color: rgba(#58595b, 0.2) !important

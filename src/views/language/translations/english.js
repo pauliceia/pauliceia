@@ -84,7 +84,7 @@ export default {
         "lbUsername": "Username",
         "lbPassword": "Password",
         "lbCheckNotification": "Receive notification by email",
-        "lbCheckAgree": "I agreeto the termsof use.",
+        "lbCheckAgree": "I agree to the terms of use.",
         "lbReadme": "read the terms here",
         "btnTitle": "Register",
         "lbToLogin": "Are you already registered?",
@@ -106,9 +106,21 @@ export default {
     },
     "map":{
         "geocoding": {
-            "label":  "Search Address",
+            "label":  {
+                "search": "Search address",
+                "geocoding": "Search for an address via CSV"
+            },
             "placeholder": "street name, number, year",
-            "btnText": "Search"
+            "btnText": "Search",
+            "popupInfo": {
+                "search": "To search for an address, write it in the following structure street name, number (just a number), year (just a number). Ex: rua da consolaçao, 42, 1931",
+                "geocoding": `
+                    <b>1st Step:</b> Verify if the CSV file are following the rules.<br>
+                    <b>Rules:</b> First header line, written addresses in first column, one per line, following structure street name , number, year<br>
+                    <b>2st Step:</b> Through the Browse button, selecting your CSV file, display the addresses found on the map.<br>
+                    <b>3st Step:</b> Through the Download button, it's possible to download the found data in Shapefile format.
+                `              
+            }
         },
         "sidebarLayer": {
             "title": "Layers",

@@ -7,6 +7,8 @@
 //   }))
 // })
 
+import icon from './../../images/iconLocation.png'
+
 const pointStyle = new ol.style.Style({
   image: new ol.style.Circle({
       radius: 8,
@@ -32,11 +34,11 @@ const polygonStyle = new ol.style.Style({
 
 const placeStyleSearch = new ol.style.Style({
   image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-      anchor: [0.5, 29],
+      anchor: [0.5, 47],
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
-      opacity: 0.85,
-      src: 'https://raw.githubusercontent.com/Pauliceia/edit/master/images/iconLocation.png'
+      opacity: 1,
+      src: icon
   }))
 })
 

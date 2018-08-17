@@ -107,9 +107,21 @@ export default {
     },
     "map":{
         "geocoding": {
-            "label":  "Procure um Endereço",
+            "label":  {
+                "search": "Procure um endereço",
+                "geocoding": "Procure por endereços via CVS"
+            },
             "placeholder": "nome da rua, número, ano",
-            "btnText": "Pesquisar"
+            "btnText": "Pesquisar",
+            "popupInfo": {
+                "search": "Para procurar um endereço, digite-o seguindo a estrutura nome da rua, número (apenas números), ano (apenas números). Ex: rua da consolaçao, 42, 1931",
+                "geocoding": `
+                    <b>1° Passo:</b> Verifique se o seu arquivo CSV se encontra conforme o padrão.<br>
+                    <b>Padrão:</b> Primeira linha de cabeçalho, endereços escritos por extenso na primeira coluna, um por linha, seguindo a estrutura nome da rua, numera, ano<br>
+                    <b>2° Passo:</b> Através do botão Procurar, selecionando o seu arquivo CSV, visualizar no mapa os endereços encontrados.<br>
+                    <b>3° Passo:</b> Através do botão Download, é possível baixar os dados encontrados, em formato Shapefile.
+                `
+            }
         },
         "sidebarLayer": {
             "title": "Camadas",
