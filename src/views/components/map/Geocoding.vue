@@ -193,15 +193,7 @@ export default {
 
                 if(regex.test(search)){
                     const result = await ApiMap.geolocationOne(search)
-                    console.log(result)
-                    if(result.status >= 300) {
-                        this.$alert('Erro programado', 'erro programado', {
-                            dangerouslyUseHTMLString: true,
-                            confirmButtonText: 'OK',
-                            type: 'warning'
-                        });
-
-                    } else {
+                    if(result.data[1][0].geom != undefined) {
                         let coordPoint = result.data[1][0].geom.substring(6).replace(")", "").split(" ")
                         let feature = new ol.Feature(new ol.geom.Point(coordPoint))
                         
@@ -221,10 +213,25 @@ export default {
                         let extent = ol.extent.createEmpty();
                         ol.extent.extend(extent, feature.getGeometry().getExtent());
                         this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
-                    }                   
+
+                    } else  {
+                        if(result.data != undefined && result.data[1][0].alertMsg != undefined) {
+                            this.$alert(result.data[1][0].alertMsg, 'Erro', {
+                                dangerouslyUseHTMLString: true,
+                                confirmButtonText: 'OK',
+                                type: 'error'
+                            });
+                        } else {
+                            this.$alert('Erro ao geocodificar, contate o administrador!', 'Erro', {
+                                dangerouslyUseHTMLString: true,
+                                confirmButtonText: 'OK',
+                                type: 'error'
+                            });
+                        }  
+                    }               
                 
                 } else{
-                    this.$alert('<strong>type it:</strong> street, number, year (0000)', 'INVÁLID FORMAT', {
+                    this.$alert('<strong>Pesquise por:</strong> rua, número, ano (0000)', 'Formato inválido', {
                         dangerouslyUseHTMLString: true,
                         confirmButtonText: 'OK',
                         type: 'warning'
@@ -232,7 +239,7 @@ export default {
                 }
                 
             } catch (error) {
-                this.$alert('Erro ao geocodificar', 'Erro', {
+                this.$alert('Erro ao geocodificar, contate o administrador!', 'Erro', {
                     dangerouslyUseHTMLString: true,
                     confirmButtonText: 'OK',
                     type: 'error'

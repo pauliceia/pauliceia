@@ -102,6 +102,7 @@ export default {
             if(val != null){
                 this.id = val
                 this._getInfos()
+                this.updateNotif()
             }
         }
     },
@@ -146,9 +147,7 @@ export default {
         let authors_layers = await Map.getAuthorsLayers(null)
         this.allAuthorsLayers = authors_layers.data.features
 
-        this.userId = this.user.user_id
         this.layer_id = this.id
-         this.updateNotif()
     },
 
     methods: {
@@ -210,14 +209,12 @@ export default {
           this.updateNotif()
         },
         async updateNotif(){
-          const vm = this
-          this.notifG = []
-          try {
+            const vm = this
             let notifications = await Api().get('/api/notification/?layer_id='+vm.id)
             let notifG = await notifications.data.features.map(async notification => {
 
-              let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
-              return {
+                let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
+                return {
                 'description': notification.properties.description,
                 'name': userInfo.data.features[0].properties.name,
                 'date': notification.properties.created_at,
@@ -228,19 +225,17 @@ export default {
                 'keyword_id': notification.properties.keyword_id,
                 'layer_id': notification.properties.layer_id,
                 'notification_id_parent': notification.properties.notification_id_parent
-              }
+                }
 
             })
 
             Promise.all(notifG).then( notifUpdated => {
-              vm.notifG = notifUpdated.reverse().sort(function(a,b){
-                //return b.notification_id - a.notification_id
-                return new Date(b.date) - new Date(a.date)
-              });
+                console.log(notifUpdated)
+                vm.notifG = notifUpdated.reverse().sort(function(a,b){
+                    return new Date(b.date) - new Date(a.date)
+                });
             })
-          } catch( error ) {
-            //console.log(error)
-          }
+
         },
         closeBox() {
             this.$store.dispatch('map/setBoxInfoLayer', false)
@@ -331,7 +326,7 @@ export default {
                 text-align: justify
         
         .nofitication
-            padding: 0 20px
+            padding: 0 20px 15px 20px
 
             .md-list-item
                 border-bottom: 1px dashed #CCC
