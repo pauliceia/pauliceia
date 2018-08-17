@@ -73,7 +73,6 @@
 
               <p class="content">{{n.description}}</p>
               <p class="comments">
-                <!--<div v-if=""></div>-->
 
                 <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)">
                   <md-icon>replay</md-icon>
@@ -85,6 +84,8 @@
                   <md-icon>clear</md-icon>
                 </button>
               </p>
+              <div v-if="n.is_denunciation !== false">Denunciation</div>
+              <div v-if="n.notification_id_parent !== null">Reply</div>
             </div>
           </div>
         </div>
@@ -148,14 +149,11 @@
       }
     },
 
-    mounted() {
-      this.loadNotification()
-    },
-
     methods: {
       replyNot(notification){
         this.txtReply = 'Reply to '+notification.name
         this.notification_id_parent = notification.notification_id
+        console.log(this.notifP)
       },
       clearNot(notification){
         const vm = this
@@ -168,6 +166,7 @@
       reportNot(notification){
         this.txtReply = 'Denunciation to ' + notification.name
         this.is_denunciation = true
+        this.notification_id_parent = notification.notification_id
       },
       clearMsg(){
         this.txtReply = null
@@ -179,32 +178,30 @@
       handleClick(tab, event) {
         // console.log(tab, event);
       },
-      async addNotif(){
-        try {
-          const vm = this
-          let notification = {
-            'properties': {
-              'notification_id': -1,
-              'is_denunciation': false,
-              'keyword_id': this.keyword_id,
-              'notification_id_parent': this.notification_id_parent,
-              'layer_id': this.layer_id,
-              'description': this.txtNotif,
-            },
-            'type': 'Notification'
-          }
-
-          let response = await Api().post('/api/notification/create', notification)
-          vm.loadNotification()
-          vm.txtNotif = null
-          vm.txtReply = null
-          vm.notification_id_parent = null
-          vm.layer_id = null
-          vm.keyword_id = null
-          vm.is_denunciation = false
-        } catch (e) {
-
+      addNotif(){
+        const vm = this
+        let notification = {
+          'properties': {
+            'notification_id': -1,
+            'is_denunciation': this.is_denunciation,
+            'keyword_id': this.keyword_id,
+            'notification_id_parent': this.notification_id_parent,
+            'layer_id': this.layer_id,
+            'description': this.txtNotif,
+          },
+          'type': 'Notification'
         }
+
+        let response =  Api().post('/api/notification/create', notification)
+
+        vm.txtNotif = null
+        vm.txtReply = null
+        vm.notification_id_parent = null
+        vm.layer_id = null
+        vm.keyword_id = null
+        vm.is_denunciation = false
+
+        this.updateNotif()
       },
       async updateNotif(){
         const vm = this
@@ -221,7 +218,11 @@
               'date': notification.properties.created_at,
               'type': 'general',
               'notification_id': notification.properties.notification_id,
-              'user_id_creator': notification.properties.user_id_creator
+              'user_id_creator': notification.properties.user_id_creator,
+              'is_denunciation': notification.properties.is_denunciation,
+              'keyword_id': notification.properties.keyword_id,
+              'layer_id': notification.properties.layer_id,
+              'notification_id_parent': notification.properties.notification_id_parent
             }
 
           })
@@ -252,7 +253,11 @@
                   'date': notification.properties.created_at,
                   'type': 'general',
                   'notification_id': notification.properties.notification_id,
-                  'user_id_creator': notification.properties.user_id_creator
+                  'user_id_creator': notification.properties.user_id_creator,
+                  'is_denunciation': notification.properties.is_denunciation,
+                  'keyword_id': notification.properties.keyword_id,
+                  'layer_id': notification.properties.layer_id,
+                  'notification_id_parent': notification.properties.notification_id_parent
                 }
               })
 
@@ -304,94 +309,8 @@
 
     async mounted() {
       const vm = this
-      try {
-        let notifications = await Api().get('/api/notification/?layer_id=NULL&keyword_id=NULL&notification_id_parent=NULL')
-        let notifG = await notifications.data.features.map(async notification => {
-
-          let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
-          return {
-            'description': notification.properties.description,
-            'name': userInfo.data.features[0].properties.name,
-            'date': notification.properties.created_at,
-            'type': 'general',
-            'notification_id': notification.properties.notification_id,
-            'user_id_creator': notification.properties.user_id_creator
-          }
-        })
-
-        Promise.all(notifG).then( notifUpdated => {
-          vm.notifG = notifUpdated.reverse().sort(function(a,b){
-            //return b.notification_id - a.notification_id
-            return new Date(b.date) - new Date(a.date)
-          });
-        })
-      } catch( error ) {
-        //console.log(error)
-      }
-
       this.userId = this.user.user_id
-
-      try {
-        let notifications = await Api().get('/api/notification/?user_id_creator='+vm.user.user_id)
-
-        await notifications.data.features.map(async notification => {
-           Api().get('/api/notification/?notification_id_parent='+notification.properties.notification_id).then( async response => {
-
-            let notifP = await response.data.features.map(async notification => {
-              let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
-              return {
-                'description': notification.properties.description,
-                'name': userInfo.data.features[0].properties.name,
-                'date': notification.properties.created_at,
-                'type': 'general',
-                'notification_id': notification.properties.notification_id,
-                'user_id_creator': notification.properties.user_id_creator
-              }
-            })
-
-            Promise.all(notifP).then( notifUpdated => {
-              vm.notifP = notifUpdated.reverse().sort(function(a,b){
-                //return b.notification_id - a.notification_id
-                return new Date(b.date) - new Date(a.date)
-              });
-            })
-          }, function (cause) {
-
-           })
-        })
-
-        let layers = await Api().get('/api/user_layer/?user_id='+vm.user.user_id)
-
-        // await layers.data.features.map(async layer => {
-        //   Api().get('/api/notification/?layer_id='+layer.properties.layer_id).then( async response => {
-        //
-        //     let notifP = await response.data.features.map(async notification => {
-        //       let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
-        //       return {
-        //         'description': notification.properties.description,
-        //         'name': userInfo.data.features[0].properties.name,
-        //         'date': notification.properties.created_at,
-        //         'type': 'general',
-        //         'notification_id': notification.properties.notification_id,
-        //         'user_id_creator': notification.properties.user_id_creator
-        //       }
-        //     })
-        //
-        //     Promise.all(notifP).then( notifUpdated => {
-        //       vm.notifP.push(notifUpdated.reverse()).sort(function(a,b){
-        //         //return b.notification_id - a.notification_id
-        //         return new Date(b.date) - new Date(a.date)
-        //       })
-        //     })
-        //   }, function (cause) {
-        //
-        //   })
-        // })
-
-
-      } catch( error ) {
-        //console.log(error)
-      }
+      this.updateNotif()
     }
   }
 </script>
