@@ -84,7 +84,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" v-show="chosenRef.length !== 0">
                 <label for="inputReference">{{ $t('dashboard.newLayer.addedReferences') }}</label>
                 <ol>
                   <li v-for="(t, index) in chosenRef">
@@ -119,24 +119,23 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group col-md-3">
-                  <label for="Upload">EPSG</label>
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content="$t('dashboard.newLayer.epsgD')"
-                              type="primary">
-                    <button type="button" slot="reference" class="btn btn-outline-primary info">
-                      <md-icon class="icon">error_outline</md-icon>
-                    </button>
-                  </el-popover>
-                  <input class="form-control" id="inputEpsg">
-                </div>
+                <!--<div class="form-group col-md-3">-->
+                  <!--<label for="Upload">EPSG</label>-->
+                  <!--<el-popover class="info" placement="top-start" width="200"-->
+                              <!--trigger="hover"-->
+                              <!--:content="$t('dashboard.newLayer.epsgD')"-->
+                              <!--type="primary">-->
+                    <!--<button type="button" slot="reference" class="btn btn-outline-primary info">-->
+                      <!--<md-icon class="icon">error_outline</md-icon>-->
+                    <!--</button>-->
+                  <!--</el-popover>-->
+                  <!--<input class="form-control" id="inputEpsg">-->
+                <!--</div>-->
               </div>
             </form>
             </p>
             <div class="row">
               <div class="col align-self-end">
-                <br>
                 <a href="#" class="btn btn-primary" @click="Upload()"> {{ $t('dashboard.newLayer.submit') }}</a>
               </div>
             </div>
@@ -172,7 +171,7 @@
                         <md-icon class="icon">error_outline</md-icon>
                       </button>
                     </el-popover>
-                    <v-select multiple v-model="startColumnsName" :options="columnsName" track-by="" label=""
+                    <v-select v-model="startColumnsName" :options="columnsName" track-by="" label=""
                               id="start_date_column_name"></v-select>
                   </div>
                   <div class="form-group col-md-4">
@@ -212,7 +211,7 @@
                         <md-icon class="icon">error_outline</md-icon>
                       </button>
                     </el-popover>
-                    <v-select multiple v-model="endColumnsName" :options="columnsName" track-by="" label=""
+                    <v-select v-model="endColumnsName" :options="columnsName" track-by="" label=""
                               id="end_date_column_name"></v-select>
                   </div>
                   <div class="form-group col-md-4">
@@ -318,7 +317,6 @@
           vm.$message.error(msg)
         }
         else {
-
           let timeColumn = {
             'properties': {
               'f_table_name': this.tableName,
@@ -359,7 +357,7 @@
         })
 
         let tableName2 = document.getElementById("inputName").value
-        let epsg = document.getElementById("inputEpsg").value
+        //let epsg = document.getElementById("inputEpsg").value
         if (tableName2.indexOf(' ') == 0) tableName2 = tableName.slice(1)
         if (tableName2.lastIndexOf(' ') == tableName2.length - 1) tableName2 = tableName2.slice(0, tableName2.length - 1)
         tableName2 = tableName2.split(" ").join("_")
@@ -375,10 +373,10 @@
           let msg = "It's necessary have at least one keyword"
           vm.$message.error(msg)
         }
-        else if(epsg === ''){
-          let msg = "EPSG is missing"
-          vm.$message.error(msg)
-        }
+        // else if(epsg === ''){
+        //   let msg = "EPSG is missing"
+        //   vm.$message.error(msg)
+        // }
         else if(file === undefined){
           let msg = "File is missing"
           vm.$message.error(msg)
@@ -437,8 +435,8 @@
               changeset
             ).then(function (response) {
 
-                Api().post('api/import/shp/?f_table_name=' + vm.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id +
-                  '&epsg=' + epsg,
+                Api().post('api/import/shp/?f_table_name=' + vm.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id,
+                  //'&epsg=' + epsg,
                   file
                 ).then(function (response) {
                     //console.log("Import ok")
@@ -564,12 +562,6 @@
         })
         //console.log(vm.dateMask)
       })
-
-      // Api().get('/api/reference').then(function (response) {
-      //   response.data.features.filter(e => {
-      //     vm.references.push({description: e.properties.description, reference_id: e.properties.reference_id})
-      //   })
-      // })
     }
   }
 

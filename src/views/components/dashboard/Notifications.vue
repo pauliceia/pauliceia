@@ -8,7 +8,11 @@
           <div style="right: 30px; position: absolute">
             <a href="#" class="btn btn-primary" @click="addNotif()">Submit</a>
           </div>
-          <br>
+          <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
+              <md-icon>clear</md-icon>
+            </button>
+          </p>
           <br>
         </div>
         <div class="nofitication">
@@ -24,7 +28,17 @@
               </div>
 
               <p class="content">{{n.description}}</p>
-              <p class="comments">Answer</p>
+              <p class="comments">
+                <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)">
+                  <md-icon>replay</md-icon>
+                </button>
+                <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)">
+                  <md-icon>report</md-icon>
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator">
+                  <md-icon>clear</md-icon>
+                </button>
+              </p>
             </div>
           </div>
         </div>
@@ -37,7 +51,11 @@
           <div style="right: 30px; position: absolute">
             <a href="#" class="btn btn-primary" @click="addNotif2()">Submit</a>
           </div>
-          <br>
+          <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
+              <md-icon>clear</md-icon>
+            </button>
+          </p>
           <br>
         </div>
         <div class="nofitication">
@@ -53,7 +71,19 @@
               </div>
 
               <p class="content">{{n.description}}</p>
-              <p class="comments">Answer</p>
+              <p class="comments">
+                <!--<div v-if=""></div>-->
+
+                <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)">
+                  <md-icon>replay</md-icon>
+                </button>
+                <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)">
+                  <md-icon>report</md-icon>
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator">
+                  <md-icon>clear</md-icon>
+                </button>
+              </p>
             </div>
           </div>
         </div>
@@ -106,11 +136,37 @@
         txtNotif: null,
         keyword_id: null,
         notification_id_parent: null,
+        is_denunciation: false,
         layer_id: null,
         notificationsP: [],
+        userId: null,
+        txtReply: null
       }
     },
     methods: {
+      replyNot(notification){
+        this.txtReply = 'Reply to '+notification.name
+        this.notification_id_parent = notification.notification_id
+      },
+      clearNot(notification){
+        const vm = this
+        Api().delete('/api/notification/?notification_id='+notification.notification_id,
+        ).then(function (response) {
+          //console.log(response)
+          vm.updateNotif()
+        })
+      },
+      reportNot(notification){
+        this.txtReply = 'Denunciation to ' + notification.name
+        this.is_denunciation = true
+      },
+      clearMsg(){
+        this.txtReply = null
+        this.notification_id_parent = null
+        this.layer_id = null
+        this.keyword_id = null
+        this.is_denunciation = false
+      },
       handleClick(tab, event) {
         // console.log(tab, event);
       },
@@ -136,110 +192,199 @@
           //console.log(response)
           vm.updateNotif()
           vm.txtNotif = null
+          vm.txtReply = null
+          vm.notification_id_parent = null
+          vm.layer_id = null
+          vm.keyword_id = null
+          vm.is_denunciation = false
         })
       },
-      updateNotif(){
+      async updateNotif(){
         const vm = this
         this.notifG = []
-        Api().get('/api/notification/').then(function (response) {
-          //Api().get('/api/notification/?notification_id=' + vm.user.user_id).then(function (response) {
-          Api().get('/api/notification/').then(function (response) {
-            response.data.features.filter(e => {
-              vm.notifications.push(e.properties)
+        this.notifP = []
+        try {
+          let notifications = await Api().get('/api/notification/?layer_id=NULL&keyword_id=NULL&notification_id_parent=NULL')
+          let notifG = await notifications.data.features.map(async notification => {
 
-              Api().get('/api/user/?user_id=' + e.properties.user_id_creator).then(function (response) {
-                vm.notifG.push({
-                  'description': e.properties.description,
-                  'name': response.data.features[0].properties.name,
-                  'date': e.properties.created_at
-                })
-                //console.log(response.data.features[0].properties.name)
-              })
-            })
+            let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
+            return {
+              'description': notification.properties.description,
+              'name': userInfo.data.features[0].properties.name,
+              'date': notification.properties.created_at,
+              'type': 'general',
+              'notification_id': notification.properties.notification_id,
+              'user_id_creator': notification.properties.user_id_creator
+            }
 
-            console.log(response.data.features)
-            //console.log(vm.notifications)
-            console.log(vm.notifG)
-            vm.notifG.sort(function(a,b){
-              return a.properties.notification_id - b.properties.notification_id
+          })
+
+          Promise.all(notifG).then( notifUpdated => {
+            vm.notifG = notifUpdated.reverse().sort(function(a,b){
+              //return b.notification_id - a.notification_id
+              return new Date(b.date) - new Date(a.date)
             });
           })
-        })
+        } catch( error ) {
+          console.log(error)
+        }
+
+
+
+        try {
+          let notifications = await Api().get('/api/notification/?user_id_creator='+vm.user.user_id)
+
+          await notifications.data.features.map(async notification => {
+            Api().get('/api/notification/?notification_id_parent='+notification.properties.notification_id).then( async response => {
+
+              let notifP = await response.data.features.map(async notification => {
+                let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
+                return {
+                  'description': notification.properties.description,
+                  'name': userInfo.data.features[0].properties.name,
+                  'date': notification.properties.created_at,
+                  'type': 'general',
+                  'notification_id': notification.properties.notification_id,
+                  'user_id_creator': notification.properties.user_id_creator
+                }
+              })
+
+              Promise.all(notifP).then( notifUpdated => {
+                vm.notifP = notifUpdated.reverse().sort(function(a,b){
+                  //return b.notification_id - a.notification_id
+                  return new Date(b.date) - new Date(a.date)
+                });
+              })
+            }, function (cause) {
+
+            })
+          })
+
+          // let layers = await Api().get('/api/user_layer/?user_id='+vm.user.user_id)
+          //
+          // await layers.data.features.map(async layer => {
+          //   Api().get('/api/notification/?layer_id='+layer.properties.layer_id).then( async response => {
+          //
+          //     let notifP = await response.data.features.map(async notification => {
+          //       let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
+          //       return {
+          //         'description': notification.properties.description,
+          //         'name': userInfo.data.features[0].properties.name,
+          //         'date': notification.properties.created_at,
+          //         'type': 'general',
+          //         'notification_id': notification.properties.notification_id,
+          //         'user_id_creator': notification.properties.user_id_creator
+          //       }
+          //     })
+          //
+          //     Promise.all(notifP).then( notifUpdated => {
+          //       vm.notifP.push(notifUpdated.reverse()).sort(function(a,b){
+          //         //return b.notification_id - a.notification_id
+          //         return new Date(b.date) - new Date(a.date)
+          //       })
+          //     })
+          //   }, function (cause) {
+          //
+          //   })
+          // })
+
+
+        } catch( error ) {
+          //console.log(error)
+        }
       }
     },
 
     async mounted() {
       const vm = this
       try {
-        // let notifications = await Api().get('/api/notification/?layer_id=NULL&keyword_id=NULL&notification_id_parent=NULL')
-        // let notifG = await notifications.data.features.map(async notification => {
-        //
-        //   let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
-        //   return {
-        //     'description': notification.properties.description,
-        //     'name': userInfo.data.features[0].properties.name,
-        //     'date': notification.properties.created_at,
-        //     'type': 'general',
-        //     'notification_id': notification.properties.notification_id,
-        //   }
-        //
-        // })
-        //
-        // Promise.all(notifG).map( not => {
-        //   console.log(not)
-        // })
+        let notifications = await Api().get('/api/notification/?layer_id=NULL&keyword_id=NULL&notification_id_parent=NULL')
+        let notifG = await notifications.data.features.map(async notification => {
 
-        //vm.notifG = notifG
+          let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
+          return {
+            'description': notification.properties.description,
+            'name': userInfo.data.features[0].properties.name,
+            'date': notification.properties.created_at,
+            'type': 'general',
+            'notification_id': notification.properties.notification_id,
+            'user_id_creator': notification.properties.user_id_creator
+          }
+        })
 
-        // await response.data.features.filter(async e => {
-        //     vm.notifications.push(e.properties)
-        //
-        //     let teste = await Api().get('/api/user/?user_id=' + e.properties.user_id_creator)
-        //     vm.notifG.push({
-        //       'description': e.properties.description,
-        //       'name': teste.data.features[0].properties.name,
-        //       'date': e.properties.created_at,
-        //       'type': 'general',
-        //       'notification_id': e.properties.notification_id,
-        //     })
-        //   })
-        //   // console.log(response.data.features)
-        //   vm.notifG.sort(function(a,b){
-        //     console.log(a.date)
-        //     console.log(b.date)
-        //     return new Date(a.date) - new Date(b.date)
-        //   })
-
-
-        // Api().get('/api/notification/?user_id_creator='+vm.user.user_id).then(function (responseU) {
-        //   responseU.data.features.forEach(f => {
-        //
-        //     Api().get('/api/notification/?notification_id_parent=' + f.properties.notification_id).then(function (response) {
-        //       response.data.features.filter(e => {
-        //         vm.notificationsP.push(e.properties)
-        //
-        //         Api().get('/api/user/?user_id=' + e.properties.user_id_creator).then(function (response) {
-        //           vm.notifP.push({
-        //             'description': e.properties.description,
-        //             'name': response.data.features[0].properties.name,
-        //             'date': e.properties.created_at,
-        //             'type': 'general',
-        //             'notification_id': e.properties.notification_id,
-        //           })
-        //         })
-        //       })
-        //       console.log(response.data.features)
-        //       //console.log(vm.notifications)
-        //       vm.notifG.sort(function (a, b) {
-        //         return a.properties.notification_id - b.properties.notification_id
-        //       })
-        //     })
-        //   })
-        // })
+        Promise.all(notifG).then( notifUpdated => {
+          vm.notifG = notifUpdated.reverse().sort(function(a,b){
+            //return b.notification_id - a.notification_id
+            return new Date(b.date) - new Date(a.date)
+          });
+        })
       } catch( error ) {
-        console.log(error)
+        //console.log(error)
       }
 
+      this.userId = this.user.user_id
+
+      try {
+        let notifications = await Api().get('/api/notification/?user_id_creator='+vm.user.user_id)
+
+        await notifications.data.features.map(async notification => {
+           Api().get('/api/notification/?notification_id_parent='+notification.properties.notification_id).then( async response => {
+
+            let notifP = await response.data.features.map(async notification => {
+              let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
+              return {
+                'description': notification.properties.description,
+                'name': userInfo.data.features[0].properties.name,
+                'date': notification.properties.created_at,
+                'type': 'general',
+                'notification_id': notification.properties.notification_id,
+                'user_id_creator': notification.properties.user_id_creator
+              }
+            })
+
+            Promise.all(notifP).then( notifUpdated => {
+              vm.notifP = notifUpdated.reverse().sort(function(a,b){
+                //return b.notification_id - a.notification_id
+                return new Date(b.date) - new Date(a.date)
+              });
+            })
+          }, function (cause) {
+
+           })
+        })
+
+        let layers = await Api().get('/api/user_layer/?user_id='+vm.user.user_id)
+
+        // await layers.data.features.map(async layer => {
+        //   Api().get('/api/notification/?layer_id='+layer.properties.layer_id).then( async response => {
+        //
+        //     let notifP = await response.data.features.map(async notification => {
+        //       let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
+        //       return {
+        //         'description': notification.properties.description,
+        //         'name': userInfo.data.features[0].properties.name,
+        //         'date': notification.properties.created_at,
+        //         'type': 'general',
+        //         'notification_id': notification.properties.notification_id,
+        //         'user_id_creator': notification.properties.user_id_creator
+        //       }
+        //     })
+        //
+        //     Promise.all(notifP).then( notifUpdated => {
+        //       vm.notifP.push(notifUpdated.reverse()).sort(function(a,b){
+        //         //return b.notification_id - a.notification_id
+        //         return new Date(b.date) - new Date(a.date)
+        //       })
+        //     })
+        //   }, function (cause) {
+        //
+        //   })
+        // })
+
+
+      } catch( error ) {
+        //console.log(error)
+      }
     }
   }
 </script>
@@ -255,6 +400,7 @@
       margin: 10px
       background: rgba(#000, 0.1)
       padding: 20px
+      border-radius: 20px
 
       .photo
         display: inline-block
@@ -289,4 +435,13 @@
         cursor: pointer
         margin-top: -10px
         margin-bottom: 5px
+    .add
+      top: -1px
+      left: 0px
+      display: inline-block
+      border: none
+      padding: 0px
+      margin: 0px
+      position: relative
+      border-radius: 30px
 </style>

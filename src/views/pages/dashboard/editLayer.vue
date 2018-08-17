@@ -88,8 +88,8 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="inputReference">{{ $t('dashboard.newLayer.addedReferences') }}</label>
+              <div class="form-group" v-show="chosenRef.length !== 0">
+                <label for="inputReference" >{{ $t('dashboard.newLayer.addedReferences') }}</label>
 
                 <ol>
                   <li v-for="(t, index) in chosenRef">
@@ -260,7 +260,7 @@
         fullscreenLoading: false,
         layer_id: this.$route.params.layer_id,
         startDateMask_mask_id: null,
-        endDateMask_mask_id: null
+        endDateMask_mask_id: null,
       }
     },
     methods: {
