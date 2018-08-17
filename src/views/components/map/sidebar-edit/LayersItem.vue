@@ -10,8 +10,11 @@
             <el-radio slot="reference" disabled class="radioDisabled" border>{{ name }}</el-radio>
         </el-popover>   
         
-        <el-radio v-else :label="id" class="radio" border>{{ name }}</el-radio>
-    </div>           
+        <el-radio v-else :label="id" class="radio" border>{{ name }} 
+            <!-- <button style="background: green; color: #margin-left: 5px" round>FINALIZAR</button> -->
+            <el-button v-if="layerId == id" type="success" size="mini" style="margin-top: -6px; margin-left: 8px" @click.native="finishEdit()">FINALIZAR</el-button>
+        </el-radio>
+    </div>
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -30,7 +33,8 @@ export default {
     },
 
     computed: {
-        ...mapState('map', ['layers'])
+        ...mapState('map', ['layers']),
+        ...mapState('edit', ['layerId'])
     },
 
     data() {
@@ -44,12 +48,16 @@ export default {
         this._getStatus()
 
         let response = await Map.getLayers('layer_id='+this.id)
-        this.name = response.data.features[0].properties.name.toUpperCase()        
+        this.name = response.data.features[0].properties.name.toUpperCase()
     },
 
     methods: {
         _getStatus() {
             this.status = !this.layers.some( layer => layer == this.id )
+        },
+        finishEdit(){
+            let id = this.id
+            this.$emit('finishEdit', id)
         }
     }
 }

@@ -51,7 +51,7 @@
                 </div>
 
                 <div v-if="isUserLoggedIn">
-                    <p-logAvatar :logo="user.picture" :name="user.name"/>
+                    <p-logAvatar :photo="user.picture" :name="user.name"/>
                 </div>
                 <div v-else>
                     <router-link to="/login" class="btn btn-success btn-login">{{ $t('nav.login') }}</router-link>

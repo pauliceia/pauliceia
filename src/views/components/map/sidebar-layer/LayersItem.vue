@@ -4,7 +4,7 @@
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>          
         
         <span>
-            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer.toUpperCase() : title.toUpperCase() }}</b>
+            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer : title }}</b>
             <span v-show="layerStatus">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -116,14 +116,14 @@ export default {
                     if (sublayer.get('title') === this.title && this.layerStatus) {
                         
                         let newStyle = null
-                        if(this.type == 'MultiLineString') {
+                        if(this.type == 'MultiLineString' || this.type == 'LineString') {
                             newStyle = new ol.style.Style({
                                 stroke: new ol.style.Stroke({
                                     color: val,
                                     width: 3
                                 })
                             })
-                        } else if(this.type == 'Point') {
+                        } else if(this.type == 'MultiPoint' || this.type == 'Point') {
                             newStyle = new ol.style.Style({
                                 image: new ol.style.Circle({
                                     radius: 8,
@@ -136,7 +136,7 @@ export default {
                                     })
                                 })
                             })
-                        } else if(this.type == 'MultiPolygon') {
+                        } else if(this.type == 'MultiPolygon' || this.type == 'Polygon') {
                             newStyle = new ol.style.Style({
                                 stroke: new ol.style.Stroke({
                                     color: '#000000',
@@ -173,15 +173,15 @@ export default {
                 if (sublayer.get('title') === this.title) {
                     this.type = sublayer.getSource().getFeatures()[0].getGeometry().getType()
                     
-                    if(this.type == 'MultiLineString') {
+                    if(this.type == 'MultiLineString' || this.type == 'LineString') {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(lineStyle)
                         this.colorVector = sublayer.getStyle().getStroke().getColor()  
 
-                    } else if(this.type == 'Point') {
+                    } else if(this.type == 'MultiPoint' || this.type == 'Point') {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
                         this.colorVector = sublayer.getStyle().getImage().getFill().getColor()             
 
-                    } else if(this.type == 'MultiPolygon') {
+                    } else if(this.type == 'MultiPolygon' || this.type == 'Polygon') {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(polygonStyle)
                         this.colorVector = sublayer.getStyle().getFill().getColor() 
                     }
@@ -299,7 +299,7 @@ export default {
     
     span
         padding-left: 7.5px
-        font-size: 1.1em
+        font-size: 1.2em
 
         .btn-view
             background: none

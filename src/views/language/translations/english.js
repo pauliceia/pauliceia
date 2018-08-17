@@ -1,4 +1,6 @@
-{
+import termsEN from './termsEN'
+
+export default {
     "nav": {
         "explore": "Explore",
         "about": "About",
@@ -109,24 +111,24 @@
             "btnText": "Search"
         },
         "sidebarLayer": {
-            "title": "LAYERS",
-            "btnAdd": "SELECT OTHERS",
+            "title": "Layers",
+            "btnAdd": "Add and remove layers",
             "options": {
                 "zoom": "Zoom",
                 "infosLayer": "Layer information",
-                "infosVector": "Vectors information",
+                "infosVector": "Information about objects",
                 "editColor": "Edit color",
                 "download": "Download"
             },
             "msgEmpty": "Add layers to the view on the map!"
         },
         "sidebarEdit": {
-            "title": "EDIT"
+            "title": "Edit"      
         },
         "addLayer": {
-            "title": "SELECT OTHERS LAYERS",
+            "title": "Add and remove layers",
             "input": "Search by theme, layer or author:",
-            "close": "close",
+            "close": "Close",
             "box": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
@@ -152,9 +154,13 @@
         },
         "viewInfoVector": {
             "title": "Select Information",
-            "btnFeature": "Feature",
-            "btnBox": "Box",
+            "btnFeature": "By location",
+            "btnBox": "By region",
             "btnClean": "Clean"
         }
+    },
+    "terms": {
+        "title": "USE TERMS",
+        "text": termsEN
     }
 }

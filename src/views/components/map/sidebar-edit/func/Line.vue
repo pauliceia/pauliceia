@@ -10,12 +10,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import Edit from '@/middleware/Edit'
 
 export default {
     props: ['source'],
 
     computed: {
-        ...mapState('edit', ['layerId'])
+        ...mapState('edit', ['layerId']),
+        ...mapState('edit', ['changesetId'])
     },
 
     data() {
@@ -91,14 +93,24 @@ export default {
                         confirmButtonText: 'SIM',
                         cancelButtonText: 'NÃO',
                         type: 'warning'
-                    }).then(() => {
-                        //faz a requisição para a api
-
-                        vm.source.removeFeature(featureSelect[0])
-                        this.$message({
-                            message: 'Feature excluída com sucesso!',
-                            type: 'success'
-                        });
+                    }).then(async _ => {
+                        try {
+                            let layerName = featureSelect[0].getId().substr(0, (featureSelect[0].getId().lastIndexOf('.')))
+                            let featureId = featureSelect[0].getId().substr(featureSelect[0].getId().lastIndexOf('.')+1)
+                            let response = await Edit.deleteFeature(layerName, featureId, this.changesetId)
+                            console.log(response)
+                            
+                            vm.source.removeFeature(featureSelect[0])
+                            this.$message({
+                                message: 'Feature excluída com sucesso!',
+                                type: 'success'
+                            });
+                        } catch (error) {
+                            this.$message({
+                                message: 'Erro na plataforma, não foi possível excluir o vetor!',
+                                type: 'error'
+                            });
+                        }                        
                     }).catch(_ => {
                         return false
                     })    

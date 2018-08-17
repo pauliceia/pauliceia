@@ -18,7 +18,7 @@
         </div>
 
         <hr class="divisor" />
-        <p-sidebarLayer-item-static :group="externalLayers"></p-sidebarLayer-item-static>
+        <p-sidebarLayer-item-static :group="externalLayers" color="#13ce66"></p-sidebarLayer-item-static>
                 
     </section>
 </template>

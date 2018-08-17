@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import english from './translations/english.json';
-import portuguese from './translations/portuguese.json';
+import english from './translations/english.js';
+import portuguese from './translations/portuguese.js';
 
 const debug = process.env.NODE_ENV !== 'production';
 const store = new Vuex.Store({

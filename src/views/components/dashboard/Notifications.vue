@@ -15,6 +15,7 @@
           </p>
           <br>
         </div>
+
         <div class="nofitication">
           <div v-for="n in notifG">
             <div class="notification-box">
@@ -122,11 +123,14 @@
     components: {
       "p-dash-layout": DashLayout
     },
+
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
       ...mapState('map', ['boxNotifications']),
     },
+
     name: "Notifications",
+
     data: function () {
       return {
         activeName: 'first',
@@ -143,6 +147,11 @@
         txtReply: null
       }
     },
+
+    mounted() {
+      this.loadNotification()
+    },
+
     methods: {
       replyNot(notification){
         this.txtReply = 'Reply to '+notification.name
@@ -170,27 +179,23 @@
       handleClick(tab, event) {
         // console.log(tab, event);
       },
-      addNotif(){
-        const vm = this
+      async addNotif(){
+        try {
+          const vm = this
+          let notification = {
+            'properties': {
+              'notification_id': -1,
+              'is_denunciation': false,
+              'keyword_id': this.keyword_id,
+              'notification_id_parent': this.notification_id_parent,
+              'layer_id': this.layer_id,
+              'description': this.txtNotif,
+            },
+            'type': 'Notification'
+          }
 
-        let notification = {
-          'properties': {
-            'notification_id': -1,
-            'is_denunciation': false,
-            'keyword_id': this.keyword_id,
-            'notification_id_parent': this.notification_id_parent,
-            'layer_id': this.layer_id,
-            'description': this.txtNotif,
-          },
-          'type': 'Notification'
-        }
-        console.log(notification)
-
-        Api().post('/api/notification/create',
-          notification
-        ).then(function (response) {
-          //console.log(response)
-          vm.updateNotif()
+          let response = await Api().post('/api/notification/create', notification)
+          vm.loadNotification()
           vm.txtNotif = null
           vm.txtReply = null
           vm.notification_id_parent = null

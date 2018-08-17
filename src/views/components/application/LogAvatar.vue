@@ -3,11 +3,8 @@
     <md-menu class="mt-2 mt-md-0" md-size="medium" md-align-trigger>
         <md-button md-menu-trigger>
             <md-avatar class="md-avatar-icon">
-                <div class="logo" v-if="logo != ''">
-                    <img :src="logo" />
-                </div>
-                <div class="logo" v-else>
-                    {{ name[0] }}
+                <div class="logo">
+                    <img :src="imagePerson" />
                 </div>
             </md-avatar>
         </md-button>
@@ -31,14 +28,26 @@
 </template>
 <script>
 import User from '@/middleware/User'
-
+import ImgPerson from '@/views/assets/images/icon_person.png'
 import 'vue-material/dist/vue-material.min.css'
 
 export default {
     name: 'p-logAvatar',
+
     props: [
-        'name', 'logo'
+        'name', 'photo'
     ],
+
+    data(){
+        return {
+            imagePerson: ''
+        }
+    },
+
+    mounted() {
+        this.imagePerson = this.photo != '' ? this.photo : ImgPerson
+    },
+
     methods: {
         logout() {
             this.$store.dispatch('auth/setUser', null)

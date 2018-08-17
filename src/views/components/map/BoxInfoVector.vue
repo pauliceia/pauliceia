@@ -1,16 +1,16 @@
 <template>
     <div class="box-info" v-show="boxInfoVector">
         <header class="header">
-            <h1>{{ $t('map.viewInfoVector.title').toUpperCase() }}</h1>
+            <h1>{{ $t('map.viewInfoVector.title') }}</h1>
             <button class="btn" @click="closeBox()">
                 <md-icon>close</md-icon>
             </button>
         </header>
         <div class="body">
             <div class="row justify-content-md-center">
-                <button class="btn btn-success" @click="getFeature()">{{ $t('map.viewInfoVector.btnFeature').toUpperCase() }}</button> 
-                <button class="btn btn-secondary" @click="getBox()">{{ $t('map.viewInfoVector.btnBox').toUpperCase() }}</button> 
-                <button class="btn btn-danger" @click="_clearInteractions()">{{ $t('map.viewInfoVector.btnClean').toUpperCase() }}</button>
+                <button class="btn btn-success" @click="getFeature()">{{ $t('map.viewInfoVector.btnFeature') }}</button> 
+                <button class="btn btn-secondary" @click="getBox()">{{ $t('map.viewInfoVector.btnBox') }}</button> 
+                <button class="btn btn-danger" @click="_clearInteractions()">{{ $t('map.viewInfoVector.btnClean') }}</button>
             </div>
 
             <div class="result" v-if="resultProperties[0]">
@@ -172,27 +172,33 @@ export default {
 <style lang="sass" scoped>
 .box-info
     position: absolute
-    top: 40px
-    right: 0
+    top: 20px
+    right: 20px
+    border-radius: 10px
     overflow: auto
-    padding: 20px 20px
-    background: rgba(#FFF, 0.9)
+    padding: 10px
+    background: rgba(#FFF, 0.7)
     z-index: 1
     max-width: 50%
+    min-width: 40%
     max-height: 75%
 
     .header
         width: 100%
         border-bottom: 1px solid #f15a29
         h1
-            padding: 10px
-            font-size: 2em
+            padding: 5px 5px 10px 5px
+            font-size: 1.3em
+            font-weight: 400
+            font-family: 'Roboto' !important
             display: inline-block
             margin: 0 !important
 
         .btn
-            margin-top: 3px !important
+            margin: 3px !important
+            padding: 2px !important
             background: none
+            font-size: 1em
             border: none
             float: right
             display: inline-block
@@ -200,7 +206,8 @@ export default {
             background: rgba(#000, 0.1)
     
     .body
-        padding: 15px 0
+        padding: 15px 10px
+        background: #FFF
         button
             margin: 0 10px 0 0
 

@@ -6,7 +6,7 @@
 
       <md-speed-dial-content>
         <div v-for="layer of layers" :key="layer.title">
-            <md-button :class="layerSelected == layer.title ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster(layer.title)">{{ layer.title == 'saraBrasil30' ? '1930' : layer.title }}</md-button>  
+            <md-button :class="layerSelected == layer.title ? 'md-icon-button active' : 'md-icon-button'" @click="selectLayerRaster(layer.title)" :disabled="layer.title==1920">{{ layer.title == 'saraBrasil30' ? '1930' : layer.title }}</md-button>  
         </div>
       </md-speed-dial-content>
     </md-speed-dial>
