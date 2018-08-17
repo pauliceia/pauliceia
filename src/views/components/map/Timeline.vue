@@ -70,8 +70,10 @@
         let yearFirst = this.years.first
         let yearLast = this.years.last
 
+        console.log(overlayGroup)
         overlayGroup.getLayers().forEach(sublayer => {
           this.style = sublayer.getStyle()
+          //console.log(sublayer)
 
           sublayer.getSource().getFeatures().filter(features => {
             let last_year = features.get('last_year')
@@ -83,7 +85,6 @@
             }
           })
         })
-        
       }
     }
   }
