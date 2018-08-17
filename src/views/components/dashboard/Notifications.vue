@@ -202,7 +202,9 @@
           vm.layer_id = null
           vm.keyword_id = null
           vm.is_denunciation = false
-        })
+        } catch (e) {
+
+        }
       },
       async updateNotif(){
         const vm = this
@@ -231,7 +233,7 @@
             });
           })
         } catch( error ) {
-          console.log(error)
+          //console.log(error)
         }
 
 
