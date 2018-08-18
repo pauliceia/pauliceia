@@ -45,7 +45,10 @@
                 <textarea class="form-control" v-model="txtNotif" id="inputReference" rows="3"></textarea>
                 <br>
                 <div style="right: 60px; position: absolute">
-                  <a href="#" class="btn btn-primary" @click="addNotif()">Submit</a>
+                  <a class="btn btn-primary" @click="addNotif()" style="color: white">Submit</a>
+                </div>
+                <div style="right: 150px; position: absolute">
+                  <a class="btn btn-warning" @click="addNotifD()"><md-icon>report</md-icon></a>
                 </div>
                 <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
                   <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
@@ -53,7 +56,7 @@
                   </button>
                 </p>
               </div>
-              <div v-for="n in notifG">
+              <div v-for="n in notifG" :key="n.notification_id">
                 <div class="notification-box">
 
                   <div style="display: flex; align-items: center;">
@@ -72,14 +75,12 @@
                     <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)">
                       <md-icon>report</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator">
+                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"v-show="user.user_id === n.user_id_creator">
                       <md-icon>clear</md-icon>
                     </button>
                   </p>
                 </div>
               </div>
-
-
             </div>
         </div>
     </div>
@@ -135,19 +136,19 @@ export default {
     },
 
     async created() {
-        let keywords = await Map.getKeywords()
+      this.layer_id = this.id
+      let keywords = await Map.getKeywords()
+
         this.allKeywords = keywords.data.features
+      let authors = await Map.getAuthors()
 
-        let authors = await Map.getAuthors()
         this.allAuthors = authors.data.features
+      let references = await Map.getReferences()
 
-        let references = await Map.getReferences()
         this.allReferences = references.data.features
+      let authors_layers = await Map.getAuthorsLayers(null)
 
-        let authors_layers = await Map.getAuthorsLayers(null)
         this.allAuthorsLayers = authors_layers.data.features
-
-        this.layer_id = this.id
     },
 
     methods: {
@@ -175,7 +176,6 @@ export default {
         clearMsg(){
           this.txtReply = null
           this.notification_id_parent = null
-          this.layer_id = null
           this.keyword_id = null
           this.is_denunciation = false
           this.layer_id = this.id
@@ -198,18 +198,44 @@ export default {
             'type': 'Notification'
           }
 
-          let response =  Api().post('/api/notification/create', notification)
+          Api().post('/api/notification/create', notification).then(function (response) {
+            vm.updateNotif()
+          })
 
           vm.txtNotif = null
           vm.txtReply = null
           vm.notification_id_parent = null
           vm.keyword_id = null
           vm.is_denunciation = false
+        },
+        addNotifD(){
+          const vm = this
+          this.layer_id = this.id
+          let notification = {
+            'properties': {
+              'notification_id': -1,
+              'is_denunciation': true,
+              'keyword_id':null,
+              'notification_id_parent': null,
+              'layer_id': this.layer_id,
+              'description': this.txtNotif,
+            },
+            'type': 'Notification'
+          }
 
-          this.updateNotif()
+          Api().post('/api/notification/create', notification).then(function (response) {
+            vm.updateNotif()
+          })
+
+          vm.txtNotif = null
+          vm.txtReply = null
+          vm.notification_id_parent = null
+          vm.keyword_id = null
+          vm.is_denunciation = false
         },
         async updateNotif(){
             const vm = this
+            this.notifG = []
             let notifications = await Api().get('/api/notification/?layer_id='+vm.id)
             let notifG = await notifications.data.features.map(async notification => {
 
@@ -226,11 +252,10 @@ export default {
                 'layer_id': notification.properties.layer_id,
                 'notification_id_parent': notification.properties.notification_id_parent
                 }
-
             })
 
             Promise.all(notifG).then( notifUpdated => {
-                console.log(notifUpdated)
+                //console.log(notifUpdated)
                 vm.notifG = notifUpdated.reverse().sort(function(a,b){
                     return new Date(b.date) - new Date(a.date)
                 });
