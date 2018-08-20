@@ -109,12 +109,14 @@ export default {
         "geocoding": {
             "label":  {
                 "search": "Procure um endereço",
-                "geocoding": "Procure por endereços via CVS"
+                "geocoding": "Procure por endereços via CSV"
             },
             "placeholder": "nome da rua, número, ano",
             "btnText": "Pesquisar",
             "popupInfo": {
-                "search": "Para procurar um endereço, digite-o seguindo a estrutura nome da rua, número (apenas números), ano (apenas números). Ex: rua da consolaçao, 42, 1931",
+                "search": `
+                    Para procurar um endereço, digite-o seguindo a estrutura nome da rua, número (apenas números), ano (apenas números). <br><strong>Ex: rua da consolaçao, 42, 1931</strong>
+                `,
                 "geocoding": `
                     <b>1° Passo:</b> Verifique se o seu arquivo CSV se encontra conforme o padrão.<br>
                     <b>Padrão:</b> Primeira linha de cabeçalho, endereços escritos por extenso na primeira coluna, um por linha, seguindo a estrutura nome da rua, numera, ano<br>

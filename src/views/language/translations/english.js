@@ -113,12 +113,14 @@ export default {
             "placeholder": "street name, number, year",
             "btnText": "Search",
             "popupInfo": {
-                "search": "To search for an address, write it in the following structure street name, number (just a number), year (just a number). Ex: rua da consolaçao, 42, 1931",
+                "search": `
+                    To search for an address, write it in the following structure street name, number (just a number), year (just a number). <br><strong>Ex: rua da consolaçao, 42, 1931</strong>
+                `,
                 "geocoding": `
                     <b>1st Step:</b> Verify if the CSV file are following the rules.<br>
                     <b>Rules:</b> First header line, written addresses in first column, one per line, following structure street name , number, year<br>
-                    <b>2st Step:</b> Through the Browse button, selecting your CSV file, display the addresses found on the map.<br>
-                    <b>3st Step:</b> Through the Download button, it's possible to download the found data in Shapefile format.
+                    <b>2nd Step:</b> Through the Browse button, selecting your CSV file, display the addresses found on the map.<br>
+                    <b>3nd Step:</b> Through the Download button, it's possible to download the found data in Shapefile format.
                 `              
             }
         },
