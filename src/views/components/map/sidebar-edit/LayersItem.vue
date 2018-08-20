@@ -12,7 +12,7 @@
         
         <el-radio v-else :label="id" class="radio" border>{{ name }} 
             <!-- <button style="background: green; color: #margin-left: 5px" round>FINALIZAR</button> -->
-            <el-button v-if="layerId == id" type="success" size="mini" style="margin-top: -6px; margin-left: 8px" @click.native="finishEdit()">FINALIZAR</el-button>
+            <el-button v-if="layerId == id" type="success" size="mini" style="margin-top: -10px; margin-left: 1px" @click.native="finishEdit()">FINALIZAR</el-button>
         </el-radio>
     </div>
 </template>

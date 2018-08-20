@@ -5,12 +5,12 @@
             Editando a camada '{{ layer.name }}' ({{ layer.type }}):
         </p>
         <center>
-            <p-sidebarEdit-func-point v-show="layer.type == 'Point'"/>
-            <p-sidebarEdit-func-line v-show="layer.type == 'MultiLineString'" :source="layer.vector"/>
-            <p-sidebarEdit-func-polygon v-show="layer.type == 'MultiPolygon'"/>
+            <p-sidebarEdit-func-point v-show="layer.type == 'Point' || layer.type == 'MultiPoint'"/>
+            <p-sidebarEdit-func-line v-show="layer.type == 'MultiLineString' || layer.type == 'LineString'" :source="layer.vector"/>
+            <p-sidebarEdit-func-polygon v-show="layer.type == 'MultiPolygon' || layer.type == 'Polygon'"/>
 
             <el-alert
-                v-show="layer.type != null && layer.type != 'Point' && layer.type != 'MultiLineString' && layer.type != 'MultiPolygon'"
+                v-show="layer.type != null && layer.type != 'Point' && layer.type != 'MultiPoint' && layer.type != 'LineString' && layer.type != 'MultiLineString' && layer.type != 'Polygon' && layer.type != 'MultiPolygon'"
                 title="Desculpa! Infelizmente nosso sistema ainda não trabalha com o tipo de geometria dessa camada."
                 type="error"
                 center

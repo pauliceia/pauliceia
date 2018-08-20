@@ -49,12 +49,14 @@ export default {
                 type: 'MultiLineString'
             })
             this.$root.olmap.addInteraction(this.draw)
+            // this.draw.on('drawend', function(e) {
+            //     console.log(e)
+            // });
 
             let properties = vm.source.getFeatures()[0].getProperties()
             await Object.keys(properties).map( (index, key) => {
                 properties[index] = null
             })
-            console.log(properties)
             this.$store.dispatch('edit/setAttr', properties)
         },
         edit() {
@@ -74,7 +76,12 @@ export default {
             this.selectEdit.on('select', event => {
                 let featureSelect = event.selected
                 if(featureSelect.length != 0)
-                    this.$store.dispatch('edit/setAttr', featureSelect[0].getProperties())                
+                    if(featureSelect[0].getId() == undefined) 
+                        this.$store.dispatch('edit/setAttr', null)
+                    else {
+                        featureSelect[0].setStyle()
+                        this.$store.dispatch('edit/setAttr', featureSelect[0].getProperties())
+                    }          
             })
         },
         remove() {
@@ -89,31 +96,35 @@ export default {
             this.selectRemove.on('select', event => {
                 let featureSelect = event.selected
                 if(featureSelect.length != 0) {
-                    this.$confirm('Você irá remover a feature selecionada. Deseja continuar?', 'Warning', {
-                        confirmButtonText: 'SIM',
-                        cancelButtonText: 'NÃO',
-                        type: 'warning'
-                    }).then(async _ => {
-                        try {
-                            let layerName = featureSelect[0].getId().substr(0, (featureSelect[0].getId().lastIndexOf('.')))
-                            let featureId = featureSelect[0].getId().substr(featureSelect[0].getId().lastIndexOf('.')+1)
-                            let response = await Edit.deleteFeature(layerName, featureId, this.changesetId)
-                            console.log(response)
-                            
-                            vm.source.removeFeature(featureSelect[0])
-                            this.$message({
-                                message: 'Feature excluída com sucesso!',
-                                type: 'success'
-                            });
-                        } catch (error) {
-                            this.$message({
-                                message: 'Erro na plataforma, não foi possível excluir o vetor!',
-                                type: 'error'
-                            });
-                        }                        
-                    }).catch(_ => {
-                        return false
-                    })    
+                    if(featureSelect[0].getId() == undefined) 
+                        vm.source.removeFeature(featureSelect[0])
+                    else {
+                        featureSelect[0].setStyle()
+                        this.$confirm('Você irá remover a feature selecionada. Deseja continuar?', 'Warning', {
+                            confirmButtonText: 'SIM',
+                            cancelButtonText: 'NÃO',
+                            type: 'warning'
+                        }).then(async _ => {
+                            try {
+                                let layerName = featureSelect[0].getId().substr(0, (featureSelect[0].getId().lastIndexOf('.')))
+                                let featureId = featureSelect[0].getId().substr(featureSelect[0].getId().lastIndexOf('.')+1)
+                                let response = await Edit.deleteFeature(layerName, featureId, this.changesetId)
+                                
+                                vm.source.removeFeature(featureSelect[0])
+                                this.$message({
+                                    message: 'Feature excluída com sucesso!',
+                                    type: 'success'
+                                });
+                            } catch (error) {
+                                this.$message({
+                                    message: 'Erro na plataforma, não foi possível excluir o vetor!',
+                                    type: 'error'
+                                });
+                            }                        
+                        }).catch(_ => {
+                            return false
+                        })    
+                    }
                 }
             })
         },

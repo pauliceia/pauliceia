@@ -4,7 +4,7 @@
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>          
         
         <span>
-            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.toUpperCase().slice(0,18)+' ...' : nameLayer : title }}</b>
+            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.slice(0,18)+' ...' : nameLayer : title }}</b>
             <span v-show="layerStatus">                   
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -264,6 +264,7 @@ export default {
                 vm.overlay.setPosition(undefined)
                 event.selected.filter( feature => ((feature.getId().split('.'))[0]) == vm.title.toLowerCase() )
                     .forEach( feat => {
+                        feat.setStyle()
                         let coordinate = feat.getGeometry().getFirstCoordinate();
                         
                         vm.contentPopup.innerHTML = ''

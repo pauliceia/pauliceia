@@ -18,7 +18,7 @@
         <div class="body">
             <ul class="description">
                 <li><b> {{ $t('map.viewInfo.lbTags') }}:</b> 
-                    <el-tag v-show="layer != null" v-for="id in infos.keywords" :key="id" style="margin-left: 5px">
+                    <el-tag v-show="layer != null" v-for="id in infos.keywords" :key="'tag'+id" style="margin-left: 5px">
                         {{ getTagName(id)[0].properties.name }}
                     </el-tag>
                 </li>
@@ -30,7 +30,7 @@
                     </span> 
                 </li>
                 <li><b>{{ $t('map.viewInfo.lbReferences') }}:</b> 
-                    <span v-show="layer != null" v-for="id in infos.references" :key="id">
+                    <span v-show="layer != null" v-for="id in infos.references" :key="'ref'+id">
                         {{ getReferenceDescription(id)[0].properties.description }};
                     </span> 
                 </li>
@@ -53,7 +53,7 @@
                   </button>
                 </p>
               </div>
-              <div v-for="n in notifG">
+              <div v-for="n in notifG" :key="n.id">
                 <div class="notification-box">
 
                   <div style="display: flex; align-items: center;">
@@ -134,19 +134,22 @@ export default {
         }
     },
 
-    async created() {
-        let keywords = await Map.getKeywords()
-        this.allKeywords = keywords.data.features
+    created() {
+        Map.getKeywords().then(keywords => {
+            this.allKeywords = keywords.data.features
+        })
+        
+        Map.getAuthors().then(authors => {
+            this.allAuthors = authors.data.features
+        })
 
-        let authors = await Map.getAuthors()
-        this.allAuthors = authors.data.features
+        Map.getReferences().then(references => {
+            this.allReferences = references.data.features
+        })        
 
-        let references = await Map.getReferences()
-        this.allReferences = references.data.features
-
-        let authors_layers = await Map.getAuthorsLayers(null)
-        this.allAuthorsLayers = authors_layers.data.features
-
+        Map.getAuthorsLayers(null).then(authors_layers => {
+            this.allAuthorsLayers = authors_layers.data.features
+        })
         this.layer_id = this.id
     },
 

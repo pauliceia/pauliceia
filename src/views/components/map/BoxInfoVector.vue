@@ -10,7 +10,7 @@
             <div class="row justify-content-md-center">
                 <button class="btn btn-success" @click="getFeature()">{{ $t('map.viewInfoVector.btnFeature') }}</button> 
                 <button class="btn btn-secondary" @click="getBox()">{{ $t('map.viewInfoVector.btnBox') }}</button> 
-                <button class="btn btn-danger" @click="_clearInteractions()">{{ $t('map.viewInfoVector.btnClean') }}</button>
+                <button class="btn btn-danger" @click="clear()">{{ $t('map.viewInfoVector.btnClean') }}</button>
             </div>
 
             <div class="result" v-if="resultProperties[0]">
@@ -33,7 +33,10 @@ import {
     overlayGroup
 } from '@/views/assets/js/map/overlayGroup'
 import {
-    emptyStyle
+    emptyStyle,
+    pointSelectStyle,
+    lineSelectStyle,
+    polygonSelectStyle
 } from '@/views/assets/js/map/Styles'
 
 export default {
@@ -73,8 +76,8 @@ export default {
         async getFeature() {
             //REMOVE INTERATIONS
             if(this.select == null){
+                this.$store.dispatch('edit/setLayerId', null) 
                 this.$store.dispatch('map/setIdInfoFeatureLayer', null)
-                this.$store.dispatch('edit/setLayerId', null)
                 this._clearInteractions()
 
                 //ADD INTERACTION 
@@ -90,6 +93,9 @@ export default {
                 if(featureSelected !== undefined) {
                     //selecionando as features com a mesma geometria
                     vm.resultVectors.push(featureSelected)
+                    featureSelected.setStyle()
+
+                    //selecionando as features com a mesma geometria
                     overlayGroup.getLayers().forEach(sublayer => {
                         if(sublayer != undefined && sublayer.get('id') != undefined) {
 
@@ -113,9 +119,9 @@ export default {
             });
         },
         async getBox() {
-            if(this.resultVectors[0] != undefined){
-                this.$store.dispatch('map/setIdInfoFeatureLayer', null)
-                this.$store.dispatch('edit/setLayerId', null)                
+            if(this.resultVectors[0] != undefined){  
+                this.$store.dispatch('edit/setLayerId', null)   
+                this.$store.dispatch('map/setIdInfoFeatureLayer', null)          
                 this._clearInteractions()
             }
 
@@ -132,6 +138,7 @@ export default {
                         
                         sublayer.getSource().forEachFeatureIntersectingExtent(extent, feature => {
                             if(JSON.stringify(feature.getStyle()) !== JSON.stringify(emptyStyle) ){
+                                // feature.setStyle(lineSelectStyle)
                                 vm.resultVectors.push(feature)
                             }
                         })
@@ -156,11 +163,16 @@ export default {
                 return result
             })
         },
+        clear() {
+            this.$store.dispatch('edit/setLayerId', null)   
+            this.$store.dispatch('map/setIdInfoFeatureLayer', null)
+            this._clearInteractions()
+        },
         _clearInteractions() {
             this.$root.olmap.removeInteraction(this.select)
-            this.select = null
-            this.box = null
             this.$root.olmap.removeInteraction(this.box)
+            this.select = null
+            this.box = null            
             this.$root.olmap.getOverlays().clear()
             this.resultVectors = []
             this.resultProperties = []
