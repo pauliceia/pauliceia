@@ -3,7 +3,9 @@ const state = {
     typeGeometry: null,
     attr: null,
     featureSelected: null,
-    changesetId: null
+    changesetId: null,
+    funcSelected: null,
+    featuresWKT: null
 }
 
 const mutations = {
@@ -21,6 +23,12 @@ const mutations = {
     },
     setChangesetId (state, value) {
         state.changesetId = value
+    },
+    setFuncSelected (state, value) {
+        state.funcSelected = value
+    },
+    setFeaturesWKT (state, value) {
+        state.featuresWKT = value
     }
 }
 
@@ -39,6 +47,12 @@ const actions = {
     },
     setChangesetId ({commit}, value) {
         commit('setChangesetId', value)
+    },
+    setFuncSelected ({commit}, value) {
+        commit('setFuncSelected', value)
+    },
+    setFeaturesWKT ({commit}, value) {
+        commit('setFeaturesWKT', value)
     }
 }
 

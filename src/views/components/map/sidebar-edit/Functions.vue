@@ -5,7 +5,7 @@
             Editando a camada '{{ layer.name }}' ({{ layer.type }}):
         </p>
         <center>
-            <p-sidebarEdit-func-point v-show="layer.type == 'Point' || layer.type == 'MultiPoint'"/>
+            <p-sidebarEdit-func-point v-show="layer.type == 'Point' || layer.type == 'MultiPoint'" :source="layer.vector"/>
             <p-sidebarEdit-func-line v-show="layer.type == 'MultiLineString' || layer.type == 'LineString'" :source="layer.vector"/>
             <p-sidebarEdit-func-polygon v-show="layer.type == 'MultiPolygon' || layer.type == 'Polygon'"/>
 

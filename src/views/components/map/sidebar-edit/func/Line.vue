@@ -43,15 +43,18 @@ export default {
         async add(){
             let vm = this
             this._clearInteractions()
+            this.$store.dispatch('edit/setFuncSelected', 'add')
 
             this.draw = new ol.interaction.Draw({ 
                 source: vm.source,
                 type: 'MultiLineString'
             })
             this.$root.olmap.addInteraction(this.draw)
-            // this.draw.on('drawend', function(e) {
-            //     console.log(e)
-            // });
+            this.draw.on('drawend', function(e) {
+                // e.feature.setProperties({
+                //     'id': 'waiting'
+                // })
+            });
 
             let properties = vm.source.getFeatures()[0].getProperties()
             await Object.keys(properties).map( (index, key) => {
@@ -62,7 +65,8 @@ export default {
         edit() {
             let vm = this
             this._clearInteractions()
-            
+            this.$store.dispatch('edit/setFuncSelected', 'edit')
+
             this.selectEdit = new ol.interaction.Select({
                 layers: layer => layer.getSource() == vm.source
             })
@@ -76,7 +80,7 @@ export default {
             this.selectEdit.on('select', event => {
                 let featureSelect = event.selected
                 if(featureSelect.length != 0)
-                    if(featureSelect[0].getId() == undefined) 
+                    if(featureSelect[0].getId() == undefined || featureSelect[0].getId() == 'waiting') 
                         this.$store.dispatch('edit/setAttr', null)
                     else {
                         featureSelect[0].setStyle()
@@ -96,7 +100,7 @@ export default {
             this.selectRemove.on('select', event => {
                 let featureSelect = event.selected
                 if(featureSelect.length != 0) {
-                    if(featureSelect[0].getId() == undefined) 
+                    if(featureSelect[0].getId() == undefined || featureSelect[0].getId() == 'waiting') 
                         vm.source.removeFeature(featureSelect[0])
                     else {
                         featureSelect[0].setStyle()
@@ -131,6 +135,8 @@ export default {
         _clearInteractions(){
             this.$store.dispatch('map/setIdInfoFeatureLayer', null)
             this.$store.dispatch('edit/setAttr', null)
+            this.$store.dispatch('edit/setFuncSelected', null)
+            this.$store.dispatch('edit/setFeaturesWKT', null)
             this.$root.olmap.removeInteraction(this.selectEdit)
             this.$root.olmap.removeInteraction(this.selectRemove)
             this.$root.olmap.removeInteraction(this.modify)
