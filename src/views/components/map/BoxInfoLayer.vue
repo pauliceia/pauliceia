@@ -454,7 +454,7 @@ export default {
     z-index: 1
     max-width: 50%
     min-width: 40%
-    max-height: 75%
+    max-height: 80%
 
     .header
         width: 100%
