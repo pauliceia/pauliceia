@@ -448,13 +448,13 @@ export default {
     top: 20px
     right: 20px
     border-radius: 10px
-    bottom: 120px
     overflow: auto
     padding: 10px
     background: rgba(#FFF, 0.7)
     z-index: 1
-    max-width: 40%
+    max-width: 50%
     min-width: 40%
+    max-height: 75%
 
     .header
         width: 100%
