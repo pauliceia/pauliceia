@@ -8,20 +8,23 @@
             <div v-for="prop in properties" :key="prop != undefined ? prop.key : null">
                 <div v-if="prop != undefined">
                     <label>{{ prop.key }}:</label>
-                    <input type="text" :name="prop.key" :value="prop.value" class="form-control form-control-sm" />
+                    <input type="text" :name="prop.key" v-model="prop.value" class="form-control form-control-sm" />
                 </div>
             </div>
-            <el-button type="primary" icon="el-icon-check" @click="saveAttr()" round>SALVAR</el-button>
+            <el-button type="primary" icon="el-icon-check" @click="updateFeature()" v-show="funcSelected == 'edit'" round>SALVAR</el-button>
+            <el-button type="primary" icon="el-icon-check" @click="insertFeature()" v-show="funcSelected == 'add'" round>INSERIR</el-button>
         </div>
     </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Edit from '@/middleware/Edit'
+import Map from '@/middleware/Map'
 
 export default {
     computed: {
-        ...mapState('edit', ['attr'])
+        ...mapState('edit', ['layerId', 'attr', 'funcSelected', 'featuresWKT', 'changesetId'])
     },
 
     data() {
@@ -43,7 +46,46 @@ export default {
     },
 
     methods: {
-        saveAttr() {
+        async insertFeature() {
+            if(this.featuresWKT != null) {
+                try {
+                    let propsObj = {}
+                    await this.properties.forEach( props => {
+                        if(props != undefined){
+                            propsObj[props.key] = props.value
+                        }
+                    })
+
+                    let layerInfo = await Map.getLayers('layer_id='+this.layerId)
+
+                    let coordinates = ((this.featuresWKT.split('(')[1]).split(')')[0]).split(' ')
+                    let newFeature = {
+                        'f_table_name': layerInfo.data.features[0].properties.f_table_name,
+                        'properties': { ...propsObj, id: -1, changeset_id: this.changesetId },
+                        'geometry': {'coordinates': [[parseFloat(coordinates[0]), parseFloat(coordinates[1])]], 'type': 'MultiPoint'},
+                        'type': 'Feature'
+                    }
+                
+                    let response = await Edit.addFeature(newFeature)
+                    console.log(response)
+                    //atualizar as propriedades da feature
+                    
+                } catch(error) {
+                    this.$alert("Erro ao cadastrar o vetor, contate o administrador do sistema!", "Desculpa", {
+                        dangerouslyUseHTMLString: true,
+                        confirmButtonText: 'OK',
+                        type: "error"
+                    })
+                }
+            } else {
+                this.$alert("É necessário inserir o vetor no mapa, primeiramente!", "Insira o vetor", {
+                    dangerouslyUseHTMLString: true,
+                    confirmButtonText: 'OK',
+                    type: "error"
+                })
+            }
+        },
+        updateFeature() {
             this.$alert("Função ainda não implementada", "OPSSS", {
                 dangerouslyUseHTMLString: true,
                 confirmButtonText: 'OK',

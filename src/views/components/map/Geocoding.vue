@@ -6,8 +6,8 @@
 
             <el-popover class="info" placement="top-start" width="450"
                         trigger="hover"
-                        :content= "$t('map.geocoding.popupInfo.search')"
                         type="primary">
+                <div v-html="$t('map.geocoding.popupInfo.search')"/>
                 <button type="button" slot="reference" class="btn btn-outline-primary info">
                     <md-icon class="icon">error_outline</md-icon>
                 </button>
@@ -106,7 +106,8 @@ export default {
             inputSearch: '',
             multigeocoding: false,
             placesList: [],
-            geojson: ''
+            geojson: '',
+            loading: null
         }
     },
     
@@ -136,6 +137,7 @@ export default {
             this.inputSearch = item
         },    
         handleFileChange(e) {
+            this._openFullScreen()
             let vm = this
 
             this.$emit('input', e.target.files[0])
@@ -161,12 +163,14 @@ export default {
                     });
                     overlayGroupGeolocation.getLayers().clear()
                     overlayGroupGeolocation.getLayers().push(vectorLayer)
+                    this.loading.close()
 
                 } catch( error ){
                     this.$alert('Não foi possível ler o arquivo CSV', 'Erro no arquivo', {
                         confirmButtonText: 'OK',
                         type: 'error'
                     });
+                    this.loading.close()
                 }
             }
             reader.readAsText(e.target.files[0]);
@@ -188,6 +192,7 @@ export default {
         },
         async search () {
             try {
+                this._openFullScreen()
                 let regex = new RegExp(/\s*,( )*\d{4}/);
                 let search = this.inputSearch.replace(/( )+/g, ' ');
 
@@ -213,6 +218,7 @@ export default {
                         let extent = ol.extent.createEmpty();
                         ol.extent.extend(extent, feature.getGeometry().getExtent());
                         this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
+                        this.loading.close()
 
                     } else  {
                         if(result.data != undefined && result.data[1][0].alertMsg != undefined) {
@@ -221,12 +227,14 @@ export default {
                                 confirmButtonText: 'OK',
                                 type: 'error'
                             });
+                            this.loading.close()
                         } else {
                             this.$alert('Erro ao geocodificar, contate o administrador!', 'Erro', {
                                 dangerouslyUseHTMLString: true,
                                 confirmButtonText: 'OK',
                                 type: 'error'
                             });
+                            this.loading.close()
                         }  
                     }               
                 
@@ -236,6 +244,7 @@ export default {
                         confirmButtonText: 'OK',
                         type: 'warning'
                     });
+                    this.loading.close()
                 }
                 
             } catch (error) {
@@ -244,8 +253,16 @@ export default {
                     confirmButtonText: 'OK',
                     type: 'error'
                 });
+                this.loading.close()
             }
-            
+        },
+        _openFullScreen() {
+            this.loading = this.$loading({
+                lock: true,
+                text: 'Geocodificando',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
         }
     }
 }
