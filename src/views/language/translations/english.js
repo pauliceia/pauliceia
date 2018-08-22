@@ -44,12 +44,12 @@ export default {
             "fileInputD": "The file that will be inserted is a ZIP compressed file that contains the Shapefile to be sent. Inside this ZIP file should contains all the files of a Shapefile, such as “.shp“, “.prj“, “.dbf“ and so on.",
             "chooseFile": "Choose file",
             "temporalColumns": "Temporal Columns",
-            "startDate": "Star Date",
-            "endDate": "End Date",
-            "startDateColumn": "Start Date Column",
-            "endDateColumn": "End Date Column",
-            "startDateMask": "Start Date Mask",
-            "endDateMask": "End Date Mask"
+            "startDate": "Start date of the temporal bounding box of the layer. This is the start date of the period that covers the layer data. For example: the layer has the period from 01-01-1900 to 31-12-1930. Hence the start date is 01-01-1900.",
+            "endDate": "End date of the temporal bounding box of the layer. This is the end date of the period that covers the layer data. For example: the layer has the period from 01-01-1900 to 31-12-1930. Therefore the end date is 31-12-1930.",
+            "startDateColumn": "It indicates which column contains the start date of the layer.",
+            "endDateColumn": "It indicates which column contains the end date of the layer.",
+            "startDateMask": "It indicates which mask is used by the start date of the layer.",
+            "endDateMask": "It indicates which mask is used by the end date of the layer."
         },
         "editLayer": {
             "delete": "Delete",
@@ -60,8 +60,8 @@ export default {
             "keywords": "Keywords",
             "newKeyword": "New Keyword",
             "myKeywords": "My Keywords",
-            "name": "Name",
-            "nameD": "NameD"
+            "nameD": "Name of the new keyword. It is unique in the system.",
+            "name": "Name"
         }
     },
     "login": {
@@ -159,6 +159,7 @@ export default {
         },
         "viewInfo": {
             "btnFollow": "Follow Layer",
+            "btnUnFollow": "Unfollow Layer",
             "lbDescription": "DESCRIPTION",
             "lbTags": "TAGS",
             "lbAuthors": "AUTHORS",

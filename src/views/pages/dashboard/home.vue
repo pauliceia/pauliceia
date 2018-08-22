@@ -7,7 +7,7 @@
             {{ $t('dashboard.home.notifications') }}
           </div>
           <div class="card-body">
-            <p-notifications></p-notifications>
+            <p-notifications showInput="true"></p-notifications>
           </div>
         </div>
       </div>
@@ -21,7 +21,7 @@
               <div class="row" v-for="layer in myLayers">
                 <div class="col-sm-8">{{ layer.name }}</div>
                 <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editeLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
                 </div>
                 <div class="col-sm-2">
                   <button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
@@ -40,7 +40,7 @@
               <div class="row" v-for="layer in sharedLayers">
                 <div class="col-sm-8">{{ layer.name }}</div>
                 <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editeLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
                 </div>
                 <div class="col-sm-2">
                   <!--<button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>-->
@@ -84,55 +84,71 @@
       deleteLayer(id){
         const vm = this;
         Api().delete('/api/layer/' + id).then(function (response) {
-          console.log(response)
-          Api().get('/api/layer').then(function (response) {
-            vm.layers = []
-            response.data.features.filter(e => {
-              //if(e.properties.user_id_published_by == vm.user.user_id)
-              vm.layers.push({name: e.properties.name, id: e.properties.layer_id})
-            })
-          })
+          vm.updateLayers()
         })
       },
-      editeLayer(id){
+      editLayer(id){
         this.$router.push({name: 'EditLayer', params: {layer_id: id}})
       },
       handleClick(tab, event) {
         // console.log(tab, event);
-      }
-    },
-    beforeCreate() {
-      const vm = this
+      },
+      updateLayers(){
+        const vm = this
 
-      Api().get('/api/layer').then(function (response) {
-        response.data.features.filter(e => {
-          vm.layers.push({name: e.properties.name, id: e.properties.layer_id})
-        })
+        vm.sharedLayers = []
+        vm.myLayers = []
 
-        Api().get('/api/user_layer/?user_id='+vm.user.user_id).then(function (response) {
-          //console.log(response.data.features)
+        Api().get('/api/layer').then(function (response) {
           response.data.features.filter(e => {
-            Api().get('/api/layer/?layer_id='+e.properties.layer_id).then(function (response2) {
-              //console.log(response2.data.features[0].properties)
-              if(e.properties.is_the_creator === true){
-                vm.myLayers.push(response2.data.features[0].properties)
-              }
-              else{
-                vm.sharedLayers.push(response2.data.features[0].properties)
-              }
+            vm.layers.push({name: e.properties.name, id: e.properties.layer_id})
+          })
+
+          Api().get('/api/user_layer/?user_id='+vm.user.user_id).then(function (response) {
+            response.data.features.filter(e => {
+              Api().get('/api/layer/?layer_id='+e.properties.layer_id).then(function (response2) {
+                if(e.properties.is_the_creator === true){
+                  vm.myLayers.push(response2.data.features[0].properties)
+                }
+                else{
+                  vm.sharedLayers.push(response2.data.features[0].properties)
+                }
+
+                vm.orderLayers(10)
+              })
             })
           })
         })
-
-      })
-
-
-      Api().get('/api/user').then(function (response) {
-        response.data.features.filter(e => {
-          vm.users.push(e.properties)
-        })
-        //console.log(vm.users)
-      })
+      },
+      orderLayers(x){
+        const vm = this
+        setTimeout(_=>{
+          vm.myLayers.sort(function(a,b){
+            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+              return 1;
+            }
+            if (a.name.toLowerCase() < b.name.toLowerCase()) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          })
+          vm.sharedLayers.sort(function(a,b){
+            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+              return 1;
+            }
+            if (a.name.toLowerCase() < b.name.toLowerCase()) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          })
+        }, x);
+      }
+    },
+    mounted() {
+      this.updateLayers()
+      this.orderLayers(500)
     }
   }
 </script>

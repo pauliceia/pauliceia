@@ -339,6 +339,7 @@
               path: '/dashboard/home'
             })
           }, function (cause) {
+            Api().delete('/api/layer/'+vm.layer_id)
             let msg = ''
             if (cause.response.status === 403) msg = "Just the owner of layer or administrator can create/update a time columns."
             else if (cause.response.status === 401) msg = "It is necessary an Authorization valid!"
@@ -358,8 +359,8 @@
 
         let tableName2 = document.getElementById("inputName").value
         //let epsg = document.getElementById("inputEpsg").value
-        if (tableName2.indexOf(' ') == 0) tableName2 = tableName.slice(1)
-        if (tableName2.lastIndexOf(' ') == tableName2.length - 1) tableName2 = tableName2.slice(0, tableName2.length - 1)
+        if (tableName2.indexOf(' ') === 0) tableName2 = tableName.slice(1)
+        if (tableName2.lastIndexOf(' ') === tableName2.length - 1) tableName2 = tableName2.slice(0, tableName2.length - 1)
         tableName2 = tableName2.split(" ").join("_")
         tableName2 = tableName2.toLocaleLowerCase()
         this.tableName = tableName2
@@ -373,12 +374,12 @@
           let msg = "It's necessary have at least one keyword"
           vm.$message.error(msg)
         }
-        // else if(epsg === ''){
-        //   let msg = "EPSG is missing"
-        //   vm.$message.error(msg)
-        // }
         else if(file === undefined){
           let msg = "File is missing"
+          vm.$message.error(msg)
+        }
+        else if(file.size > 104857600){
+          let msg = "File can not exceed 100MB!"
           vm.$message.error(msg)
         }
         else {

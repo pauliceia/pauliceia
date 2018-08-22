@@ -41,9 +41,9 @@
               <div class="row" v-for="k in keywords">
                 <div class="col-sm-9">{{ k.name }}</div>
                 <div class="col-sm-3">
-                  <router-link :to="{name: 'Keyword', params: {keyword_id: k.id}}">
-                    <md-icon>edit</md-icon>
-                  </router-link>
+                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteKeyword(k)" >
+                    <md-icon>clear</md-icon>
+                  </button>
                 </div>
                 <hr>
               </div>
@@ -97,6 +97,19 @@
         }
 
       },
+      deleteKeyword(keyword){
+        const vm = this
+        Api().delete('/api/keyword/'+keyword.keyword_id).then(function (response) {
+          vm.updateKeyword()
+          vm.$message.success("The layer was deleted with success!")
+        }, function (cause) {
+          let msg = ''
+          if (cause.response.status === 403) msg = "The administrator is who can update/delete the keyword."
+          else msg = cause.toString()
+          console.log(cause.response)
+          vm.$message.error(msg)
+        })
+      },
       Upload() {
         const vm = this
         let keyword = {
@@ -107,41 +120,39 @@
             'parent_id': 1001
           }
         }
-        console.log(keyword)
 
         Api().post('/api/keyword/create',
           keyword
         ).then(function (response) {
-          console.log(response)
-
-          Api().get('/api/keyword').then(function (response) {
-            response.data.features.filter(e => {
-              //console.log(e.properties)
-            })
-            Api().get('/api/keyword/?user_id_creator=' + vm.user.user_id).then(function (response) {
-              vm.keywords = []
-              response.data.features.filter(e => {
-                vm.keywords.push(e.properties)
-              })
-            })
-          })
+          vm.updateKeyword()
+          vm.$message.success("The Keyword was created with success!")
+        }, function (cause) {
+          let msg = ''
+          if (cause.response.status === 400) msg = "Keyword already exists!"
+          else msg = cause.toString()
+          console.log(cause.response)
+          vm.$message.error(msg)
         })
 
 
       },
-    },
-    mounted() {
-      const vm = this
-      Api().get('/api/keyword').then(function (response) {
-        response.data.features.filter(e => {
-          //console.log(e.properties)
-        })
-        Api().get('/api/keyword/?user_id_creator=' + vm.user.user_id).then(function (response) {
+      updateKeyword(){
+        const vm = this
+        vm.keywords = []
+        Api().get('/api/keyword').then(function (response) {
           response.data.features.filter(e => {
-            vm.keywords.push(e.properties)
+            //console.log(e.properties)
+          })
+          Api().get('/api/keyword/?user_id_creator=' + vm.user.user_id).then(function (response) {
+            response.data.features.filter(e => {
+              vm.keywords.push(e.properties)
+            })
           })
         })
-      })
+      },
+    },
+    mounted() {
+      this.updateKeyword()
     }
   }
 
@@ -168,5 +179,13 @@
     position: relative
     border-radius: 30px
 
-
+  .add2
+    top: -1px
+    left: 0px
+    display: inline-block
+    border: none
+    padding: 0px
+    margin: 0px
+    position: relative
+    border-radius: 30px
 </style>
