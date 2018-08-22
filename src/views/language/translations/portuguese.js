@@ -45,12 +45,12 @@ export default {
             "zipFileD": "Arquivo ZIP",
             "chooseFile": "Escolha o arquivo",
             "temporalColumns": "Dados Temporias",
-            "startDate": "Data Inicial",
-            "endDate": "Data Final",
-            "startDateColumn": "Coluna da Data Inicial",
-            "endDateColumn": "Coluna da Data Final",
-            "startDateMask": "Máscara da Data Inicial",
-            "endDateMask": "Máscara da Data Final"
+            "startDate": "Data inicial do bounding box temporal da camada. É a data inicial do período que abrange os dados da camada. Por exemplo: a camada tem o período de 01-01-1900 à 31-12-1930. Logo a data inicial é 01-01-1900.",
+            "endDate": "Data final do bounding box temporal da camada. É a data final do período que abrange os dados da camada. Por exemplo: a camada tem o período de 01-01-1900 à 31-12-1930. Logo a data final é 31-12-1930.",
+            "startDateColumn": "Indica qual coluna contém a data inicial da camada.",
+            "endDateColumn": "Indica qual coluna contém a data final da camada.",
+            "startDateMask": "Indica qual é a máscara usada pela data inicial da camada.",
+            "endDateMask": "Indica qual é a máscara usada pela data final da camada."
         },
         "editLayer": {
             "delete": "Deletar",
@@ -61,8 +61,8 @@ export default {
             "keywords": "Palavras-chave",
             "newKeyword": "Novas Palavras-Chave",
             "myKeywords": "Minhas Palavras-Chave",
-            "name": "Nome",
-            "nameD": "NameD"
+            "nameD": "Nome da nova palavra-chave. Ela é única no sistema.",
+            "name": "Nome"
         }
     },
     "login": {
@@ -158,6 +158,7 @@ export default {
         },
         "viewInfo": {
             "btnFollow": "Seguir Camada",
+            "btnUnFollow": "Deixar de Seguir Camada",
             "lbDescription": "DESCRIÇÃO",
             "lbTags": "TAGS",
             "lbAuthors": "AUTORERS",
