@@ -83,7 +83,7 @@
                     <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)">
                       <md-icon>report</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"v-show="user.user_id === n.user_id_creator">
+                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-show="user.user_id === n.user_id_creator">
                       <md-icon>clear</md-icon>
                     </button>
                   </p>
