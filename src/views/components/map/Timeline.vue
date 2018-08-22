@@ -7,6 +7,7 @@
 <script>
   import noUiSlider from 'nouislider'
   import { mapState } from 'vuex'
+  import Api from '@/middleware/ApiVGI'
   import {
     overlayGroup
   } from '@/views/assets/js/map/overlayGroup'
@@ -20,7 +21,9 @@
     name: 'Timeline',
     data () {
       return {
-        style: null
+        style: null,
+        startYear: 1886,
+        endYear: 1970,
       }
     },
     computed: {
@@ -28,17 +31,17 @@
     },
     mounted () {
       let slider = document.getElementById('slider')
-
+      this.filterUpdate()
       noUiSlider.create(slider, {
-        start: [1868, 1940],
+        start: [this.startYear, this.endYear],
         connect: true,
         orientation: 'horizontal',
         step: 1,
         tooltips: true,
         direction: 'ltr',
         range: {
-          'min': 1868,
-          'max': 1940
+          'min': this.startYear,
+          'max': this.endYear
         },
         pips: {
           mode: 'count',
@@ -67,26 +70,21 @@
     },
     methods: {
       filterUpdate () {
+        const vm = this
         let yearFirst = this.years.first
         let yearLast = this.years.last
-        console.log('teste')
         overlayGroup.getLayers().forEach(sublayer => {
-          // this.style = sublayer.getStyle()
-          // //console.log(sublayer)
-          //
-          // sublayer.getSource().getFeatures().filter(features => {
-          //   let last_year = features.get('last_year')
-          //   if (last_year === null) last_year = 1940
-          //   if (features.get('first_year') <= yearLast && last_year >= yearFirst) {
-          //     features.setStyle(this.style)
-          //   } else {
-          //     features.setStyle(emptyStyle)
-          //   }
-          // })
-          console.log(sublayer.getSource().getFeatures())
-          sublayer.getSource().getFeatures().forEach(features => {
-            features.forEach(feature => {
-
+          Api().get('/api/temporal_columns/?f_table_name='+sublayer.values_.title).then(function (tc) {
+            sublayer.getSource().getFeatures().forEach(feature => {
+              let startDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.start_date_column_name])).getFullYear()
+              let endDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.end_date_column_name])).getFullYear()
+              if(startDate-5 < vm.startYear) vm.startYear = startDate-5
+              if(endDate+5 > vm.startYear) vm.endYear = endDate+5
+              if (startDate <= yearLast && endDate >= yearFirst) {
+                feature.setStyle(vm.style)
+              } else {
+                feature.setStyle(emptyStyle)
+              }
             })
           })
         })
