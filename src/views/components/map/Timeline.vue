@@ -69,20 +69,25 @@
       filterUpdate () {
         let yearFirst = this.years.first
         let yearLast = this.years.last
-
-        console.log(overlayGroup)
+        console.log('teste')
         overlayGroup.getLayers().forEach(sublayer => {
-          this.style = sublayer.getStyle()
-          //console.log(sublayer)
+          // this.style = sublayer.getStyle()
+          // //console.log(sublayer)
+          //
+          // sublayer.getSource().getFeatures().filter(features => {
+          //   let last_year = features.get('last_year')
+          //   if (last_year === null) last_year = 1940
+          //   if (features.get('first_year') <= yearLast && last_year >= yearFirst) {
+          //     features.setStyle(this.style)
+          //   } else {
+          //     features.setStyle(emptyStyle)
+          //   }
+          // })
+          console.log(sublayer.getSource().getFeatures())
+          sublayer.getSource().getFeatures().forEach(features => {
+            features.forEach(feature => {
 
-          sublayer.getSource().getFeatures().filter(features => {
-            let last_year = features.get('last_year')
-            if (last_year === null) last_year = 1940
-            if (features.get('first_year') <= yearLast && last_year >= yearFirst) {
-              features.setStyle(this.style)
-            } else {
-              features.setStyle(emptyStyle)
-            }
+            })
           })
         })
       }
