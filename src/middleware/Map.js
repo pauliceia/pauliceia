@@ -15,6 +15,10 @@ export default {
     else return ApiVGI().get(`/api/layer/`)
   },
 
+  getAttrLayer(query) {
+    return ApiVGI().get(`/api/feature_table/?${query}`)
+  },
+
   getKeywords() {
     return ApiVGI().get(`/api/keyword/`)
   },

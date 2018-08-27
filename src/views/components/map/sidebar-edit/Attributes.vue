@@ -8,7 +8,7 @@
             <div v-for="prop in properties" :key="prop != undefined ? prop.key : null">
                 <div v-if="prop != undefined">
                     <label>{{ prop.key }}:</label>
-                    <input type="text" :name="prop.key" v-model="prop.value" class="form-control form-control-sm" />
+                    <input :type="_getAttrLayer(prop.type)" :name="prop.key" v-model="prop.value" class="form-control form-control-sm" />
                 </div>
             </div>
             <el-button type="primary" icon="el-icon-check" @click="updateFeature()" v-show="funcSelected == 'edit'" round>SALVAR</el-button>
@@ -34,13 +34,19 @@ export default {
     },
 
     watch: {
-        attr(val) {
-            if(val != null)
+        async attr(val) {
+            if(val != null){
+                let layerInfo = await Map.getLayers('layer_id='+this.layerId)
+                let f_name = layerInfo.data.features[0].properties.f_table_name
+
+                let attrLayer = await Map.getAttrLayer('f_table_name='+f_name)
+                let attr = attrLayer.data.features[0].properties
+
                 this.properties = Object.keys(val).map( index => {
                     if(index != "geometry" && index != "changeset_id" && index != "version")
-                        return {key: index, value: val[index]}
+                        return {key: index, value: val[index], type: attr[index]}
                 })
-            else 
+            }else 
                 this.properties = null
         }
     },
@@ -91,6 +97,10 @@ export default {
                 confirmButtonText: 'OK',
                 type: "warning"
             })
+        },
+        _getAttrLayer(type){
+            if(type=='numeric' || type=='integer') return 'number'
+            else 'text'
         }
     }
 }
