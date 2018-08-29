@@ -23,10 +23,10 @@ export default {
                     status: true,
                     title: "OSM"
                 },
-                {
-                    status: false,
-                    title: "Google Maps"
-                }
+                // {
+                //     status: false,
+                //     title: "Google Maps"
+                // }
             ]
         }
     },

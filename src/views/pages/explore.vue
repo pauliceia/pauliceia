@@ -57,21 +57,15 @@
         source: new ol.source.OSM()
       })
 
-      let google = new ol.layer.Tile({
-        title: "GOOGLE MAPS",
-        source: new ol.source.OSM({
-            url: 'http://mt{0-3}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
-            attributions: [
-                new ol.Attribution({ html: '© Google' }),
-                new ol.Attribution({ html: '<a href="https://developers.google.com/maps/terms">Terms of Use.</a>' })
-            ]
-        }),
-        visible: false
-      }); 
+      // let google = new ol.layer.Tile({
+      //   title: "GOOGLE MAPS",
+      //   source:new olgm.layer.Google(),
+      //   visible: false
+      // }); 
 
       overlayGroupExternal.getLayers().clear()
       overlayGroupExternal.getLayers().push(osm)
-      overlayGroupExternal.getLayers().push(google)
+      // overlayGroupExternal.getLayers().push(google)
     }
   }
 </script>

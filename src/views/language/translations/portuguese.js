@@ -31,7 +31,7 @@ export default {
             "description": "Descrição",
             "reference": "Referência",
             "addedReferences": "Referências Adicionadas",
-            "add": "Adicionar",
+            "add": "Adicionar Referência",
             "submit": "Enviar",
             "fileInput": "Arquivo de Entrada",
             "zipFile": "Arquivo ZIP",
@@ -50,7 +50,20 @@ export default {
             "startDateColumn": "Indica qual coluna contém a data inicial da camada.",
             "endDateColumn": "Indica qual coluna contém a data final da camada.",
             "startDateMask": "Indica qual é a máscara usada pela data inicial da camada.",
-            "endDateMask": "Indica qual é a máscara usada pela data final da camada."
+            "endDateMask": "Indica qual é a máscara usada pela data final da camada.",
+            "mountLayer": {
+                "btnRadio": {
+                    "import": "IMPORTAR ARQUIVO",
+                    "create": "CRIAR CAMADA"
+                },
+                "lblColumnName": "Nome da Coluna (geometria)",
+                "lblColumnType": "Tipo da Coluna (geometria)",
+                "lblAttr": "Atributos",
+                "boxAttr": {
+                    "lblColumnName": "Nome da coluna",
+                    "lblColumnType": "Tipo da Coluna"
+                }
+            }
         },
         "editLayer": {
             "delete": "Deletar",
