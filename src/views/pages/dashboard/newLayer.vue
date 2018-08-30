@@ -143,12 +143,6 @@
                 </div> <!--end box-file-->
 
                 <div v-if="typeSubmit == 'input'" class="box-layer-input">
-                  <label>{{ $t('dashboard.newLayer.mountLayer.lblColumnName') }}:</label>
-                  <input class="form-control" value="geom" disabled>
-                  <br>
-                  <label>{{ $t('dashboard.newLayer.mountLayer.lblColumnType') }}:</label>
-                  <v-select v-model="optTpGeom" :options="optionsTypeGeom"></v-select>
-                  <br>
                   <label>{{ $t('dashboard.newLayer.mountLayer.lblAttr') }}:</label>
                   <div class="box-attr">
                       <div class="row">
@@ -159,12 +153,35 @@
                             <label>{{ $t('dashboard.newLayer.mountLayer.boxAttr.lblColumnType') }}</label>
                         </div>
 
+                        <div class="col-12 row">
+                          <div class="col-5">
+                            <input class="form-control" value="geom" disabled>
+                          </div>
+                          <div class="col-5">
+                            <el-select style="width: 100%" v-model="optTpGeom">
+                              <el-option
+                                v-for="item in optionsTypeGeom"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                              </el-option>
+                            </el-select>
+                          </div>
+                        </div>
+
                         <div v-for="attr in optionsAttr" :key="attr.id" class="col-12 row">
                           <div class="col-5">
                             <input class="form-control" v-model="attr.column_name" :placeholder="$t('dashboard.newLayer.mountLayer.boxAttr.lblColumnName')">
                           </div>
                           <div class="col-5">
-                            <v-select v-model="attr.column_type" :options="optionsTypeColumn"></v-select>
+                            <el-select style="width: 100%" v-model="attr.column_type">
+                              <el-option
+                                v-for="item in optionsTypeColumn"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                              </el-option>
+                            </el-select>
                           </div>
                           <div class="col-2">
                             <el-button type="danger" icon="el-icon-delete" @click="removeAttr(attr.id)" size="small" circle></el-button>
@@ -291,9 +308,11 @@
   import Vue from 'vue'
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
-  import {mapState} from 'vuex'
+  import { mapState } from 'vuex'
   import lang from 'element-ui/lib/locale/lang/en'
   import locale from 'element-ui/lib/locale'
+
+  import Dashboard from '@/middleware/Dashboard'
 
   Vue.component('v-select', vSelect)
   // configure language
@@ -335,10 +354,29 @@
         shapeCorrect: false,
         fullscreenLoading: false,
         typeSubmit: 'file',
+        layer_id: null,
         loading: '',
-        optionsTypeGeom: ['MULTIPOINT', 'MULTILINESTRING', 'MULTIPOLYGON'],
+        optionsTypeGeom: [{
+            value: 'MULTIPOINT',
+            label: 'MultiPoint'
+          }, {
+            value: 'MULTILINESTRING',
+            label: 'MultiLineString'
+          }, {
+            value: 'MULTIPOLYGON',
+            label: 'MultiPolygon'
+        }],
         optTpGeom: 'MULTIPOINT',
-        optionsTypeColumn: ['TEXT', 'NUMBER', 'DATE'],
+        optionsTypeColumn: [{
+            value: 'text',
+            label: 'TEXT'
+          }, {
+            value: 'numeric',
+            label: 'NUMBER'
+          }, {
+            value: 'timestamp',
+            label: 'DATE'
+        }],
         optionsAttr: [{
           column_name: '',
           column_type: 'TEXT',
@@ -566,44 +604,98 @@
         }
       },
       async upload_from_input(){
-        if(this.optTpGeom == null)
-          this._msgError('Column type (geometry) is necessary!')
+        try {
+          if(this.optTpGeom == null)
+            this._msgError('Column type (geometry) is necessary!')
 
-        else {  
-          let attrs = await this.optionsAttr.filter( attr => attr.column_name == '' || attr.column_type == null )
-          if(attrs.length > 0)
-            this._msgError('Complete the attributes!')
+          else {  
+            let attrs = await this.optionsAttr.filter( attr => attr.column_name == '' || attr.column_type == null)
+            if(attrs.length > 0)
+              this._msgError('Complete the attributes!')
 
-          else {
-            //realização do cadastro
-            let properties = {
-              "geom": "geometry",
-              "version": "integer",
-              "id": "integer",
-              "charset_id": "integer"
-            }
-            let types = {
-              "TEXT": "string",
-              "NUMBER": "number",
-              "DATE": "date",
-            }
-            this.optionsAttr.map( async attr => {
-              let attrName = attr.column_name.replace(/\s+/g, '-').toLowerCase()
-              properties[attrName] = types[attr.column_type]
-            })
-
-            let layerInfo = {
-              'type': 'FeatureTable',
-              'f_table_name': this.tableName,
-              'properties': properties,
-              'geometry': {
-                  'crs': {'type': 'geom', 'properties': {'geom': 'EPSG:4326'}},
-                  'type': 'MULTILINESTRING'
+            else {
+              this.layer_id = null
+              //CREATE LAYER
+              let layer = {
+                'type': 'Layer',
+                'properties': {
+                  'layer_id': -1,
+                  'f_table_name': this.tableName,
+                  'name': document.getElementById("inputName").value,
+                  'description': document.getElementById("inputDescription").value,
+                  'source_description': document.getElementById("inputDescription").value,
+                  'reference': this.chosenRefID,
+                  'keyword': this.chosenKeywordsID,
+                }
               }
+
+              //ADD USER IN LAYER
+              let responseCreateLayer = await Dashboard.createLayer(layer)
+              this.layer_id = responseCreateLayer.data.layer_id
+              this.chosenUsers.forEach(async u => {
+                let user_layer = {
+                  'properties': {
+                    'is_the_creator': 'false',
+                    'user_id': u.user_id,
+                    'layer_id': responseCreateLayer.data.layer_id
+                  },
+                  'type': 'UserLayer'
+                }
+
+                let responseUserLayer = await Dashboard.createUserLayer(user_layer)
+              })
+
+              //CREATE FEATUTE TABLE
+              let properties = {}
+              this.optionsAttr.map( async attr => {
+                let attrName = attr.column_name.replace(/\s+/g, '_').toLowerCase()
+                properties[attrName] = attr.column_type
+              })
+
+              let featureTableInfo = {
+                'type': 'FeatureTable',
+                'f_table_name': this.tableName,
+                'properties': properties,
+                'geometry': {
+                    'crs': {'type': 'name', 'properties': {'name': 'EPSG:4326'}},
+                    'type': this.optTpGeom
+                }
+              }
+
+              let responseCreateFeatureTable = await Dashboard.createFeatureTable(featureTableInfo)
+
+              let responseGetFeatureTable = await Dashboard.getFeatureTable(this.tableName)
+              let vm = this
+              responseGetFeatureTable.data.features.filter(e => {
+                vm.columns = e.properties
+                Object.getOwnPropertyNames(e.properties).forEach(c => {
+                  if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
+                    vm.columnsName.push(c)
+                  }
+                })
+                vm.shapeCorrect = true
+                vm.loading.close()
+              })
             }
-            console.log(layerInfo)
-            this.loading.close()
           }
+
+        } catch(error) {
+          if(this.layer_id != null && this.layer_id != undefined)
+            await Dashboard.deleteLayer(this.layer_id)
+
+          if(error.response.status == 409) 
+            this.$alert("Já existe uma camada com esse nome, por favor, escolha outro!", "Nome da camada", {
+              dangerouslyUseHTMLString: true,
+              confirmButtonText: 'OK',
+              type: 'error'
+            });
+          else
+            this.$alert("Erro ao criar a camada, confira as informações inseridas. Caso o erro persista entre em contato com os administradores da plataforma!", "Erro ao cadastrar", {
+                dangerouslyUseHTMLString: true,
+                confirmButtonText: 'OK',
+                type: 'error'
+            });
+          this.loading.close()
         }
       },
       removeRef(index) {

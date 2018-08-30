@@ -67,10 +67,12 @@ export default {
                     let coordinates = ((this.featuresWKT.split('(')[1]).split(')')[0]).split(' ')
                     let newFeature = {
                         'f_table_name': layerInfo.data.features[0].properties.f_table_name,
-                        'properties': { ...propsObj, id: -1, changeset_id: this.changesetId },
+                        'properties': { ...propsObj, id: -1, changeset_id: this.changesetId, version: 1 },
                         'geometry': {'coordinates': [[parseFloat(coordinates[0]), parseFloat(coordinates[1])]], 'type': 'MultiPoint'},
                         'type': 'Feature'
                     }
+
+                    console.log(newFeature)
                 
                     let response = await Edit.addFeature(newFeature)
                     console.log(response)
