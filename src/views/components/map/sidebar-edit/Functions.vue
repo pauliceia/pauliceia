@@ -5,12 +5,12 @@
             Editando a camada '{{ layer.name }}' ({{ layer.type }}):
         </p>
         <center>
-            <p-sidebarEdit-func-point v-show="layer.type == 'Point' || layer.type == 'MultiPoint'" :source="layer.vector"/>
-            <p-sidebarEdit-func-line v-show="layer.type == 'MultiLineString' || layer.type == 'LineString'" :source="layer.vector"/>
-            <p-sidebarEdit-func-polygon v-show="layer.type == 'MultiPolygon' || layer.type == 'Polygon'"/>
+            <p-sidebarEdit-func-point v-show="layer.type == 'point' || layer.type == 'multipoint'" :source="layer.vector"/>
+            <p-sidebarEdit-func-line v-show="layer.type == 'multilinestring' || layer.type == 'linestring'" :source="layer.vector"/>
+            <p-sidebarEdit-func-polygon v-show="layer.type == 'multipolygon' || layer.type == 'polygon'"/>
 
             <el-alert
-                v-show="layer.type != null && layer.type != 'Point' && layer.type != 'MultiPoint' && layer.type != 'LineString' && layer.type != 'MultiLineString' && layer.type != 'Polygon' && layer.type != 'MultiPolygon'"
+                v-show="layer.type != null && layer.type != 'point' && layer.type != 'multipoint' && layer.type != 'multilinestring' && layer.type != 'linestring' && layer.type != 'multipolygon' && layer.type != 'polygon'"
                 title="Desculpa! Infelizmente nosso sistema ainda não trabalha com o tipo de geometria dessa camada."
                 type="error"
                 center
@@ -23,6 +23,7 @@
 <script>
 import { mapState } from 'vuex'
 import Map from '@/middleware/Map'
+import Dashboard from '@/middleware/Dashboard'
 
 import Point from '@/views/components/map/sidebar-edit/func/Point'
 import Line from '@/views/components/map/sidebar-edit/func/Line'
@@ -66,9 +67,10 @@ export default {
             let properties = response.data.features[0].properties
             this.layer.name = properties.name.toUpperCase()
             
+            let infoFeatureTable = await Dashboard.getFeatureTable(properties.f_table_name)
             overlayGroup.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === properties.f_table_name) {
-                    this.layer.type = sublayer.getSource().getFeatures()[0].getGeometry().getType()
+                    this.layer.type = infoFeatureTable.data.features[0].geometry.type.toLowerCase()
                     this.layer.vector = sublayer.getSource()
                 }
             })

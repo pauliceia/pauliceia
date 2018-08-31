@@ -56,6 +56,7 @@ import {
     pointStyle
 } from '@/views/assets/js/map/Styles'
 import Map from '@/middleware/Map'
+import Dashboard from '@/middleware/Dashboard'
 
 export default {
     props: {
@@ -116,14 +117,14 @@ export default {
                     if (sublayer.get('title') === this.title && this.layerStatus) {
                         
                         let newStyle = null
-                        if(this.type == 'MultiLineString' || this.type == 'LineString') {
+                        if(this.type == 'multilinestring' || this.type == 'linestring') {
                             newStyle = new ol.style.Style({
                                 stroke: new ol.style.Stroke({
                                     color: val,
                                     width: 3
                                 })
                             })
-                        } else if(this.type == 'MultiPoint' || this.type == 'Point') {
+                        } else if(this.type == 'multipoint' || this.type == 'point') {
                             newStyle = new ol.style.Style({
                                 image: new ol.style.Circle({
                                     radius: 8,
@@ -136,7 +137,7 @@ export default {
                                     })
                                 })
                             })
-                        } else if(this.type == 'MultiPolygon' || this.type == 'Polygon') {
+                        } else if(this.type == 'multipolygon' || this.type == 'polygon') {
                             newStyle = new ol.style.Style({
                                 stroke: new ol.style.Stroke({
                                     color: '#000000',
@@ -168,20 +169,22 @@ export default {
     },
 
     methods: {
-        getColor() {
+        async getColor() {
+            let response = await Dashboard.getFeatureTable(this.title)
+            
             this.group.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === this.title) {
-                    this.type = sublayer.getSource().getFeatures()[0].getGeometry().getType()
+                    this.type = response.data.features[0].geometry.type.toLowerCase()
                     
-                    if(this.type == 'MultiLineString' || this.type == 'LineString') {
+                    if(this.type == 'multilinestring' || this.type == 'linestring') {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(lineStyle)
                         this.colorVector = sublayer.getStyle().getStroke().getColor()  
 
-                    } else if(this.type == 'MultiPoint' || this.type == 'Point') {
+                    } else if(this.type == 'multipoint' || this.type == 'point') {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
                         this.colorVector = sublayer.getStyle().getImage().getFill().getColor()             
 
-                    } else if(this.type == 'MultiPolygon' || this.type == 'Polygon') {
+                    } else if(this.type == 'multipolygon' || this.type == 'polygon') {
                         if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(polygonStyle)
                         this.colorVector = sublayer.getStyle().getFill().getColor() 
                     }

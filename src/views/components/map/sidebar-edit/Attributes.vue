@@ -46,7 +46,7 @@ export default {
                     if(index != "geometry" && index != "changeset_id" && index != "version")
                         return {key: index, value: val[index], type: attr[index]}
                 })
-            }else 
+            } else 
                 this.properties = null
         }
     },
