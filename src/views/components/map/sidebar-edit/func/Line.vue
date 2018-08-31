@@ -45,16 +45,23 @@ export default {
             this._clearInteractions()
             this.$store.dispatch('edit/setFuncSelected', 'add')
 
-            this.draw = new ol.interaction.Draw({ 
-                source: vm.source,
-                type: 'MultiLineString'
-            })
-            this.$root.olmap.addInteraction(this.draw)
-            this.draw.on('drawend', function(e) {
-                // e.feature.setProperties({
-                //     'id': 'waiting'
-                // })
-            });
+            if(vm.source.getFeatureById('waiting') == null) {
+                let formatWKT = new ol.format.WKT()
+                this.draw = new ol.interaction.Draw({ 
+                    source: vm.source,
+                    type: 'MultiLineString'
+                })
+                
+                this.$root.olmap.addInteraction(this.draw)
+                this.draw.on('drawend', function(e) {
+                    e.feature.setId('waiting')
+                    let wkt = formatWKT.writeFeature(e.feature.clone())
+
+                    vm.$store.dispatch('edit/setFeaturesWKT', wkt)
+                    vm.$root.olmap.removeInteraction(vm.draw)
+                    vm.draw = null
+                })
+            }
 
             let properties = vm.source.getFeatures()[0].getProperties()
             await Object.keys(properties).map( (index, key) => {

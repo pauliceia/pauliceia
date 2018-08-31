@@ -31,7 +31,7 @@ export default {
             "description": "Description",
             "reference": "Reference",
             "addedReferences": "Addes References",
-            "add": "Add",
+            "add": "Add Reference",
             "submit": "Submit",
             "fileInput": "File Input",
             "zipFile": "ZIP File",
@@ -49,7 +49,20 @@ export default {
             "startDateColumn": "It indicates which column contains the start date of the layer.",
             "endDateColumn": "It indicates which column contains the end date of the layer.",
             "startDateMask": "It indicates which mask is used by the start date of the layer.",
-            "endDateMask": "It indicates which mask is used by the end date of the layer."
+            "endDateMask": "It indicates which mask is used by the end date of the layer.",
+            "mountLayer": {
+                "btnRadio": {
+                    "import": "IMPORT FILE",
+                    "create": "CREATE LAYER"
+                },
+                "lblColumnName": "Column Name (geometry)",
+                "lblColumnType": "Column Type (geometry)",
+                "lblAttr": "Attr",
+                "boxAttr": {
+                    "lblColumnName": "Column Name",
+                    "lblColumnType": "Column Type"
+                }
+            }
         },
         "editLayer": {
             "delete": "Delete",

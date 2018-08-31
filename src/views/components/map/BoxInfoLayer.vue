@@ -83,7 +83,7 @@
                     <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)">
                       <md-icon>report</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"v-show="user.user_id === n.user_id_creator">
+                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-show="user.user_id === n.user_id_creator">
                       <md-icon>clear</md-icon>
                     </button>
                   </p>
@@ -448,13 +448,13 @@ export default {
     top: 20px
     right: 20px
     border-radius: 10px
-    bottom: 120px
     overflow: auto
     padding: 10px
     background: rgba(#FFF, 0.7)
     z-index: 1
-    max-width: 40%
+    max-width: 50%
     min-width: 40%
+    max-height: 80%
 
     .header
         width: 100%

@@ -93,7 +93,8 @@ export default {
         allLayers: [],
         allKeywords: [],
         allAuthorsLayers: [],
-        layerON: false
+        layerON: false,
+        layerACT: false
       }
     },
 
@@ -139,6 +140,7 @@ export default {
                         overlayGroup.getLayers().remove(sublayer)
                         this.$store.dispatch('map/setRemoveLayers', layer.properties.layer_id)
                         this.btnDisabled = false
+                        this.layerACT = false
                         return true
                     }
                 })  
@@ -160,11 +162,18 @@ export default {
                 });
 
                 overlayGroup.getLayers().push( vectorLayer )
-                setTimeout( _ => { 
-                    vm.$store.dispatch('map/setNewLayers', layer.properties.layer_id);
-                    vm.loading.close();
-                    vm.btnDisabled = false;
-                }, 500);
+
+                vectorLayer.getSource().on('change', function() {
+                    vm._actLayer(layer)
+                });  
+        },
+        _actLayer(layer) {
+            if(this.layerACT == false || this.layerACT != layer.properties.layer_id) {
+                this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
+                this.loading.close()
+                this.btnDisabled = false
+                this.layerACT = layer.properties.layer_id
+            }
         },
         _openFullScreen() {
             this.loading = this.$loading({
