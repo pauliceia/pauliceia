@@ -54,10 +54,8 @@ export default {
             "mountLayer": {
                 "btnRadio": {
                     "import": "IMPORTAR ARQUIVO",
-                    "create": "CRIAR CAMADA"
+                    "create": "CRIAR CAMADA VAZIA"
                 },
-                "lblColumnName": "Nome da Coluna (geometria)",
-                "lblColumnType": "Tipo da Coluna (geometria)",
                 "lblAttr": "Atributos",
                 "boxAttr": {
                     "lblColumnName": "Nome da coluna",

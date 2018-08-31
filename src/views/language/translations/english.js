@@ -53,10 +53,8 @@ export default {
             "mountLayer": {
                 "btnRadio": {
                     "import": "IMPORT FILE",
-                    "create": "CREATE LAYER"
+                    "create": "CREATE EMPTY LAYER"
                 },
-                "lblColumnName": "Column Name (geometry)",
-                "lblColumnType": "Column Type (geometry)",
                 "lblAttr": "Attr",
                 "boxAttr": {
                     "lblColumnName": "Column Name",

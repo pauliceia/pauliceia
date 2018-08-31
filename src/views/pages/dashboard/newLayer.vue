@@ -209,10 +209,10 @@
               <form>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.startDate') }}</label>&nbsp;
+                    <label for="inputName">Start Date</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
-                                content="this is content, this is content, this is content"
+                                :content="$t('dashboard.newLayer.startDate')"
                                 type="primary">
                       <button type="button" slot="reference" class="btn btn-outline-primary info">
                         <md-icon class="icon">error_outline</md-icon>
@@ -224,7 +224,7 @@
                     <label for="userSelect">{{ $t('dashboard.newLayer.startDateColumn') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
-                                content="this is content, this is content, this is content"
+                                :content="$t('dashboard.newLayer.startDateColumn')"
                                 type="primary">
                       <button type="button" slot="reference" class="btn btn-outline-primary info">
                         <md-icon class="icon">error_outline</md-icon>
@@ -237,7 +237,7 @@
                     <label for="userSelect">{{ $t('dashboard.newLayer.startDateMask') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
-                                content="this is content, this is content, this is content"
+                                :content="$t('dashboard.newLayer.startDateMask')"
                                 type="primary">
                       <button type="button" slot="reference" class="btn btn-outline-primary info">
                         <md-icon class="icon">error_outline</md-icon>
@@ -252,7 +252,7 @@
                     <label for="inputName">{{ $t('dashboard.newLayer.endDate') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
-                                content="this is content, this is content, this is content"
+                                :content="$t('dashboard.newLayer.endDate')"
                                 type="primary">
                       <button type="button" slot="reference" class="btn btn-outline-primary info">
                         <md-icon class="icon">error_outline</md-icon>
@@ -264,7 +264,7 @@
                     <label for="userSelect">{{ $t('dashboard.newLayer.endDateColumn') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
-                                content="this is content, this is content, this is content"
+                                :content="$t('dashboard.newLayer.endDateColumn')"
                                 type="primary">
                       <button type="button" slot="reference" class="btn btn-outline-primary info">
                         <md-icon class="icon">error_outline</md-icon>
@@ -277,7 +277,7 @@
                     <label for="userSelect">{{ $t('dashboard.newLayer.endDateMask') }}</label>&nbsp;
                     <el-popover class="info" placement="top-start" width="200"
                                 trigger="hover"
-                                content="this is content, this is content, this is content"
+                                :content="$t('dashboard.newLayer.endDateMask')"
                                 type="primary">
                       <button type="button" slot="reference" class="btn btn-outline-primary info">
                         <md-icon class="icon">error_outline</md-icon>

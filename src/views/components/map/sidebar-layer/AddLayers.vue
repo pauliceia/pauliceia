@@ -53,6 +53,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import axios from 'axios'
 
 import Map from '@/middleware/Map'
 import {
@@ -142,28 +143,42 @@ export default {
                     }
                 })  
         },
-        active(layer) {
+        async active(layer) {
             if(this.btnDisabled == false)
                 this.btnDisabled = true
                 this._openFullScreen()
                 const vm = this
-                let vectorLayer = new ol.layer.Vector({
-                    title: layer.properties.f_table_name,
-                    source: new ol.source.Vector({
-                        url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson',
-                        format: new ol.format.GeoJSON(),
-                        crossOrigin: 'anonymous',
-                    }),
-                    zIndex: vm.layers.length+2,
-                    id: layer.properties.layer_id
-                });
+                try {
+                    let response = await axios.get(process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson')
+                    if(response.data.type != undefined) {
+                        let vectorLayer = new ol.layer.Vector({
+                            title: layer.properties.f_table_name,
+                            source: new ol.source.Vector({
+                                url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson',
+                                format: new ol.format.GeoJSON(),
+                                crossOrigin: 'anonymous',
+                            }),
+                            zIndex: vm.layers.length+2,
+                            id: layer.properties.layer_id
+                        })
 
-                overlayGroup.getLayers().push( vectorLayer )
-                setTimeout( _ => { 
-                    this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
+                        overlayGroup.getLayers().push( vectorLayer )
+                        setTimeout( _ => { 
+                            this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
+                            this.loading.close()
+                            this.btnDisabled = false
+                        }, 500)
+                    } else throw {}
+
+                } catch(error) {
                     this.loading.close()
                     this.btnDisabled = false
-                }, 500)
+                    this.$alert("Por favor, confira se a camada foi importada corretamente em nosso sistema ou entre em contato com nosso suporte!", "Erro ao importar a camada", {
+                        dangerouslyUseHTMLString: true,
+                        confirmButtonText: 'OK',
+                        type: "error"
+                    })
+                }
         },
         _openFullScreen() {
             this.loading = this.$loading({
