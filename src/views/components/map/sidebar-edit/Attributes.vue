@@ -43,7 +43,7 @@ export default {
                 let attr = attrLayer.data.features[0].properties
 
                 this.properties = Object.keys(val).map( index => {
-                    if(index != "geometry" && index != "changeset_id" && index != "version")
+                if(index != "geometry" && index != "geom" && index != "id" && index != "changeset_id" && index != "version")
                         return {key: index, value: val[index], type: attr[index]}
                 })
             } else 
