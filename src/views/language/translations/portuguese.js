@@ -45,6 +45,12 @@ export default {
             "zipFileD": "Arquivo ZIP",
             "chooseFile": "Escolha o arquivo",
             "temporalColumns": "Dados Temporias",
+            "lblStartDate": "Data inicial",
+            "lblEndDate": "Data final",
+            "lblStartDateColumn": "Coluna da data inicial",
+            "lblEndDateColumn": "Coluna da data final",
+            "lblStartDateMask": "Mascara da data inicial",
+            "lblEndDateMask": "Mascara da data finial",
             "startDate": "Data inicial do bounding box temporal da camada. É a data inicial do período que abrange os dados da camada. Por exemplo: a camada tem o período de 01-01-1900 à 31-12-1930. Logo a data inicial é 01-01-1900.",
             "endDate": "Data final do bounding box temporal da camada. É a data final do período que abrange os dados da camada. Por exemplo: a camada tem o período de 01-01-1900 à 31-12-1930. Logo a data final é 31-12-1930.",
             "startDateColumn": "Indica qual coluna contém a data inicial da camada.",
@@ -57,6 +63,7 @@ export default {
                     "create": "CRIAR CAMADA VAZIA"
                 },
                 "lblAttr": "Atributos",
+                "lblAttrD": "Adicione os atributos da nova camada. Não comece com números e não adicione acentuação.",
                 "boxAttr": {
                     "lblColumnName": "Nome da coluna",
                     "lblColumnType": "Tipo da Coluna"

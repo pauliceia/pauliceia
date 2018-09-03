@@ -6,7 +6,7 @@
       <p-geocoding></p-geocoding>
       <p-layersRaster></p-layersRaster>
       <p-sidebarLayer></p-sidebarLayer>
-      <p-sidebarEdit></p-sidebarEdit>
+      <!--<p-sidebarEdit></p-sidebarEdit>-->
       
       <p-boxinfolayer></p-boxinfolayer>
       <p-boxinfovector></p-boxinfovector>
