@@ -415,7 +415,7 @@
         if(document.getElementById("inputName").value === '')
           vm._msgError("O nome é necessário!")
         else if(!/^[a-zA-Z]{1}\w/.test(this.tableName))
-          vm._msgError("O nome da layer não pode começar com 'número' e nem possuir 'acentuação'!")
+          vm._msgError("O nome da layer NÃO pode começar com 'número' e nem possuir 'acentuação'!")
         else if(this.chosenKeywordsID.length === 0)
           vm._msgError("É necessário adicionar pelo menos uma palavra-chave!")
 
@@ -550,9 +550,9 @@
             this._msgError('Tipo da geometria é necessário!')
 
           else {  
-            let attrs = await this.optionsAttr.filter( attr => attr.column_name == '' || attr.column_type == null)
+            let attrs = await this.optionsAttr.filter( attr => attr.column_name == '' || attr.column_type == null || !/^[a-zA-Z]{1}\w/.test(attr.column_name))
             if(attrs.length > 0)
-              this._msgError('Complete os atributos!')
+              this._msgError('Atributos Inválidos. Lembrando que cada atributo NÃO pode começar com "números" e possuir "acentuação"!')
 
             else {
               this.layer_id = null
