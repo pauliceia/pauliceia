@@ -2,7 +2,7 @@
   <div >
     <el-button type="text" @click="showModal()">Comments</el-button>
 
-    <el-dialog title="Notification" :visible.sync="outerVisible" id="myModal" class="padrao">
+    <el-dialog title="Notification" :visible.sync="outerVisible" id="myModal" class="padrao mod">
       <el-dialog
         width="30%"
         title="Inner Dialog"

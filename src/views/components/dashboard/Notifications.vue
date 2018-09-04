@@ -190,9 +190,9 @@
       return {
         activeName: 'first',
         notifications: [],
-        notifG: [],
-        notifP: [],
-        notifF: [],
+        notifG: [],               //Geral
+        notifP: [],               //Personal
+        notifF: [],               //Following
         txtNotif: null,
         keyword_id: null,
         notification_id_parent: null,

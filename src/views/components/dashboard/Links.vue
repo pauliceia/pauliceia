@@ -15,6 +15,11 @@
             <span class="md-list-item-text">{{ $t('dashboard.nav.keywords') }}</span>
         </md-list-item>
 
+        <md-list-item :class="this.$route.path == '/dashboard/denunciations' ? 'active': ''" to="/dashboard/denunciations">
+          <md-icon>add_to_photos</md-icon>
+          <span class="md-list-item-text">{{ $t('dashboard.nav.keywords') }}</span>
+        </md-list-item>
+
         <!--<md-list-item :class="this.$route.path == '/dashboard/infos' ? 'active': ''" to="/dashboard/infos">-->
             <!--<md-icon>error</md-icon>-->
             <!--<span class="md-list-item-text">{{ $t('dashboard.nav.infos') }}</span>-->
