@@ -1,5 +1,6 @@
 <template>
   <div class="body">
+
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="GENERAL" name="first">
         <div class="notification-box" v-if="showInput">

@@ -11,6 +11,7 @@
 <script>
 import { mapState } from 'vuex'
 import Edit from '@/middleware/Edit'
+import Map from '@/middleware/Map'
 
 export default {
     props: ['source'],
@@ -26,7 +27,8 @@ export default {
             selectEdit: null,
             selectRemove: null,
             modify: null,
-            draw: null
+            draw: null,
+            properties: null
         }
     },
 
@@ -62,7 +64,11 @@ export default {
                 })
             }
 
-            let properties = vm.source.getFeatures()[0].getProperties()
+            let layerInfo = await Map.getLayers('layer_id='+this.layerId)
+            let f_name = layerInfo.data.features[0].properties.f_table_name
+            let attrLayer = await Map.getAttrLayer('f_table_name='+f_name)
+            let properties = attrLayer.data.features[0].properties
+
             await Object.keys(properties).map( (index, key) => {
                 properties[index] = null
             })
@@ -118,15 +124,15 @@ export default {
                             try {
                                 let layerName = featureSelect[0].getId().substr(0, (featureSelect[0].getId().lastIndexOf('.')))
                                 let featureId = featureSelect[0].getId().substr(featureSelect[0].getId().lastIndexOf('.')+1)
-                                let response = await Edit.deleteFeature(layerName, featureId, this.changesetId)
+                                let response = await Edit.deleteFeature(layerName, featureId, vm.changesetId)
                                 
                                 vm.source.removeFeature(featureSelect[0])
-                                this.$message({
+                                vm.$message({
                                     message: 'Feature excluída com sucesso!',
                                     type: 'success'
                                 });
                             } catch (error) {
-                                this.$message({
+                                vm.$message({
                                     message: 'Erro na plataforma, não foi possível excluir o vetor!',
                                     type: 'error'
                                 });

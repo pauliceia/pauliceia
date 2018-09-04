@@ -44,6 +44,12 @@ export default {
             "fileInputD": "The file that will be inserted is a ZIP compressed file that contains the Shapefile to be sent. Inside this ZIP file should contains all the files of a Shapefile, such as “.shp“, “.prj“, “.dbf“ and so on.",
             "chooseFile": "Choose file",
             "temporalColumns": "Temporal Columns",
+            "lblStartDate": "Start date",
+            "lblEndDate": "End date",
+            "lblStartDateColumn": "Start date column",
+            "lblEndDateColumn": "End date column",
+            "lblStartDateMask": "Start date mask",
+            "lblEndDateMask": "End date mask",
             "startDate": "Start date of the temporal bounding box of the layer. This is the start date of the period that covers the layer data. For example: the layer has the period from 01-01-1900 to 31-12-1930. Hence the start date is 01-01-1900.",
             "endDate": "End date of the temporal bounding box of the layer. This is the end date of the period that covers the layer data. For example: the layer has the period from 01-01-1900 to 31-12-1930. Therefore the end date is 31-12-1930.",
             "startDateColumn": "It indicates which column contains the start date of the layer.",
@@ -53,11 +59,10 @@ export default {
             "mountLayer": {
                 "btnRadio": {
                     "import": "IMPORT FILE",
-                    "create": "CREATE LAYER"
+                    "create": "CREATE EMPTY LAYER"
                 },
-                "lblColumnName": "Column Name (geometry)",
-                "lblColumnType": "Column Type (geometry)",
-                "lblAttr": "Attr",
+                "lblAttr": "Attributes",
+                "lblAttrD": "Add the attributes of new layer. Do not start with numbers and do not add accentuation.",
                 "boxAttr": {
                     "lblColumnName": "Column Name",
                     "lblColumnType": "Column Type"
