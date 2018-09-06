@@ -41,8 +41,7 @@
         target: this.$el,
         loadTilesWhileAnimating: true,
         controls: ol.control.defaults().extend([
-          new ol.control.ScaleLine(),
-          new ol.control.ZoomSlider()
+          new ol.control.ScaleLine()
         ]),
         layers: [
           overlayGroupExternal,

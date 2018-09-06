@@ -2,8 +2,10 @@ import termsPT from './termsPT-BR'
 
 export default {
     "nav": {
-        "explore": "Navegue",
-        "about": "Sobre",
+        "home": "Home",
+        "map": "Mapa",
+        "team": "Equipe",
+        "contact": "Contato",
         "login": "Entrar",
         "profile": "Meu Perfil",
         "dashboard": "Painel",
