@@ -518,7 +518,8 @@
                       let msg = ''
                       if (cause.response.status === 409) msg = "O arquivo precisa ser um .zip."
                       else if (cause.response.status === 400) msg = "ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP."
-                      else if (cause.response.status === 500) msg = "SRID inválido! Por favor, certifique-se de que é um SRID válido."
+                      else if (cause.response.status === 404) msg = "Not found .prj inside the zip."
+                      else if (cause.response.status === 500) msg = "Problem when import a resource. Please, contact the administrator."
                       else msg = cause.toString()
                       vm._msgError(msg)
                   })

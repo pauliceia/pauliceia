@@ -234,8 +234,6 @@
 </script>
 
 <style lang="sass" scoped>
-  .mod
-
 
     .notification-box2
       margin: 10px
@@ -243,8 +241,8 @@
       background: rgba(183,200,255,0.69)
       padding: 20px
       border-radius: 20px
-      position: relative
       left: 50px
+      position: relative
 
     .notification-box
       margin: 10px

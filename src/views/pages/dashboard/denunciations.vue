@@ -11,7 +11,7 @@
               <div class="row" v-for="layer in denouncedLayers">
                 <div class="col-sm-8">{{ layer.name }} ({{ layer.n}})</div>
                 <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editLayer(layer.id)"><md-icon>create</md-icon></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="selectLayer(layer.id)"><md-icon>visibility</md-icon></button>
                 </div>
                 <div class="col-sm-2">
                   <button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.id)"><md-icon>clear</md-icon></button>
@@ -27,13 +27,13 @@
           </div>
           <div class="card-body">
             <div class="card-text">
-              <div class="row" v-for="layer in denouncedComments">
-                <div class="col-sm-8">{{ layer.name }} ({{ layer.n}})</div>
+              <div class="row" v-for="comment in denouncedComments">
+                <div class="col-sm-8">{{ comment.name }} ({{ comment.n}})</div>
                 <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="selectComment(comment.id)"><md-icon>visibility</md-icon></button>
                 </div>
                 <div class="col-sm-2">
-                  <!--<button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>-->
+                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.id)"><md-icon>clear</md-icon></button>
                 </div>
                 <hr>
               </div>
@@ -43,13 +43,63 @@
       </div>
 
       <div class="col-sm-8">
+        <div class="card  text-center" v-if="is_comment">
+          <div class="card-header">
+            Comment
+            <ul class="description" >
+              <li><b> Name:</b> {{nameUsers[chosenComment.user_id_creator]}}</li>
+              <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b>{{ chosenComment.description }}  </li>
+              <li><b>{{ $t('map.viewInfo.lbDate') }}:</b> {{ chosenComment.created_at }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card  text-center" v-if="is_layer">
+          <div class="card-header">
+            Layer
+            <ul class="description" >
+              <li><b> Name:</b> {{chosenLayer.name}}</li>
+              <li><b> {{ $t('map.viewInfo.lbTags') }}:</b>
+                <el-tag v-show="is_layer" v-for="id in chosenLayer.keyword" :key="'tag'+id" style="margin-left: 5px">
+                  {{ allKeywords[id] }}
+                </el-tag>
+              </li>
+              <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b> {{ chosenLayer.description }} </li>
+              <li><b>{{ $t('map.viewInfo.lbDate') }}:</b> {{ chosenLayer.created_at }}</li>
+              <li v-if="chosenLayer.reference === []"><b>{{ $t('map.viewInfo.lbReferences') }}:</b>
+                <span v-show="is_layer" v-for="id in chosenLayer.reference" :key="'ref'+id">
+                        {{ allReferences[id] }};
+                    </span>
+              </li>
+            </ul>
+          </div>
+        </div>
         <div class="card  text-center">
           <div class="card-header">
             Denunciations
           </div>
           <div class="card-body">
+            <div class="nofitication">
+              <div v-for="n in denunciations">
+                <div class="notification-box">
 
+                  <div style="display: flex; align-items: center;">
+                    <div class="photo">B</div>
+                    <div class="credentials">
+                      <p class="author">{{nameUsers[n.user_id_creator]}}</p>
+                      <p class="date">{{n.created_at}}</p>
+                    </div>
+                  </div>
 
+                  <p class="content">{{n.description}}</p>
+                  <p class="comments">
+                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)">
+                      <md-icon>clear</md-icon>
+                    </button>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -77,10 +127,70 @@
           denouncedLayers: [],
           denouncedComments: [],
           notifications: [],
+          denunciations: [],
           nameLayers: [],
+          nameUsers: [],
+          is_layer: false,
+          is_comment: false,
+          chosenLayer: [],
+          chosenComment: [],
+          allKeywords: [],
+          allReferences: [],
+          layers: [],
         }
       },
+      mounted() {
+        const vm = this
+        vm.getDenunciations()
+        vm.getInfos()
+        setTimeout(_ => {
+          //console.log(vm.allKeywords)
+          //console.log(vm.allReferences)
+        }, 1000);
+      },
       methods: {
+          clearNot(notification){
+            const vm = this
+            Api().delete('/api/notification/?notification_id='+notification.notification_id,
+            ).then(function (response) {
+              //console.log(response)
+              vm.updateNotif()
+            })
+          },
+          selectLayer(id){
+            const vm = this
+            this.chosenComment = []
+            this.is_comment = false
+            this.is_layer = true
+            this.chosenLayer = this.layers[id]
+            vm.denunciations = Object.values(this.notifications).filter( notif => {
+              return (notif.layer_id === id && notif.notification_id_parent === null  && notif.is_denunciation === true)
+            })
+          },
+          selectComment(id){
+            const vm = this
+            this.chosenLayer = []
+            this.is_comment = true
+            this.is_layer = false
+            this.chosenComment = this.notifications[id]
+            this.denunciations = Object.values(this.notifications).filter( notif => {
+              return (notif.notification_id_parent === id && notif.is_denunciation === true)
+            })
+          },
+          getInfos(){
+            const vm = this
+            Api().get('/api/keyword/').then(function (keys) {
+              keys.data.features.forEach(key => {
+                vm.allKeywords = {...vm.allKeywords, [key.properties.keyword_id]: key.properties.name,}
+              })
+            })
+            Api().get('/api/reference/').then(function (references) {
+              references.data.features.forEach(reference => {
+                vm.allReferences = {...vm.allReferences, [reference.properties.reference_id]: reference.properties.description,}
+              })
+            })
+          },
+
           getDenunciations(){
             const vm = this
 
@@ -89,6 +199,7 @@
               Api().get('/api/layer/').then(function (layers) {
                 layers.data.features.forEach(layer => {
                   vm.nameLayers = {...vm.nameLayers, [layer.properties.layer_id]: layer.properties.name,}
+                  vm.layers = {...vm.layers, [layer.properties.layer_id]: layer.properties,}
                 })
               })
               setTimeout(_ => {
@@ -115,29 +226,63 @@
                 })
                 setTimeout(_ => {
                     vm.denouncedComments = response.data.features.filter( e => {
-                      return (e.properties.notification_id_parent != null && e.properties.is_denunciation === true)
+                      return (e.properties.notification_id_parent !== null && e.properties.is_denunciation === true)
                     }).reduce((acc, currvalue) => {
                       const id = currvalue.properties.notification_id_parent;
-                      const idCont = acc[id] ? acc[id].n + 1 : 1
+                      const idCont = acc[id]!=null ? acc[id].n + 1 : 1
 
                       return {...acc, [id]: {'n': idCont, 'name': vm.nameUsers[vm.notifications[currvalue.properties.notification_id_parent].user_id_creator], 'id': id},}
                     }, {})
                 }, 100);
             })
           }
-      },
-      mounted() {
-        const vm = this
-        vm.getDenunciations()
-        setTimeout(_ => {
-          //console.log(vm.denouncedComments)
-          //console.log(vm.denouncedLayers)
-        }, 1000);
       }
     }
 </script>
 
 <style lang="sass"  scoped>
+
+  .notification-box
+    margin: 10px
+    background: rgba(#000, 0.1)
+    padding: 20px
+    border-radius: 20px
+    position: relative
+
+    .photo
+      display: inline-block
+      width: 40px
+      padding: 10px
+      text-align: center
+      color: #FFF
+      border-radius: 50%
+      background: #666
+
+    .credentials
+      display: inline-block
+      margin: 0 0 0 10px
+      .author
+        font-weight: 600
+        margin-top: 5px !important
+        font-size: 1.1em
+      .date
+        color: #666
+        font-size: 0.9em
+      p
+        margin: 0 0 5px 0 !important
+
+    .content
+      text-align: justify
+      margin-top: 5px
+
+    .comments
+      width: 100%
+      text-align: right
+      color: #0099ff
+      cursor: pointer
+      margin-top: -10px
+      margin-bottom: 5px
+
   .add
     top: -1px
     left: 0px

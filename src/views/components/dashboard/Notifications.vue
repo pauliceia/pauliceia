@@ -437,7 +437,6 @@
     background: rgba(#000, 0.1)
     padding: 20px
     border-radius: 20px
-    position: relative
 
     .photo
       display: inline-block
