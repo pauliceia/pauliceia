@@ -285,6 +285,7 @@
         fullscreenLoading: false,
         typeSubmit: 'file',
         layer_id: null,
+        is_the_admin: false,
         loading: '',
         optionsTypeGeom: [{
             value: 'MULTIPOINT',
@@ -315,7 +316,7 @@
       }
     },
 
-    beforeCreate() {
+    mounted() {
       const vm = this
 
       this.shapeCorrect = false
@@ -338,6 +339,8 @@
         })
         //console.log(vm.dateMask)
       })
+
+      this.is_the_admin = this.user.is_the_admin
     },
 
     methods: {

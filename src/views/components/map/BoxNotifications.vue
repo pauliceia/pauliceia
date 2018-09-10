@@ -70,47 +70,10 @@ export default {
             display: inline-block
         .btn:hover
             background: rgba(#000, 0.1)
-    
-    .body     
-        padding: 10px 20px 
-        background: #FFF  
-        .notification-box
-            margin: 10px
-            background: rgba(#000, 0.1)
-            padding: 20px
 
-            .photo
-                display: inline-block
-                width: 40px
-                padding: 10px
-                text-align: center
-                color: #FFF
-                border-radius: 50%
-                background: #666
+    .body
+        padding: 10px 20px
+        background: #FFF
 
-            .credentials
-                display: inline-block
-                margin: 0 0 0 10px
-                .author
-                    font-weight: 600
-                    margin-top: 5px !important
-                    font-size: 1.1em
-                .date
-                    color: #666
-                    font-size: 0.9em
-                p
-                    margin: 0 0 5px 0 !important
-
-            .content
-                text-align: justify
-                margin-top: 5px
-
-            .comments
-                width: 100%
-                text-align: right
-                color: #0099ff
-                cursor: pointer
-                margin-top: -10px
-                margin-bottom: 5px
 
 </style>

@@ -123,80 +123,38 @@
               <form>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.startDate') }}</label>&nbsp;
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                content="this is content, this is content, this is content"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
+                    <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
+                      <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
                     <input class="form-control" v-model="startDate" type="date" id="start_date">
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.startDateColumn') }}</label>&nbsp;
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                content="this is content, this is content, this is content"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
+                    <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateColumn') }}</label>&nbsp;
+                    <p-popover-labels :text="$t('dashboard.newLayer.startDateColumn')" />
                     <v-select v-model="startColumnsName" :options="columnsName" track-by="" label=""
                               id="start_date_column_name"></v-select>
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.startDateMask') }}</label>&nbsp;
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                content="this is content, this is content, this is content"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
+                    <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
+                    <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
                     <v-select v-model="startDateMask" :options="dateMask" track-by="mask" label="mask"
                               id="start_date_mask"></v-select>
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.endDate') }}</label>&nbsp;
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                content="this is content, this is content, this is content"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
+                    <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
+                    <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
                     <input class="form-control" type="date" v-model="endDate" id="end_date">
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.endDateColumn') }}</label>&nbsp;
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                content="this is content, this is content, this is content"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
+                    <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateColumn') }}</label>&nbsp;
+                    <p-popover-labels :text="$t('dashboard.newLayer.endDateColumn')" />
                     <v-select v-model="endColumnsName" :options="columnsName" track-by="" label=""
                               id="end_date_column_name"></v-select>
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.endDateMask') }}</label>&nbsp;
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                content="this is content, this is content, this is content"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
+                    <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
+                    <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
                     <v-select v-model="endDateMask" :options="dateMask" track-by="mask" label="mask"
                               id="end_date_mask"></v-select>
                   </div>
@@ -218,6 +176,7 @@
 
 <script>
   import DashLayout from '@/views/layouts/dashboard'
+  import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
   import Vue from 'vue'
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
@@ -228,7 +187,8 @@
   export default {
     name: "editLayer",
     components: {
-      "p-dash-layout": DashLayout
+      "p-dash-layout": DashLayout,
+      "p-popover-labels": PopoverLabels
     },
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user'])

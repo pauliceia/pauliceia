@@ -55,7 +55,7 @@
               <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)" title="Denunciar" v-if=false>
                 <md-icon>report</md-icon>
               </button>
-              <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="user.user_id === n.user_id_creator" title="Excluir">
+              <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="user.user_id === n.user_id_creator || user.is_the_admin" title="Excluir">
                 <md-icon>clear</md-icon>
               </button>
             </p>
@@ -100,7 +100,7 @@
         txtReply: null,
         showInput2: false,
         outerVisible: false,
-        innerVisible: false
+        innerVisible: false,
       }
     },
     methods: {
@@ -234,8 +234,8 @@
 </script>
 
 <style lang="sass" scoped>
-  .body
-    padding: 10px 20px
+  .mod
+
 
     .notification-box2
       margin: 10px
