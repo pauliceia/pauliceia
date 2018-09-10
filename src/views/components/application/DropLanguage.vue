@@ -1,20 +1,7 @@
 <template>
-    <div class="dropdown-menu" v-show="true">
-        <md-list class="dropdown-item" @click="modifyLanguage('en')">
-            <md-list-item>
-                <md-icon :md-src="iconUSA"/>
-                <span class="md-list-item-text">EN</span>
-            </md-list-item>
-        </md-list>
-        <div class="dropdown-divider"></div>
-
-        <md-list class="dropdown-item" @click="modifyLanguage('pt')">
-            <md-list-item>
-                <md-icon :md-src="iconBrazil"/>
-                <span class="md-list-item-text">PT-BR</span>
-            </md-list-item>
-        </md-list>
-
+    <div v-show="true" class="box-language">
+        <md-icon :md-src="iconBrazil" @click.native="modifyLanguage('pt')"/>
+        <md-icon :md-src="iconUSA" @click.native="modifyLanguage('en')"/>
     </div>
 </template>
 
@@ -41,10 +28,9 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.md-list
-    padding: 0 5px !important
-    cursor: pointer
+.box-language
+    padding: 0 0 0 20px
+    .md-icon
+        cursor: pointer
 
-.md-list:active
-    background: rgba(0,0,0,0.2)
 </style>

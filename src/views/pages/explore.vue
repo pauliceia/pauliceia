@@ -76,11 +76,31 @@
     left: 0
     right: 0
     bottom: 0
-    top: 85px
+    top: 84px
     background: #fff
   
-  .ol-zoomslider-thumb, .ol-scale-line, .ol-zoom-in, .ol-zoom-out
-    background: rgba(#58595b, 0.7) !important
-  .ol-zoomslider-thumb:hover, .ol-zoom-in:hover, .ol-zoom-out:hover
-    background: rgba(#58595b, 0.9) !important
+  .ol-zoom
+    display: flex !important
+    top: auto !important
+    bottom: 53px
+    left: 35px
+  .ol-zoom-in, .ol-zoom-out
+    background: rgba(77,77,77, 0.7) !important
+    border-radius: 3px !important
+    font-size: 1.5em !important
+  .ol-zoom-in
+    margin-right: 5px !important
+  .ol-zoom-in:hover, .ol-zoom-out:hover
+    background: rgba(77,77,77, 0.9) !important
+
+  .ol-scale-line
+    left: 32px !important
+    background: rgba(#FFF, 0.7)
+    bottom: 15px
+    .ol-scale-line-inner
+      width: auto !important
+      color: rgb(77,77,77)
+      font-size: 0.9em
+      padding: 0 5px 0 5px
+      border-color: rgb(77,77,77)
 </style>

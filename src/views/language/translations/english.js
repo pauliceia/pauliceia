@@ -2,8 +2,10 @@ import termsEN from './termsEN'
 
 export default {
     "nav": {
-        "explore": "Explore",
-        "about": "About",
+        "home": "Home",
+        "map": "Map",
+        "team": "Team",
+        "contact": "Contact",
         "login": "Sign In",
         "profile": "My Profile",
         "dashboard": "Dashboard",

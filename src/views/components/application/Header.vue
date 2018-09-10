@@ -1,7 +1,5 @@
 <template>
     <header>
-        <div class="sub-nav" />
-
         <nav class="navbar navbar-expand-md navbar-light bg-light">
 
             <router-link to="/" class="navbar-brand">
@@ -17,21 +15,21 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <router-link 
-                            :class="this.$route.path == '/explore' ? 'nav-link active': 'nav-link'"
-                            to="/explore">{{ $t('nav.explore') }}</router-link>
+                        <a :class="this.$route.path == '/home' ? 'nav-link active': 'nav-link'"
+                            href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.home') }}</a>
                     </li>
                     <li class="nav-item">
                         <router-link 
-                            :class="this.$route.path == '/about' ? 'nav-link active': 'nav-link'"
-                            to="/about">{{ $t('nav.about') }}</router-link>
+                            :class="this.$route.path == '/explore' ? 'nav-link active': 'nav-link'"
+                            to="/explore">{{ $t('nav.map') }}</router-link>
                     </li>
-                    <li class="nav-item dropdown" style="cursor: pointer">
-                        <a class="nav-link dropdown-toggle" style="text-transform: uppercase;" data-toggle="dropdown">{{ $i18n.locale() }}</a>
-
-                        <!-- component of language -->
-                        <p-dropLanguage />
-
+                    <li class="nav-item">
+                        <a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"
+                            href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.team') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a :class="this.$route.path == '/contact' ? 'nav-link active': 'nav-link'"
+                            href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.contact') }}</a>
                     </li>
                 </ul>
 
@@ -54,8 +52,10 @@
                     <p-logAvatar :photo="user.picture" :name="user.name"/>
                 </div>
                 <div v-else>
-                    <router-link to="/login" class="btn btn-success btn-login">{{ $t('nav.login') }}</router-link>
+                    <router-link to="/login" class="btn btn-login">{{ $t('nav.login') }}</router-link>
                 </div>
+
+                <p-dropLanguage />
             </div>
         </nav>
     </header>
@@ -111,17 +111,12 @@ export default {
 
 <style lang="sass" scoped>
     header
-        border-bottom: 1px solid #999
-        
-        .sub-nav
-            width: 100%
-            height: 5px
-            background: #f15a29
+        border-bottom: 5px solid #f15a29
 
         .navbar
             padding-left: 10%
             padding-right: 10%
-            background: #EEE !important
+            background: rgba(#FFF, 0.7) !important
 
             .navbar-brand
                 width: 120px
@@ -132,14 +127,26 @@ export default {
 
             .navbar-nav li a
                 text-decoration: none
-                font-size: 1.3em
+                font-size: 30px
+                color: rgb(77,77,77) !important
+                margin: 0 25px !important
+                font-family: IrisUPC
+            .navbar-nav li a:hover,.navbar-nav .active
+                color: #f15a29 !important
 
         .btn-login
-            color: #fff
+            color: #FFF
+            background: #f15a29
+            font-family: IrisUPC
+            font-size: 30px
+            padding: 0 20px
+            border-radius: 7.5px
+            line-height: 1
             a
                 list-decoration: none
         .btn-login:hover
             text-decoration: none
+            background: #f0470f
         
         .btn-geocoding
             cursor: pointer

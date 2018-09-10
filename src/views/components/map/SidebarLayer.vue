@@ -68,7 +68,7 @@ export default {
     .btn_sidebar
         position: absolute
         top: 15px
-        left: 50px
+        left: 20px
         z-index: 1
         padding: 8px 30px
         background: rgba(#f15a29, 0.8)
@@ -92,7 +92,7 @@ export default {
         border-radius: 15px
         min-height: 50%
         max-height: 90%
-        left: 50px
+        left: 20px
         background: rgba(#58595b, 0.75)
         z-index: 1
         box-shadow: 1px 1px 1px #CCC
