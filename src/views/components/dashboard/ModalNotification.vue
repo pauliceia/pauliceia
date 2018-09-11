@@ -2,7 +2,7 @@
   <div>
     <el-button type="text" @click="showModal()">Comments</el-button>
 
-    <el-dialog title="Notification" :visible.sync="outerVisible" id="myModal" class="padrao">
+    <el-dialog title="Notification" :visible.sync="outerVisible" id="myModal" class="padrao mod">
       <el-dialog
         width="30%"
         title="Inner Dialog"
@@ -55,7 +55,7 @@
               <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)" title="Denunciar" v-if=false>
                 <md-icon>report</md-icon>
               </button>
-              <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="user.user_id === n.user_id_creator" title="Excluir">
+              <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="user.user_id === n.user_id_creator || user.is_the_admin" title="Excluir">
                 <md-icon>clear</md-icon>
               </button>
             </p>
@@ -100,7 +100,7 @@
         txtReply: null,
         showInput2: false,
         outerVisible: false,
-        innerVisible: false
+        innerVisible: false,
       }
     },
     methods: {
@@ -234,8 +234,6 @@
 </script>
 
 <style lang="sass" scoped>
-  .body
-    padding: 10px 20px
 
     .notification-box2
       margin: 10px
@@ -243,8 +241,8 @@
       background: rgba(183,200,255,0.69)
       padding: 20px
       border-radius: 20px
-      position: relative
       left: 50px
+      position: relative
 
     .notification-box
       margin: 10px

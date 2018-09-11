@@ -31,7 +31,7 @@
     },
     mounted () {
       let slider = document.getElementById('slider')
-      this.filterUpdate()
+      //this.filterUpdate()
       noUiSlider.create(slider, {
         start: [this.startYear, this.endYear],
         connect: true,

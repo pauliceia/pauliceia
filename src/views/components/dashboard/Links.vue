@@ -15,6 +15,11 @@
             <span class="md-list-item-text">{{ $t('dashboard.nav.keywords') }}</span>
         </md-list-item>
 
+        <md-list-item :class="this.$route.path == '/dashboard/denunciations' ? 'active': ''" to="/dashboard/denunciations" v-if="user.is_the_admin">
+          <md-icon>report</md-icon>
+          <span class="md-list-item-text">Denunciations</span>
+        </md-list-item>
+
         <!--<md-list-item :class="this.$route.path == '/dashboard/infos' ? 'active': ''" to="/dashboard/infos">-->
             <!--<md-icon>error</md-icon>-->
             <!--<span class="md-list-item-text">{{ $t('dashboard.nav.infos') }}</span>-->
@@ -23,6 +28,17 @@
 </template>
 
 <script>
+
+  import {mapState} from 'vuex'
+
+  export default {
+    computed: {
+      ...mapState('auth', ['isUserLoggedIn', 'user']),
+    },
+    mounted() {
+
+    }
+  }
 </script>
 
 <style lang="sass" scoped>

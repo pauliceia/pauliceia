@@ -6,6 +6,7 @@ import DashHome from '@/views/pages/dashboard/home'
 import DashNewLayer from '@/views/pages/dashboard/newLayer'
 import DashKeyword from '@/views/pages/dashboard/keywords'
 import DashEditLayer from '@/views/pages/dashboard/editLayer'
+import DashDenunciation from '@/views/pages/dashboard/denunciations'
 
 const dashRoutes = [
     {
@@ -38,6 +39,12 @@ const dashRoutes = [
       name: 'Keyword',
       component: DashKeyword,
       props: {name: 'Home', layer_id: 0},
+      meta: { auth: true }
+    },
+    {
+      path: '/dashboard/denunciations',
+      name: 'Denunciations',
+      component: DashDenunciation,
       meta: { auth: true }
     }
 ]
