@@ -70,13 +70,47 @@
                 <input type="file" @change="handleFileChange"/>
             </label><br><br>
 
-            <button class="btn btn-download" @click="download()">Download</button>                
+            <form class="headers-form" v-show="headers.length > 0" @submit.prevent="visualizar()">
+                <div class="inputs">
+                    <el-select v-model="street" placeholder="Coluna Rua">
+                        <el-option
+                            v-for="item in headers"
+                            :key="item"
+                            :label="item"
+                            :value="item"
+                            :required="true">
+                        </el-option>
+                    </el-select>
+                    <el-select v-model="number" placeholder="Coluna Número">
+                        <el-option
+                            v-for="item in headers"
+                            :key="item"
+                            :label="item"
+                            :value="item"
+                            :required="true">
+                        </el-option>
+                    </el-select>
+                    <el-select v-model="year" placeholder="Coluna Ano">
+                        <el-option
+                            v-for="item in headers"
+                            :key="item"
+                            :label="item"
+                            :value="item"
+                            :required="true">
+                        </el-option>
+                    </el-select>
+                </div>
+                <button class="btn btn-download" type="submit">Visualizar</button> 
+                <button class="btn btn-download" type="button" @click="download()">Download</button>
+            </form>                           
+                            
         </div>    
         
     </section>    
 </template>
 
 <script>
+
 import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
 import GeoJSON from 'geojson'
@@ -107,7 +141,11 @@ export default {
             multigeocoding: false,
             placesList: [],
             geojson: '',
-            loading: null
+            loading: null,
+            headers: [],
+            street: '',
+            number: '',
+            year: '',
         }
     },
     
@@ -146,34 +184,77 @@ export default {
                 let text = reader.result;
                 let node = document.getElementById('output');
                 let csv = text;
-                let json = CSV2JSON(csv);
-
-                try {
-                    let response = await ApiMap.geolocationMultiple(encodeURIComponent(json));
-                    vm.geojson = response.data
-                    
-                    let vectorLayer = new ol.layer.Vector({
-                        title: "multipligeolocation",
-                        source: new ol.source.Vector({
-                            features: (new ol.format.GeoJSON()).readFeatures(vm.geojson)
-                        }),
-                        name: 'placesSearchMultiple',
-                        style: placeStyleSearch,
-                        zIndex: 999
-                    });
-                    overlayGroupGeolocation.getLayers().clear()
-                    overlayGroupGeolocation.getLayers().push(vectorLayer)
-                    this.loading.close()
-
-                } catch( error ){
-                    this.$alert('Não foi possível ler o arquivo CSV', 'Erro no arquivo', {
-                        confirmButtonText: 'OK',
-                        type: 'error'
-                    });
-                    this.loading.close()
-                }
+                this.headers = csv.split('\n')[0].split(',')
+                //this.headers = csv.split('\n')[0].split(',').map( header => header.substr(header.indexOf('"')+1, header.lastIndexOf('"')-1).replace('"', '') )
+                this.geojson = CSV2JSON(csv);
+                this.loading.close();
             }
             reader.readAsText(e.target.files[0]);
+        },
+        async visualizar() {
+            this._openFullScreen()
+            let json = JSON.parse(this.geojson);
+            let jsonResults = [];
+                    
+            for (let i = 0; i < json.length; i++) {
+                console.log(i);
+                let address = json[i][this.street].toLowerCase()+", "+json[i][this.number]+", "+json[i][this.year];
+                console.log(address)
+                let response = await ApiMap.geolocationOne(address);
+                if(response.data[1][0].name != "Point not found"){
+                    let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'"'+"}]");
+                    let geomPoint = response.data[1][0].geom.substr(response.data[1][0].geom.indexOf("(")+1);
+                    geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
+                    let x = parseFloat(geomPoint.split(' ')[0]);
+                    let y = parseFloat(geomPoint.split(' ')[1]);
+                    let geom = ('{'+'"geom":'+'['+x +','+y+']}');
+                    console.log(geom);
+                    let jsonAddress = JSON.parse(geom);
+                    let jsonSlice = json[i];
+                    let results = Object.assign(jsonSlice, jsonAddress);
+                    jsonResults.push(JSON.stringify(results));
+                    console.log(JSON.stringify(results));
+                } else {
+                    let geom = ('{'+'"geom":'+'['+0 +','+0+']}');
+                    let jsonAddress = JSON.parse(geom);
+                    let jsonSlice = json[i];
+                    let results = Object.assign(jsonSlice[geo], jsonAddress);
+                    jsonResults.push(JSON.stringify(results));
+                }
+            } 
+
+            let textJsonResults = ('['+jsonResults+']');
+            let final = JSON.parse(textJsonResults);
+            console.log(textJsonResults);
+            let resultGeoJSON = GeoJSON.parse(final, {'Point': "geom"});
+            console.log(resultGeoJSON);
+            this.geojson = resultGeoJSON
+
+	        try {
+
+                let vectorLayer = new ol.layer.Vector({
+                    title: "multipligeolocation",
+                    source: new ol.source.Vector({
+                        features: (new ol.format.GeoJSON()).readFeatures(resultGeoJSON)
+                    }),
+                    name: 'placesSearchMultiple',
+                    style: placeStyleSearch,
+                    zIndex: 999
+                });
+                overlayGroupGeolocation.getLayers().clear()
+                overlayGroupGeolocation.getLayers().push(vectorLayer)
+
+                this.loading.close()
+
+            } catch( error ){
+                this.$alert('Não foi possível ler o arquivo CSV', 'Erro no arquivo', {
+                    confirmButtonText: 'OK',
+                    type: 'error'
+                });
+                this.loading.close()
+            }
+
+
         },
         download(){
 
@@ -354,6 +435,10 @@ export default {
             .btn
             .btn:hover
 
+            .headers-form
+                .inputs
+                    display: flex
+                    margin-bottom: 20px
 
     input:focus
         border-color: rgba(#58595b, 0.2) !important
