@@ -10,6 +10,7 @@ export default `
     <p><b>SECTION 2 - INFORMATION</b></p>
     <p>Information from historical data, notifications, denunciations, descriptions, among other, do not necessarily express the opinion of the Pauliceia team. They are only of responsibility of the people who have entered these information into the system.</p>
     <p>You must not insert copyright data on the platform or data with inappropriate content, for example, pornography. If it is discovered that a user has inserted any data of this category in the system, he or she will suffer the due penalties of the Law. For that reason, the portal will supply a resource of denunciation. If the collaborator finds a inappropriate content, he or she must inform it through the denunciations.</p>
+    <p>In relation to the layers, they may have multiple keywords associated to it. A curator user can add or remove keywords, or edit the information of a layer, with the intention of improving or organizing it.</p>
     <br>
     <p><b>SECTION 3 - CONSENT</b></p>
     <p>How do I give my consent to the Pauliceia platform?</p>

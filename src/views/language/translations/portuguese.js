@@ -65,10 +65,15 @@ export default {
                     "create": "CRIAR CAMADA VAZIA"
                 },
                 "lblAttr": "Atributos",
-                "lblAttrD": "Adicione os atributos da nova camada. Não comece com números e não adicione acentuação.",
+                "lblAttrD": "Adicione os atributos da nova camada. NÃO pode: começar com números, ter acentuação, caracteres especiais, espaços em brancos e ser nome reservado.",
                 "boxAttr": {
                     "lblColumnName": "Nome da coluna",
-                    "lblColumnType": "Tipo da Coluna"
+                    "lblColumnType": "Tipo da Coluna",
+                    "msgAlertRemove": "Tem certeza que deseja excluir a coluna?",
+                    "btnAlert": {
+                        "no": "não",
+                        "yes": "SIM"
+                    }
                 }
             }
         },

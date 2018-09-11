@@ -64,10 +64,15 @@ export default {
                     "create": "CREATE EMPTY LAYER"
                 },
                 "lblAttr": "Attributes",
-                "lblAttrD": "Add the attributes of new layer. Do not start with numbers and do not add accentuation.",
+                "lblAttrD": "Add the attributes of the new layer. It can NOT: start with numbers, have accents, special characters, whitespaces and be reserved name.",
                 "boxAttr": {
                     "lblColumnName": "Column Name",
-                    "lblColumnType": "Column Type"
+                    "lblColumnType": "Column Type",
+                    "msgAlertRemove": "Are you sure you want to delete the column?",
+                    "btnAlert": {
+                        "no": "no",
+                        "yes": "YES"
+                    }
                 }
             }
         },

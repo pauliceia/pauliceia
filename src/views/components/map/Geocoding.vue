@@ -77,9 +77,9 @@
 </template>
 
 <script>
-
 import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
+import GeoJSON from 'geojson'
 
 import {
     overlayGroup

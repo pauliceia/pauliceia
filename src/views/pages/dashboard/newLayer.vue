@@ -146,7 +146,18 @@
                             </el-select>
                           </div>
                           <div class="col-2">
-                            <el-button type="danger" icon="el-icon-delete" @click="removeAttr(attr.id)" size="small" circle></el-button>
+                          <el-popover
+                            placement="top"
+                            width="160"
+                            v-model="attr.visibleRemove">
+                            <p>{{ $t('dashboard.newLayer.mountLayer.boxAttr.msgAlertRemove') }}</p>
+                            <div style="text-align: right; margin: 0">
+                              <el-button size="mini" type="text" @click="attr.visibleRemove = false">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.no') }}</el-button>
+                              <el-button type="primary" size="mini" @click="removeAttr(attr.id)">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.yes') }}</el-button>
+                            </div>
+
+                            <el-button slot="reference" type="danger" icon="el-icon-delete" size="small" circle></el-button>
+                          </el-popover>
                           </div>
                         </div>
 
@@ -286,6 +297,7 @@
         typeSubmit: 'file',
         layer_id: null,
         loading: '',
+        visibleRemove: false,
         optionsTypeGeom: [{
             value: 'MULTIPOINT',
             label: 'MultiPoint'
@@ -310,6 +322,7 @@
         optionsAttr: [{
           column_name: '',
           column_type: 'TEXT',
+          visibleRemove: false,
           id: 0
         }]
       }
@@ -550,7 +563,9 @@
             this._msgError('Tipo da geometria é necessário!')
 
           else {  
-            let attrs = await this.optionsAttr.filter( attr => attr.column_name == '' || attr.column_type == null || !/^[a-zA-Z]{1}\w/.test(attr.column_name))
+            let attrs = await this.optionsAttr.filter( 
+              attr => attr.column_name == '' || attr.column_type == null || !/^[A-Za-z]{1}\w/.test(attr.column_name)
+            )
             if(attrs.length > 0)
               this._msgError('Atributos Inválidos. Lembrando que cada atributo NÃO pode começar com "números" e possuir "acentuação"!')
 
@@ -686,6 +701,7 @@
         this.optionsAttr.push({
           column_name: '',
           column_type: 'TEXT',
+          visibleRemove: false,
           id: this.optionsAttr.length
         })
       },

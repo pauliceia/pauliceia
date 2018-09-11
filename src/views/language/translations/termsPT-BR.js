@@ -10,6 +10,8 @@ export default `
     <p><b>SEÇÃO 2 - INFORMAÇÃO</b></p>
     <p>As informações dos dados históricos, notificações, denúncias descrições, entre outros, não necessariamente expressam a opinião da equipe Pauliceia. Elas são apenas de responsabilidade das pessoas que inseriram essas informações no sistema.</p>
     <p>Não deve-se ser inserido dados com copyright na plataforma ou dados com conteúdo impróprio, por exemplo, pornografia. Se for descoberto que um usuário inseriu algum dado desta categoria no sistema, ele sofrerá as devidas penas da Lei. Por esta razão, o portal fornecerá um recurso de denúncia. Se o colaborador encontrar um conteúdo inadequado, ele deve informá-lo através das denúncias.</p>
+    <p>
+Em relação às camadas, elas poderão ter múltiplas palavras-chave associadas a ela. Um usuário curador pode adicionar ou remover palavras-chaves, ou editar as informações de uma camada, com o intuito de melhorá-la ou organizá-la.</p>
     <br>
     <p><b>SEÇÃO 3 - CONSENTIMENTO</b></p>
     <p>Como dou o meu consentimento na plataforma Pauliceia?</p>
