@@ -37,7 +37,7 @@
                 <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"  v-if="showInput" title="Denunciar">
                   <md-icon>report</md-icon>
                 </button>
-                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator" title="Excluir">
+                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator  || user.is_the_admin" title="Excluir">
                   <md-icon>clear</md-icon>
                 </button>
               </p>
@@ -82,7 +82,7 @@
                 <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"  v-if="showInput" title="Denunciar">
                   <md-icon>report</md-icon>
                 </button>
-                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator">
+                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator  || user.is_the_admin">
                   <md-icon>clear</md-icon>
                 </button>
               </p>
@@ -139,7 +139,7 @@
                 <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"  v-if="showInput" title="Denunciar">
                   <md-icon>report</md-icon>
                 </button>
-                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator" title="Excluir">
+                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator  || user.is_the_admin" title="Excluir">
                   <md-icon>clear</md-icon>
                 </button>
               </p>
@@ -191,9 +191,9 @@
       return {
         activeName: 'first',
         notifications: [],
-        notifG: [],
-        notifP: [],
-        notifF: [],
+        notifG: [],               //Geral
+        notifP: [],               //Personal
+        notifF: [],               //Following
         txtNotif: null,
         keyword_id: null,
         notification_id_parent: null,
@@ -432,58 +432,55 @@
 
 <style lang="sass" scoped>
 
-  .body
-    padding: 10px 20px
+  .notification-box
+    margin: 10px
+    background: rgba(#000, 0.1)
+    padding: 20px
+    border-radius: 20px
 
-    .notification-box
-      margin: 10px
-      background: rgba(#000, 0.1)
-      padding: 20px
-      border-radius: 20px
-
-      .photo
-        display: inline-block
-        width: 40px
-        padding: 10px
-        text-align: center
-        color: #FFF
-        border-radius: 50%
-        background: #666
-
-      .credentials
-        display: inline-block
-        margin: 0 0 0 10px
-        .author
-          font-weight: 600
-          margin-top: 5px !important
-          font-size: 1.1em
-        .date
-          color: #666
-          font-size: 0.9em
-        p
-          margin: 0 0 5px 0 !important
-
-      .content
-        text-align: justify
-        margin-top: 5px
-
-      .comments
-        width: 100%
-        text-align: right
-        color: #0099ff
-        cursor: pointer
-        margin-top: -10px
-        margin-bottom: 5px
-    .add
-      top: -1px
-      left: 0px
+    .photo
       display: inline-block
-      border: none
-      padding: 0px
-      margin: 0px
-      position: relative
-      border-radius: 30px
+      width: 40px
+      padding: 10px
+      text-align: center
+      color: #FFF
+      border-radius: 50%
+      background: #666
 
-    .msgType
-      display: flex
+    .credentials
+      display: inline-block
+      margin: 0 0 0 10px
+      .author
+        font-weight: 600
+        margin-top: 5px !important
+        font-size: 1.1em
+      .date
+        color: #666
+        font-size: 0.9em
+      p
+        margin: 0 0 5px 0 !important
+
+    .content
+      text-align: justify
+      margin-top: 5px
+
+    .comments
+      width: 100%
+      text-align: right
+      color: #0099ff
+      cursor: pointer
+      margin-top: -10px
+      margin-bottom: 5px
+  .add
+    top: -1px
+    left: 0px
+    display: inline-block
+    border: none
+    padding: 0px
+    margin: 0px
+    position: relative
+    border-radius: 30px
+
+  .msgType
+    display: flex
 </style>

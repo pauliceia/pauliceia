@@ -285,6 +285,7 @@
         fullscreenLoading: false,
         typeSubmit: 'file',
         layer_id: null,
+        is_the_admin: false,
         loading: '',
         optionsTypeGeom: [{
             value: 'MULTIPOINT',
@@ -315,7 +316,7 @@
       }
     },
 
-    beforeCreate() {
+    mounted() {
       const vm = this
 
       this.shapeCorrect = false
@@ -338,6 +339,8 @@
         })
         //console.log(vm.dateMask)
       })
+
+      this.is_the_admin = this.user.is_the_admin
     },
 
     methods: {
@@ -515,7 +518,8 @@
                       let msg = ''
                       if (cause.response.status === 409) msg = "O arquivo precisa ser um .zip."
                       else if (cause.response.status === 400) msg = "ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP."
-                      else if (cause.response.status === 500) msg = "SRID inválido! Por favor, certifique-se de que é um SRID válido."
+                      else if (cause.response.status === 404) msg = "Not found .prj inside the zip."
+                      else if (cause.response.status === 500) msg = "Problem when import a resource. Please, contact the administrator."
                       else msg = cause.toString()
                       vm._msgError(msg)
                   })

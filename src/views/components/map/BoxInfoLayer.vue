@@ -83,7 +83,7 @@
                     <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)">
                       <md-icon>report</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-show="user.user_id === n.user_id_creator">
+                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-show="user.user_id === n.user_id_creator  || user.is_the_admin">
                       <md-icon>clear</md-icon>
                     </button>
                   </p>
@@ -286,91 +286,67 @@ export default {
         updateNotif(){
             const vm = this
             vm.notifG = []
-            // let notifications = await Api().get('/api/notification/?layer_id='+vm.id)
-            // let notifG = await notifications.data.features.map(async notification => {
-            //
-            //     let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
-            //     return {
-            //     'description': notification.properties.description,
-            //     'name': userInfo.data.features[0].properties.name,
-            //     'date': notification.properties.created_at,
-            //     'type': 'general',
-            //     'notification_id': notification.properties.notification_id,
-            //     'user_id_creator': notification.properties.user_id_creator,
-            //     'is_denunciation': notification.properties.is_denunciation,
-            //     'keyword_id': notification.properties.keyword_id,
-            //     'layer_id': notification.properties.layer_id,
-            //     'notification_id_parent': notification.properties.notification_id_parent
-            //     }
-            // })
-            //
-            // Promise.all(notifG).then( notifUpdated => {
-            //     //console.log(notifUpdated)
-            //     vm.notifG = notifUpdated.reverse().sort(function(a,b){
-            //         return new Date(b.date) - new Date(a.date)
-            //     });
-            // })
 
-          Api().get('/api/notification/?layer_id='+vm.id).then(function (notifications) {
-            notifications.data.features.forEach(notification => {
-              Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (userInfo) {
-                if(notification.properties.notification_id_parent === null) {
-                  vm.notifG.push(
-                    {
-                      'description': notification.properties.description,
-                      'name': userInfo.data.features[0].properties.name,
-                      'date': notification.properties.created_at,
-                      'type': 'general',
-                      'notification_id': notification.properties.notification_id,
-                      'user_id_creator': notification.properties.user_id_creator,
-                      'is_denunciation': notification.properties.is_denunciation,
-                      'keyword_id': notification.properties.keyword_id,
-                      'layer_id': notification.properties.layer_id,
-                      'notification_id_parent': notification.properties.notification_id_parent,
-                      'nameParent': null
-                    }
-                  )
-                }
-                else{
-                  Api().get('/api/notification/?notification_id='+notification.properties.notification_id_parent).then(function (notificationParent) {
-                    Api().get('/api/user/?user_id=' + notificationParent.data.features[0].properties.user_id_creator).then(function (userInfoParent) {
-                      vm.notifG.push(
-                        {
-                          'description': notification.properties.description,
-                          'name': userInfo.data.features[0].properties.name,
-                          'date': notification.properties.created_at,
-                          'type': 'general',
-                          'notification_id': notification.properties.notification_id,
-                          'user_id_creator': notification.properties.user_id_creator,
-                          'is_denunciation': notification.properties.is_denunciation,
-                          'keyword_id': notification.properties.keyword_id,
-                          'layer_id': notification.properties.layer_id,
-                          'notification_id_parent': notification.properties.notification_id_parent,
-                          'nameParent': userInfoParent.data.features[0].properties.name
-                        }
-                      )
-                      setTimeout(_=>{
-                        vm.notifG.reverse().sort(function(a,b){
-                          return new Date(b.date) - new Date(a.date)
-                        })
-                      }, 50);
+            Api().get('/api/notification/?layer_id='+vm.id).then(function (notifications) {
+              notifications.data.features.forEach(notification => {
+                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (userInfo) {
+                  if(notification.properties.notification_id_parent === null) {
+                    vm.notifG.push(
+                      {
+                        'description': notification.properties.description,
+                        'name': userInfo.data.features[0].properties.name,
+                        'date': notification.properties.created_at,
+                        'type': 'general',
+                        'notification_id': notification.properties.notification_id,
+                        'user_id_creator': notification.properties.user_id_creator,
+                        'is_denunciation': notification.properties.is_denunciation,
+                        'keyword_id': notification.properties.keyword_id,
+                        'layer_id': notification.properties.layer_id,
+                        'notification_id_parent': notification.properties.notification_id_parent,
+                        'nameParent': null
+                      }
+                    )
+                  }
+                  else{
+                    Api().get('/api/notification/?notification_id='+notification.properties.notification_id_parent).then(function (notificationParent) {
+                      Api().get('/api/user/?user_id=' + notificationParent.data.features[0].properties.user_id_creator).then(function (userInfoParent) {
+                        vm.notifG.push(
+                          {
+                            'description': notification.properties.description,
+                            'name': userInfo.data.features[0].properties.name,
+                            'date': notification.properties.created_at,
+                            'type': 'general',
+                            'notification_id': notification.properties.notification_id,
+                            'user_id_creator': notification.properties.user_id_creator,
+                            'is_denunciation': notification.properties.is_denunciation,
+                            'keyword_id': notification.properties.keyword_id,
+                            'layer_id': notification.properties.layer_id,
+                            'notification_id_parent': notification.properties.notification_id_parent,
+                            'nameParent': userInfoParent.data.features[0].properties.name
+                          }
+                        )
+                        setTimeout(_=>{
+                          vm.notifG.reverse().sort(function(a,b){
+                            return new Date(b.date) - new Date(a.date)
+                          })
+                        }, 50);
+                      })
                     })
-                  })
-                }
-                setTimeout(_=>{
-                  vm.notifG.reverse().sort(function(a,b){
-                    return new Date(b.date) - new Date(a.date)
-                  })
-                }, 50);
+                  }
+                  setTimeout(_=>{
+                    vm.notifG.reverse().sort(function(a,b){
+                      return new Date(b.date) - new Date(a.date)
+                    })
+                  }, 50);
+                })
               })
             })
-          })
 
-          setTimeout(_=>{
-            vm.notifG.reverse().sort(function(a,b){
-              return new Date(b.date) - new Date(a.date)
-            })
-          }, 50);
+            setTimeout(_=>{
+              vm.notifG.reverse().sort(function(a,b){
+                return new Date(b.date) - new Date(a.date)
+              })
+            }, 50);
         },
         closeBox() {
             this.$store.dispatch('map/setBoxInfoLayer', false)

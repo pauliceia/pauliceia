@@ -77,7 +77,7 @@
         layers: [],
         users: [],
         shownNotif: [],
-
+        is_the_admin: false,
       }
     },
     methods: {
@@ -149,6 +149,7 @@
     mounted() {
       this.updateLayers()
       this.orderLayers(500)
+      this.is_the_admin = this.user.is_the_admin
     }
   }
 </script>
