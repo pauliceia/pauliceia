@@ -74,7 +74,7 @@
   .map
     position: absolute
     left: 0
-    right: 0
+    right: 50px
     bottom: 0
     top: 84px
     background: #fff

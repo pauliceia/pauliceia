@@ -33,21 +33,6 @@
                     </li>
                 </ul>
 
-                <div v-show="this.$route.path == '/explore'">
-                    <button @click="actInfoVector()"  
-                        :class="this.boxInfoVector ? 'btn-geocoding btn-active' : 'btn-geocoding'">
-                        <md-icon>info</md-icon>
-                    </button>
-                    <button @click="actNotifications()"  
-                        :class="this.boxNotifications ? 'btn-geocoding btn-active' : 'btn-geocoding'">
-                        <md-icon>notifications</md-icon>
-                    </button>
-                    <button @click="actGeocoding()"  
-                        :class="this.boxGeocoding ? 'btn-geocoding btn-active' : 'btn-geocoding'">
-                        <md-icon>location_on</md-icon>
-                    </button>
-                </div>
-
                 <div v-if="isUserLoggedIn">
                     <p-logAvatar :photo="user.picture" :name="user.name"/>
                 </div>
@@ -62,12 +47,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import LogAvatar from '@/views/components/application/LogAvatar'
 import dropLanguage from '@/views/components/application/DropLanguage'
 
 import logo from '@/views/assets/images/logo_pauliceia.png'
-
-import { mapState } from 'vuex'
 
 export default {
     components: {
@@ -76,34 +61,12 @@ export default {
     },
 
     computed: {
-        ...mapState('auth', ['isUserLoggedIn', 'user']),
-        ...mapState('map', ['boxGeocoding', 'boxInfoLayer', 'boxInfoVector', 'boxNotifications'])
+        ...mapState('auth', ['isUserLoggedIn', 'user'])
     },
 
     data() {
         return {
             logo
-        }
-    },
-
-    methods: {
-        actInfoVector() {
-            this.$store.dispatch('map/setBoxInfoLayer', false)
-            this.$store.dispatch('map/setBoxGeocoding', false)
-            this.$store.dispatch('map/setBoxNotifications', false)
-            this.$store.dispatch('map/setBoxInfoVector', !this.boxInfoVector)
-        },
-        actNotifications() {
-            this.$store.dispatch('map/setBoxInfoLayer', false)
-            this.$store.dispatch('map/setBoxInfoVector', false)
-            this.$store.dispatch('map/setBoxGeocoding', false)
-            this.$store.dispatch('map/setBoxNotifications', !this.boxNotifications)
-        },
-        actGeocoding() {
-            this.$store.dispatch('map/setBoxInfoLayer', false)
-            this.$store.dispatch('map/setBoxInfoVector', false)
-            this.$store.dispatch('map/setBoxNotifications', false)
-            this.$store.dispatch('map/setBoxGeocoding', !this.boxGeocoding)
         }
     }
 }
@@ -147,17 +110,6 @@ export default {
         .btn-login:hover
             text-decoration: none
             background: #f0470f
-        
-        .btn-geocoding
-            cursor: pointer
-            margin-top: 2.5px
-            margin-right: 25px
-            border-radius: 50%
-            padding: 5px
-            background: rgba(#f15a29, 0.2)
-            border: none
-        .btn-geocoding:hover
-            background: rgba(#f15a29, 0.5)
         
         .btn-active
             background: rgba(#f15a29, 0.5)
