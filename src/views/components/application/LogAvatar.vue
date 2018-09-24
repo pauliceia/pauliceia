@@ -53,16 +53,14 @@ export default {
             this.$store.dispatch('auth/setUser', null)
             this.$store.dispatch('auth/setToken', null)
 
-            this.$router.push({
-                path: '/login'
-            })
-
             this.$message({
                 showClose: true,
                 dangerouslyUseHTMLString: true,
                 message: this.$t('nav.msgLogout'),
                 type: 'success'
-            });
+            })
+
+            setTimeout(function(){ location.reload(); }, 1500);
         }
     }
 }

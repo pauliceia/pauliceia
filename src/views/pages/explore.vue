@@ -4,7 +4,6 @@
     <ol-map class="map">
       <p-timeline></p-timeline>
       <p-geocoding></p-geocoding>
-      <p-layersRaster></p-layersRaster>
       <p-sidebarLayer></p-sidebarLayer>
       <!--<p-sidebarEdit></p-sidebarEdit>-->
       
@@ -20,7 +19,6 @@
   import OlMap from '@/views/components/map/Ol-map'
   import Timeline from '@/views/components/map/Timeline'
   import Geocoding from '@/views/components/map/Geocoding'
-  import LayersRaster from '@/views/components/map/LayersRaster'
   import SidebarLayer from '@/views/components/map/SidebarLayer'
   import SidebarEdit from '@/views/components/map/SidebarEdit'
 
@@ -43,7 +41,6 @@
       'ol-map': OlMap,
       'p-timeline': Timeline,
       'p-geocoding': Geocoding,
-      'p-layersRaster': LayersRaster,
       'p-sidebarLayer': SidebarLayer,
       'p-sidebarEdit': SidebarEdit,
       'p-boxinfolayer': BoxInfoLayer,
@@ -74,7 +71,7 @@
   .map
     position: absolute
     left: 0
-    right: 50px
+    right: 0
     bottom: 0
     top: 84px
     background: #fff

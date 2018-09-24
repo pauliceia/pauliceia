@@ -19,12 +19,16 @@
 
         <hr class="divisor" />
         <p-sidebarLayer-item-static :group="externalLayers" color="#13ce66"></p-sidebarLayer-item-static>
+
+        <hr class="divisor" />
+        <p-sidebarLayer-item-rasters color="#13ce66"></p-sidebarLayer-item-rasters>
                 
     </section>
 </template>
 <script>
 import LayersItem from '@/views/components/map/sidebar-layer/LayersItem'
 import LayersItemStatic from '@/views/components/map/sidebar-layer/LayersItemStatic'
+import LayersItemRasters from '@/views/components/map/sidebar-layer/LayersItemRasters'
 import { mapState } from 'vuex'
 
 import {
@@ -36,7 +40,8 @@ import {
 export default {
     components: {
         'p-sidebarLayer-item': LayersItem,
-        'p-sidebarLayer-item-static': LayersItemStatic
+        'p-sidebarLayer-item-static': LayersItemStatic,
+        'p-sidebarLayer-item-rasters': LayersItemRasters
     },
 
     computed: {

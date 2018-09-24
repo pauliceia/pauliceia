@@ -63,7 +63,6 @@ export default {
 
 <style lang="sass" scoped>
 .box-aside-right
-    padding: 0 7.5px
     display: flex
     flex-direction: column
     justify-content: space-between
@@ -71,7 +70,11 @@ export default {
     .box-top
         display: flex
         flex-direction: column
-        margin-top: 120px
+        margin-top: 110px
+        background: rgba(77,77,77,0.7)
+        padding: 0  7.5px
+        border-radius: 10px 0 0 10px
+        z-index: 10
         .btn
             width: 100%
             height: 35px
@@ -88,7 +91,10 @@ export default {
     .box-bottom
         display: flex
         flex-direction: column
-        margin-bottom: 15px 
+        margin-bottom: 50px 
+        background: rgba(77,77,77,0.7)
+        padding: 7.5px 0
+        border-radius: 10px 0 0 10px
         .btn
             padding: 0
             background: none

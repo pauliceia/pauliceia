@@ -39,7 +39,7 @@ export default {
 .box-info
     position: absolute
     top: 20px
-    right: 20px
+    right: 60px
     border-radius: 10px
     overflow: auto
     padding: 10px

@@ -7,9 +7,6 @@
     </section>     
 </template>
 <script>
-import { mapState } from 'vuex'
-import Map from '@/middleware/Map'
-
 export default {
     props: {
         group: Object,
@@ -22,11 +19,7 @@ export default {
                 {
                     status: true,
                     title: "OSM"
-                },
-                // {
-                //     status: false,
-                //     title: "Google Maps"
-                // }
+                }
             ]
         }
     },
