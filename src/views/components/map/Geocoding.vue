@@ -215,7 +215,7 @@ export default {
                     let geom = ('{'+'"geom":'+'['+0 +','+0+']}');
                     let jsonAddress = JSON.parse(geom);
                     let jsonSlice = json[i];
-                    let results = Object.assign(jsonSlice[geo], jsonAddress);
+                    let results = Object.assign(jsonSlice, jsonAddress);
                     jsonResults.push(JSON.stringify(results));
                 }
             } 
