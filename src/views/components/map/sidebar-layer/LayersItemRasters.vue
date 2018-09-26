@@ -92,6 +92,8 @@ export default {
                 }
             
                 this._openFullScreen()
+                let tiled
+                if(layerSelected.title=="saraBrasil30") tiled = true
                 overlayGroupRasters.getLayers().push(
                     new ol.layer.Tile({
                         title: layerSelected.title,
@@ -101,7 +103,7 @@ export default {
                             params: {
                                 'FORMAT': 'image/png',
                                 'VERSION': '1.1.1',
-                                tiled: true,
+                                tiled,
                                 STYLES: '',
                                 LAYERS: 'pauliceia:'+layerSelected.title,
                                 tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
