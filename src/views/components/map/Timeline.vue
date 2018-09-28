@@ -73,13 +73,20 @@
         const vm = this
         let yearFirst = this.years.first
         let yearLast = this.years.last
+
         overlayGroup.getLayers().forEach(sublayer => {
           Api().get('/api/temporal_columns/?f_table_name='+sublayer.values_.title).then(function (tc) {
             sublayer.getSource().getFeatures().forEach(feature => {
+
               let startDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.start_date_column_name])).getFullYear()
               let endDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.end_date_column_name])).getFullYear()
+
               if(startDate-5 < vm.startYear) vm.startYear = startDate-5
               if(endDate+5 > vm.startYear) vm.endYear = endDate+5
+
+              if(isNaN(startDate)) startDate = 0
+              if(isNaN(endDate)) endDate = (new Date).getFullYear()
+
               if (startDate <= yearLast && endDate >= yearFirst) {
                 feature.setStyle(vm.style)
               } else {

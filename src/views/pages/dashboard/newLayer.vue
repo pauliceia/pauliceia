@@ -174,7 +174,7 @@
         </div>
       </div><!--end box newLayer-->
 
-      <div class="col-sm-6">
+      <div class="col-sm-6"><!--start bounding box temporal-->
         <div class="card" v-if="shapeCorrect">
           <div class="card-body">
             <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
@@ -373,28 +373,22 @@
 
         if(this.startDate === null || this.endDate === null)
           this._msgError("Datas são necessárias")
-        else if(this.endColumnsName.length === 0 || this.startColumnsName.length === 0)
-          this._msgError("Colunas são necessárias")
-        else if(this.startDateMask === null || this.endDateMask === null)
-          this._msgError("Mascaras são necessárias")
         else {
           let timeColumn = {
             'properties': {
               'f_table_name': this.tableName,
               'start_date': this.startDate,
               'end_date': this.endDate,
-              'end_date_column_name': this.endColumnsName[0],
-              'start_date_column_name': this.startColumnsName[0],
-              'start_date_mask_id': this.startDateMask.mask_id,
-              'end_date_mask_id': this.endDateMask.mask_id,
+              'end_date_column_name': this.endColumnsName!=null ? this.endColumnsName[0] : null,
+              'start_date_column_name': this.startColumnsName!=null ? this.startColumnsName[0] : null,
+              'start_date_mask_id': this.startDateMask!=null ? this.startDateMask.mask_id : null,
+              'end_date_mask_id': this.endDateMask!=null ? this.endDateMask.mask_id : null,
             },
             'type': 'TemporalColumns'
           }
-          //console.log(timeColumn)
           Api().post('/api/temporal_columns/create',
             timeColumn
           ).then(function (response) {
-            //console.log(response)
             vm.loading.close()
             vm.$message.success("A layer foi adicionada com sucesso!")
             vm.$router.push({
@@ -402,6 +396,7 @@
             })
           }, function (cause) {
             Api().delete('/api/layer/'+vm.layer_id)
+            vm.loading.close()
             let msg = ''
             if (cause.response.status === 403) msg = "Apenas o dono da camada ou administrador pode criar/atualizar uma coluna de tempo."
             else if (cause.response.status === 401) msg = "Você não tem permissão. É necessário uma autorização válida!"
@@ -436,7 +431,7 @@
           vm._msgError("É necessário adicionar pelo menos uma palavra-chave!")
 
         else {
-          if(vm.typeSubmit == 'file'){
+          if(vm.typeSubmit === 'file'){
             let file = document.getElementById("Upload").files[0]
             this.upload_from_file(file)
           } else
@@ -527,7 +522,7 @@
                       })
                     }, function (cause) {
                       Api().delete('/api/layer/'+vm.layer_id)
-
+                      console.log(cause.response)
                       let msg = ''
                       if (cause.response.status === 409) msg = "O arquivo precisa ser um .zip."
                       else if (cause.response.status === 400) msg = "ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP."
