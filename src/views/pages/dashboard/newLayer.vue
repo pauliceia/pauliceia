@@ -449,7 +449,7 @@
 
         if(file === undefined)
           vm._msgError("Um arquivo é necessário")
-        else if(file.size > 104857600)
+        else if(file.size > 104857600) //Colocar 50mb
           vm._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
           
         else {
