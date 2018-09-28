@@ -114,6 +114,7 @@
 import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
 import GeoJSON from 'geojson'
+import shpwrite from 'shp-write'
 
 import {
     overlayGroup
@@ -197,9 +198,7 @@ export default {
             let jsonResults = [];
                     
             for (let i = 0; i < json.length; i++) {
-                console.log(i);
                 let address = json[i][this.street].toLowerCase()+", "+json[i][this.number]+", "+json[i][this.year];
-                console.log(address)
                 let response = await ApiMap.geolocationOne(address);
                 if(response.data[1][0].name != "Point not found"){
                     let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'"'+"}]");
@@ -208,26 +207,22 @@ export default {
                     let x = parseFloat(geomPoint.split(' ')[0]);
                     let y = parseFloat(geomPoint.split(' ')[1]);
                     let geom = ('{'+'"geom":'+'['+x +','+y+']}');
-                    console.log(geom);
                     let jsonAddress = JSON.parse(geom);
                     let jsonSlice = json[i];
                     let results = Object.assign(jsonSlice, jsonAddress);
                     jsonResults.push(JSON.stringify(results));
-                    console.log(JSON.stringify(results));
                 } else {
                     let geom = ('{'+'"geom":'+'['+0 +','+0+']}');
                     let jsonAddress = JSON.parse(geom);
                     let jsonSlice = json[i];
-                    let results = Object.assign(jsonSlice[geo], jsonAddress);
+                    let results = Object.assign(jsonSlice, jsonAddress);
                     jsonResults.push(JSON.stringify(results));
                 }
             } 
 
             let textJsonResults = ('['+jsonResults+']');
             let final = JSON.parse(textJsonResults);
-            console.log(textJsonResults);
             let resultGeoJSON = GeoJSON.parse(final, {'Point': "geom"});
-            console.log(resultGeoJSON);
             this.geojson = resultGeoJSON
 
 	        try {
@@ -253,20 +248,15 @@ export default {
                 });
                 this.loading.close()
             }
-
-
         },
         download(){
-
-            console.log(this.geojson);
-            this.$alert('Função ainda não implentada!', 'Download', {
-                confirmButtonText: 'OK',
-                type: 'warning'
-            });
-            //Acessar rota para converter geojson em shapefile
-            //Escrever shapefile
-            //Disponibilizar para download
-
+            var options = {
+                folder: 'myshapes',
+                types: {
+                    point: 'mypoints'
+                }
+            }
+            shpwrite.download(this.geojson, options); 
         },
         closeBox() {
             this.$store.dispatch('map/setBoxGeocoding', false)
@@ -354,7 +344,7 @@ export default {
     .box
         position: absolute
         top: 20px
-        right: 20px
+        right: 60px
         border-radius: 10px
         overflow: auto
         padding: 10px

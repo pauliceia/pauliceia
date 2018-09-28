@@ -4,9 +4,9 @@
             <p-header/>
 
             <router-view/>
-        </div>
-
-        <p-aside-right v-if="this.$route.path == '/explore'" class="aside-right"/>
+            
+            <p-aside-right v-if="this.$route.path == '/explore'" class="aside-right"/>
+        </div>        
     </section>
 </template>
 <script>
@@ -37,7 +37,10 @@ body
     .content-app
         width: 100% !important
 
-    .aside-right
-        width: 50px
-        background: rgb(77,77,77)
+        .aside-right
+            position: absolute
+            width: 50px
+            right: 0
+            top: 84px
+            bottom: 0
 </style>

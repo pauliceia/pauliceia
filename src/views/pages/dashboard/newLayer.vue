@@ -567,11 +567,18 @@
             this._msgError('Tipo da geometria é necessário!')
 
           else {  
-            let attrs = await this.optionsAttr.filter( 
-              attr => attr.column_name == '' || attr.column_type == null || !/^[A-Za-z]{1}\w/.test(attr.column_name)
+            let getNullAcenOrNumber = await this.optionsAttr.filter( 
+              attr => attr.column_name == '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name))
             )
-            if(attrs.length > 0)
+
+            let getWordNative = await this.optionsAttr.filter( 
+              attr => ['id', 'changeset_id', 'version'].some(attrName => attrName == attr.column_name)
+            )
+            if(getNullAcenOrNumber.length > 0)
               this._msgError('Atributos Inválidos. Lembrando que cada atributo NÃO pode começar com "números" e possuir "acentuação"!')
+
+            else if(getWordNative.length > 0)
+              this._msgError('Atributos Inválidos. O nome do do atributo precisa ser diferente: id, changeset_id e version!')
 
             else {
               this.layer_id = null

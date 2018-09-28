@@ -1,8 +1,8 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  urlVGI: '"x"',
+  urlVGI: '"http://localhost/api/vgi"',
   keyCripto: '"keytest"',
-  urlGeoserver: '"y"',
-  urlGeocoding: '"z"'
+  urlGeoserver: '"http://localhost/geoserver/pauliceia"',
+  urlGeocoding: '"http://localhost/api/geocoding"'
 }

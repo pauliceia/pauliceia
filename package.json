@@ -22,6 +22,7 @@
     "openlayers": "^4.4.2",
     "popper.js": "^1.12.9",
     "repair": "^0.1.1",
+    "shp-write": "^0.3.2",
     "sortablejs": "^1.7.0",
     "vue": "^2.5.2",
     "vue-i18n": "^7.4.1",
