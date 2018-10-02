@@ -199,19 +199,27 @@ export default {
                     
             for (let i = 0; i < json.length; i++) {
                 let address = json[i][this.street].toLowerCase()+", "+json[i][this.number]+", "+json[i][this.year];
-                let response = await ApiMap.geolocationOne(address);
-                if(response.data[1][0].name != "Point not found"){
-                    let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'"'+"}]");
-                    let geomPoint = response.data[1][0].geom.substr(response.data[1][0].geom.indexOf("(")+1);
-                    geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
-                    let x = parseFloat(geomPoint.split(' ')[0]);
-                    let y = parseFloat(geomPoint.split(' ')[1]);
-                    let geom = ('{'+'"geom":'+'['+x +','+y+']}');
-                    let jsonAddress = JSON.parse(geom);
-                    let jsonSlice = json[i];
-                    let results = Object.assign(jsonSlice, jsonAddress);
-                    jsonResults.push(JSON.stringify(results));
-                } else {
+                try {
+                    let response = await ApiMap.geolocationOne(address);
+                    if(response.data[1][0].name != "Point not found"){
+                        let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'"'+"}]");
+                        let geomPoint = response.data[1][0].geom.substr(response.data[1][0].geom.indexOf("(")+1);
+                        geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
+                        let x = parseFloat(geomPoint.split(' ')[0]);
+                        let y = parseFloat(geomPoint.split(' ')[1]);
+                        let geom = ('{'+'"geom":'+'['+x +','+y+']}');
+                        let jsonAddress = JSON.parse(geom);
+                        let jsonSlice = json[i];
+                        let results = Object.assign(jsonSlice, jsonAddress);
+                        jsonResults.push(JSON.stringify(results));
+                    } else {
+                        let geom = ('{'+'"geom":'+'['+0 +','+0+']}');
+                        let jsonAddress = JSON.parse(geom);
+                        let jsonSlice = json[i];
+                        let results = Object.assign(jsonSlice, jsonAddress);
+                        jsonResults.push(JSON.stringify(results));
+                    }
+                } catch (_) {
                     let geom = ('{'+'"geom":'+'['+0 +','+0+']}');
                     let jsonAddress = JSON.parse(geom);
                     let jsonSlice = json[i];
@@ -269,6 +277,7 @@ export default {
 
                 if(regex.test(search)){
                     const result = await ApiMap.geolocationOne(search)
+                    console.log(result)
                     if(result.data[1][0].geom != undefined) {
                         let coordPoint = result.data[1][0].geom.substring(6).replace(")", "").split(" ")
                         let feature = new ol.Feature(new ol.geom.Point(coordPoint))
@@ -290,24 +299,7 @@ export default {
                         ol.extent.extend(extent, feature.getGeometry().getExtent());
                         this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
                         this.loading.close()
-
-                    } else  {
-                        if(result.data != undefined && result.data[1][0].alertMsg != undefined) {
-                            this.$alert(result.data[1][0].alertMsg, 'Erro', {
-                                dangerouslyUseHTMLString: true,
-                                confirmButtonText: 'OK',
-                                type: 'error'
-                            });
-                            this.loading.close()
-                        } else {
-                            this.$alert('Erro ao geocodificar, contate o administrador!', 'Erro', {
-                                dangerouslyUseHTMLString: true,
-                                confirmButtonText: 'OK',
-                                type: 'error'
-                            });
-                            this.loading.close()
-                        }  
-                    }               
+                    }     
                 
                 } else{
                     this.$alert('<strong>Pesquise por:</strong> rua, número, ano (0000)', 'Formato inválido', {
@@ -319,12 +311,21 @@ export default {
                 }
                 
             } catch (error) {
-                this.$alert('Erro ao geocodificar, contate o administrador!', 'Erro', {
-                    dangerouslyUseHTMLString: true,
-                    confirmButtonText: 'OK',
-                    type: 'error'
-                });
-                this.loading.close()
+                if(error.response != undefined && error.response.data != undefined && error.response.data[1][0].alertMsg != undefined) {
+                    this.$alert(error.response.data[1][0].alertMsg, 'Erro', {
+                        dangerouslyUseHTMLString: true,
+                        confirmButtonText: 'OK',
+                        type: 'error'
+                    });
+                    this.loading.close()
+                } else {
+                    this.$alert('Erro ao geocodificar, contate o administrador!', 'Erro', {
+                        dangerouslyUseHTMLString: true,
+                        confirmButtonText: 'OK',
+                        type: 'error'
+                    });
+                    this.loading.close()
+                }
             }
         },
         _openFullScreen() {
