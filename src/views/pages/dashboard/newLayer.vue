@@ -13,7 +13,7 @@
                   <div class="form-group col-md-6">
                     <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.nameD')" />
-                    <input class="form-control" id="inputName"><!--placeholder="Name">-->
+                    <input class="form-control" :value="name" id="inputName"><!--placeholder="Name">-->
                   </div>
 
                   <div class="form-group col-md-6">
@@ -28,6 +28,7 @@
                     </v-select>
                   </div>
                 </div>
+
 
                 <div class="form-group">
                   <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>&nbsp;
@@ -89,18 +90,6 @@
                       <label class="custom-file-label" for="Upload">{{fname}}</label>
                     </div>
                   </div>
-                  <!--<div class="form-group col-md-3">-->
-                    <!--<label for="Upload">EPSG</label>-->
-                    <!--<el-popover class="info" placement="top-start" width="200"-->
-                                <!--trigger="hover"-->
-                                <!--:content="$t('dashboard.newLayer.epsgD')"-->
-                                <!--type="primary">-->
-                      <!--<button type="button" slot="reference" class="btn btn-outline-primary info">-->
-                        <!--<md-icon class="icon">error_outline</md-icon>-->
-                      <!--</button>-->
-                    <!--</el-popover>-->
-                    <!--<input class="form-control" id="inputEpsg">-->
-                  <!--</div>-->
                 </div> <!--end box-file-->
 
                 <div v-if="typeSubmit == 'input'" class="box-layer-input">
@@ -174,7 +163,7 @@
         </div>
       </div><!--end box newLayer-->
 
-      <div class="col-sm-6">
+      <div class="col-sm-6"><!--start bounding box temporal-->
         <div class="card" v-if="shapeCorrect">
           <div class="card-body">
             <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
@@ -267,7 +256,8 @@
     },
 
     computed: {
-      ...mapState('auth', ['isUserLoggedIn', 'user'])
+      ...mapState('auth', ['isUserLoggedIn', 'user']),
+      ...mapState('dashboard', ['name'])
     },
 
     data() {
@@ -358,6 +348,8 @@
 
     methods: {
       newKeyword() {
+        this.$store.dispatch('dashboard/setName',  document.getElementById("inputName").value)
+        //Limpar valores: this.$store.dispatch('dashboard/setName',  document.getElementById("inputName").value)
         this.$router.push({
           name: 'Keyword',
           params: {name: 'NewLayer'}
@@ -373,28 +365,22 @@
 
         if(this.startDate === null || this.endDate === null)
           this._msgError("Datas são necessárias")
-        else if(this.endColumnsName.length === 0 || this.startColumnsName.length === 0)
-          this._msgError("Colunas são necessárias")
-        else if(this.startDateMask === null || this.endDateMask === null)
-          this._msgError("Mascaras são necessárias")
         else {
           let timeColumn = {
             'properties': {
               'f_table_name': this.tableName,
               'start_date': this.startDate,
               'end_date': this.endDate,
-              'end_date_column_name': this.endColumnsName[0],
-              'start_date_column_name': this.startColumnsName[0],
-              'start_date_mask_id': this.startDateMask.mask_id,
-              'end_date_mask_id': this.endDateMask.mask_id,
+              'end_date_column_name': this.endColumnsName!=null ? this.endColumnsName[0] : null,
+              'start_date_column_name': this.startColumnsName!=null ? this.startColumnsName[0] : null,
+              'start_date_mask_id': this.startDateMask!=null ? this.startDateMask.mask_id : null,
+              'end_date_mask_id': this.endDateMask!=null ? this.endDateMask.mask_id : null,
             },
             'type': 'TemporalColumns'
           }
-          //console.log(timeColumn)
           Api().post('/api/temporal_columns/create',
             timeColumn
           ).then(function (response) {
-            //console.log(response)
             vm.loading.close()
             vm.$message.success("A layer foi adicionada com sucesso!")
             vm.$router.push({
@@ -402,6 +388,7 @@
             })
           }, function (cause) {
             Api().delete('/api/layer/'+vm.layer_id)
+            vm.loading.close()
             let msg = ''
             if (cause.response.status === 403) msg = "Apenas o dono da camada ou administrador pode criar/atualizar uma coluna de tempo."
             else if (cause.response.status === 401) msg = "Você não tem permissão. É necessário uma autorização válida!"
@@ -430,13 +417,13 @@
 
         if(document.getElementById("inputName").value === '')
           vm._msgError("O nome é necessário!")
-        else if(!/^[a-zA-Z]{1}\w/.test(this.tableName))
+        else if(!/^[a-zA-Z]{1}\w/.test(this.tableName) || !(/^[a-zA-Z0-9]/.test(this.tableName)))
           vm._msgError("O nome da layer NÃO pode começar com 'número' e nem possuir 'acentuação'!")
         else if(this.chosenKeywordsID.length === 0)
           vm._msgError("É necessário adicionar pelo menos uma palavra-chave!")
 
         else {
-          if(vm.typeSubmit == 'file'){
+          if(vm.typeSubmit === 'file'){
             let file = document.getElementById("Upload").files[0]
             this.upload_from_file(file)
           } else
@@ -449,7 +436,7 @@
 
         if(file === undefined)
           vm._msgError("Um arquivo é necessário")
-        else if(file.size > 104857600)
+        else if(file.size > 104857600) //Colocar 50mb
           vm._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
           
         else {
@@ -527,7 +514,7 @@
                       })
                     }, function (cause) {
                       Api().delete('/api/layer/'+vm.layer_id)
-
+                      console.log(cause.response)
                       let msg = ''
                       if (cause.response.status === 409) msg = "O arquivo precisa ser um .zip."
                       else if (cause.response.status === 400) msg = "ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP."
@@ -568,11 +555,11 @@
 
           else {  
             let getNullAcenOrNumber = await this.optionsAttr.filter( 
-              attr => attr.column_name == '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name))
+              attr => attr.column_name === '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name)) || !(/^[a-zA-Z0-9]/.test(attr.column_name))
             )
 
             let getWordNative = await this.optionsAttr.filter( 
-              attr => ['id', 'changeset_id', 'version'].some(attrName => attrName == attr.column_name)
+              attr => ['id', 'changeset_id', 'version'].some(attrName => attrName === attr.column_name)
             )
             if(getNullAcenOrNumber.length > 0)
               this._msgError('Atributos Inválidos. Lembrando que cada atributo NÃO pode começar com "números" e possuir "acentuação"!')
