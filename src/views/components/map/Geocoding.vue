@@ -122,7 +122,9 @@ import {
 
 import {
     placeStyle,
-    placeStyleSearch
+    placeStyleSearch1, 
+    placeStyleSearch0, 
+    placeStyleSearch3
 } from '@/views/assets/js/map/Styles'
 
 import {
@@ -241,7 +243,7 @@ export default {
                         features: (new ol.format.GeoJSON()).readFeatures(resultGeoJSON)
                     }),
                     name: 'placesSearchMultiple',
-                    style: placeStyleSearch,
+                    style: placeStyleSearch1,
                     zIndex: 999
                 });
                 overlayGroupGeolocation.getLayers().clear()
@@ -277,30 +279,41 @@ export default {
 
                 if(regex.test(search)){
                     const result = await ApiMap.geolocationOne(search)
-                    console.log(result)
                     if(result.data[1][0].geom != undefined) {
+                        let myStyle = placeStyleSearch1
+                        //console.log(result.data[1][0].confidence)
+                        if (result.data[1][0].confidence == 1){
+                            //console.log('1')
+                            myStyle = placeStyleSearch1
+                        } else {
+                            if (result.data[1][0].confidence == 0){
+                                //console.log('0')
+                                myStyle = placeStyleSearch0
+                            } else {
+                                //console.log('0-1')
+                                myStyle = placeStyleSearch3
+                                //console.log(myStyle)
+                            }
+                        }
                         let coordPoint = result.data[1][0].geom.substring(6).replace(")", "").split(" ")
                         let feature = new ol.Feature(new ol.geom.Point(coordPoint))
-                        
                         let layerSearch = new ol.layer.Vector({
                             source: new ol.source.Vector({
                                 features: [feature]
                             }),
                             name: 'placesSearch',
-                            style: placeStyleSearch,
+                            style: myStyle,
                             zIndex: 999
                         });
                         overlayGroupGeolocation.getLayers().clear()
                         overlayGroupGeolocation.getLayers().push(
                             layerSearch
                         )
-
                         let extent = ol.extent.createEmpty();
                         ol.extent.extend(extent, feature.getGeometry().getExtent());
                         this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
                         this.loading.close()
                     }     
-                
                 } else{
                     this.$alert('<strong>Pesquise por:</strong> rua, número, ano (0000)', 'Formato inválido', {
                         dangerouslyUseHTMLString: true,

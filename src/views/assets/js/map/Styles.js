@@ -1,4 +1,6 @@
-import icon from './../../images/iconLocation.png'
+import icon_ext from './../../images/iconExtrapolate.png'
+import icon_geo from './../../images/iconGeocoding.png'
+import icon_loc from './../../images/iconGeolocation.png'
 
 const pointStyle = new ol.style.Style({
   image: new ol.style.Circle({
@@ -23,13 +25,33 @@ const polygonStyle = new ol.style.Style({
   })
 });
 
-const placeStyleSearch = new ol.style.Style({
+const placeStyleSearch1 = new ol.style.Style({
   image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 45],
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
       opacity: 1,
-      src: icon
+      src: icon_loc
+  }))
+})
+
+const placeStyleSearch0 = new ol.style.Style({
+  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+      anchor: [0.5, 45],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      opacity: 1,
+      src: icon_ext
+  }))
+})
+
+const placeStyleSearch3 = new ol.style.Style({
+  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+      anchor: [0.5, 45],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      opacity: 1,
+      src: icon_geo
   }))
 })
 
@@ -49,6 +71,8 @@ export {
   pointStyle,
   polygonStyle,
   lineStyle,
-  placeStyleSearch,
+  placeStyleSearch1,
+  placeStyleSearch3,
+  placeStyleSearch0,
   emptyStyle
 }
