@@ -13,7 +13,7 @@
                   <div class="form-group col-md-6">
                     <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.nameD')" />
-                    <input class="form-control" :value="name" id="inputName"><!--placeholder="Name">-->
+                    <input class="form-control" :value="name" id="inputName"  @blur="saveName()"><!--placeholder="Name">-->
                   </div>
 
                   <div class="form-group col-md-6">
@@ -23,8 +23,7 @@
                       <md-icon>add_circle_outline</md-icon>
                     </button>
                     <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
-                      value="description"
-                      id="keywordsSelect">
+                      id="keywordsSelect" @blur="saveKeywords()">
                     </v-select>
                   </div>
                 </div>
@@ -34,13 +33,13 @@
                   <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.collaboratorsD')" />
                   <v-select multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
-                      id="userSelect"></v-select>
+                      id="userSelect" @blur="saveUsers()"></v-select>
                 </div>
 
                 <div class="form-group">
                   <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.descriptionD')" />
-                  <textarea class="form-control" id="inputDescription" rows="3"></textarea>
+                  <textarea class="form-control" id="inputDescription" rows="3" :value="description" @blur="saveDescription()"> </textarea>
                 </div>
 
                 <div class="form-group">
@@ -59,7 +58,7 @@
                 <div class="form-group" v-show="chosenRef.length !== 0">
                   <label for="inputReference">{{ $t('dashboard.newLayer.addedReferences') }}</label>
                   <ol>
-                    <li v-for="(t, index) in chosenRef" :key="t">
+                    <li v-for="(t, index) in chosenRef" :key="index">
                       {{ t.description }}
                       &nbsp;&nbsp;&nbsp;&nbsp;
                       <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
@@ -257,7 +256,7 @@
 
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
-      ...mapState('dashboard', ['name'])
+      ...mapState('dashboard', ['name', 'key', 'ref', 'refId', 'usersSaved', 'description'])
     },
 
     data() {
@@ -344,17 +343,45 @@
       })
 
       this.is_the_admin = this.user.is_the_admin
-    },
+      this.chosenKeywords =  this.key
+      this.chosenRef = this.ref
+      this.chosenRefID = this.refId
+      this.chosenUsers = this.usersSaved
 
+    },
     methods: {
       newKeyword() {
-        this.$store.dispatch('dashboard/setName',  document.getElementById("inputName").value)
-        //Limpar valores: this.$store.dispatch('dashboard/setName',  document.getElementById("inputName").value)
+        this.saveName()
+        //Limpar valores: this.$store.dispatch('dashboard/setName',  "")
         this.$router.push({
           name: 'Keyword',
           params: {name: 'NewLayer'}
         })
 
+      },
+      clearData(){
+        this.$store.dispatch('dashboard/setName',  "")
+        this.$store.dispatch('dashboard/setUsers',  [])
+        this.$store.dispatch('dashboard/setReferences',  [])
+        this.$store.dispatch('dashboard/setRefId',  [])
+        this.$store.dispatch('dashboard/setKeywords',  [])
+        this.$store.dispatch('dashboard/setDescription',  "")
+      },
+      saveName(){
+        this.$store.dispatch('dashboard/setName',  document.getElementById("inputName").value)
+      },
+      saveUsers(){
+        this.$store.dispatch('dashboard/setUsers',  this.chosenUsers)
+      },
+      saveReferences(){
+        this.$store.dispatch('dashboard/setReferences',  this.chosenRef)
+        this.$store.dispatch('dashboard/setRefId',  this.chosenRefID)
+      },
+      saveDescription(){
+        this.$store.dispatch('dashboard/setDescription',  document.getElementById("inputDescription").value)
+      },
+      saveKeywords(){
+        this.$store.dispatch('dashboard/setKeywords',  this.chosenKeywords)
       },
       updateName() {
         this.fname = document.getElementById("Upload").files[0].name
@@ -503,6 +530,7 @@
                           })
                           vm.shapeCorrect = true;
                           vm.loading.close();
+                          vm.clearData()
                           //console.log(vm.columnsName)
                         })
                       }, function (cause) {
@@ -634,6 +662,7 @@
               })
             }
           }
+          vm.clearData()
 
         } catch(error) {
           if(this.layer_id != null && this.layer_id != undefined)
@@ -688,6 +717,7 @@
             //console.log(vm.chosenRef)
             vm.chosenRefID.push(ref_id)
             vm.auxRef = null
+            vm.saveReferences()
           }, function (cause) {
             let msg = ''
             if (cause.response.status === 400) msg = "O texto de referência já existe!"
