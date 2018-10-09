@@ -417,7 +417,7 @@
 
         if(document.getElementById("inputName").value === '')
           vm._msgError("O nome é necessário!")
-        else if(!/^[a-zA-Z]{1}\w/.test(this.tableName) || !(/^[a-zA-Z0-9]/.test(this.tableName)))
+        else if(!/^[a-zA-Z]{1}\w/.test(this.tableName) || (/[^a-zA-Z0-9]/.test(this.tableName)))
           vm._msgError("O nome da layer NÃO pode começar com 'número' e nem possuir 'acentuação'!")
         else if(this.chosenKeywordsID.length === 0)
           vm._msgError("É necessário adicionar pelo menos uma palavra-chave!")
@@ -550,12 +550,14 @@
       },
       async upload_from_input(){
         try {
+
+          console.log(this.optionsAttr)
           if(this.optTpGeom == null)
             this._msgError('Tipo da geometria é necessário!')
 
           else {  
             let getNullAcenOrNumber = await this.optionsAttr.filter( 
-              attr => attr.column_name === '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name)) || !(/^[a-zA-Z0-9]/.test(attr.column_name))
+              attr => attr.column_name === '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name)) || (/[^a-zA-Z0-9]/.test(attr.column_name))
             )
 
             let getWordNative = await this.optionsAttr.filter( 
