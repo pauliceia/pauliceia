@@ -577,9 +577,9 @@
         }
       },
       async upload_from_input(){
+        const vm = this
         try {
-
-          console.log(this.optionsAttr)
+          //console.log(this.optionsAttr)
           if(this.optTpGeom == null)
             this._msgError('Tipo da geometria é necessário!')
 
@@ -598,7 +598,6 @@
               this._msgError('Atributos Inválidos. O nome do do atributo precisa ser diferente: id, changeset_id e version!')
 
             else {
-              this.layer_id = null
               //CREATE LAYER
               let layer = {
                 'type': 'Layer',
@@ -665,10 +664,11 @@
           vm.clearData()
 
         } catch(error) {
-          if(this.layer_id != null && this.layer_id != undefined)
+          console.log(error)
+          if(this.layer_id != null && this.layer_id !== undefined)
             await Dashboard.deleteLayer(this.layer_id)
 
-          if(error.response.status == 409) 
+          if(error.response.status === 409)
             this.$alert("Já existe uma camada com esse nome, por favor, escolha outro!", "Nome da camada", {
               dangerouslyUseHTMLString: true,
               confirmButtonText: 'OK',
