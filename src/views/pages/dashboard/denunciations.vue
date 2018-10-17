@@ -33,7 +33,7 @@
                   <button type="button" class="btn btn-outline-primary btn-sm add" @click="selectComment(comment.id)"><md-icon>visibility</md-icon></button>
                 </div>
                 <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.id)"><md-icon>clear</md-icon></button>
+                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteNotification(comment)"><md-icon>clear</md-icon></button>
                 </div>
                 <hr>
               </div>
@@ -47,9 +47,10 @@
           <div class="card-header">
             Comment
             <ul class="description" >
-              <li><b> Name:</b> {{nameUsers[chosenComment.user_id_creator]}}</li>
+              <li><b> User Name:</b> {{nameUsers[chosenComment.user_id_creator]}}</li>
               <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b>{{ chosenComment.description }}  </li>
               <li><b>{{ $t('map.viewInfo.lbDate') }}:</b> {{ chosenComment.created_at }}</li>
+              <li><b>Local:</b> {{ nameLayer }}</li>
             </ul>
           </div>
         </div>
@@ -137,6 +138,7 @@
           allKeywords: [],
           allReferences: [],
           layers: [],
+          nameLayer: null,
         }
       },
       mounted() {
@@ -144,8 +146,6 @@
         vm.getDenunciations()
         vm.getInfos()
         setTimeout(_ => {
-          //console.log(vm.allKeywords)
-          //console.log(vm.allReferences)
         }, 1000);
       },
       methods: {
@@ -154,7 +154,8 @@
             Api().delete('/api/notification/?notification_id='+notification.notification_id,
             ).then(function (response) {
               //console.log(response)
-              vm.updateNotif()
+              vm.denunciations.splice(vm.denunciations.indexOf(notification), 1)
+              vm.getDenunciations()
             })
           },
           selectLayer(id){
@@ -176,6 +177,15 @@
             this.denunciations = Object.values(this.notifications).filter( notif => {
               return (notif.notification_id_parent === id && notif.is_denunciation === true)
             })
+            vm.nameLayer = vm.chosenComment.layer_id === null ? 'Global' : vm.layers[vm.chosenComment.layer_id].name
+          },
+          clean(){
+            const vm = this
+            this.chosenComment = []
+            this.is_comment = false
+            this.is_layer = false
+            vm.denunciations = []
+            vm.nameLayer = null
           },
           getInfos(){
             const vm = this
@@ -190,7 +200,24 @@
               })
             })
           },
+          deleteNotification(notification){
+            const vm = this
 
+            Api().delete('/api/notification/?notification_id='+notification.id,
+            ).then(function (response) {
+              delete vm.denouncedComments[notification.id.toString()]
+              vm.getDenunciations()
+              vm.clean()
+            })
+          },
+          deleteLayer(layer_id){
+            const vm = this;
+            Api().delete('/api/layer/' + layer_id).then(function (response) {
+              delete vm.denouncedLayers[layer_id.toString()]
+              vm.getDenunciations()
+              vm.clean()
+            })
+          },
           getDenunciations(){
             const vm = this
 

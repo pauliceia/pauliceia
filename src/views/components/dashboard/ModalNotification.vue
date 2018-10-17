@@ -1,14 +1,8 @@
 <template>
   <div>
-    <el-button type="text" @click="showModal()">Comments</el-button>
+    <el-button type="text" @click="showModal2()">Comments</el-button>
 
-    <el-dialog title="Notification" :visible.sync="outerVisible" id="myModal" class="padrao mod">
-      <el-dialog
-        width="30%"
-        title="Inner Dialog"
-        :visible.sync="innerVisible"
-        append-to-body>
-      </el-dialog>
+    <el-dialog title="Notification" :visible.sync="outerVisible" id="myModal" :append-to-body="true" class="mod">
 
       <div class="notification-box">
         <div style="display: flex; align-items: center;">
@@ -74,12 +68,17 @@
 
 <script>
   import DashLayout from '@/views/layouts/dashboard'
+  import { MessageBox } from 'element-ui';
   import Api from '@/middleware/ApiVGI'
   import {mapState} from 'vuex'
 
-
   export default {
     name: "ModalNotification",
+    components: {
+      "modal": {
+        template: '#modal-template'
+      },
+    },
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
       ...mapState('map', ['boxNotifications']),
@@ -101,10 +100,11 @@
         showInput2: false,
         outerVisible: false,
         innerVisible: false,
+        showModal: false
       }
     },
     methods: {
-      showModal(){
+      showModal2(){
         this.outerVisible = true
         this.updateNotif()
       },
@@ -235,65 +235,66 @@
 
 <style lang="sass" scoped>
 
-    .notification-box2
-      margin: 10px
-      margin-right: 60px
-      background: rgba(183,200,255,0.69)
-      padding: 20px
-      border-radius: 20px
-      left: 50px
-      position: relative
+  .notification-box2
+    margin: 10px
+    margin-right: 60px
+    background: rgba(183,200,255,0.69)
+    padding: 20px
+    border-radius: 20px
+    left: 50px
+    position: relative
 
-    .notification-box
-      margin: 10px
-      background: rgba(#000, 0.1)
-      padding: 20px
-      border-radius: 20px
+  .notification-box
+    margin: 10px
+    background: rgba(#000, 0.1)
+    padding: 20px
+    border-radius: 20px
 
-      .photo
-        display: inline-block
-        width: 40px
-        padding: 10px
-        text-align: center
-        color: #FFF
-        border-radius: 50%
-        background: #666
+  .photo
+    display: inline-block
+    width: 40px
+    padding: 10px
+    text-align: center
+    color: #FFF
+    border-radius: 50%
+    background: #666
 
-      .credentials
-        display: inline-block
-        margin: 0 0 0 10px
-        .author
-          font-weight: 600
-          margin-top: 5px !important
-          font-size: 1.1em
-        .date
-          color: #666
-          font-size: 0.9em
-        p
-          margin: 0 0 5px 0 !important
+  .credentials
+    display: inline-block
+    margin: 0 0 0 10px
+    .author
+      font-weight: 600
+      margin-top: 5px !important
+      font-size: 1.1em
+    .date
+      color: #666
+      font-size: 0.9em
+    p
+      margin: 0 0 5px 0 !important
 
-      .content
-        text-align: justify
-        margin-top: 5px
+  .content
+    text-align: justify
+    margin-top: 5px
 
-      .comments
-        width: 100%
-        text-align: right
-        color: #0099ff
-        cursor: pointer
-        margin-top: -10px
-        margin-bottom: 5px
-    .add
-      top: -1px
-      left: 0px
-      display: inline-block
-      border: none
-      padding: 0px
-      margin: 0px
-      position: relative
-      border-radius: 30px
+  .comments
+    width: 100%
+    text-align: right
+    color: #0099ff
+    cursor: pointer
+    margin-top: -10px
+    margin-bottom: 5px
 
-    .msgType
-      display: flex
+  .add
+    top: -1px
+    left: 0px
+    display: inline-block
+    border: none
+    padding: 0px
+    margin: 0px
+    position: relative
+    border-radius: 30px
+
+  .msgType
+    display: flex
 
 </style>

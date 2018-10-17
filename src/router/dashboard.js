@@ -7,12 +7,19 @@ import DashNewLayer from '@/views/pages/dashboard/newLayer'
 import DashKeyword from '@/views/pages/dashboard/keywords'
 import DashEditLayer from '@/views/pages/dashboard/editLayer'
 import DashDenunciation from '@/views/pages/dashboard/denunciations'
+import DashProfile from '@/views/pages/dashboard/profile'
 
 const dashRoutes = [
     {
         path: '/dashboard',
         redirect: '/dashboard/home',
         component: Dashboard,
+        meta: { auth: true }
+    },
+    {
+        path: '/dashboard/profile',
+        name: 'Profile',
+        component: DashProfile,
         meta: { auth: true }
     },
     {
