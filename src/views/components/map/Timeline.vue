@@ -77,8 +77,6 @@
         overlayGroup.getLayers().forEach(sublayer => {
           Api().get('/api/temporal_columns/?f_table_name='+sublayer.values_.title).then(function (tc) {
 
-            console.log(tc.data.features[0].properties.end_date)
-            console.log(tc.data.features[0].properties.start_date)
 
             sublayer.getSource().getFeatures().forEach(feature => {
 

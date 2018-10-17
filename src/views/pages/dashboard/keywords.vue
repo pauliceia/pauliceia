@@ -1,6 +1,6 @@
 <template>
   <p-dash-layout :title="$t('dashboard.keywords.keywords')">
-    <div class="row" style="height: 500px">
+    <div class="row" >
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
@@ -39,7 +39,9 @@
             <h5 class="card-title">{{ $t('dashboard.keywords.myKeywords') }}</h5>
             <div class="card-text">
               <div class="row" v-for="k in keywords">
-                <div class="col-sm-9">{{ k.name }}</div>
+                <div class="col-sm-3" v-if="user.is_the_admin">{{ k.name }}</div>
+                <div class="col-sm-6" v-if="user.is_the_admin">({{ nameUsers[k.user_id_creator] }})</div>
+                <div class="col-sm-9" v-else>{{ k.name }}</div>
                 <div class="col-sm-3">
                   <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteKeyword(k)" >
                     <md-icon>clear</md-icon>
@@ -76,7 +78,8 @@
       return {
         keywords: [],
         name: this.$route.params.name,
-        layer_id: this.$route.params.layer_id
+        layer_id: this.$route.params.layer_id,
+        nameUsers: []
       }
     },
     methods: {
@@ -138,15 +141,26 @@
       },
       updateKeyword(){
         const vm = this
-        vm.keywords = []
-        Api().get('/api/keyword').then(function (response) {
-          response.data.features.filter(e => {
-            //console.log(e.properties)
+
+        Api().get('/api/user/').then(function (users) {
+          users.data.features.forEach(user => {
+            vm.nameUsers = {...vm.nameUsers, [user.properties.user_id]: user.properties.name,}
           })
+        })
+
+        vm.keywords = []
+        Api().get('/api/keyword').then(function (all) {
           Api().get('/api/keyword/?user_id_creator=' + vm.user.user_id).then(function (response) {
-            response.data.features.filter(e => {
-              vm.keywords.push(e.properties)
-            })
+            if(vm.user.is_the_admin){
+              all.data.features.filter(e => {
+                vm.keywords.push(e.properties)
+              })
+            }
+            else {
+              response.data.features.filter(e => {
+                vm.keywords.push(e.properties)
+              })
+            }
           })
         })
       },
