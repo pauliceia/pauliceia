@@ -6,7 +6,7 @@
             <div class="card-header">
                 <h3 class="mb-0">Login</h3>
             </div>
-
+            
             <div class="card-body">
 
                 <form class="form-signin" @submit.prevent="loginSubmit">
@@ -20,7 +20,7 @@
                         <input type="password" v-model="password" class="form-control form-control-lg" :placeholder="$t('login.inputPassword')" required>
                     </div>
                     <br />
-
+                    
                     <router-link to="/register" class="register">{{ $t('login.register') }}</router-link>
                     <button type="submit" class="btn btn-success btn-lg btn-block">{{ $t('login.btnText') }}</button>
                 </form>
@@ -32,26 +32,35 @@
                     <p>{{ $t('login.terms') }}</p>
                     <a data-toggle="modal" data-target="#modalTerms"> ({{ $t('login.lbReadme') }}) </a>
                 </div>
-                <div class="col-6 link-social">
-                    <md-list-item class="btn btn-primary" @click="loginSocial('facebook')">
-                        <md-icon>thumb_up</md-icon>
-                        <span class="md-list-item-text">Facebook</span>
-                    </md-list-item>
-                </div>
-                <div class="col-6 link-social">
+
+                <div class="col-12 link-social">
                     <md-list-item class="btn btn-danger" @click="loginSocial('google')">
-                        <md-icon>add_box</md-icon>
+                        <md-icon>add_box</md-icon> 
                         <span class="md-list-item-text">Google+</span>
                     </md-list-item>
                 </div>
+
+
+                <!--<div class="col-6 link-social">
+                    <md-list-item class="btn btn-primary" @click="loginSocial('facebook')">
+                        <md-icon>thumb_up</md-icon> 
+                        <span class="md-list-item-text">Facebook</span>
+                    </md-list-item> 
+                </div>
+                <div class="col-6 link-social">
+                    <md-list-item class="btn btn-danger" @click="loginSocial('google')">
+                        <md-icon>add_box</md-icon> 
+                        <span class="md-list-item-text">Google+</span>
+                    </md-list-item>
+                </div>-->
             </div>
             <!--/card-block-->
         </div>
         <!-- /form card login -->
-
+        
         <p-terms></p-terms>
     </section>
-
+   
 </template>
 
 <script>
