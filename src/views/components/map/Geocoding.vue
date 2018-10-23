@@ -221,19 +221,25 @@ export default {
 
                         if (response.data[1][0].confidence == 1){
 
-                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Encontrado! \n'
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Encontrado. \n'
                             CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
 
                         }
-                        if (response.data[1][0].confidence == 0){
+                        else if (response.data[1][0].confidence == 0){
                             
-                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Extrapolado! \n'
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Extrapolado espacialmente. \n'
+                            CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
+
+                        }
+                        else if (response.data[1][0].confidence = 0.1){
+
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Extrapolado temporalmente. \n'
                             CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
 
                         }
                         else {
 
-                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Geocodificado! \n'
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Geocodificado. \n'
                             CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
 
                         }
