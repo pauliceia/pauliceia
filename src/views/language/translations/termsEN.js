@@ -16,7 +16,7 @@ export default `
     <p>How do I give my consent to the Pauliceia platform?</p>
     <p>From the moment you provide us with your personal information to access the portal or insert extra information, such as historical data information, you are agreeing to our collection and use of information for specific purposes, such as storage, security and identification.</p>
     <p>How can I revoke my consent?</p>
-    <p>If you wish to revoke your consent, for any reason, after providing your data; you can take it off anytime you want. You will have to contact the platform administrators through the following email "proj.pauliceia2.0@gmail.com" and let us know that you would like your account to be permanently deleted.</p>
+    <p>If you wish to revoke your consent, for any reason, after providing your data; you can take it off anytime you want. You will have to contact the platform administrators through the following email "pauliceia_support@googlegroups.com" and let us know that you would like your account to be permanently deleted.</p>
     <br>
     <p><b>SECTION 4 - DISCLOSURE</b></p>
     <p>We will only share your personal information if we are, for any reason, required by law to do it.</p>
@@ -37,5 +37,5 @@ export default `
     <p>We have the right to update these terms at any time. For this reason, read it frequently. If we do any editing on these terms, we will warn you of this. So, you will know what information we collect and how we use it.</p>
     <br>
     <p><b>SECTION 9 - CONTACT</b></p>
-    <p>If you have any questions regarding the terms, use of the platform, information, complaints or compliments, you may contact us at the following email: "proj.pauliceia2.0@gmail.com".</p>
+    <p>If you have any questions regarding the terms, use of the platform, information, complaints or compliments, you may contact us at the following email: "pauliceia_support@googlegroups.com".</p>
     `

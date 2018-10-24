@@ -17,7 +17,7 @@ Em relação às camadas, elas poderão ter múltiplas palavras-chave associadas
     <p>Como dou o meu consentimento na plataforma Pauliceia?</p>
     <p>A partir do momento em que você nos fornece as suas informações pessoais para acessar o portal ou inserir informações extras, como informações dos dados históricos, você está concordando com a nossa coleta e uso de informações para fins específicos, como armazenamento, segurança e sua identificação.</p>
     <p>Como posso revogar o meu consentimento?</p>
-    <p>Se você quiser revogar o seu consentimento, por algum motivo, após prover os seus dados; você poderá tirá-lo quando quiser. Você terá que entrar em contato com os administradores da plataforma através do seguinte e-mail "proj.pauliceia2.0@gmail.com" e nos avisar que gostaria que a sua conta seja excluída permanentemente.</p>
+    <p>Se você quiser revogar o seu consentimento, por algum motivo, após prover os seus dados; você poderá tirá-lo quando quiser. Você terá que entrar em contato com os administradores da plataforma através do seguinte e-mail "pauliceia_support@googlegroups.com" e nos avisar que gostaria que a sua conta seja excluída permanentemente.</p>
     <br>
     <p><b>SEÇÃO 4 - DIVULGAÇÃO</b></p>
     <p>Nós apenas iremos compartilhar as suas informações pessoais se formos, por algum motivo, obrigados por lei a fazê-lo.</p>
@@ -38,5 +38,5 @@ Em relação às camadas, elas poderão ter múltiplas palavras-chave associadas
     <p>Nós temos o direito de atualizar estes termos a qualquer momento. Por esta razão, leia-a com frequência. Caso façamos alguma edição nestes termos, nós iremos avisá-lo sobre isto. Logo, você ficará sabendo quais informações reunimos e como as usamos.</p>
     <br>
     <p><b>SEÇÃO 9 - CONTATO</b></p>
-    <p>Se você tiver alguma dúvida relacionada aos termos, sobre o uso da plataforma, informações, reclamações ou elogios, você poderá entrar em contato conosco pelo seguinte e-mail: "proj.pauliceia2.0@gmail.com".</p>
+    <p>Se você tiver alguma dúvida relacionada aos termos, sobre o uso da plataforma, informações, reclamações ou elogios, você poderá entrar em contato conosco pelo seguinte e-mail: "pauliceia_support@googlegroups.com".</p>
     `
