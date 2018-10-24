@@ -5,11 +5,12 @@
       <p-timeline></p-timeline>
       <p-geocoding></p-geocoding>
       <p-sidebarLayer></p-sidebarLayer>
-      <!--<p-sidebarEdit></p-sidebarEdit>-->
+      <p-sidebarEdit></p-sidebarEdit>
       
       <p-boxinfolayer></p-boxinfolayer>
       <p-boxinfovector></p-boxinfovector>
       <p-boxnotifications></p-boxnotifications>
+      <p-subtitle :subShow="true"></p-subtitle>
     </ol-map>
 
   </section>
@@ -21,10 +22,10 @@
   import Geocoding from '@/views/components/map/Geocoding'
   import SidebarLayer from '@/views/components/map/SidebarLayer'
   import SidebarEdit from '@/views/components/map/SidebarEdit'
-
   import BoxInfoLayer from '@/views/components/map/BoxInfoLayer'
   import BoxInfoVector from '@/views/components/map/BoxInfoVector'
   import BoxInfoNotifications from '@/views/components/map/BoxNotifications'
+  import SubtitleMap from '@/views/components/map/SubtitleMap'
 
   import {
     pointStyle,
@@ -45,7 +46,8 @@
       'p-sidebarEdit': SidebarEdit,
       'p-boxinfolayer': BoxInfoLayer,
       'p-boxinfovector': BoxInfoVector,
-      'p-boxnotifications': BoxInfoNotifications
+      'p-boxnotifications': BoxInfoNotifications,
+      "p-subtitle": SubtitleMap
     },
 
     created () {

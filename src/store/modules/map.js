@@ -8,6 +8,7 @@ const state = {
   boxInfoLayer: false,
   boxNotifications: false,
   boxInfoVector: false,
+  boxSubtitle: false,
   //informação do layer
   idInfoLayer: null,
   //id da layer que está ativa a funaçã INFO FEATURE
@@ -22,6 +23,9 @@ const mutations = {
   },
   setBoxGeocoding (state, value) {
     state.boxGeocoding = value
+  },
+  setBoxSubtitle (state, value) {
+    state.boxSubtitle = value
   },
   setBoxInfoLayer (state, value) {
     state.boxInfoLayer = value
@@ -55,6 +59,9 @@ const actions = {
   },
   setBoxGeocoding({commit}, value) {
     commit('setBoxGeocoding', value)
+  },
+  setBoxSubtitle({commit}, value) {
+    commit('setBoxSubtitle', value)
   },
   setBoxInfoLayer({commit}, value) {
     commit('setBoxInfoLayer', value)
