@@ -197,10 +197,13 @@ export default {
         async visualizar() {
             this._openFullScreen()
             let json = JSON.parse(this.geojson);
-            let jsonResults = [];
-                    
+            let jsonResults = [];    
+            let jsonErros = "Erros: \n \n";
+            let CsvTotalStatus = "Status da busca de endereços via CSV: \n \n"
+            let errosCount = 0;
             for (let i = 0; i < json.length; i++) {
                 let address = json[i][this.street].toLowerCase()+", "+json[i][this.number]+", "+json[i][this.year];
+                console.log(address)
                 try {
                     let response = await ApiMap.geolocationOne(address);
                     if(response.data[1][0].name != "Point not found"){
@@ -209,26 +212,59 @@ export default {
                         geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
                         let x = parseFloat(geomPoint.split(' ')[0]);
                         let y = parseFloat(geomPoint.split(' ')[1]);
-                        let geom = ('{'+'"geom":'+'['+x +','+y+']}');
+                        let geom = ('{'+'"geom":'+'['+x +','+y+'], "confidence":'+response.data[1][0].confidence+'}');
+                        console.log(geom)
                         let jsonAddress = JSON.parse(geom);
                         let jsonSlice = json[i];
                         let results = Object.assign(jsonSlice, jsonAddress);
                         jsonResults.push(JSON.stringify(results));
+
+                        if (response.data[1][0].confidence == 1){
+
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Encontrado. \n'
+                            CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
+
+                        }
+                        else if (response.data[1][0].confidence == 0){
+                            
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Extrapolado espacialmente. \n'
+                            CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
+
+                        }
+                        else if (response.data[1][0].confidence = 0.1){
+
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Extrapolado temporalmente. \n'
+                            CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
+
+                        }
+                        else {
+
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Geocodificado. \n'
+                            CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
+
+                        }
+
                     } else {
-                        let geom = ('{'+'"geom":'+'['+0 +','+0+']}');
-                        let jsonAddress = JSON.parse(geom);
-                        let jsonSlice = json[i];
-                        let results = Object.assign(jsonSlice, jsonAddress);
-                        jsonResults.push(JSON.stringify(results));
+
+                        errosCount = errosCount + 1
+                        let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" não foi encontrado. \n'
+                        jsonErros = jsonErros.concat(erro);
+
                     }
                 } catch (_) {
-                    let geom = ('{'+'"geom":'+'['+0 +','+0+']}');
-                    let jsonAddress = JSON.parse(geom);
-                    let jsonSlice = json[i];
-                    let results = Object.assign(jsonSlice, jsonAddress);
-                    jsonResults.push(JSON.stringify(results));
+                
+                    errosCount = errosCount + 1
+                    let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" não foi encontrado. \n'
+                    jsonErros = jsonErros.concat(erro);
+
                 }
             } 
+
+            if (errosCount > 0){
+                alert(jsonErros)
+            }
+            
+            alert(CsvTotalStatus)
 
             let textJsonResults = ('['+jsonResults+']');
             let final = JSON.parse(textJsonResults);
