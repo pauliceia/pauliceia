@@ -436,7 +436,7 @@
 
         let tableName2 = document.getElementById("inputName").value
         //let epsg = document.getElementById("inputEpsg").value
-        if (tableName2.indexOf(' ') === 0) tableName2 = tableName.slice(1)
+        if (tableName2.indexOf(' ') === 0) tableName2 = tableName2.slice(1)
         if (tableName2.lastIndexOf(' ') === tableName2.length - 1) tableName2 = tableName2.slice(0, tableName2.length - 1)
         tableName2 = tableName2.split(" ").join("_")
         tableName2 = tableName2.toLocaleLowerCase()
@@ -444,8 +444,10 @@
 
         if(document.getElementById("inputName").value === '')
           vm._msgError("O nome é necessário!")
-        else if(!/^[a-zA-Z]{1}\w/.test(this.tableName) || (/[^a-zA-Z0-9]/.test(this.tableName)))
+        else if(!/^[a-zA-Z]{1}\w/.test(this.tableName) || (/[^a-zA-Z0-9_]/.test(this.tableName))) {
           vm._msgError("O nome da layer NÃO pode começar com 'número' e nem possuir 'acentuação'!")
+          console.log(this.tableName)
+        }
         else if(this.chosenKeywordsID.length === 0)
           vm._msgError("É necessário adicionar pelo menos uma palavra-chave!")
 
@@ -585,7 +587,7 @@
 
           else {  
             let getNullAcenOrNumber = await this.optionsAttr.filter( 
-              attr => attr.column_name === '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name)) || (/[^a-zA-Z0-9]/.test(attr.column_name))
+              attr => attr.column_name === '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name)) || (/[^a-zA-Z0-9_]/.test(attr.column_name))
             )
 
             let getWordNative = await this.optionsAttr.filter( 
