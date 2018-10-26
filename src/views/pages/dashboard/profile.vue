@@ -1,28 +1,55 @@
 <template>
   <div class="row ">
     <div class="col-sm-2"></div>
-    <div class="col-sm-8 ">
-      <div class="card box">
+    <div class="col-sm-8">
+      <div class="card styleCard">
         <div class="card-body">
           <h5 class="card-title" style="text-align: center"><h3>Profile</h3></h5>
-          <p class="card-text">
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md">
-                <label for="inputName">{{ $t('dashboard.keywords.name') }}</label>&nbsp;
-                <el-popover class="info" placement="top-start" width="200" trigger="hover" :content="$t('dashboard.keywords.nameD')" type="primary">
-                  <button type="button"  slot="reference" class="btn btn-outline-primary info"> <md-icon class="icon">error_outline</md-icon> </button>
-                </el-popover>
-                <input class="form-control" id="inputName">
+          <div class="card-text">
+            <form>
+              <div class="form-row">
+                <div class="form-group col-md-4 text-center">
+                  <p class="text-left">Profile Picture
+                    <p-popover-labels :text="$t('dashboard.newLayer.startDate')" /></p>
+                  <md-avatar class="md-avatar-icon stylePicture">
+                    <div class="logo">
+                      <img :src="imagePerson" />
+                    </div>
+                  </md-avatar>
+                  <br>
+                  <br>
+                  <a href="#" class="btn btn-primary" @click="UploadPicture()">Upload new picture</a>
+                </div>
+                <div class="form-group col-md-7">
+                  <div class="form-group">
+                  <label for="inputName">{{ $t('dashboard.keywords.name') }}</label>&nbsp;
+                    <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
+                    <input class="form-control"  v-model="user.name" id="inputName">
+                  </div>
+                  <div class="form-group">
+                    <label>{{ $t('register.lbEmail') }}</label>
+                    <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
+                    <input type="email" v-model="user.email" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label>User Name</label>
+                    <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
+                    <input v-model="user.username" class="form-control">
+                  </div>
+
+                  <div class="box-check">
+                    <el-checkbox :label="$t('register.lbCheckNotification')" v-model="user.receive_notification_by_email"></el-checkbox>
+                  </div>
+
+                </div>
+                <div class="form-group col-md-11">
+                  <div class="text-right align-self-end"><br>
+                    <a href="#" class="btn btn-primary" @click="Upload()">Submit</a>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-2 align-self-end">
-                <a href="#" class="btn btn-primary" @click="Upload()">Submit</a>
-              </div>
-            </div>
-          </form>
-          </p>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -33,32 +60,53 @@
   import Vue from 'vue'
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
+  import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
   import {mapState} from 'vuex'
+  import ImgPerson from '@/views/assets/images/icon_person.png'
 
   export default {
         name: "profile",
+        components: {
+          "p-popover-labels": PopoverLabels
+        },
         computed: {
           ...mapState('auth', ['isUserLoggedIn', 'user'])
         },
         data: function () {
           return {
             keywords: [],
+            imagePerson: ''
           }
         },
         methods: {
 
         },
         mounted() {
-          console.log(this.user)
+          console.log(this.user) //user.picture
+          this.imagePerson = this.user.picture !== '' ? this.user.picture : ImgPerson
         }
     }
 </script>
 
 <style  lang="sass" scoped>
-  .box
+  .styleCard
     top: 40px
     background-color: whitesmoke
     border-radius: 20px
+
+  .styleSubmit
+    right: 20px
+
+  .stylePicture
+    width: 200px
+    height: 200px
+
+  .box-check
+    padding: 10px
+
+    a
+      color: #0099ff
+      cursor: pointer
 
   .add
     bottom: 20px

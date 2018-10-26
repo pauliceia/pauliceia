@@ -41,7 +41,7 @@
                     </button>
                 </div>
                 <div class="input-group-append">
-                    <button type="button" class="btn" @click="multigeocoding = !multigeocoding">
+                    <button type="button" class="btn" @click="setting()">
                         <md-icon>settings</md-icon>
                     </button>
                 </div>
@@ -104,7 +104,9 @@
                 <button class="btn btn-download" type="button" @click="download()">Download</button>
             </form>                           
                             
-        </div>    
+        </div>
+
+
         
     </section>    
 </template>
@@ -115,6 +117,7 @@ import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
 import GeoJSON from 'geojson'
 import shpwrite from 'shp-write'
+
 
 import {
     overlayGroup
@@ -153,7 +156,7 @@ export default {
     },
     
     computed: {
-        ...mapState('map', ['boxGeocoding'])
+        ...mapState('map', ['boxGeocoding', 'boxSubtitle'])
     },
 
     async mounted(){
@@ -169,6 +172,10 @@ export default {
     },
 
     methods: {
+        setting(){
+            this.multigeocoding = !this.multigeocoding
+            this.$store.dispatch('map/setBoxSubtitle', true)
+        },
         querySearch(queryString, cb) {
             let links = this.placesList
             let results = queryString ? links.filter( link => link.toLowerCase().indexOf(queryString.toLowerCase()) >= 0 ) : links
