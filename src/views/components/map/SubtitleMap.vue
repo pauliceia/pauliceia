@@ -1,54 +1,66 @@
 <template>
   <section class="boxS" v-show="boxSubtitle">
     <header class="header">
-      <h1>Subtitle</h1>
+      <h1>Legenda</h1>
       <button class="btn" @click="closeBox()">
         <md-icon>close</md-icon>
       </button>
     </header>
     <br>
-    Teste2
-    <br>
+    <p><img
+      src='@/views/assets/images/iconGeolocation.png'
+      name="Image1" align="left" width="24" height="36" border="0" class="img-style"/>
+      &ensp;Encontrado</p>
+
+    <p style="page-break-before: always"><img
+      src= '@/views/assets/images/iconGeocoding.png'
+      name="Image2" align="left" width="24" height="36" border="0" class="img-style"/>
+      &ensp;Geocodificado</p>
+
+    <p style="page-break-before: always"><img
+      src= '@/views/assets/images/iconExtrapolate.png'
+      name="Image3" align="left" width="24" height="36" border="0" class="img-style"/>
+      &ensp;Extrapolado</p>
   </section>
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+  import {mapState} from 'vuex'
 
-    export default {
-        name: "SubtitleMap",
+  export default {
+    name: "SubtitleMap",
 
-        props: ['subShow'],
+    props: ['subShow'],
 
-        computed: {
-          ...mapState('map', ['boxSubtitle'])
-        },
+    computed: {
+      ...mapState('map', ['boxSubtitle'])
+    },
 
-        data: function () {
-          return {
-
-          }
-        },
-        methods: {
-          closeBox() {
-            this.$store.dispatch('map/setBoxSubtitle', false)
-          },
-        }
+    data: function () {
+      return {
+      }
+    },
+    methods: {
+      closeBox() {
+        this.$store.dispatch('map/setBoxSubtitle', false)
+      },
     }
+  }
 </script>
 
 <style lang="sass" scoped>
   .boxS
     position: absolute
     display: inline-block
-    top: 500px
-    right: 0px
-    width: 200px
-    height: 150px
+    top: 550px
+    right: 60px
+    width: 180px
+    height: 180px
     border-radius: 10px
     padding: 10px
-    background: rgba(87,87,87,0.75)
+    background: rgba(255, 255, 255, 0.8)
     z-index: 99
+
 
     .header
       width: 100%
@@ -60,7 +72,7 @@
         font-family: 'Roboto' !important
         display: inline-block
         margin: 0 !important
-        color: white
+        color: #000000
 
       .btn
         margin: 3px !important
@@ -73,5 +85,8 @@
       .btn:hover
         background: rgba(#000, 0.1)
 
+  .img-style
+    position: relative
+    top: -10px
 
 </style>

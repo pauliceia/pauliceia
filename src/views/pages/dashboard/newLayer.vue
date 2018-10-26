@@ -544,6 +544,7 @@
                       })
                     }, function (cause) {
                       Api().delete('/api/layer/'+vm.layer_id)
+                      Api().delete('/api/changeset/?changeset_id='+response.data.changeset_id)
                       console.log(cause.response)
                       let msg = ''
                       if (cause.response.status === 409) msg = "O arquivo precisa ser um .zip."
