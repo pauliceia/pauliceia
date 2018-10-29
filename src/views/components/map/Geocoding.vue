@@ -147,6 +147,7 @@ export default {
             multigeocoding: false,
             placesList: [],
             geojson: '',
+            csvjson: '',
             loading: null,
             headers: [],
             street: '',
@@ -174,7 +175,6 @@ export default {
     methods: {
         setting(){
             this.multigeocoding = !this.multigeocoding
-            this.$store.dispatch('map/setBoxSubtitle', true)
         },
         querySearch(queryString, cb) {
             let links = this.placesList
@@ -196,14 +196,14 @@ export default {
                 let csv = text;
                 this.headers = csv.split('\n')[0].split(',')
                 //this.headers = csv.split('\n')[0].split(',').map( header => header.substr(header.indexOf('"')+1, header.lastIndexOf('"')-1).replace('"', '') )
-                this.geojson = CSV2JSON(csv);
+                this.csvjson = CSV2JSON(csv);
                 this.loading.close();
             }
             reader.readAsText(e.target.files[0]);
         },
         async visualizar() {
             this._openFullScreen()
-            let json = JSON.parse(this.geojson);
+            let json = JSON.parse(this.csvjson);
             let jsonResults = [];    
             let jsonErros = "Erros: \n \n";
             let CsvTotalStatus = "Status da busca de endereços via CSV: \n \n"
@@ -226,6 +226,7 @@ export default {
                         let results = Object.assign(jsonSlice, jsonAddress);
                         jsonResults.push(JSON.stringify(results));
 
+
                         if (response.data[1][0].confidence == 1){
 
                             let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Encontrado. \n'
@@ -235,12 +236,6 @@ export default {
                         else if (response.data[1][0].confidence == 0){
                             
                             let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Extrapolado espacialmente. \n'
-                            CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
-
-                        }
-                        else if (response.data[1][0].confidence = 0.1){
-
-                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Extrapolado temporalmente. \n'
                             CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
 
                         }
@@ -315,14 +310,30 @@ export default {
             this.$store.dispatch('map/setBoxGeocoding', false)
         },
         async search () {
+             
             try {
-                this._openFullScreen()
+                
+                //this._openFullScreen()
                 let regex = new RegExp(/\s*,( )*\d{4}/);
                 let search = this.inputSearch.replace(/( )+/g, ' ');
 
                 if(regex.test(search)){
                     const result = await ApiMap.geolocationOne(search)
+                    
+                    if(result.data[1][0].geom == undefined) {
+                        
+                        let text = "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" + search + ")"
+                    
+                        this.$alert(text, 'Erro', {
+                            dangerouslyUseHTMLString: true,
+                                confirmButtonText: 'OK',
+                                type: 'error'
+                            });
+                            this.loading.close()
+                    }
+
                     if(result.data[1][0].geom != undefined) {
+                        
                         let myStyle = placeStyleSearch1
                         //console.log(result.data[1][0].confidence)
                         if (result.data[1][0].confidence == 1){
@@ -338,6 +349,9 @@ export default {
                                 //console.log(myStyle)
                             }
                         }
+
+                        this.$store.dispatch('map/setBoxSubtitle', true)
+
                         let coordPoint = result.data[1][0].geom.substring(6).replace(")", "").split(" ")
                         let feature = new ol.Feature(new ol.geom.Point(coordPoint))
                         let layerSearch = new ol.layer.Vector({
@@ -355,9 +369,10 @@ export default {
                         let extent = ol.extent.createEmpty();
                         ol.extent.extend(extent, feature.getGeometry().getExtent());
                         this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
-                        this.loading.close()
+                        //this.loading.close()
                     }     
                 } else{
+                    
                     this.$alert('<strong>Pesquise por:</strong> rua, número, ano (0000)', 'Formato inválido', {
                         dangerouslyUseHTMLString: true,
                         confirmButtonText: 'OK',
@@ -367,7 +382,9 @@ export default {
                 }
                 
             } catch (error) {
+
                 if(error.response != undefined && error.response.data != undefined && error.response.data[1][0].alertMsg != undefined) {
+                    
                     this.$alert(error.response.data[1][0].alertMsg, 'Erro', {
                         dangerouslyUseHTMLString: true,
                         confirmButtonText: 'OK',
@@ -375,7 +392,10 @@ export default {
                     });
                     this.loading.close()
                 } else {
-                    this.$alert('Erro ao geocodificar, contate o administrador!', 'Erro', {
+                    
+                    let text = "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" + search + ")"
+                    
+                    this.$alert(text, 'Erro', {
                         dangerouslyUseHTMLString: true,
                         confirmButtonText: 'OK',
                         type: 'error'
