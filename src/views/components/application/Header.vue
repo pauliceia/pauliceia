@@ -15,8 +15,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a :class="this.$route.path == '/home' ? 'nav-link active': 'nav-link'"
-                            href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.home') }}</a>
+                        <router-link  :class="this.$route.path == '/home' ? 'nav-link active': 'nav-link'" to="/home" >{{ $t('nav.home') }}</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link 
@@ -24,12 +23,18 @@
                             to="/explore">{{ $t('nav.map') }}</router-link>
                     </li>
                     <li class="nav-item">
-                        <a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"
-                            href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.team') }}</a>
+                        <router-link
+                            :class="this.$route.path == '/contact' ? 'nav-link active': 'nav-link'"
+                            to="/contact">{{ $t('nav.contact') }}</router-link>
                     </li>
+                    <!--<li class="nav-item">-->
+                        <!--<a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"-->
+                            <!--href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.team') }}</a>-->
+                    <!--</li>-->
                     <li class="nav-item">
-                        <a :class="this.$route.path == '/contact' ? 'nav-link active': 'nav-link'"
-                            href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.contact') }}</a>
+                      <router-link
+                        :class="this.$route.path == '/about' ? 'nav-link active': 'nav-link'"
+                        to="/about">{{ $t('nav.about') }}</router-link>
                     </li>
                 </ul>
 

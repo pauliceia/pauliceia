@@ -3,7 +3,9 @@ import Application from '@/views/layouts/application'
 
 //pages
 import About from '@/views/pages/about'
+import Home from '@/views/pages/home'
 import Login from '@/views/pages/login'
+import Contact from '@/views/pages/contact'
 import Register from '@/views/pages/register'
 import ValidSocial from '@/views/pages/validSocial'
 import ValidEmail from '@/views/pages/validEmail'
@@ -26,6 +28,16 @@ const routes = [
           path: '/about',
           name: 'About',
           component: About
+        },
+        {
+          path: '/home',
+          name: 'Home',
+          component: Home
+        },
+        {
+          path: '/contact',
+          name: 'Contact',
+          component: Contact
         },
         {
           path: '/login', 
