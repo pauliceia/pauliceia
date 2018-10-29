@@ -23,7 +23,6 @@
                 <p class="card-text">The project was one of the four contemplated by the call eScience 2016 of FAPESP
                   (Foundation for Research Support of the State of São Paulo), which stimulates collaboration between
                   computer science and other areas of knowledge.
-
                 </p>
               </div>
             </div>
@@ -67,7 +66,7 @@
           <img class="picture" src="@/views/assets/images/perfil/2.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Andrew Graham Britt</h5>
+          <h5 class="title2">Karine Reis Ferreira - coordenadora</h5>
 
           Karine Reis is PhD in Applied Computer by the National Institute For Space Research (INPE), she works since
           2003 on researching in geoinformatics and on geographic information systems development such as TerraLib

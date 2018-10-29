@@ -22,14 +22,15 @@
                             :class="this.$route.path == '/explore' ? 'nav-link active': 'nav-link'"
                             to="/explore">{{ $t('nav.map') }}</router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link
+                            :class="this.$route.path == '/contact' ? 'nav-link active': 'nav-link'"
+                            to="/contact">Contact</router-link>
+                    </li>
                     <!--<li class="nav-item">-->
                         <!--<a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"-->
                             <!--href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.team') }}</a>-->
                     <!--</li>-->
-                    <li class="nav-item">
-                        <a :class="this.$route.path == '/contact' ? 'nav-link active': 'nav-link'"
-                            href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.contact') }}</a>
-                    </li>
                     <li class="nav-item">
                       <router-link
                         :class="this.$route.path == '/about' ? 'nav-link active': 'nav-link'"
