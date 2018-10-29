@@ -168,7 +168,6 @@
             <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
             <div class="card-text">
               <form>
-
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
@@ -526,6 +525,7 @@
                           //console.log(vm.columns)
                           vm.columns = e.properties
                           Object.getOwnPropertyNames(e.properties).forEach(c => {
+                            console.log(c)
                             if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
                               vm.columnsName.push(c)
                             }

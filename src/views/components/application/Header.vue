@@ -25,7 +25,7 @@
                     <li class="nav-item">
                         <router-link
                             :class="this.$route.path == '/contact' ? 'nav-link active': 'nav-link'"
-                            to="/contact">Contact</router-link>
+                            to="/contact">{{ $t('nav.contact') }}</router-link>
                     </li>
                     <!--<li class="nav-item">-->
                         <!--<a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"-->
@@ -34,7 +34,7 @@
                     <li class="nav-item">
                       <router-link
                         :class="this.$route.path == '/about' ? 'nav-link active': 'nav-link'"
-                        to="/about">About</router-link>
+                        to="/about">{{ $t('nav.about') }}</router-link>
                     </li>
                 </ul>
 

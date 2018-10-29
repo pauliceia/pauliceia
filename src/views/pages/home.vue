@@ -30,30 +30,20 @@
     <div class="text-style">
       <div class="row justify-content-md-center">
         <div class="col-sm-3 column-style">
-          O que é?
+          <b>{{ $t('home.title1') }}</b>
           <br><br>
-          <p>A Pauliceia 2.0 é uma plataforma que tem o objetivo de fazer o <span
-            id="u2402-2">mapeamento colaborativo</span> da história de São Paulo no período de 1870 a 1940.</p>
+          <p>{{ $t('home.column1') }}</p>
         </div>
         <div class="col-sm-3 column-style">
-          Como?
+          <b>{{ $t('home.title2') }}</b>
           <br><br>
-          <p>Por meio da interface da plataforma, pesquisadores e estudiosos da cidade podem alimentar os seus
-            dados,
-            desde que sejam espacialmente localizáveis.
-          <p>Dessa forma, uma <span id="u2445-4">base cartográfica</span> <span
-            id="u2445-6">histórica da cidade</span>
-            será enriquecida a cada alimentação, tornando esses dados também <span
-              id="u2445-8">disponíveis a todos</span>.</p>
-          <p>Por outro lado, o usuário que colaborar terá dessa forma um mapa ou uma visualização de sua própria
-            pesquisa.</p>
+          <div v-html="$t('home.column2')"/>
           <p>&nbsp;</p>
         </div>
         <div class="col-sm-3 column-style">
-          Quando ficará pronta?
+          <b>{{ $t('home.title3') }}</b>
           <br><br>
-          <p>Atualmente está disponível uma <span id="u2454-2">versão beta para testes</span>.&nbsp; A versão final
-            está prevista para janeiro de 2019.</p>
+          <p>{{ $t('home.column3') }}</p>
         </div>
       </div>
     </div>
@@ -79,8 +69,6 @@
     .text-style
       padding: 100px
       color: white
-      text-align: justify
-      font-weight: bold
       font-size: 16px
 
       .column-style
