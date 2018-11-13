@@ -34,7 +34,7 @@
 
       <div class="row justify-content-md-center">
         <div class="col-sm-4 column-style">
-          <h5 class="title2">{{ $t('about.title1') }}</h5><br>
+          <h5 class="title2">{{ $t('about.title7') }}</h5><br>
         </div>
         <div class="col-sm-4 column-style">
         </div>

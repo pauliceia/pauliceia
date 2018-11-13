@@ -9,6 +9,7 @@ const state = {
   boxNotifications: false,
   boxInfoVector: false,
   boxSubtitle: false,
+  boxAlert: true,
   //informação do layer
   idInfoLayer: null,
   //id da layer que está ativa a funaçã INFO FEATURE
@@ -26,6 +27,9 @@ const mutations = {
   },
   setBoxSubtitle (state, value) {
     state.boxSubtitle = value
+  },
+  setBoxAlert (state, value) {
+    state.boxAlert = value
   },
   setBoxInfoLayer (state, value) {
     state.boxInfoLayer = value
@@ -62,6 +66,9 @@ const actions = {
   },
   setBoxSubtitle({commit}, value) {
     commit('setBoxSubtitle', value)
+  },
+  setBoxAlert({commit}, value) {
+    commit('setBoxAlert', value)
   },
   setBoxInfoLayer({commit}, value) {
     commit('setBoxInfoLayer', value)

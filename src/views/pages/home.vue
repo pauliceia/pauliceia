@@ -25,7 +25,8 @@
       </a>
     </div>
     <div class="logo">
-      <img src="@/views/assets/images/untitled-3.png">
+      <img v-if="$t('home.title2')==='Como?'" src="@/views/assets/images/untitled-3.png">
+      <img v-else src="@/views/assets/images/chamada-slider.png">
     </div>
     <div class="text-style">
       <div class="row justify-content-md-center">
@@ -52,8 +53,10 @@
 
 <script>
   export default {
-    name: "home"
+    name: "home",
   }
+
+
 </script>
 
 <style lang="sass" scoped>

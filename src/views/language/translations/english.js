@@ -129,6 +129,7 @@ export default {
     "title4": "Realization:",
     "title5": "Support:",
     "title6": "Financing:",
+    "title7": "Who are we?",
     "text1": `The project is a partnership between UNIFESP (Campus of Guarulhos and São José dos Campos), the State Archive of SP, INPE (National Institute for Space Research) and Emory University (United States). <br>
               But the concept of "open science" that guides the project makes it a friendly initiative to involve all stakeholders in various stages of its implementation.`,
     "text2": "The project was one of the four contemplated by the call eScience 2016 of FAPESP (Foundation for Research Support of the State of São Paulo), which stimulates collaboration between computer science and other areas of knowledge.",
