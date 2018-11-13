@@ -11,6 +11,7 @@
       <p-boxinfovector></p-boxinfovector>
       <p-boxnotifications></p-boxnotifications>
       <p-subtitle :subShow="true"></p-subtitle>
+      <p-alert></p-alert>
     </ol-map>
 
   </section>
@@ -26,6 +27,7 @@
   import BoxInfoVector from '@/views/components/map/BoxInfoVector'
   import BoxInfoNotifications from '@/views/components/map/BoxNotifications'
   import SubtitleMap from '@/views/components/map/SubtitleMap'
+  import MapAlert from '@/views/components/map/mapAlert'
 
   import {
     pointStyle,
@@ -47,7 +49,8 @@
       'p-boxinfolayer': BoxInfoLayer,
       'p-boxinfovector': BoxInfoVector,
       'p-boxnotifications': BoxInfoNotifications,
-      "p-subtitle": SubtitleMap
+      "p-subtitle": SubtitleMap,
+      "p-alert": MapAlert
     },
 
     created () {
