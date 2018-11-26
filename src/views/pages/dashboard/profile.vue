@@ -29,7 +29,7 @@
                   <div class="form-group">
                     <label>{{ $t('register.lbEmail') }}</label>
                     <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
-                    <input type="email" v-model="user.email" class="form-control">
+                    <input type="email" v-model="user.email" class="form-control" disabled>
                   </div>
                   <div class="form-group">
                     <label>User Name</label>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group col-md-11">
                   <div class="text-right align-self-end"><br>
-                    <a href="#" class="btn btn-primary" @click="Upload()">Submit</a>
+                    <a  class="btn btn-primary" @click="submitInfo()">Submit</a>
                   </div>
                 </div>
               </div>
@@ -79,10 +79,37 @@
           }
         },
         methods: {
-
+          submitInfo(){
+            const vm = this
+            Api().put('/api/user',
+              {
+                'type': 'User',
+                'properties': {
+                  'user_id': vm.user.user_id,
+                  'email': vm.user.email,
+                  'username': vm.user.username,
+                  'name': vm.user.name,
+                  'terms_agreed': true,
+                  'receive_notification_by_email': vm.user.receive_notification_by_email
+                }
+              }
+            ).then(function (response) {
+              //console.log(response)
+              vm.$message.success("The profile was updated with success!")
+              vm.$router.push({
+                path: '/dashboard/home'
+              })
+            }, function (cause) {
+               msg = cause.toString()
+                vm._msgError(msg)
+            })
+          },
+          _msgError(msg){
+            this.$message.error(msg)
+          },
         },
         mounted() {
-          console.log(this.user) //user.picture
+          //console.log(this.user) //user.picture
           this.imagePerson = this.user.picture !== '' ? this.user.picture : ImgPerson
         }
     }
