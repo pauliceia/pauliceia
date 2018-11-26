@@ -81,7 +81,7 @@
                             :required="true">
                         </el-option>
                     </el-select>
-                    <el-select v-model="number" placeholder="Coluna Número">
+                    <el-select v-model="numberAddress" placeholder="Coluna Número">
                         <el-option
                             v-for="item in headers"
                             :key="item"
@@ -151,7 +151,7 @@ export default {
             loading: null,
             headers: [],
             street: '',
-            number: '',
+            numberAddress: '',
             year: '',
         }
     },
@@ -193,7 +193,7 @@ export default {
             reader.onload = async _ => {
                 let text = reader.result;
                 let node = document.getElementById('output');
-                let csv = text;
+                let csv = text.replace('\r','');
                 this.headers = csv.split('\n')[0].split(',')
                 //this.headers = csv.split('\n')[0].split(',').map( header => header.substr(header.indexOf('"')+1, header.lastIndexOf('"')-1).replace('"', '') )
                 this.csvjson = CSV2JSON(csv);
@@ -202,6 +202,8 @@ export default {
             reader.readAsText(e.target.files[0]);
         },
         async visualizar() {
+            console.log(this.headers)
+            console.log(this.csvjson)
             this._openFullScreen()
             let json = JSON.parse(this.csvjson);
             let jsonResults = [];    
@@ -209,12 +211,12 @@ export default {
             let CsvTotalStatus = "Status da busca de endereços via CSV: \n \n"
             let errosCount = 0;
             for (let i = 0; i < json.length; i++) {
-                let address = json[i][this.street].toLowerCase()+", "+json[i][this.number]+", "+json[i][this.year];
+                let address = json[i][this.street].toLowerCase()+", "+json[i][this.numberAddress]+", "+json[i][this.year];
                 console.log(address)
                 try {
                     let response = await ApiMap.geolocationOne(address);
                     if(response.data[1][0].name != "Point not found"){
-                        let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'"'+"}]");
+                        let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'"'+"}]");
                         let geomPoint = response.data[1][0].geom.substr(response.data[1][0].geom.indexOf("(")+1);
                         geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
                         let x = parseFloat(geomPoint.split(' ')[0]);
@@ -229,19 +231,19 @@ export default {
 
                         if (response.data[1][0].confidence == 1){
 
-                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Encontrado. \n'
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" foi Encontrado. \n'
                             CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
 
                         }
                         else if (response.data[1][0].confidence == 0){
                             
-                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Extrapolado espacialmente. \n'
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" foi Extrapolado espacialmente. \n'
                             CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
 
                         }
                         else {
 
-                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" foi Geocodificado. \n'
+                            let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" foi Geocodificado. \n'
                             CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
 
                         }
@@ -249,14 +251,14 @@ export default {
                     } else {
 
                         errosCount = errosCount + 1
-                        let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" não foi encontrado. \n'
+                        let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" não foi encontrado. \n'
                         jsonErros = jsonErros.concat(erro);
 
                     }
                 } catch (_) {
                 
                     errosCount = errosCount + 1
-                    let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.number]+", "+json[i][this.year]+'" não foi encontrado. \n'
+                    let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" não foi encontrado. \n'
                     jsonErros = jsonErros.concat(erro);
 
                 }
