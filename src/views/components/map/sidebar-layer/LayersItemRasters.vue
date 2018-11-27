@@ -2,7 +2,7 @@
     <section>
         <div class="box-item" v-for="layer of layers" :key="layer.title">
             <el-switch v-model="layer.status" @click.native="modifyLayer(layer)" :active-color="color"></el-switch>
-            <span><b>{{ layer.title == 'saraBrasil30' ? '1930' : layer.title }}</b></span>
+            <span><b>{{ layer.titleReal }}</b></span>
         </div>
     </section>
 </template>
@@ -23,6 +23,7 @@ export default {
             layers: [
                 {
                     title: 'saraBrasil30',
+                    titleReal: '1930',
                     status: true,
                     range: [1930,1940]
                 },
@@ -33,26 +34,31 @@ export default {
                 // },
                 {
                     title: '1910',
+                    titleReal: '1905',
                     status: false,
                     range: [1910,1920]
                 },
                 {
                     title: '1890',
+                    titleReal: '1990',
                     status: false,
                     range: [1890,1910]
                 },
                 {
                     title: '1880',
+                    titleReal: '1881',
                     status: false,
                     range: [1880,1890]
                 },
                 {
                     title: '1870',
+                    titleReal: '1877',
                     status: false,
                     range: [1870,1880]
                 },
                 {
                     title: '1868',
+                    titleReal: '1868',
                     status: false,
                     range: [1868,1880]
                 }

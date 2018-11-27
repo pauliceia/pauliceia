@@ -24,7 +24,7 @@ const dashRoutes = [
     },
     {
         path: '/dashboard/home',
-        name: 'Home',
+        name: 'HomeD',
         component: DashHome,
         meta: { auth: true }
     },
@@ -45,7 +45,7 @@ const dashRoutes = [
       path: '/dashboard/keywords',
       name: 'Keyword',
       component: DashKeyword,
-      props: {name: 'Home', layer_id: 0},
+      props: {name: 'HomeD', layer_id: 0},
       meta: { auth: true }
     },
     {

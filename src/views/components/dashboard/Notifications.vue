@@ -22,7 +22,13 @@
             <div class="notification-box">
 
               <div style="display: flex; align-items: center;">
-                <div class="photo">B</div>
+                <div class="photo">
+                  <md-avatar class="md-avatar-icon stylePicture">
+                    <div class="logo">
+                      <img :src="n.photo" />
+                    </div>
+                  </md-avatar>
+                </div>
                 <div class="credentials">
                   <p class="author">{{n.name}}</p>
                   <p class="date">{{n.date}}</p>
@@ -66,7 +72,13 @@
             <div class="notification-box">
 
               <div style="display: flex; align-items: center;">
-                <div class="photo">B</div>
+                <div class="photo">
+                  <md-avatar class="md-avatar-icon stylePicture">
+                    <div class="logo">
+                      <img :src="n.photo" />
+                    </div>
+                  </md-avatar>
+                </div>
                 <div class="credentials">
                   <p class="author">{{n.name}}</p>
                   <p class="date">{{n.date}}</p>
@@ -124,7 +136,13 @@
             <div class="notification-box">
 
               <div style="display: flex; align-items: center;">
-                <div class="photo">B</div>
+                <div class="photo">
+                  <md-avatar class="md-avatar-icon stylePicture">
+                    <div class="logo">
+                      <img :src="n.photo" />
+                    </div>
+                  </md-avatar>
+                </div>
                 <div class="credentials">
                   <p class="author">{{n.name}}</p>
                   <p class="date">{{n.date}}</p>
@@ -171,6 +189,7 @@
   import Api from '@/middleware/ApiVGI'
   import {mapState} from 'vuex'
   import ModalNotification from '@/views/components/dashboard/ModalNotification'
+  import ImgPerson from '@/views/assets/images/icon_person.png'
 
   export default {
     components: {
@@ -293,6 +312,7 @@
             return {
               'description': notification.properties.description,
               'name': userInfo.data.features[0].properties.name,
+              'photo': userInfo.data.features[0].properties.picture === '' ? ImgPerson : userInfo.data.features[0].properties.picture,
               'date': notification.properties.created_at,
               'type': 'general',
               'notification_id': notification.properties.notification_id,
@@ -325,6 +345,7 @@
                       {
                         'description': notification.properties.description,
                         'name': user.data.features[0].properties.name,
+                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
                         'date': notification.properties.created_at,
                         'type': 'message',
                         'notification_id': notification.properties.notification_id,
@@ -343,6 +364,7 @@
                         {
                           'description': notification.properties.description,
                           'name': user.data.features[0].properties.name,
+                          'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
                           'date': notification.properties.created_at,
                           'type': 'message',
                           'notification_id': notification.properties.notification_id,
@@ -371,6 +393,7 @@
                       {
                         'description': notification.properties.description,
                         'name': user.data.features[0].properties.name,
+                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
                         'date': notification.properties.created_at,
                         'type': 'myLayer',
                         'notification_id': notification.properties.notification_id,
@@ -400,6 +423,7 @@
                       {
                         'description': notification.properties.description,
                         'name': user.data.features[0].properties.name,
+                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
                         'date': notification.properties.created_at,
                         'type': 'general',
                         'notification_id': notification.properties.notification_id,
@@ -441,15 +465,13 @@
     .photo
       display: inline-block
       width: 40px
-      padding: 10px
+      padding: 0px
       text-align: center
-      color: #FFF
       border-radius: 50%
-      background: #666
 
     .credentials
       display: inline-block
-      margin: 0 0 0 10px
+      margin: 0 0 0 40px
       .author
         font-weight: 600
         margin-top: 5px !important
@@ -462,7 +484,7 @@
 
     .content
       text-align: justify
-      margin-top: 5px
+      margin-top: 10px
 
     .comments
       width: 100%
@@ -483,4 +505,9 @@
 
   .msgType
     display: flex
+
+
+  .stylePicture
+    width: 50px
+    height: 50px
 </style>

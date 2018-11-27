@@ -115,7 +115,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-6 tam">
         <div class="card" v-if="shapeCorrect">
           <div class="card-body">
             <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
@@ -238,14 +238,6 @@
           let msg = "Date is missing"
           vm.$message.error(msg)
         }
-        else if(this.endColumnsName.length === 0 || this.startColumnsName.length === 0){
-          let msg = "Column name is missing"
-          vm.$message.error(msg)
-        }
-        else if(this.startDateMask === null || this.endDateMask === null){
-          let msg = "Mask is missing"
-          vm.$message.error(msg)
-        }
         else {
 
           let timeColumn = {
@@ -253,10 +245,10 @@
               'f_table_name': this.tableName,
               'start_date': this.startDate,
               'end_date': this.endDate,
-              'end_date_column_name': this.endColumnsName,
-              'start_date_column_name': this.startColumnsName,
-              'start_date_mask_id': this.startDateMask.mask_id,
-              'end_date_mask_id': this.endDateMask.mask_id,
+              'end_date_column_name': this.endColumnsName!=null ? this.endColumnsName[0] : null,
+              'start_date_column_name': this.startColumnsName!=null ? this.startColumnsName[0] : null,
+              'start_date_mask_id': (this.startDateMask.mask_id!==1 || this.startDateMask.mask_id!==2 || this.startDateMask.mask_id!==3) ? null : this.startDateMask.mask_id,
+              'end_date_mask_id': (this.endDateMask.mask_id!==1 || this.endDateMask.mask_id!==2 || this.endDateMask.mask_id!==3) ? null : this.endDateMask.mask_id ,
             },
             'type': 'TemporalColumns'
           }
@@ -273,7 +265,7 @@
             if (cause.response.status === 403) msg = "Just the owner of layer or administrator can create/update a time columns."
             else if (cause.response.status === 401) msg = "It is necessary an Authorization valid!"
             else msg = cause.toString()
-            console.log(cause.response)
+            //console.log(cause.response)
             vm.$message.error(msg)
           })
         }
@@ -500,24 +492,26 @@
             //console.log(response.data.features[0])
             vm.startDate = response.data.features[0].properties.start_date
             vm.endDate = response.data.features[0].properties.end_date
-            vm.endColumnsName = response.data.features[0].properties.end_date_column_name
-            vm.startColumnsName = response.data.features[0].properties.start_date_column_name
+            vm.endColumnsName = response.data.features[0].properties.end_date_column_name === 'None' ? null : response.data.features[0].properties.end_date_column_name
+            vm.startColumnsName = response.data.features[0].properties.start_date_column_name === "None" ? null : response.data.features[0].properties.start_date_column_name
             vm.startDateMask_mask_id = response.data.features[0].properties.start_date_mask_id
             vm.endDateMask_mask_id = response.data.features[0].properties.end_date_mask_id
 
-            Api().get('/api/mask/?mask_id=' + response.data.features[0].properties.start_date_mask_id).then(function (response) {
-              response.data.features.filter(e => {
-                vm.startDateMask = e.properties
+            if(response.data.features[0].properties.start_date_mask_id != null)
+              Api().get('/api/mask/?mask_id=' + response.data.features[0].properties.start_date_mask_id).then(function (response) {
+                response.data.features.filter(e => {
+                  vm.startDateMask = e.properties
+                })
               })
-            })
+            else vm.startDateMask = ''
 
-            Api().get('/api/mask/?mask_id=' + response.data.features[0].properties.end_date_mask_id).then(function (response) {
-              response.data.features.filter(e => {
-                vm.endDateMask = e.properties
+            if(response.data.features[0].properties.end_date_mask_id != null)
+              Api().get('/api/mask/?mask_id=' + response.data.features[0].properties.end_date_mask_id).then(function (response) {
+                response.data.features.filter(e => {
+                  vm.endDateMask = e.properties
+                })
               })
-            })
-
-
+            else vm.endDateMask = ''
           })
         })
       }
@@ -553,4 +547,7 @@
     margin: 0px
     position: relative
     border-radius: 30px
+
+  .tam
+    min-width: 800px;
 </style>

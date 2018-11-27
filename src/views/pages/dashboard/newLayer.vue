@@ -389,8 +389,9 @@
         const vm = this
         this._openFullLoading()
 
-        if(this.startDate === null || this.endDate === null)
+        if(this.startDate === null || this.endDate === null) {
           this._msgError("Datas são necessárias")
+        }
         else {
           let timeColumn = {
             'properties': {
@@ -525,7 +526,7 @@
                           //console.log(vm.columns)
                           vm.columns = e.properties
                           Object.getOwnPropertyNames(e.properties).forEach(c => {
-                            console.log(c)
+                            //console.log(c)
                             if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
                               vm.columnsName.push(c)
                             }
