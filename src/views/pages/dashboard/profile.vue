@@ -10,7 +10,7 @@
               <div class="form-row">
                 <div class="form-group col-md-4 text-center">
                   <p class="text-left">Profile Picture
-                    <p-popover-labels :text="$t('dashboard.newLayer.startDate')" /></p>
+                    <p-popover-labels text="Foto para o perfil" /></p>
                   <md-avatar class="md-avatar-icon stylePicture">
                     <div class="logo">
                       <img :src="imagePerson" />
@@ -23,17 +23,17 @@
                 <div class="form-group col-md-7">
                   <div class="form-group">
                   <label for="inputName">{{ $t('dashboard.keywords.name') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
+                    <p-popover-labels text="Nome social" />
                     <input class="form-control"  v-model="user.name" id="inputName">
                   </div>
                   <div class="form-group">
                     <label>{{ $t('register.lbEmail') }}</label>
-                    <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
+                    <p-popover-labels text="Não é possível modificar o e-mail" />
                     <input type="email" v-model="user.email" class="form-control" disabled>
                   </div>
                   <div class="form-group">
                     <label>User Name</label>
-                    <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
+                    <p-popover-labels text="Nome de usuário" />
                     <input v-model="user.username" class="form-control">
                   </div>
 

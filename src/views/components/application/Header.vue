@@ -34,6 +34,11 @@
                             :class="this.$route.path == '/contact' ? 'nav-link active': 'nav-link'"
                             to="/contact">{{ $t('nav.contact') }}</router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link
+                            :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'"
+                            to="/tutorial">Tutorial</router-link>
+                    </li>
                     <!--<li class="nav-item">-->
                         <!--<a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"-->
                             <!--href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.team') }}</a>-->

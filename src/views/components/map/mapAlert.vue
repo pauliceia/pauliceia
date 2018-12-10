@@ -15,7 +15,7 @@
       nos reporte por e-mail que está na aba "Contatos", para que possamos juntos construir uma ferramenta melhor.<br>
       Por favor, se acontecer algum problema na plataforma, reporte no e-mail e descreva-o detalhadamente, anexando o CSV, o Shapefile,
       imagem, print-screen ou outro arquivo usado e/ou desejado, para facilitar o rastreio do problema por parte da equipe. Além de que, adicionar o dia, hora e minuto do ocorrido, se possível.<br>
-      Informamos ainda que, por estarmos na fase de testes, pode ser que nós limpemos o banco, fazendo com que você perda o seu usuário e seus dados. Isto é feito para melhor compatibilidade das novas
+      Informamos ainda que, por estarmos na fase de testes, pode ser que nós limpemos o banco, fazendo com que você perca o seu usuário e seus dados. Isto é feito para melhor compatibilidade das novas
       funções que são criadas. Pedimos a sua compreensão em relação a isso, para que se registre novamente.<br>
 
       Agradecemos sua compreensão e contribuição."
@@ -26,6 +26,7 @@
 
 <script>
   import {mapState} from 'vuex'
+  import Vue from 'vue'
 
   export default {
     name: "mapAlert",
@@ -34,7 +35,7 @@
       ...mapState('map', ['boxAlert'])
     },
 
-    data: function () {
+    data() {
       return {
       }
     },
