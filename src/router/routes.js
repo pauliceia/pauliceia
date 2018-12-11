@@ -9,6 +9,7 @@ import Contact from '@/views/pages/contact'
 import Register from '@/views/pages/register'
 import ValidSocial from '@/views/pages/validSocial'
 import ValidEmail from '@/views/pages/validEmail'
+import Tutorial from '@/views/pages/tutorial'
 
 //routes
 import mapRoutes from '@/router/map'
@@ -28,6 +29,11 @@ const routes = [
           path: '/about',
           name: 'About',
           component: About
+        },
+        {
+          path: '/tutorial',
+          name: 'Tutorial',
+          component: Tutorial
         },
         {
           path: '/home',

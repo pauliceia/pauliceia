@@ -40,7 +40,7 @@ export default {
                 },
                 {
                     title: '1890',
-                    titleReal: '1990',
+                    titleReal: '1890',
                     status: false,
                     range: [1890,1910]
                 },
