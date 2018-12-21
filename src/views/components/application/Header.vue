@@ -35,9 +35,10 @@
                             to="/contact">{{ $t('nav.contact') }}</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link
+                        <!--<router-link
                             :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'"
-                            to="/tutorial">Tutorial</router-link>
+                            to="/tutorial">Tutorial</router-link>-->
+                        <a :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'" href="https://drive.google.com/file/d/1KT9NTIFYM4u-siL5F88NIg255VjSgI2I/view?usp=sharing" target="_blank" >Tutorial</a>
                     </li>
                     <!--<li class="nav-item">-->
                         <!--<a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"-->
