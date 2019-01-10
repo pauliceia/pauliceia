@@ -286,6 +286,7 @@
         layer_id: null,
         is_the_admin: false,
         loading: '',
+        finished: 1,
         visibleRemove: false,
         optionsTypeGeom: [{
             value: 'MULTIPOINT',
@@ -321,20 +322,20 @@
       const vm = this
 
       this.shapeCorrect = false
-      Api().get('/api/user').then(function (response) {
+      Api().get('/api/user').then(function (response) { //Pegando as informações de todos os usuários
         response.data.features.filter(e => {
           if (e.properties.user_id !== vm.user.user_id)
             vm.users.push(e.properties)
         })
       })
 
-      Api().get('/api/keyword').then(function (response) {
+      Api().get('/api/keyword').then(function (response) {  //Pegando todas as keywords
         response.data.features.filter(e => {
           vm.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
         })
       })
 
-      Api().get('/api/mask').then(function (response) {
+      Api().get('/api/mask').then(function (response) {     //Pegando as informações de todas as máscaras
         response.data.features.filter(e => {
           vm.dateMask.push(e.properties)
         })
@@ -358,7 +359,7 @@
         })
 
       },
-      clearData(){
+      clearData(){        //Limpa os dados do Store
         this.$store.dispatch('dashboard/setName',  "")
         this.$store.dispatch('dashboard/setUsers',  [])
         this.$store.dispatch('dashboard/setReferences',  [])
@@ -366,26 +367,26 @@
         this.$store.dispatch('dashboard/setKeywords',  [])
         this.$store.dispatch('dashboard/setDescription',  "")
       },
-      saveName(){
+      saveName(){ //Salvar os dados no Store
         this.$store.dispatch('dashboard/setName',  document.getElementById("inputName").value)
       },
-      saveUsers(){
+      saveUsers(){  //Salvar os dados no Store
         this.$store.dispatch('dashboard/setUsers',  this.chosenUsers)
       },
-      saveReferences(){
+      saveReferences(){ //Salvar os dados no Store
         this.$store.dispatch('dashboard/setReferences',  this.chosenRef)
         this.$store.dispatch('dashboard/setRefId',  this.chosenRefID)
       },
-      saveDescription(){
+      saveDescription(){  //Salvar os dados no Store
         this.$store.dispatch('dashboard/setDescription',  document.getElementById("inputDescription").value)
       },
-      saveKeywords(){
+      saveKeywords(){ //Salvar os dados no Store
         this.$store.dispatch('dashboard/setKeywords',  this.chosenKeywords)
       },
-      updateName() {
+      updateName() {  //Salvar os dados no Store
         this.fname = document.getElementById("Upload").files[0].name
       },
-      Upload2(){
+      Upload2(){  //Cadastrar a segunda parte da camada - time column
         const vm = this
         this._openFullLoading()
 
@@ -393,6 +394,8 @@
           this._msgError("Datas são necessárias")
         }
         else {
+          vm.timeout_upload()
+
           let timeColumn = {
             'properties': {
               'f_table_name': this.tableName,
@@ -425,7 +428,19 @@
         }
 
       },
-      Upload() {
+      timeout_upload(){ //Erro de estouro de tempo ao criar a nova camada
+        const vm = this
+        this.finished = 0
+
+        setTimeout(_=>{
+          if(vm.finished === 0){
+            Api().delete('/api/layer/'+vm.layer_id)
+            vm.loading.close();
+            vm._msgError("Timeout! Caso o erro persista entre em contato com os administradores da plataforma!")
+          }
+        }, 20000);
+      },
+      Upload() {  //Cadastrar a primeira parte da Camada
         this._openFullLoading()
         const vm = this
 
@@ -452,10 +467,10 @@
           vm._msgError("É necessário adicionar pelo menos uma palavra-chave!")
 
         else {
-          if(vm.typeSubmit === 'file'){
+          if(vm.typeSubmit === 'file'){   //Importando o arquivo
             let file = document.getElementById("Upload").files[0]
             this.upload_from_file(file)
-          } else
+          } else                          //Criando a camada em branco
             this.upload_from_input()
         } 
 
@@ -469,6 +484,8 @@
           vm._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
           
         else {
+          vm.timeout_upload()
+
           try {
             let layer = {
               'type': 'Layer',
@@ -483,12 +500,9 @@
               }
             }
 
-            Api().post('/api/layer/create',
-              layer
-            ).then(function (response) {
-
+            Api().post('/api/layer/create', layer).then(function (response) {   //Cadastrando nova Layer
                 vm.layer_id = response.data.layer_id
-                vm.chosenUsers.forEach(u => {          //POST cada usuario colaborar da layer
+                vm.chosenUsers.forEach(u => {
                   let user_layer = {
                     'properties': {
                       'is_the_creator': 'false',
@@ -499,8 +513,7 @@
                   }
                   Api().post('/api/user_layer/create',
                     user_layer
-                  )//.then(function (response) {})
-
+                  )
                 })
               let changeset = {
                 'properties': {
@@ -511,60 +524,70 @@
                 'type': 'Changeset'
               }
 
-              Api().post('/api/changeset/create',
-                changeset
-              ).then(function (response) {
+              Api().post('/api/changeset/create', changeset).then(function (response) {   //Cadastrando Changeset
 
-                  Api().post('api/import/shp/?f_table_name=' + vm.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id,
-                    //'&epsg=' + epsg,
-                    file
-                  ).then(function (response) {
-                      //console.log("Import ok")
-
+                  Api().post('api/import/shp/?f_table_name=' + vm.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id, file).then(function (response) {   //Cadastrando o Import
                       Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then(function (response) {    //Pega as colunas do shapefile enviado
                         response.data.features.filter(e => {
-                          //console.log(vm.columns)
                           vm.columns = e.properties
                           Object.getOwnPropertyNames(e.properties).forEach(c => {
-                            //console.log(c)
-                            if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
-                              vm.columnsName.push(c)
-                            }
+                            if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') vm.columnsName.push(c)  //Adiciona as colunas do shapefile na variavel
                           })
                           vm.shapeCorrect = true;
                           vm.loading.close();
                           vm.clearData()
-                          //console.log(vm.columnsName)
+                          vm.finished = 1
                         })
-                      }, function (cause) {
+                      }, function (cause) {   //Erro ao ler a feature table
                         Api().delete('/api/layer/'+vm.layer_id)
+                        vm.loading.close();
 
                         let msg = ''
                         msg = cause.toString()
+                        vm.finished = 1
                         vm._msgError(msg)
                       })
-                    }, function (cause) {
+                    }, function (cause) {     //Erro ao criar o import
                       Api().delete('/api/layer/'+vm.layer_id)
                       Api().delete('/api/changeset/?changeset_id='+response.data.changeset_id)
-                      console.log(cause.response)
+                      vm.loading.close();
+
                       let msg = ''
-                      if (cause.response.status === 409) msg = "O arquivo precisa ser um .zip."
-                      else if (cause.response.status === 400) msg = "ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP."
+                      if (cause.response.status === 400) msg = "1) ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP." +
+                        "2) The Shapefile has an invalid attribute: . It has a special character. Please, rename it."
+                      else if (cause.response.status === 403) msg = "Just the owner of the layer or administrator can create/update a feature table or do a import."
                       else if (cause.response.status === 404) msg = "Not found .prj inside the zip."
-                      else if (cause.response.status === 500) msg = "Problem when import a resource. Please, contact the administrator."
+                      else if (cause.response.status === 409) msg = "1) File is not a zip file." +
+                        "2) It was not possible to find one EPSG from the .prj." +
+                        "3) There is not a list of codes in the result. So it is an invalid .prj." +
+                        "4) The Shapefile has the 'version' or 'changeset_id' attribute. Please, rename them." +
+                        "5) Shapefile is not inside the default city of the project."
+                      else if (cause.response.status === 500) msg = "1) Problem when to import the Shapefile. Fiona was not able to read the Shapefile. One reason can be that the Shapefile has an empty column name, so name it." +
+                        "2) Some geometries of the Shapefile are with problem. Please, verify them and try to import again later." +
+                        "3) Problem when import a resource. Please, contact the administrator."
+                      else if (cause.response.status === 503) msg = "Problem with the prj2epsg web service."
                       else msg = cause.toString()
+
+                      vm.finished = 1
                       vm._msgError(msg)
                   })
-              }, function (cause) {
+              }, function (cause) {           //Erro ao criar o changeset
                 Api().delete('/api/layer/'+vm.layer_id)
+                vm.loading.close();
 
                 let msg = ''
+                if (cause.response.status === 500) msg = "Problem when create a resource. Please, contact the administrator."
+                else msg = cause.toString()
+                vm.finished = 1
                 msg = cause.toString()
                 vm._msgError(msg)
               })
-            }, function (cause) {
+            }, function (cause) {           //Erro ao criar a layer
               let msg = ''
-              if (cause.response.status === 409) msg = "O nome dessa camada já existe em nosso banco de dados!"
+              vm.finished = 1
+              vm.loading.close();
+              if (cause.response.status === 409) msg = "1) The table name already exist or is a reserved word. Please, rename it. 2) The maximum of keywords allowed to a layer are 5."
+              else if (cause.response.status === 500) msg = "Problem when create a resource. Please, contact the administrator."
               else if (cause.response.status === 401) msg = "É necessário uma autorização válida!"
               else msg = cause.toString()
               vm._msgError(msg)
@@ -576,6 +599,7 @@
                 confirmButtonText: 'OK',
                 type: 'error'
             });
+            vm.finished = 1
             this.loading.close()
           }
         }
@@ -602,6 +626,8 @@
               this._msgError('Atributos Inválidos. O nome do do atributo precisa ser diferente: id, changeset_id e version!')
 
             else {
+              vm.timeout_upload()
+
               //CREATE LAYER
               let layer = {
                 'type': 'Layer',
@@ -667,7 +693,8 @@
           }
           vm.clearData()
 
-        } catch(error) {
+        }
+        catch(error) {
           console.log(error)
           if(this.layer_id != null && this.layer_id !== undefined)
             await Dashboard.deleteLayer(this.layer_id)
@@ -745,7 +772,12 @@
       _msgError(msg){
         if(this.loading != '' && this.loading != null) 
           this.loading.close()
-        this.$message.error(msg)
+        this.$message.error({
+          message: msg,
+          center: true,
+          duration: 8000,
+          showClose: true,
+        })
       },
       _openFullLoading(){
         this.loading = this.$loading({

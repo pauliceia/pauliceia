@@ -416,7 +416,17 @@
             vm.$message.error(msg)
           })
         }
-      }
+      },
+      _msgError(msg){
+        if(this.loading != '' && this.loading != null)
+          this.loading.close()
+        this.$message.error({
+          message: msg,
+          center: true,
+          duration: 6000,
+          showClose: true,
+        })
+      },
     },
     mounted() {
       const vm = this
