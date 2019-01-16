@@ -1,5 +1,5 @@
 <template>
-  <section class="page-weapper">
+  <section class="page-weapper" itemscope itemtype="http://schema.org/CreativeWork">
     <div class="container">
       <header class="row row-style">
         <div class="row justify-content-md-center">
@@ -7,7 +7,7 @@
             <div class="card card-style">
               <div class="card-body"><br>
                 <h5 class="card-title">{{ $t('about.title1') }}</h5><br>
-                <div class="card-text" v-html="$t('about.text1')"/>
+                <div class="card-text" itemprop="about" v-html="$t('about.text1')"/>
               </div>
             </div>
           </div>
@@ -40,8 +40,8 @@
         </div>
       </div>
       <div class="row justify-content-md-center">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">{{ $t('about.name1') }}</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">{{ $t('about.name1') }}</h5>
           {{ $t('about.desc1') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -50,15 +50,15 @@
         <div class="col-sm-1 column-style">
           <img class="picture" src="@/views/assets/images/perfil/2.png">
         </div>
-        <div class="col-sm-3 column-style">
-          <h5 class="title2">{{ $t('about.name2') }}</h5>
+        <div class="col-sm-3 column-style" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">{{ $t('about.name2') }}</h5>
 
           {{ $t('about.desc2') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">{{ $t('about.name3') }}</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">{{ $t('about.name3') }}</h5>
           {{ $t('about.desc3') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -68,13 +68,13 @@
           <img class="picture" src="@/views/assets/images/perfil/4.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Ana Maria Alves Barbour</h5>
+          <h5 class="title2" itemprop="name">Ana Maria Alves Barbour</h5>
           {{ $t('about.desc4') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Cíntia Rodrigues de Almeida</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Cíntia Rodrigues de Almeida</h5>
           {{ $t('about.desc5') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -84,13 +84,13 @@
           <img class="picture" src="@/views/assets/images/perfil/6.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Carlos Alberto Noronha</h5>
+          <h5 class="title2" itemprop="name">Carlos Alberto Noronha</h5>
           {{ $t('about.desc6') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Cristiane Regina Myiasaka</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Cristiane Regina Myiasaka</h5>
           {{ $t('about.desc7') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -100,13 +100,13 @@
           <img class="picture" src="@/views/assets/images/perfil/8.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Daniela Leal Musa</h5>
+          <h5 class="title2" itemprop="name">Daniela Leal Musa</h5>
           {{ $t('about.desc8') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Ester Dantas Reis Nune</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Ester Dantas Reis Nune</h5>
           {{ $t('about.desc9') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -116,13 +116,13 @@
           <img class="picture" src="@/views/assets/images/perfil/10.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Denis Taveira de Lima</h5>
+          <h5 class="title2" itemprop="name">Denis Taveira de Lima</h5>
           {{ $t('about.desc10') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Fernando Atique</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Fernando Atique</h5>
           {{ $t('about.desc11') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -132,13 +132,13 @@
           <img class="picture" src="@/views/assets/images/perfil/12.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Eduardo de Souza Goiabeira</h5>
+          <h5 class="title2" itemprop="name">Eduardo de Souza Goiabeira</h5>
           {{ $t('about.desc12') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Jeffrey Lesser</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Jeffrey Lesser</h5>
           {{ $t('about.desc13') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -148,13 +148,13 @@
           <img class="picture" src="@/views/assets/images/perfil/14.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Gabriel Sansigolo</h5>
+          <h5 class="title2" itemprop="name">Gabriel Sansigolo</h5>
           {{ $t('about.desc14') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Luanna M. do Nascimentor</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Luanna M. do Nascimentor</h5>
           {{ $t('about.desc15') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -164,13 +164,13 @@
           <img class="picture" src="@/views/assets/images/perfil/16.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Gilberto Ribeiro de Queiroz</h5>
+          <h5 class="title2" itemprop="name">Gilberto Ribeiro de Queiroz</h5>
           {{ $t('about.desc16') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Monaliza Caetano</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Monaliza Caetano</h5>
           {{ $t('about.desc17') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -180,13 +180,13 @@
           <img class="picture" src="@/views/assets/images/perfil/18.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Nandamudi Vijaykumar</h5>
+          <h5 class="title2" itemprop="name">Nandamudi Vijaykumar</h5>
           {{ $t('about.desc18') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Orlando Guarnier Farias</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Orlando Guarnier Farias</h5>
           {{ $t('about.desc19') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -196,13 +196,13 @@
           <img class="picture" src="@/views/assets/images/perfil/20.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Rodrigo Monteiro Mariano</h5>
+          <h5 class="title2" itemprop="name">Rodrigo Monteiro Mariano</h5>
           {{ $t('about.desc20') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Priscila Machado Meireles</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Priscila Machado Meireles</h5>
           {{ $t('about.desc21') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -212,13 +212,13 @@
           <img class="picture" src="@/views/assets/images/perfil/21_1.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Thomas Rogers</h5>
+          <h5 class="title2" itemprop="name">Thomas Rogers</h5>
           {{ $t('about.desc22') }}
         </div>
       </div>
       <div class="row justify-content-md-center row-style">
-        <div class="col-sm-3 column-style text-right">
-          <h5 class="title2">Vitória Martins Fontes da Silva</h5>
+        <div class="col-sm-3 column-style text-right" itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <h5 class="title2" itemprop="name">Vitória Martins Fontes da Silva</h5>
           {{ $t('about.desc23') }}
         </div>
         <div class="col-sm-1 column-style text-right">
@@ -228,7 +228,7 @@
           <img class="picture" src="@/views/assets/images/perfil/24.png">
         </div>
         <div class="col-sm-3 column-style">
-          <h5 class="title2">Wania Mazzarello</h5>
+          <h5 class="title2" itemprop="name">Wania Mazzarello</h5>
           {{ $t('about.desc24') }}
         </div>
       </div>

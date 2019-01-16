@@ -1,14 +1,14 @@
 <template>
     <div>
-      <div class="row justify-content-md-center row-style">
+      <div class="row justify-content-md-center row-style" itemscope itemtype="https://schema.org/Organization">
         <div class="col-sm-4 column-style">
           <img class="picture" src="@/views/assets/images/untitled-4.png">
-          <p>PAULICEIA 2.0:</p>
+          <p itemprop="name">PAULICEIA 2.0:</p>
           <p style="position: relative; top: -10px;">{{ $t('contact.title1') }}</p>
           <br>
           <p>{{ $t('contact.contact') }}</p>
           <p class="picture2 orange-style"><md-icon>mail</md-icon></p>
-          <p class="orange-style">pauliceia_support@googlegroups.com</p>
+          <p class="orange-style" itemprop="email">pauliceia_support@googlegroups.com</p>
           <p><img class="picture2" style="width: 25px; " src="@/views/assets/images/facebook.png">/grupohimaco</p>
 
         </div>
@@ -16,11 +16,16 @@
           <p class="orange-style"><b>{{ $t('contact.links') }}</b></p>
           <br>
           <p class="orange-style"><b>{{ $t('contact.institutional') }}</b></p>
-          <p><b>Arquivo Público do Estado de SP:</b> www.arquivoestado.sp.gov.br</p>
-          <p><b>Emory University:</b> www.emory.edu</p>
-          <p><b>Fundação de Amparo a Pesquisa de SP:</b> www.fapesp.br</p>
-          <p><b>Instituto Nacional de Pesquisas Especial (INPE):</b> www.inpe.br</p>
-          <p><b>Universidade Federal de SP (UNIFESP):</b> www.unifesp.br</p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">Arquivo Público do Estado de SP:</b> <span itemprop="url">www.arquivoestado.sp.gov.br</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">Emory University:</b> <span itemprop="url">www.emory.edu</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">Fundação de Amparo a Pesquisa de SP:</b> <span itemprop="url">www.fapesp.br</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">Instituto Nacional de Pesquisas Especial (INPE):</b> <span itemprop="url">www.inpe.br</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">Universidade Federal de SP (UNIFESP):</b> <span itemprop="url">www.unifesp.br</span></p>
           <br>
           <p class="orange-style"><b>{{ $t('contact.platforms') }}</b></p>
           <p><b>Creative Commons:</b> https//creativecommons.org/</p>
