@@ -5,7 +5,7 @@
       <p-timeline></p-timeline>
       <p-geocoding></p-geocoding>
       <p-sidebarLayer></p-sidebarLayer>
-      <p-sidebarEdit></p-sidebarEdit>
+      <!--<p-sidebarEdit></p-sidebarEdit>-->
       
       <p-boxinfolayer></p-boxinfolayer>
       <p-boxinfovector></p-boxinfovector>
