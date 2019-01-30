@@ -5,7 +5,7 @@
       <div class="col-sm-12" v-if="shapeCorrect === false">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{ $t('dashboard.nav.newLayer') }}</h5>
+            <h6 class="mb-0">{{ $t('dashboard.nav.newLayer') }}</h6><br>
               
             <form class="row">
               <div class="card-left col-sm-6">
@@ -13,17 +13,17 @@
                   <div class="form-group col-md-6">
                     <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.nameD')" />
-                    <input class="form-control" :value="name" id="inputName"  @blur="saveName()"><!--placeholder="Name">-->
+                    <input :value="name" @blur="saveName()" class="form-control"  id="inputName"><!--placeholder="Name">-->
                   </div>
 
                   <div class="form-group col-md-6">
                     <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
                     <p-popover-labels :text="$t('dashboard.newLayer.keywordsD')" />
-                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
+                    <button @click="newKeyword()" class="btn btn-outline-warning btn-sm add" type="button">
                       <md-icon>add_circle_outline</md-icon>
                     </button>
-                    <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
-                      id="keywordsSelect" @blur="saveKeywords()">
+                    <v-select :options="keywords" @blur="saveKeywords()" id="keywordsSelect" label="name" multiple
+                      track-by="name" v-model="chosenKeywords">
                     </v-select>
                   </div>
                 </div>
@@ -32,14 +32,14 @@
                 <div class="form-group">
                   <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.collaboratorsD')" />
-                  <v-select multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
-                      id="userSelect" @blur="saveUsers()"></v-select>
+                  <v-select :options="users" @blur="saveUsers()" id="userSelect" label="username" multiple
+                      track-by="username" v-model="chosenUsers"></v-select>
                 </div>
 
                 <div class="form-group">
                   <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.descriptionD')" />
-                  <textarea class="form-control" id="inputDescription" rows="3" :value="description" @blur="saveDescription()"> </textarea>
+                  <textarea :value="description" @blur="saveDescription()" class="form-control" id="inputDescription" rows="3"> </textarea>
                 </div>
 
                 <div class="form-group">
@@ -47,10 +47,10 @@
                   <p-popover-labels :text="$t('dashboard.newLayer.referenceD')" />
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
+                      <textarea class="form-control" id="inputReference" rows="3" v-model="auxRef"></textarea>
                     </div>
-                    <div class="form-group col-md-4">
-                      <a style="color: #FFF" class="btn btn-primary" @click="addRef()">{{ $t('dashboard.newLayer.add') }}</a>
+                    <div class="form-group  col-md-12">
+                      <a @click="addRef()" class="btn styleBtn" style="position: relative; float: right">{{ $t('dashboard.newLayer.add') }}</a>
                     </div>
                   </div>
                 </div>
@@ -58,10 +58,10 @@
                 <div class="form-group" v-show="chosenRef.length !== 0">
                   <label for="inputReference">{{ $t('dashboard.newLayer.addedReferences') }}</label>
                   <ol>
-                    <li v-for="(t, index) in chosenRef" :key="index">
+                    <li :key="index" v-for="(t, index) in chosenRef">
                       {{ t.description }}
                       &nbsp;&nbsp;&nbsp;&nbsp;
-                      <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
+                      <button @click="removeRef(index)" class="btn btn-outline-danger btn-sm del" type="button">
                         <md-icon>clear</md-icon>
                       </button>
                     </li>
@@ -70,14 +70,15 @@
               </div><!--end card left-->
 
               <div class="card-right col-sm-6">
-                <div class="box-radio">
-                  <el-radio-group v-model="typeSubmit">
-                    <el-radio-button label="file">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</el-radio-button>
-                    <el-radio-button label="input">{{ $t('dashboard.newLayer.mountLayer.btnRadio.create') }}</el-radio-button>
-                  </el-radio-group>
-                </div>
+                <div class="btn styleBtn" style="padding-left: 50px; padding-right: 50px; margin-bottom: 30px">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</div>
+                <!--<div class="box-radio">-->
+                  <!--<el-radio-group v-model="typeSubmit">-->
+                    <!--<el-radio-button label="file">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</el-radio-button>-->
+                    <!--<el-radio-button label="input">{{ $t('dashboard.newLayer.mountLayer.btnRadio.create') }}</el-radio-button>-->
+                  <!--</el-radio-group>-->
+                <!--</div>-->
                 
-                <div v-if="typeSubmit == 'file'" class="box-layer-file">
+                <div class="box-layer-file" v-if="typeSubmit == 'file'">
                   <label for="Upload">{{ $t('dashboard.newLayer.fileInput') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.fileInputD')" />                  
                   <div class="input-group mb-3">
@@ -85,13 +86,14 @@
                       <span class="input-group-text">{{ $t('dashboard.newLayer.zipFile') }}</span>
                     </div>
                     <div class="custom-file">
-                      <input type="file" @change="updateName()" class="custom-file-input" id="Upload" accept=".zip">
+                      <input @change="updateName()" accept=".zip" class="custom-file-input" id="Upload" type="file">
                       <label class="custom-file-label" for="Upload">{{fname}}</label>
                     </div>
                   </div>
                 </div> <!--end box-file-->
 
-                <div v-if="typeSubmit == 'input'" class="box-layer-input">
+                <!--<div class="box-layer-input" v-if="typeSubmit == 'input'">-->
+                <div class="box-layer-input" v-if="false">
                   <label>{{ $t('dashboard.newLayer.mountLayer.lblAttr') }}:</label>
                   <p-popover-labels :text="$t('dashboard.newLayer.mountLayer.lblAttrD')" />
                   <div class="box-attr">
@@ -105,56 +107,56 @@
 
                         <div class="col-12 row">
                           <div class="col-5">
-                            <input class="form-control" value="geom" disabled>
+                            <input class="form-control" disabled value="geom">
                           </div>
                           <div class="col-5">
                             <el-select style="width: 100%" v-model="optTpGeom">
                               <el-option
-                                v-for="item in optionsTypeGeom"
                                 :key="item.value"
                                 :label="item.label"
-                                :value="item.value">
+                                :value="item.value"
+                                v-for="item in optionsTypeGeom">
                               </el-option>
                             </el-select>
                           </div>
                         </div>
 
-                        <div v-for="attr in optionsAttr" :key="attr.id" class="col-12 row">
+                        <div :key="attr.id" class="col-12 row" v-for="attr in optionsAttr">
                           <div class="col-5">
-                            <input class="form-control" v-model="attr.column_name" :placeholder="$t('dashboard.newLayer.mountLayer.boxAttr.lblColumnName')">
+                            <input :placeholder="$t('dashboard.newLayer.mountLayer.boxAttr.lblColumnName')" class="form-control" v-model="attr.column_name">
                           </div>
                           <div class="col-5">
                             <el-select style="width: 100%" v-model="attr.column_type">
                               <el-option
-                                v-for="item in optionsTypeColumn"
                                 :key="item.value"
                                 :label="item.label"
-                                :value="item.value">
+                                :value="item.value"
+                                v-for="item in optionsTypeColumn">
                               </el-option>
                             </el-select>
                           </div>
                           <div class="col-2">
                           <el-popover
                             placement="top"
-                            width="160"
-                            v-model="attr.visibleRemove">
+                            v-model="attr.visibleRemove"
+                            width="160">
                             <p>{{ $t('dashboard.newLayer.mountLayer.boxAttr.msgAlertRemove') }}</p>
                             <div style="text-align: right; margin: 0">
-                              <el-button size="mini" type="text" @click="attr.visibleRemove = false">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.no') }}</el-button>
-                              <el-button type="primary" size="mini" @click="removeAttr(attr.id)">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.yes') }}</el-button>
+                              <el-button @click="attr.visibleRemove = false" size="mini" type="text">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.no') }}</el-button>
+                              <el-button @click="removeAttr(attr.id)" size="mini" type="primary">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.yes') }}</el-button>
                             </div>
 
-                            <el-button slot="reference" type="danger" icon="el-icon-delete" size="small" circle></el-button>
+                            <el-button circle icon="el-icon-delete" size="small" slot="reference" type="danger"></el-button>
                           </el-popover>
                           </div>
                         </div>
 
                       </div>
-                      <button type="button" class="btn btn-info btn-sm" @click="addAttr()">+ ADD</button>
+                      <button @click="addAttr()" class="btn btn-info btn-sm" type="button">+ ADD</button>
                   </div>
                 </div><!--end box-input-->
 
-                <button type="button" style="color: #FFF; margin-left: 15px" class="btn btn-primary" @click="Upload()"> {{ $t('dashboard.newLayer.submit') }}</button>
+                <button @click="Upload()" class="btn styleBtn" style="color: #FFF; margin-right: 15px; float: right" type="button"> {{ $t('dashboard.newLayer.submit') }}</button>
               </div><!--end card right-->
             </form>
 
@@ -172,21 +174,21 @@
                   <div class="form-group col-md-4">
                     <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
-                    <input class="form-control" v-model="startDate" type="date" id="start_date">
+                    <input class="form-control" id="start_date" type="date" v-model="startDate">
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateColumn') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDateColumn')" />
-                    <v-select v-model="startColumnsName" :options="columnsName" track-by="" label=""
-                              id="start_date_column_name"></v-select>
+                    <v-select :options="columnsName" id="start_date_column_name" label="" track-by=""
+                              v-model="startColumnsName"></v-select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
-                    <v-select v-model="startDateMask" :options="dateMask" track-by="mask" label="mask"
-                              id="start_date_mask"></v-select>
+                    <v-select :options="dateMask" id="start_date_mask" label="mask" track-by="mask"
+                              v-model="startDateMask"></v-select>
                   </div>
                 </div>
                 
@@ -194,28 +196,28 @@
                   <div class="form-group col-md-4">
                     <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
-                    <input class="form-control" type="date" v-model="endDate" id="end_date">
+                    <input class="form-control" id="end_date" type="date" v-model="endDate">
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateColumn') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDateColumn')" />
-                    <v-select v-model="endColumnsName" :options="columnsName" track-by="" label=""
-                              id="end_date_column_name"></v-select>
+                    <v-select :options="columnsName" id="end_date_column_name" label="" track-by=""
+                              v-model="endColumnsName"></v-select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
-                    <v-select v-model="endDateMask" :options="dateMask" track-by="mask" label="mask"
-                              id="end_date_mask"></v-select>
+                    <v-select :options="dateMask" id="end_date_mask" label="mask" track-by="mask"
+                              v-model="endDateMask"></v-select>
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="col align-self-end">
                     <br>
-                    <a href="#" class="btn btn-primary" @click="Upload2()">{{ $t('dashboard.newLayer.submit') }}</a>
+                    <a @click="Upload2()" class="btn btn-primary" href="#">{{ $t('dashboard.newLayer.submit') }}</a>
                   </div>
                 </div>
               </form>
@@ -413,6 +415,7 @@
           ).then(function (response) {
             vm.loading.close()
             vm.$message.success("A layer foi adicionada com sucesso!")
+            vm.finished = 1
             vm.$router.push({
               path: '/dashboard/home'
             })
@@ -423,6 +426,7 @@
             if (cause.response.status === 403) msg = "Apenas o dono da camada ou administrador pode criar/atualizar uma coluna de tempo."
             else if (cause.response.status === 401) msg = "Você não tem permissão. É necessário uma autorização válida!"
             else msg = cause.toString()
+            vm.finished = 1
             vm._msgError(msg)
           })
         }
@@ -836,5 +840,11 @@
     margin: 0px
     position: relative
     border-radius: 30px
+
+  .styleBtn
+    background-color: #ff6107
+    border-color: #ff6107
+    color: #ffffff !important
+
 
 </style>

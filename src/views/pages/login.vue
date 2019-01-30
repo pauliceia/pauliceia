@@ -1,14 +1,14 @@
-<template>
-    <section class="col-md-6 mx-auto">
+<template >
+    <div style="background-color: rgba(255,168,134,0.66); min-height: 820px">
+    <section class="col-md-6 mx-auto" >
 
         <!-- form card login -->
-        <div class="card rounded">
-            <div class="card-header">
-                <h3 class="mb-0">Login</h3>
-            </div>
+        <div class="card rounded stylecard">
             
             <div class="card-body">
 
+                <h5 class="mb-0">Acesse sua conta</h5>
+                <br><br>
                 <form class="form-signin" @submit.prevent="loginSubmit">
                     <div class="form-label-group">
                         <label>{{ $t('login.inputEmail') }}</label>
@@ -21,46 +21,34 @@
                     </div>
                     <br />
                     
-                    <router-link to="/register" class="register">{{ $t('login.register') }}</router-link>
-                    <button type="submit" class="btn btn-success btn-lg btn-block">{{ $t('login.btnText') }}</button>
+                    <router-link to="/register" class="register">{{ $t('login.register') }}</router-link><br>
+                    <div><button type="submit" class="btn style-btn btn-lg btn-block">{{ $t('login.btnText') }}</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 link-social">
+                          <md-list-item class="btn btn-danger style-google" @click="loginSocial('google')">
+                            <md-icon>add_box</md-icon>
+                            <span class="md-list-item-text"> Acesso com o Google+</span>
+                          </md-list-item>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="col-12 terms">
+                      {{ $t('login.terms') }}
+                      <a data-toggle="modal" data-target="#modalTerms"> ({{ $t('login.lbReadme') }}) </a>
+                    </div>
                 </form>
-            </div>
 
-            <hr />
-            <div class="col-lg-12">
-                <div class="col-12 terms">
-                    <p>{{ $t('login.terms') }}</p>
-                    <a data-toggle="modal" data-target="#modalTerms"> ({{ $t('login.lbReadme') }}) </a>
-                </div>
-
-                <div class="col-12 link-social">
-                    <md-list-item class="btn btn-danger" @click="loginSocial('google')">
-                        <md-icon>add_box</md-icon> 
-                        <span class="md-list-item-text">Google+</span>
-                    </md-list-item>
-                </div>
-
-
-                <!--<div class="col-6 link-social">
-                    <md-list-item class="btn btn-primary" @click="loginSocial('facebook')">
-                        <md-icon>thumb_up</md-icon> 
-                        <span class="md-list-item-text">Facebook</span>
-                    </md-list-item> 
-                </div>
-                <div class="col-6 link-social">
-                    <md-list-item class="btn btn-danger" @click="loginSocial('google')">
-                        <md-icon>add_box</md-icon> 
-                        <span class="md-list-item-text">Google+</span>
-                    </md-list-item>
-                </div>-->
-            </div>
             <!--/card-block-->
+
+            </div>
         </div>
         <!-- /form card login -->
         
         <p-terms></p-terms>
     </section>
-   
+    </div>
 </template>
 
 <script>
@@ -153,17 +141,15 @@ section
 
 .terms
     text-align: center
-    padding: 10px 0 20px 0
     a
         color: #0099ff
         cursor: pointer
 
 .link-social
-    margin-top: -15px
-    padding: 20px 40px
-    float: left !important
+    float: right !important
     text-align: center
-    
+    padding: 0px
+
     .md-list-item-text
         color: #FFF !important
 
@@ -173,8 +159,29 @@ section
 
 .register
     float: right
-    padding: 0 20px 10px 0
     color: #666
 .register:hover
     color: #000
+
+.stylecard
+    border-radius: 70px
+    border-color: #ff6107
+    padding: 40px
+
+.style-btn
+    position: relative
+    width: 200px
+    height: 40px
+    float: right
+    font-size: 15px
+    padding: 0px
+    background-color: rgb(255, 97, 7)
+    color: rgb(255, 255, 255)
+
+.style-google
+    position: relative
+    padding: 0px
+    width: 235px
+    height: 40px
+    border: 0px
 </style>
