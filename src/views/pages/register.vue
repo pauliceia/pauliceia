@@ -1,13 +1,14 @@
 <template>
+  <div style="background-color: rgba(255,168,134,0.66); min-height: 820px">
     <section class="col-md-6 mx-auto">
 
         <!-- form card login -->
-        <div class="card rounded">
-            <div class="card-header">
-                <h3 class="mb-0">{{ $t('register.title') }}</h3>
-            </div>
-            
-            <div class="card-body">
+        <div class="card rounded stylecard">
+
+          <div class="card-body">
+                <!--<h3 class="mb-0">{{ $t('register.title') }}</h3>-->
+              <h5 class="mb-0">Novo Cadastro</h5>
+              <br><br>
 
                 <form class="form-signin" @submit.prevent="registerSubmit">
                     <div class="form-row">
@@ -38,14 +39,12 @@
                         <el-checkbox :label="$t('register.lbCheckAgree')" v-model="terms_agreed"></el-checkbox> <a data-toggle="modal" data-target="#modalTerms"> ( {{ $t('register.lbReadme') }} ) </a>
                     </div>
 
-                    <button type="submit" disabled class="btn btn-success btn-lg btn-block" id="btn-register">{{ $t('register.btnTitle') }}</button>
+                    <button type="submit" disabled class="btn btn-lg btn-block" id="btn-register" style="background-color: #ff6107; color: #ffffff">{{ $t('register.btnTitle') }}</button>
                 </form>
             </div>
-
-            <hr />
             <div class="col-lg-12">
                 <p class="title-to-login">{{ $t('register.lbToLogin') }}
-                    <router-link to="/login">{{ $t('register.lbToLoginLink') }}</router-link>
+                    <router-link to="/login" style="color: #ff6107">{{ $t('register.lbToLoginLink') }}</router-link>
                 </p>
             </div>
             <!--/card-block-->
@@ -54,7 +53,7 @@
 
         <p-terms></p-terms>
     </section>
-   
+  </div>
 </template>
 
 <script>
@@ -183,6 +182,12 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+
+.stylecard
+  border-radius: 70px
+  border-color: #ff6107
+  padding: 40px
+
 section
     padding-top: 50px
 
@@ -196,7 +201,7 @@ section
         padding: 10px
 
         a 
-            color: #0099ff
+            color: #ff6107
             cursor: pointer
 
 </style>

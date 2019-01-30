@@ -18,7 +18,7 @@
                   </md-avatar>
                   <br>
                   <br>
-                  <a href="#" class="btn btn-primary" @click="UploadPicture()">Upload new picture</a>
+                  <a class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="UploadPicture()">Upload new picture</a>
                 </div>
                 <div class="form-group col-md-7">
                   <div class="form-group">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group col-md-11">
                   <div class="text-right align-self-end"><br>
-                    <a  class="btn btn-primary" @click="submitInfo()">Submit</a>
+                    <a  class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="submitInfo()">Submit</a>
                   </div>
                 </div>
               </div>

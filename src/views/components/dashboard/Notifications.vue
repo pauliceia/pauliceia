@@ -2,51 +2,58 @@
   <div class="body">
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="GENERAL" name="first">
-        <div class="notification-box" v-if="showInput">
+      <el-tab-pane label="GENERAL" name="first" class="">
+        <div class="notification-box-main" v-if="showInput">
           <textarea class="form-control" v-model="txtNotif" id="inputReference" rows="3"></textarea>
           <br>
-          <div style="right: 30px; position: absolute">
-            <a class="btn btn-primary" @click="addNotif()" style="color: white">Submit</a>
+          <div style="float: right">
+            <a class="btn btn-dark" @click="addNotif()"
+               style="color: white; background-color: #ff6107; border-color: #ff6107">Submit</a>
           </div>
           <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
+            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
+                    v-if="txtReply !== null">
               <md-icon>clear</md-icon>
             </button>
           </p>
           <br>
         </div>
-
         <div class="nofitication">
           <div v-for="n in notifG">
-            <div class="notification-box">
-
-              <div style="display: flex; align-items: center;">
-                <div class="photo">
-                  <md-avatar class="md-avatar-icon stylePicture">
-                    <div class="logo">
-                      <img :src="n.photo" />
-                    </div>
-                  </md-avatar>
-                </div>
-                <div class="credentials">
-                  <p class="author">{{n.name}}</p>
-                  <p class="date">{{n.date}}</p>
+            <div class="row notification-box">
+              <div class="col-3 col-md-3 col-lg-1 col-sm-3">
+                <div style="display: flex; align-items: center;">
+                  <div class="photo">
+                    <md-avatar class="md-avatar-icon stylePicture">
+                      <div class="logo">
+                        <img :src="n.photo"/>
+                      </div>
+                    </md-avatar>
+                  </div>
                 </div>
               </div>
-
-              <p class="content">{{n.description}}</p>
-              <p class="comments">
-                <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)"  v-if="showInput" title="Responder">
-                  <md-icon>replay</md-icon>
-                </button>
-                <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"  v-if="showInput" title="Denunciar">
-                  <md-icon>report</md-icon>
-                </button>
-                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator  || user.is_the_admin" title="Excluir">
-                  <md-icon>clear</md-icon>
-                </button>
-              </p>
+              <div class="col-9 col-md-9  col-lg-11 col-sm-9">
+                <div class="comments">
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)" v-if="showInput"
+                          title="Responder">
+                    <md-icon>replay</md-icon>
+                  </button>
+                  <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"
+                          v-if="showInput"
+                          title="Denunciar">
+                    <md-icon>report</md-icon>
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"
+                          v-if="userId === n.user_id_creator  || user.is_the_admin" title="Excluir">
+                    <md-icon>clear</md-icon>
+                  </button>
+                </div>
+                <div class="credentials">
+                  <div class="author">{{n.name}}</div>
+                  <div class="date">{{n.date}}</div>
+                </div>
+                <p class="content">{{n.description}}</p>
+              </div>
               <p-modal-notification :notification_id="n.notification_id"></p-modal-notification>
             </div>
           </div>
@@ -54,14 +61,15 @@
       </el-tab-pane>
 
       <el-tab-pane label="PERSONAL" name="second">
-        <div class="notification-box"  v-if="showInput && showInput2" >
-          <textarea class="form-control" v-model="txtNotif" id="inputReference2" rows="3" ></textarea>
+        <div class="notification-box-main" v-if="showInput && showInput2">
+          <textarea class="form-control" v-model="txtNotif" id="inputReference2" rows="3"></textarea>
           <br>
           <div style="right: 30px; position: absolute">
             <a style="color: white" class="btn btn-primary" @click="addNotif()">Submit</a>
           </div>
-          <p style="left: 0px; display: flex" >{{txtReply}}&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
+          <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
+                    v-if="txtReply !== null">
               <md-icon>clear</md-icon>
             </button>
           </p>
@@ -70,34 +78,44 @@
         <div class="nofitication">
           <div v-for="n in notifP">
             <div class="notification-box">
-
-              <div style="display: flex; align-items: center;">
-                <div class="photo">
-                  <md-avatar class="md-avatar-icon stylePicture">
-                    <div class="logo">
-                      <img :src="n.photo" />
+              <div class="row">
+                <div class="col-3 col-md-3 col-lg-1 col-sm-3">
+                  <div style="display: flex; align-items: center;">
+                    <div class="photo">
+                      <md-avatar class="md-avatar-icon stylePicture">
+                        <div class="logo">
+                          <img :src="n.photo"/>
+                        </div>
+                      </md-avatar>
                     </div>
-                  </md-avatar>
+                  </div>
                 </div>
-                <div class="credentials">
-                  <p class="author">{{n.name}}</p>
-                  <p class="date">{{n.date}}</p>
+                <div class="col-9 col-md-9  col-lg-11 col-sm-9">
+                  <div class="comments">
+                    <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)"
+                            v-if="showInput"
+                            title="Responder">
+                      <md-icon>replay</md-icon>
+                    </button>
+                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"
+                            v-if="showInput"
+                            title="Denunciar">
+                      <md-icon>report</md-icon>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"
+                            v-if="userId === n.user_id_creator  || user.is_the_admin">
+                      <md-icon>clear</md-icon>
+                    </button>
+                  </div>
+
+                  <div class="credentials">
+                    <div class="author">{{n.name}}</div>
+                    <div class="date">{{n.date}}</div>
+                  </div>
+
+                  <p class="content">{{n.description}}</p>
                 </div>
               </div>
-
-              <p class="content">{{n.description}}</p>
-              <p class="comments">
-
-                <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)"  v-if="showInput"  title="Responder">
-                  <md-icon>replay</md-icon>
-                </button>
-                <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"  v-if="showInput" title="Denunciar">
-                  <md-icon>report</md-icon>
-                </button>
-                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator  || user.is_the_admin">
-                  <md-icon>clear</md-icon>
-                </button>
-              </p>
               <div class="msgType">
                 <div class="msgType" v-if="n.is_denunciation !== false">Denunciation&nbsp;
                   <div v-if="n.notification_id_parent !== null">of your message on layer {{n.layer_name}}</div>
@@ -105,9 +123,11 @@
                   <div v-else>of your message on your global notification</div>
                 </div>
 
-                <div v-else-if="n.layer_id !== null && n.type === 'myLayer'">Comment on your layer {{n.layer_name}}</div>
+                <div v-else-if="n.layer_id !== null && n.type === 'myLayer'">Comment on your layer {{n.layer_name}}
+                </div>
 
-                <div class="msgType" v-else-if="n.notification_id_parent !== null && n.type === 'message'">Reply of your message&nbsp;
+                <div class="msgType" v-else-if="n.notification_id_parent !== null && n.type === 'message'">Reply of your
+                  message&nbsp;
                   <div v-if="n.layer_id !== null">on your layer {{n.layer_name}}</div>
                   <div v-else>on your global notification</div>
                 </div>
@@ -118,14 +138,15 @@
       </el-tab-pane>
 
       <el-tab-pane label="FOLLOWING" name="thrid">
-        <div class="notification-box"  v-if="showInput && showInput2" >
-          <textarea class="form-control" v-model="txtNotif" id="inputReference3" rows="3" ></textarea>
+        <div class="notification-box-main" v-if="showInput && showInput2">
+          <textarea class="form-control" v-model="txtNotif" id="inputReference3" rows="3"></textarea>
           <br>
           <div style="right: 30px; position: absolute">
             <a style="color: white" class="btn btn-primary" @click="addNotif()">Submit</a>
           </div>
-          <p style="left: 0px; display: flex" >{{txtReply}}&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
+          <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
+                    v-if="txtReply !== null">
               <md-icon>clear</md-icon>
             </button>
           </p>
@@ -135,32 +156,45 @@
           <div v-for="n in notifF">
             <div class="notification-box">
 
-              <div style="display: flex; align-items: center;">
-                <div class="photo">
-                  <md-avatar class="md-avatar-icon stylePicture">
-                    <div class="logo">
-                      <img :src="n.photo" />
+              <div class="row">
+                <div class="col-3 col-md-3 col-lg-1 col-sm-3">
+                  <div style="display: flex; align-items: center;">
+                    <div class="photo">
+                      <md-avatar class="md-avatar-icon stylePicture">
+                        <div class="logo">
+                          <img :src="n.photo"/>
+                        </div>
+                      </md-avatar>
                     </div>
-                  </md-avatar>
+                  </div>
                 </div>
-                <div class="credentials">
-                  <p class="author">{{n.name}}</p>
-                  <p class="date">{{n.date}}</p>
+
+                <div class="col-9 col-md-9  col-lg-11 col-sm-9">
+                  <p class="comments">
+                    <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)"
+                            v-if="showInput"
+                            title="Responder">
+                      <md-icon>replay</md-icon>
+                    </button>
+                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"
+                            v-if="showInput"
+                            title="Denunciar">
+                      <md-icon>report</md-icon>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"
+                            v-if="userId === n.user_id_creator  || user.is_the_admin" title="Excluir">
+                      <md-icon>clear</md-icon>
+                    </button>
+                  </p>
+
+                  <div class="credentials">
+                    <div class="author">{{n.name}}</div>
+                    <div class="date">{{n.date}}</div>
+                  </div>
+
+                  <p class="content">{{n.description}}</p>
                 </div>
               </div>
-
-              <p class="content">{{n.description}}</p>
-              <p class="comments">
-                <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)"  v-if="showInput"  title="Responder">
-                  <md-icon>replay</md-icon>
-                </button>
-                <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"  v-if="showInput" title="Denunciar">
-                  <md-icon>report</md-icon>
-                </button>
-                <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="userId === n.user_id_creator  || user.is_the_admin" title="Excluir">
-                  <md-icon>clear</md-icon>
-                </button>
-              </p>
               <div class="msgType">
                 <div class="msgType" v-if="n.is_denunciation !== false">Denunciation&nbsp;
                   <div v-if="n.notification_id_parent !== null">of some message on layer {{n.layer_name}}</div>
@@ -190,6 +224,7 @@
   import {mapState} from 'vuex'
   import ModalNotification from '@/views/components/dashboard/ModalNotification'
   import ImgPerson from '@/views/assets/images/icon_person.png'
+  import "element-ui/lib/theme-chalk/tabs.css"
 
   export default {
     components: {
@@ -226,28 +261,28 @@
     },
 
     methods: {
-      replyNot(notification){
+      replyNot(notification) {
         this.showInput2 = true
-        this.txtReply = 'Reply to '+notification.name
+        this.txtReply = 'Reply to ' + notification.name
         this.notification_id_parent = notification.notification_id
         this.layer_id = notification.layer_id
       },
-      clearNot(notification){
+      clearNot(notification) {
         const vm = this
-        Api().delete('/api/notification/?notification_id='+notification.notification_id,
+        Api().delete('/api/notification/?notification_id=' + notification.notification_id,
         ).then(function (response) {
           //console.log(response)
           vm.updateNotif()
         })
       },
-      reportNot(notification){
+      reportNot(notification) {
         this.showInput2 = true
         this.txtReply = 'Denunciation to ' + notification.name
         this.is_denunciation = true
         this.notification_id_parent = notification.notification_id
         this.layer_id = notification.layer_id
       },
-      clearMsg(){
+      clearMsg() {
         this.txtReply = null
         this.notification_id_parent = null
         this.layer_id = null
@@ -258,10 +293,10 @@
       handleClick(tab, event) {
         // console.log(tab, event);
       },
-      addNotif(){
+      addNotif() {
         const vm = this
         let msg = ''
-        if(vm.txtNotif !== null) {
+        if (vm.txtNotif !== null) {
           let notification = {
             'properties': {
               'notification_id': -1,
@@ -284,23 +319,23 @@
             console.log(cause.response)
             vm.$message.error(msg)
           })
-        }else{
+        } else {
           msg = "it is necessary to have some text."
           vm.$message.error(msg)
         }
       },
-      orderNotification(x){
+      orderNotification(x) {
         const vm = this
-        setTimeout(_=>{
-          vm.notifP.sort(function(a,b){
+        setTimeout(_ => {
+          vm.notifP.sort(function (a, b) {
             return new Date(b.date) - new Date(a.date)
           })
-          vm.notifF.sort(function(a,b){
+          vm.notifF.sort(function (a, b) {
             return new Date(b.date) - new Date(a.date)
           })
         }, x);
       },
-      async updateNotif(){
+      async updateNotif() {
         const vm = this
         this.notifP = []
         this.notifF = []
@@ -325,22 +360,22 @@
 
           })
 
-          Promise.all(notifG).then( notifUpdated => {
-            vm.notifG = notifUpdated.reverse().sort(function(a,b){
+          Promise.all(notifG).then(notifUpdated => {
+            vm.notifG = notifUpdated.reverse().sort(function (a, b) {
               //return b.notification_id - a.notification_id
               return new Date(b.date) - new Date(a.date)
             });
           })
-        } catch( error ) {
+        } catch (error) {
           //console.log(error)
         }
 
-        Api().get('/api/notification/?user_id_creator='+vm.user.user_id).then(function (userNotifications) {
+        Api().get('/api/notification/?user_id_creator=' + vm.user.user_id).then(function (userNotifications) {
           userNotifications.data.features.forEach(userNotification => {
-            Api().get('/api/notification/?notification_id_parent='+userNotification.properties.notification_id).then(function (notifications) {
+            Api().get('/api/notification/?notification_id_parent=' + userNotification.properties.notification_id).then(function (notifications) {
               notifications.data.features.forEach(notification => {
                 Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  if(notification.properties.layer_id === null){
+                  if (notification.properties.layer_id === null) {
                     vm.notifP.push(
                       {
                         'description': notification.properties.description,
@@ -357,9 +392,8 @@
                         'layer_name': null
                       })
                     vm.orderNotification(50)
-                  }
-                  else{
-                    Api().get('/api/layer/?layer_id='+notification.properties.layer_id).then(function (layer) {
+                  } else {
+                    Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
                       vm.notifP.push(
                         {
                           'description': notification.properties.description,
@@ -383,12 +417,12 @@
             })
           })
         })
-        Api().get('/api/user_layer/?user_id='+vm.user.user_id).then(function (userLayers) {
+        Api().get('/api/user_layer/?user_id=' + vm.user.user_id).then(function (userLayers) {
           userLayers.data.features.forEach(userLayer => {
-            Api().get('/api/notification/?layer_id='+userLayer.properties.layer_id).then(function (notifications) {
+            Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
               notifications.data.features.forEach(notification => {
                 Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  Api().get('/api/layer/?layer_id='+notification.properties.layer_id).then(function (layer) {
+                  Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
                     vm.notifP.push(
                       {
                         'description': notification.properties.description,
@@ -413,12 +447,12 @@
         })
 
 
-        Api().get('/api/layer_follower/?user_id='+vm.user.user_id).then(function (userLayers) {
+        Api().get('/api/layer_follower/?user_id=' + vm.user.user_id).then(function (userLayers) {
           userLayers.data.features.forEach(userLayer => {
-            Api().get('/api/notification/?layer_id='+userLayer.properties.layer_id).then(function (notifications) {
+            Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
               notifications.data.features.forEach(notification => {
                 Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  Api().get('/api/layer/?layer_id='+notification.properties.layer_id).then(function (layer) {
+                  Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
                     vm.notifF.push(
                       {
                         'description': notification.properties.description,
@@ -453,32 +487,40 @@
 </script>
 
 
-
 <style lang="sass" scoped>
+
+
+  .notification-box-main
+    margin: 10px
+    background: #ffffff
+    border-radius: 20px
+
 
   .notification-box
     margin: 10px
-    background: rgba(#000, 0.1)
+    background: #E6E6E6
     padding: 20px
-    border-radius: 20px
+    border-radius: 10px
 
     .photo
-      display: inline-block
       width: 40px
-      padding: 0px
+      padding-top: 20px
       text-align: center
       border-radius: 50%
 
     .credentials
       display: inline-block
-      margin: 0 0 0 40px
+      margin: 0 0 0 0px
+
       .author
         font-weight: 600
         margin-top: 5px !important
         font-size: 1.1em
+
       .date
         color: #666
         font-size: 0.9em
+
       p
         margin: 0 0 5px 0 !important
 
@@ -488,11 +530,12 @@
 
     .comments
       width: 100%
+      padding-right: 20px
+      position: absolute
       text-align: right
-      color: #0099ff
+      color: #ff6107
       cursor: pointer
-      margin-top: -10px
-      margin-bottom: 5px
+
   .add
     top: -1px
     left: 0px
@@ -505,9 +548,18 @@
 
   .msgType
     display: flex
+    color: #4D4D4D
 
 
   .stylePicture
     width: 50px
     height: 50px
+
+
+  .el-tabs__item.is-active
+    color: #ff6107
+
+  .el-tabs__item:hover
+    color: #ff6107
+    cursor: pointer
 </style>
