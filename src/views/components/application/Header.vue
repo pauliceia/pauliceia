@@ -38,7 +38,7 @@
                         <!--<router-link
                             :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'"
                             to="/tutorial">Tutorial</router-link>-->
-                        <a :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'" href="https://drive.google.com/file/d/1KT9NTIFYM4u-siL5F88NIg255VjSgI2I/view?usp=sharing" target="_blank" >Tutorial</a>
+                        <a :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'" href="https://drive.google.com/drive/folders/1M7iU2iz46i2gIgfctkUCZdBARWJykcoT?usp=sharing" target="_blank" >Tutorial</a>
                     </li>
                     <!--<li class="nav-item">-->
                         <!--<a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"-->
