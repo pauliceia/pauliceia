@@ -107,6 +107,7 @@ export default {
       "title1": "Which is?",
       "title2": "How?",
       "title3": "When will it be ready?",
+      "title4": "How to cite?",
       "column1": "Pauliceia 2.0 is a platform that aims to make the collaborative mapping of the history of São Paulo in the period from  1870 to 1940.",
       "column2": `Through the interface of the platform, researchers and scholars of the city can share their spatial data sets, as long as they are spatially localizable.<br>
                    In this way, a historical cartographic base of the city will be enriched at each feeding, making this data also available to all.<br>
