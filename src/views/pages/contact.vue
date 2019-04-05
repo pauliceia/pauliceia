@@ -16,11 +16,12 @@
           <p class="orange-style"><b>{{ $t('contact.links') }}</b></p>
           <br>
           <p class="orange-style"><b>{{ $t('contact.institutional') }}</b></p>
-          <p><b>Arquivo Público do Estado de SP:</b> www.arquivoestado.sp.gov.br</p>
-          <p><b>Emory University:</b> www.emory.edu</p>
-          <p><b>Fundação de Amparo a Pesquisa de SP:</b> www.fapesp.br</p>
-          <p><b>Instituto Nacional de Pesquisas Especial (INPE):</b> www.inpe.br</p>
-          <p><b>Universidade Federal de SP (UNIFESP):</b> www.unifesp.br</p>
+          <p><b>{{ $t('contact.envolvidos.arquivo_publico_sp') }}:</b> www.arquivoestado.sp.gov.br</p>
+          <p><b>{{ $t('contact.envolvidos.emory_university') }}:</b> www.emory.edu</p>
+          <p><b>{{ $t('contact.envolvidos.fapesp') }}:</b> www.fapesp.br</p>
+          <p><b>{{ $t('contact.envolvidos.himaco') }}:</b> www.unifesp.br/himaco</p>
+          <p><b>{{ $t('contact.envolvidos.inpe') }}:</b> www.inpe.br</p>
+          <p><b>{{ $t('contact.envolvidos.unifesp') }}:</b> www.unifesp.br</p>
           <br>
           <p class="orange-style"><b>{{ $t('contact.platforms') }}</b></p>
           <p><b>Creative Commons:</b> https//creativecommons.org/</p>

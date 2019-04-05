@@ -122,6 +122,14 @@ export default {
       "institutional": "Institutional",
       "platforms": "Platforms / Free Softwares",
       "base": "Cartographic base",
+      "envolvidos": {
+        "arquivo_publico_sp": "Public Archive of the State of Sao Paulo",
+        "emory_university": "Emory University",
+        "fapesp": "Foundation for Research Support of Sao Paulo",
+        "himaco": "Hímaco",
+        "inpe": "National Institute for Space Research (INPE)",
+        "unifesp": "Federal University of Sao Paulo (UNIFESP)",
+      },
     },
   "about":{
     "title1": "Who developed it?",

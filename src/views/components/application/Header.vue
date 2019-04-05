@@ -1,5 +1,7 @@
 <template>
     <header>
+        <!--<div class="container">-->
+        <!--</div>-->
         <nav class="navbar navbar-expand-md navbar-light bg-light">
 
             <router-link to="/home" class="navbar-brand">
@@ -20,9 +22,15 @@
                             to="/home" >{{ $t('nav.home') }}</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link 
+                        <router-link
                             :class="this.$route.path == '/explore' ? 'nav-link active': 'nav-link'"
                             to="/explore">{{ $t('nav.map') }}</router-link>
+                    </li>
+                    <li class="nav-item">
+                      <!--<router-link
+                          :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'"
+                          to="/tutorial">Tutorial</router-link>-->
+                      <a :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'" href="https://drive.google.com/drive/folders/1M7iU2iz46i2gIgfctkUCZdBARWJykcoT?usp=sharing" target="_blank" >Tutorial</a>
                     </li>
                     <li class="nav-item">
                       <router-link
@@ -33,12 +41,6 @@
                         <router-link
                             :class="this.$route.path == '/contact' ? 'nav-link active': 'nav-link'"
                             to="/contact">{{ $t('nav.contact') }}</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <!--<router-link
-                            :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'"
-                            to="/tutorial">Tutorial</router-link>-->
-                        <a :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'" href="https://drive.google.com/drive/folders/1M7iU2iz46i2gIgfctkUCZdBARWJykcoT?usp=sharing" target="_blank" >Tutorial</a>
                     </li>
                     <!--<li class="nav-item">-->
                         <!--<a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"-->
