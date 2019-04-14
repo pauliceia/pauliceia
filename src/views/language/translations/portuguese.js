@@ -113,7 +113,7 @@ export default {
       "column2": `Por meio da interface da plataforma, pesquisadores e estudiosos da cidade podem alimentar os seus dados, desde que sejam espacialmente localizáveis.<br>
           Dessa forma, uma base cartográfica histórica da cidade será enriquecida a cada alimentação, tornando esses dados também disponíveis a todos.<br>
           Por outro lado, o usuário que colaborar terá dessa forma um mapa ou uma visualização de sua própria pesquisa.`,
-      "column3": "Atualmente está disponível uma versão beta para testes.  A versão final está prevista para janeiro de 2019.",
+      "column3": "Atualmente está disponível uma versão beta para testes. Uma nova versão mais aprimorada e abrangente estará disponível no primeiro semestre deste ano.",
 
     },
     "contact":{
@@ -123,6 +123,14 @@ export default {
       "institutional": "Institucionais",
       "platforms": "Plataformas / Softwares Livres",
       "base": "Base Cartográfica",
+      "envolvidos": {
+        "arquivo_publico_sp": "Arquivo Público do Estado de SP",
+        "emory_university": "Emory University",
+        "fapesp": "Fundação de Amparo a Pesquisa de SP",
+        "himaco": "Hímaco",
+        "inpe": "Instituto Nacional de Pesquisas Especial (INPE)",
+        "unifesp": "Universidade Federal de SP (UNIFESP)",
+      },
     },
     "about":{
       "title1": "Quem desenvolveu?",

@@ -15,7 +15,8 @@
                                 :content="$t('map.sidebarLayer.btnAdd')"
                                 placement="bottom-end">
                                     <md-button class="md-icon-button md-dense" data-toggle="modal" data-target="#modalAddLayer">
-                                        <md-icon style="color: #FFF;">settings</md-icon>
+                                        <!--<md-icon style="color: #FFF;">settings</md-icon>-->
+                                        <img class="btn-ico" src="@/views/assets/images/icons/add-layer.png">
                                     </md-button>
                         </el-tooltip>
                     </div>
