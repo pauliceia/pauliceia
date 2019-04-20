@@ -1,14 +1,14 @@
 <template>
     <div>
-      <div class="row justify-content-md-center row-style">
+      <div class="row justify-content-md-center row-style" itemscope itemtype="https://schema.org/Organization">
         <div class="col-sm-4 column-style">
           <img class="picture" src="@/views/assets/images/untitled-4.png">
-          <p>PAULICEIA 2.0:</p>
+          <p itemprop="name">PAULICEIA 2.0:</p>
           <p style="position: relative; top: -10px;">{{ $t('contact.title1') }}</p>
           <br>
           <p>{{ $t('contact.contact') }}</p>
           <p class="picture2 orange-style"><md-icon>mail</md-icon></p>
-          <p class="orange-style">pauliceia_support@googlegroups.com</p>
+          <p class="orange-style" itemprop="email">pauliceia_support@googlegroups.com</p>
           <p><img class="picture2" style="width: 25px; " src="@/views/assets/images/facebook.png">/grupohimaco</p>
 
         </div>
@@ -16,12 +16,18 @@
           <p class="orange-style"><b>{{ $t('contact.links') }}</b></p>
           <br>
           <p class="orange-style"><b>{{ $t('contact.institutional') }}</b></p>
-          <p><b>{{ $t('contact.envolvidos.arquivo_publico_sp') }}:</b> www.arquivoestado.sp.gov.br</p>
-          <p><b>{{ $t('contact.envolvidos.emory_university') }}:</b> www.emory.edu</p>
-          <p><b>{{ $t('contact.envolvidos.fapesp') }}:</b> www.fapesp.br</p>
-          <p><b>{{ $t('contact.envolvidos.himaco') }}:</b> www.unifesp.br/himaco</p>
-          <p><b>{{ $t('contact.envolvidos.inpe') }}:</b> www.inpe.br</p>
-          <p><b>{{ $t('contact.envolvidos.unifesp') }}:</b> www.unifesp.br</p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">{{ $t('contact.envolvidos.arquivo_publico_sp') }}:</b> <span itemprop="url">www.arquivoestado.sp.gov.br</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">{{ $t('contact.envolvidos.emory_university') }}:</b> <span itemprop="url">www.emory.edu</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">{{ $t('contact.envolvidos.fapesp') }}:</b> <span itemprop="url">www.fapesp.br</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">{{ $t('contact.envolvidos.himaco') }}:</b> <span itemprop="url">www.unifesp.br/himaco</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">{{ $t('contact.envolvidos.inpe') }}:</b> <span itemprop="url">www.inpe.br</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">{{ $t('contact.envolvidos.unifesp') }}:</b> <span itemprop="url">www.unifesp.br</span></p>
           <br>
           <p class="orange-style"><b>{{ $t('contact.platforms') }}</b></p>
           <p><b>Creative Commons:</b> https//creativecommons.org/</p>
