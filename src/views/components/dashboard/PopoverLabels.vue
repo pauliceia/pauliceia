@@ -4,7 +4,7 @@
             :content="text"
             type="primary">
 
-        <button type="button" slot="reference" class="btn btn-outline-primary info">
+        <button type="button" slot="reference" class="btn btn-outline-light info">
             <md-icon class="icon">error_outline</md-icon>
         </button>
 
@@ -24,4 +24,5 @@ export default {
     margin: 0px
     position: relative
     border-radius: 30px
+    color: #ff6107
 </style>

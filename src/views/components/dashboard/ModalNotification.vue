@@ -234,6 +234,8 @@
 </script>
 
 <style lang="sass" scoped>
+  .el-button
+    color: #ff6107
 
   .notification-box2
     margin: 10px
@@ -249,6 +251,12 @@
     background: rgba(#000, 0.1)
     padding: 20px
     border-radius: 20px
+
+    .content
+      text-align: justify
+      margin-top: 10px
+      padding-right: 50px
+      display: block
 
   .photo
     display: inline-block
@@ -272,14 +280,11 @@
     p
       margin: 0 0 5px 0 !important
 
-  .content
-    text-align: justify
-    margin-top: 5px
 
   .comments
     width: 100%
     text-align: right
-    color: #0099ff
+    color: #ffffff
     cursor: pointer
     margin-top: -10px
     margin-bottom: 5px

@@ -4,28 +4,21 @@
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{ $t('dashboard.keywords.newKeyword') }}</h5>
+            <h6 class="mb-0">{{ $t('dashboard.keywords.newKeyword') }}</h6>
             <p class="card-text">
             <form>
               <div class="form-row">
-                <div class="form-group col-md-10">
+                <div class="form-group col-md-12">
                   <label for="inputName">{{ $t('dashboard.keywords.name') }}</label>&nbsp;
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content="$t('dashboard.keywords.nameD')"
-                              type="primary">
-                    <button type="button"  slot="reference" class="btn btn-outline-primary info">
-                      <md-icon class="icon">error_outline</md-icon>
-                    </button>
-                  </el-popover>
-                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="back()">
+                  <p-popover-labels :text="$t('dashboard.keywords.nameD')" />
+                  <button type="button" class="btn btn-outline-dark btn-sm add styleBtn" @click="back()" style="">
                     <md-icon>arrow_back</md-icon>
                   </button>
                   <input class="form-control" id="inputName">
                 </div>
 
-                <div class="form-group col-md-2 align-self-end">
-                  <a href="#" class="btn btn-primary" @click="Upload()">Submit</a>
+                <div class="form-group col-md-12">
+                  <a class="btn btn-dark styleBtn" @click="Upload()">Submit</a>
                 </div>
               </div>
             </form>
@@ -33,17 +26,18 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{ $t('dashboard.keywords.myKeywords') }}</h5>
+
+            <h6 class="mb-0">{{ $t('dashboard.keywords.myKeywords') }}</h6><br><br>
             <div class="card-text">
               <div class="row" v-for="k in keywords">
-                <div class="col-sm-3" v-if="user.is_the_admin">{{ k.name }}</div>
-                <div class="col-sm-6" v-if="user.is_the_admin">({{ nameUsers[k.user_id_creator] }})</div>
-                <div class="col-sm-9" v-else>{{ k.name }}</div>
-                <div class="col-sm-3">
-                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteKeyword(k)" >
+                <div class="col-sm-5" v-if="user.is_the_admin">{{ k.name }}</div>
+                <div class="col-sm-5" v-if="user.is_the_admin" style="color: #787878">{{ nameUsers[k.user_id_creator] }}</div>
+                <div class="col-sm-10" v-else>{{ k.name }}</div>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-danger btn-sm add2 styleBtn2" @click="deleteKeyword(k)" >
                     <md-icon>clear</md-icon>
                   </button>
                 </div>
@@ -62,6 +56,7 @@
   import Vue from 'vue'
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
+  import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
   import {mapState} from 'vuex'
 
   Vue.component('v-select', vSelect)
@@ -69,7 +64,8 @@
   export default {
     name: "keywords",
     components: {
-      "p-dash-layout": DashLayout
+      "p-dash-layout": DashLayout,
+      "p-popover-labels": PopoverLabels
     },
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user'])
@@ -176,11 +172,11 @@
 <style lang="sass" scoped>
   .add
     bottom: 20px
-    left: 95%
     display: inline-block
     border: none
     padding: 0px
     margin: 0px
+    float: right
     zoom: 200%
     position: relative
     border-radius: 20px
@@ -202,4 +198,18 @@
     margin: 0px
     position: relative
     border-radius: 30px
+
+  .styleBtn
+    background-color: #ff6107
+    border-color: #ff6107
+    color: #ffffff !important
+    float: right
+    position: relative
+
+  .styleBtn2
+    background-color: #ff6107
+    border-color: #ff6107
+    color: #ffffff !important
+    position: relative
+
 </style>

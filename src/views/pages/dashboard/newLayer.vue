@@ -5,7 +5,7 @@
       <div class="col-sm-12" v-if="shapeCorrect === false">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{ $t('dashboard.nav.newLayer') }}</h5>
+            <h6 class="mb-0">{{ $t('dashboard.nav.newLayer') }}</h6><br>
               
             <form class="row">
               <div class="card-left col-sm-6">
@@ -13,17 +13,17 @@
                   <div class="form-group col-md-6">
                     <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.nameD')" />
-                    <input class="form-control" :value="name" id="inputName"  @blur="saveName()"><!--placeholder="Name">-->
+                    <input :value="name" @blur="saveName()" class="form-control"  id="inputName"><!--placeholder="Name">-->
                   </div>
 
                   <div class="form-group col-md-6">
                     <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
                     <p-popover-labels :text="$t('dashboard.newLayer.keywordsD')" />
-                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
+                    <button @click="newKeyword()" class="btn btn-outline-warning btn-sm add" type="button">
                       <md-icon>add_circle_outline</md-icon>
                     </button>
-                    <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
-                      id="keywordsSelect" @blur="saveKeywords()">
+                    <v-select :options="keywords" @blur="saveKeywords()" id="keywordsSelect" label="name" multiple
+                      track-by="name" v-model="chosenKeywords">
                     </v-select>
                   </div>
                 </div>
@@ -32,14 +32,14 @@
                 <div class="form-group">
                   <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.collaboratorsD')" />
-                  <v-select multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
-                      id="userSelect" @blur="saveUsers()"></v-select>
+                  <v-select :options="users" @blur="saveUsers()" id="userSelect" label="username" multiple
+                      track-by="username" v-model="chosenUsers"></v-select>
                 </div>
 
                 <div class="form-group">
                   <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.descriptionD')" />
-                  <textarea class="form-control" id="inputDescription" rows="3" :value="description" @blur="saveDescription()"> </textarea>
+                  <textarea :value="description" @blur="saveDescription()" class="form-control" id="inputDescription" rows="3"> </textarea>
                 </div>
 
                 <div class="form-group">
@@ -47,10 +47,10 @@
                   <p-popover-labels :text="$t('dashboard.newLayer.referenceD')" />
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
+                      <textarea class="form-control" id="inputReference" rows="3" v-model="auxRef"></textarea>
                     </div>
-                    <div class="form-group col-md-4">
-                      <a style="color: #FFF" class="btn btn-primary" @click="addRef()">{{ $t('dashboard.newLayer.add') }}</a>
+                    <div class="form-group  col-md-12">
+                      <a @click="addRef()" class="btn styleBtn" style="position: relative; float: right">{{ $t('dashboard.newLayer.add') }}</a>
                     </div>
                   </div>
                 </div>
@@ -58,10 +58,10 @@
                 <div class="form-group" v-show="chosenRef.length !== 0">
                   <label for="inputReference">{{ $t('dashboard.newLayer.addedReferences') }}</label>
                   <ol>
-                    <li v-for="(t, index) in chosenRef" :key="index">
+                    <li :key="index" v-for="(t, index) in chosenRef">
                       {{ t.description }}
                       &nbsp;&nbsp;&nbsp;&nbsp;
-                      <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
+                      <button @click="removeRef(index)" class="btn btn-outline-danger btn-sm del" type="button">
                         <md-icon>clear</md-icon>
                       </button>
                     </li>
@@ -70,14 +70,15 @@
               </div><!--end card left-->
 
               <div class="card-right col-sm-6">
-                <div class="box-radio">
-                  <el-radio-group v-model="typeSubmit">
-                    <el-radio-button label="file">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</el-radio-button>
-                    <el-radio-button label="input">{{ $t('dashboard.newLayer.mountLayer.btnRadio.create') }}</el-radio-button>
-                  </el-radio-group>
-                </div>
+                <div class="btn styleBtn" style="padding-left: 50px; padding-right: 50px; margin-bottom: 30px">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</div>
+                <!--<div class="box-radio">-->
+                  <!--<el-radio-group v-model="typeSubmit">-->
+                    <!--<el-radio-button label="file">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</el-radio-button>-->
+                    <!--<el-radio-button label="input">{{ $t('dashboard.newLayer.mountLayer.btnRadio.create') }}</el-radio-button>-->
+                  <!--</el-radio-group>-->
+                <!--</div>-->
                 
-                <div v-if="typeSubmit == 'file'" class="box-layer-file">
+                <div class="box-layer-file" v-if="typeSubmit == 'file'">
                   <label for="Upload">{{ $t('dashboard.newLayer.fileInput') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.fileInputD')" />                  
                   <div class="input-group mb-3">
@@ -85,13 +86,14 @@
                       <span class="input-group-text">{{ $t('dashboard.newLayer.zipFile') }}</span>
                     </div>
                     <div class="custom-file">
-                      <input type="file" @change="updateName()" class="custom-file-input" id="Upload" accept=".zip">
+                      <input @change="updateName()" accept=".zip" class="custom-file-input" id="Upload" type="file">
                       <label class="custom-file-label" for="Upload">{{fname}}</label>
                     </div>
                   </div>
                 </div> <!--end box-file-->
 
-                <div v-if="typeSubmit == 'input'" class="box-layer-input">
+                <!--<div class="box-layer-input" v-if="typeSubmit == 'input'">-->
+                <div class="box-layer-input" v-if="false">
                   <label>{{ $t('dashboard.newLayer.mountLayer.lblAttr') }}:</label>
                   <p-popover-labels :text="$t('dashboard.newLayer.mountLayer.lblAttrD')" />
                   <div class="box-attr">
@@ -105,56 +107,56 @@
 
                         <div class="col-12 row">
                           <div class="col-5">
-                            <input class="form-control" value="geom" disabled>
+                            <input class="form-control" disabled value="geom">
                           </div>
                           <div class="col-5">
                             <el-select style="width: 100%" v-model="optTpGeom">
                               <el-option
-                                v-for="item in optionsTypeGeom"
                                 :key="item.value"
                                 :label="item.label"
-                                :value="item.value">
+                                :value="item.value"
+                                v-for="item in optionsTypeGeom">
                               </el-option>
                             </el-select>
                           </div>
                         </div>
 
-                        <div v-for="attr in optionsAttr" :key="attr.id" class="col-12 row">
+                        <div :key="attr.id" class="col-12 row" v-for="attr in optionsAttr">
                           <div class="col-5">
-                            <input class="form-control" v-model="attr.column_name" :placeholder="$t('dashboard.newLayer.mountLayer.boxAttr.lblColumnName')">
+                            <input :placeholder="$t('dashboard.newLayer.mountLayer.boxAttr.lblColumnName')" class="form-control" v-model="attr.column_name">
                           </div>
                           <div class="col-5">
                             <el-select style="width: 100%" v-model="attr.column_type">
                               <el-option
-                                v-for="item in optionsTypeColumn"
                                 :key="item.value"
                                 :label="item.label"
-                                :value="item.value">
+                                :value="item.value"
+                                v-for="item in optionsTypeColumn">
                               </el-option>
                             </el-select>
                           </div>
                           <div class="col-2">
                           <el-popover
                             placement="top"
-                            width="160"
-                            v-model="attr.visibleRemove">
+                            v-model="attr.visibleRemove"
+                            width="160">
                             <p>{{ $t('dashboard.newLayer.mountLayer.boxAttr.msgAlertRemove') }}</p>
                             <div style="text-align: right; margin: 0">
-                              <el-button size="mini" type="text" @click="attr.visibleRemove = false">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.no') }}</el-button>
-                              <el-button type="primary" size="mini" @click="removeAttr(attr.id)">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.yes') }}</el-button>
+                              <el-button @click="attr.visibleRemove = false" size="mini" type="text">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.no') }}</el-button>
+                              <el-button @click="removeAttr(attr.id)" size="mini" type="primary">{{ $t('dashboard.newLayer.mountLayer.boxAttr.btnAlert.yes') }}</el-button>
                             </div>
 
-                            <el-button slot="reference" type="danger" icon="el-icon-delete" size="small" circle></el-button>
+                            <el-button circle icon="el-icon-delete" size="small" slot="reference" type="danger"></el-button>
                           </el-popover>
                           </div>
                         </div>
 
                       </div>
-                      <button type="button" class="btn btn-info btn-sm" @click="addAttr()">+ ADD</button>
+                      <button @click="addAttr()" class="btn btn-info btn-sm" type="button">+ ADD</button>
                   </div>
                 </div><!--end box-input-->
 
-                <button type="button" style="color: #FFF; margin-left: 15px" class="btn btn-primary" @click="Upload()"> {{ $t('dashboard.newLayer.submit') }}</button>
+                <button @click="Upload()" class="btn styleBtn" style="color: #FFF; margin-right: 15px; float: right" type="button"> {{ $t('dashboard.newLayer.submit') }}</button>
               </div><!--end card right-->
             </form>
 
@@ -172,21 +174,21 @@
                   <div class="form-group col-md-4">
                     <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
-                    <input class="form-control" v-model="startDate" type="date" id="start_date">
+                    <input class="form-control" id="start_date" type="date" v-model="startDate">
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateColumn') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDateColumn')" />
-                    <v-select v-model="startColumnsName" :options="columnsName" track-by="" label=""
-                              id="start_date_column_name"></v-select>
+                    <v-select :options="columnsName" id="start_date_column_name" label="" track-by=""
+                              v-model="startColumnsName"></v-select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
-                    <v-select v-model="startDateMask" :options="dateMask" track-by="mask" label="mask"
-                              id="start_date_mask"></v-select>
+                    <v-select :options="dateMask" id="start_date_mask" label="mask" track-by="mask"
+                              v-model="startDateMask"></v-select>
                   </div>
                 </div>
                 
@@ -194,28 +196,28 @@
                   <div class="form-group col-md-4">
                     <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
-                    <input class="form-control" type="date" v-model="endDate" id="end_date">
+                    <input class="form-control" id="end_date" type="date" v-model="endDate">
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateColumn') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDateColumn')" />
-                    <v-select v-model="endColumnsName" :options="columnsName" track-by="" label=""
-                              id="end_date_column_name"></v-select>
+                    <v-select :options="columnsName" id="end_date_column_name" label="" track-by=""
+                              v-model="endColumnsName"></v-select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
-                    <v-select v-model="endDateMask" :options="dateMask" track-by="mask" label="mask"
-                              id="end_date_mask"></v-select>
+                    <v-select :options="dateMask" id="end_date_mask" label="mask" track-by="mask"
+                              v-model="endDateMask"></v-select>
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="col align-self-end">
                     <br>
-                    <a href="#" class="btn btn-primary" @click="Upload2()">{{ $t('dashboard.newLayer.submit') }}</a>
+                    <a @click="Upload2()" class="btn btn-primary" href="#">{{ $t('dashboard.newLayer.submit') }}</a>
                   </div>
                 </div>
               </form>
@@ -286,6 +288,7 @@
         layer_id: null,
         is_the_admin: false,
         loading: '',
+        finished: 1,
         visibleRemove: false,
         optionsTypeGeom: [{
             value: 'MULTIPOINT',
@@ -321,20 +324,20 @@
       const vm = this
 
       this.shapeCorrect = false
-      Api().get('/api/user').then(function (response) {
+      Api().get('/api/user').then(function (response) { //Pegando as informações de todos os usuários
         response.data.features.filter(e => {
           if (e.properties.user_id !== vm.user.user_id)
             vm.users.push(e.properties)
         })
       })
 
-      Api().get('/api/keyword').then(function (response) {
+      Api().get('/api/keyword').then(function (response) {  //Pegando todas as keywords
         response.data.features.filter(e => {
           vm.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
         })
       })
 
-      Api().get('/api/mask').then(function (response) {
+      Api().get('/api/mask').then(function (response) {     //Pegando as informações de todas as máscaras
         response.data.features.filter(e => {
           vm.dateMask.push(e.properties)
         })
@@ -358,7 +361,7 @@
         })
 
       },
-      clearData(){
+      clearData(){        //Limpa os dados do Store
         this.$store.dispatch('dashboard/setName',  "")
         this.$store.dispatch('dashboard/setUsers',  [])
         this.$store.dispatch('dashboard/setReferences',  [])
@@ -366,26 +369,26 @@
         this.$store.dispatch('dashboard/setKeywords',  [])
         this.$store.dispatch('dashboard/setDescription',  "")
       },
-      saveName(){
+      saveName(){ //Salvar os dados no Store
         this.$store.dispatch('dashboard/setName',  document.getElementById("inputName").value)
       },
-      saveUsers(){
+      saveUsers(){  //Salvar os dados no Store
         this.$store.dispatch('dashboard/setUsers',  this.chosenUsers)
       },
-      saveReferences(){
+      saveReferences(){ //Salvar os dados no Store
         this.$store.dispatch('dashboard/setReferences',  this.chosenRef)
         this.$store.dispatch('dashboard/setRefId',  this.chosenRefID)
       },
-      saveDescription(){
+      saveDescription(){  //Salvar os dados no Store
         this.$store.dispatch('dashboard/setDescription',  document.getElementById("inputDescription").value)
       },
-      saveKeywords(){
+      saveKeywords(){ //Salvar os dados no Store
         this.$store.dispatch('dashboard/setKeywords',  this.chosenKeywords)
       },
-      updateName() {
+      updateName() {  //Salvar os dados no Store
         this.fname = document.getElementById("Upload").files[0].name
       },
-      Upload2(){
+      Upload2(){  //Cadastrar a segunda parte da camada - time column
         const vm = this
         this._openFullLoading()
 
@@ -393,6 +396,8 @@
           this._msgError("Datas são necessárias")
         }
         else {
+          vm.timeout_upload()
+
           let timeColumn = {
             'properties': {
               'f_table_name': this.tableName,
@@ -410,6 +415,7 @@
           ).then(function (response) {
             vm.loading.close()
             vm.$message.success("A layer foi adicionada com sucesso!")
+            vm.finished = 1
             vm.$router.push({
               path: '/dashboard/home'
             })
@@ -420,12 +426,25 @@
             if (cause.response.status === 403) msg = "Apenas o dono da camada ou administrador pode criar/atualizar uma coluna de tempo."
             else if (cause.response.status === 401) msg = "Você não tem permissão. É necessário uma autorização válida!"
             else msg = cause.toString()
+            vm.finished = 1
             vm._msgError(msg)
           })
         }
 
       },
-      Upload() {
+      timeout_upload(){ //Erro de estouro de tempo ao criar a nova camada
+        const vm = this
+        this.finished = 0
+
+        setTimeout(_=>{
+          if(vm.finished === 0){
+            Api().delete('/api/layer/'+vm.layer_id)
+            vm.loading.close();
+            vm._msgError("Timeout! Caso o erro persista entre em contato com os administradores da plataforma!")
+          }
+        }, 20000);
+      },
+      Upload() {  //Cadastrar a primeira parte da Camada
         this._openFullLoading()
         const vm = this
 
@@ -452,10 +471,10 @@
           vm._msgError("É necessário adicionar pelo menos uma palavra-chave!")
 
         else {
-          if(vm.typeSubmit === 'file'){
+          if(vm.typeSubmit === 'file'){   //Importando o arquivo
             let file = document.getElementById("Upload").files[0]
             this.upload_from_file(file)
-          } else
+          } else                          //Criando a camada em branco
             this.upload_from_input()
         } 
 
@@ -469,6 +488,8 @@
           vm._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
           
         else {
+          vm.timeout_upload()
+
           try {
             let layer = {
               'type': 'Layer',
@@ -483,12 +504,9 @@
               }
             }
 
-            Api().post('/api/layer/create',
-              layer
-            ).then(function (response) {
-
+            Api().post('/api/layer/create', layer).then(function (response) {   //Cadastrando nova Layer
                 vm.layer_id = response.data.layer_id
-                vm.chosenUsers.forEach(u => {          //POST cada usuario colaborar da layer
+                vm.chosenUsers.forEach(u => {
                   let user_layer = {
                     'properties': {
                       'is_the_creator': 'false',
@@ -499,8 +517,7 @@
                   }
                   Api().post('/api/user_layer/create',
                     user_layer
-                  )//.then(function (response) {})
-
+                  )
                 })
               let changeset = {
                 'properties': {
@@ -511,60 +528,70 @@
                 'type': 'Changeset'
               }
 
-              Api().post('/api/changeset/create',
-                changeset
-              ).then(function (response) {
+              Api().post('/api/changeset/create', changeset).then(function (response) {   //Cadastrando Changeset
 
-                  Api().post('api/import/shp/?f_table_name=' + vm.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id,
-                    //'&epsg=' + epsg,
-                    file
-                  ).then(function (response) {
-                      //console.log("Import ok")
-
+                  Api().post('api/import/shp/?f_table_name=' + vm.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id, file).then(function (response) {   //Cadastrando o Import
                       Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then(function (response) {    //Pega as colunas do shapefile enviado
                         response.data.features.filter(e => {
-                          //console.log(vm.columns)
                           vm.columns = e.properties
                           Object.getOwnPropertyNames(e.properties).forEach(c => {
-                            //console.log(c)
-                            if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
-                              vm.columnsName.push(c)
-                            }
+                            if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') vm.columnsName.push(c)  //Adiciona as colunas do shapefile na variavel
                           })
                           vm.shapeCorrect = true;
                           vm.loading.close();
                           vm.clearData()
-                          //console.log(vm.columnsName)
+                          vm.finished = 1
                         })
-                      }, function (cause) {
+                      }, function (cause) {   //Erro ao ler a feature table
                         Api().delete('/api/layer/'+vm.layer_id)
+                        vm.loading.close();
 
                         let msg = ''
                         msg = cause.toString()
+                        vm.finished = 1
                         vm._msgError(msg)
                       })
-                    }, function (cause) {
+                    }, function (cause) {     //Erro ao criar o import
                       Api().delete('/api/layer/'+vm.layer_id)
                       Api().delete('/api/changeset/?changeset_id='+response.data.changeset_id)
-                      console.log(cause.response)
+                      vm.loading.close();
+
                       let msg = ''
-                      if (cause.response.status === 409) msg = "O arquivo precisa ser um .zip."
-                      else if (cause.response.status === 400) msg = "ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP."
+                      if (cause.response.status === 400) msg = "1) ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP." +
+                        "2) The Shapefile has an invalid attribute: . It has a special character. Please, rename it."
+                      else if (cause.response.status === 403) msg = "Just the owner of the layer or administrator can create/update a feature table or do a import."
                       else if (cause.response.status === 404) msg = "Not found .prj inside the zip."
-                      else if (cause.response.status === 500) msg = "Problem when import a resource. Please, contact the administrator."
+                      else if (cause.response.status === 409) msg = "1) File is not a zip file." +
+                        "2) It was not possible to find one EPSG from the .prj." +
+                        "3) There is not a list of codes in the result. So it is an invalid .prj." +
+                        "4) The Shapefile has the 'version' or 'changeset_id' attribute. Please, rename them." +
+                        "5) Shapefile is not inside the default city of the project."
+                      else if (cause.response.status === 500) msg = "1) Problem when to import the Shapefile. Fiona was not able to read the Shapefile. One reason can be that the Shapefile has an empty column name, so name it." +
+                        "2) Some geometries of the Shapefile are with problem. Please, verify them and try to import again later." +
+                        "3) Problem when import a resource. Please, contact the administrator."
+                      else if (cause.response.status === 503) msg = "Problem with the prj2epsg web service."
                       else msg = cause.toString()
+
+                      vm.finished = 1
                       vm._msgError(msg)
                   })
-              }, function (cause) {
+              }, function (cause) {           //Erro ao criar o changeset
                 Api().delete('/api/layer/'+vm.layer_id)
+                vm.loading.close();
 
                 let msg = ''
+                if (cause.response.status === 500) msg = "Problem when create a resource. Please, contact the administrator."
+                else msg = cause.toString()
+                vm.finished = 1
                 msg = cause.toString()
                 vm._msgError(msg)
               })
-            }, function (cause) {
+            }, function (cause) {           //Erro ao criar a layer
               let msg = ''
-              if (cause.response.status === 409) msg = "O nome dessa camada já existe em nosso banco de dados!"
+              vm.finished = 1
+              vm.loading.close();
+              if (cause.response.status === 409) msg = "1) The table name already exist or is a reserved word. Please, rename it. 2) The maximum of keywords allowed to a layer are 5."
+              else if (cause.response.status === 500) msg = "Problem when create a resource. Please, contact the administrator."
               else if (cause.response.status === 401) msg = "É necessário uma autorização válida!"
               else msg = cause.toString()
               vm._msgError(msg)
@@ -576,6 +603,7 @@
                 confirmButtonText: 'OK',
                 type: 'error'
             });
+            vm.finished = 1
             this.loading.close()
           }
         }
@@ -602,6 +630,8 @@
               this._msgError('Atributos Inválidos. O nome do do atributo precisa ser diferente: id, changeset_id e version!')
 
             else {
+              vm.timeout_upload()
+
               //CREATE LAYER
               let layer = {
                 'type': 'Layer',
@@ -667,7 +697,8 @@
           }
           vm.clearData()
 
-        } catch(error) {
+        }
+        catch(error) {
           console.log(error)
           if(this.layer_id != null && this.layer_id !== undefined)
             await Dashboard.deleteLayer(this.layer_id)
@@ -745,7 +776,12 @@
       _msgError(msg){
         if(this.loading != '' && this.loading != null) 
           this.loading.close()
-        this.$message.error(msg)
+        this.$message.error({
+          message: msg,
+          center: true,
+          duration: 8000,
+          showClose: true,
+        })
       },
       _openFullLoading(){
         this.loading = this.$loading({
@@ -804,5 +840,11 @@
     margin: 0px
     position: relative
     border-radius: 30px
+
+  .styleBtn
+    background-color: #ff6107
+    border-color: #ff6107
+    color: #ffffff !important
+
 
 </style>

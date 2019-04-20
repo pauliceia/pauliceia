@@ -17,15 +17,17 @@
           <br>
           <p class="orange-style"><b>{{ $t('contact.institutional') }}</b></p>
           <p itemscope itemtype="https://schema.org/Organization">
-            <b itemprop="name">Arquivo Público do Estado de SP:</b> <span itemprop="url">www.arquivoestado.sp.gov.br</span></p>
+            <b itemprop="name">{{ $t('contact.envolvidos.arquivo_publico_sp') }}:</b> <span itemprop="url">www.arquivoestado.sp.gov.br</span></p>
           <p itemscope itemtype="https://schema.org/Organization">
-            <b itemprop="name">Emory University:</b> <span itemprop="url">www.emory.edu</span></p>
+            <b itemprop="name">{{ $t('contact.envolvidos.emory_university') }}:</b> <span itemprop="url">www.emory.edu</span></p>
           <p itemscope itemtype="https://schema.org/Organization">
-            <b itemprop="name">Fundação de Amparo a Pesquisa de SP:</b> <span itemprop="url">www.fapesp.br</span></p>
+            <b itemprop="name">{{ $t('contact.envolvidos.fapesp') }}:</b> <span itemprop="url">www.fapesp.br</span></p>
           <p itemscope itemtype="https://schema.org/Organization">
-            <b itemprop="name">Instituto Nacional de Pesquisas Especial (INPE):</b> <span itemprop="url">www.inpe.br</span></p>
+            <b itemprop="name">{{ $t('contact.envolvidos.himaco') }}:</b> <span itemprop="url">www.unifesp.br/himaco</span></p>
           <p itemscope itemtype="https://schema.org/Organization">
-            <b itemprop="name">Universidade Federal de SP (UNIFESP):</b> <span itemprop="url">www.unifesp.br</span></p>
+            <b itemprop="name">{{ $t('contact.envolvidos.inpe') }}:</b> <span itemprop="url">www.inpe.br</span></p>
+          <p itemscope itemtype="https://schema.org/Organization">
+            <b itemprop="name">{{ $t('contact.envolvidos.unifesp') }}:</b> <span itemprop="url">www.unifesp.br</span></p>
           <br>
           <p class="orange-style"><b>{{ $t('contact.platforms') }}</b></p>
           <p><b>Creative Commons:</b> https//creativecommons.org/</p>

@@ -2,45 +2,42 @@
   <p-dash-layout :title="$t('dashboard.home.dashboard')">
     <div class="row">
       <div class="col-sm-8">
-        <div class="card  text-center">
-          <div class="card-header">
-            {{ $t('dashboard.home.notifications') }}
-          </div>
+        <div class="card ">
           <div class="card-body">
+            <h6 class="mb-0">{{ $t('dashboard.home.notifications') }}</h6>
+            <br>
             <p-notifications showInput="true"></p-notifications>
           </div>
         </div>
       </div>
       <div class="col-sm-4">
-        <div class="card  ">
-          <div class="card-header text-center">
-            {{ $t('dashboard.home.myLayers') }}
-          </div>
+        <div class="card ">
           <div class="card-body">
+            <h6 class="mb-0">
+              {{ $t('dashboard.home.myLayers') }}</h6>
+            <br>
             <div class="card-text">
               <div class="row" v-for="layer in myLayers">
-                <div class="col-sm-8">{{ layer.name }}</div>
-                <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
-                </div>
-                <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
+                <div class="col-sm-7">{{ layer.name }}</div>
+                <div class="col-sm-5">
+                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
+                  <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
                 </div>
                 <hr>
               </div>
             </div>
           </div>
         </div>
-        <div class="card  ">
-          <div class="card-header text-center">
-            {{ $t('dashboard.home.sharedLayers') }}
-          </div>
+        <div class="card " style="margin-top: 20px">
           <div class="card-body">
+            <h6 class="mb-0">
+              {{ $t('dashboard.home.sharedLayers') }}</h6>
+            <br>
             <div class="card-text">
               <div class="row" v-for="layer in sharedLayers">
                 <div class="col-sm-8">{{ layer.name }}</div>
                 <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
                 </div>
                 <div class="col-sm-2">
                   <!--<button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>-->
@@ -158,10 +155,20 @@
 .add
   top: 0px
   display: inline-block
-  border: none
   padding: 0px
   margin: 0px
-  position: absolute
+  border: none
+  float: right
+  border-radius: 20px
 
+.add2
+  top: 0px
+  float: right
+  display: inline-block
+  padding: 0px
+  margin-left: 10px
+  color: #ff6107
+  border-color: #ff6107
+  border-radius: 20px
 
 </style>
