@@ -8,7 +8,7 @@
           <br>
           <p>{{ $t('contact.contact') }}</p>
           <p class="picture2 orange-style"><md-icon>mail</md-icon></p>
-          <p class="orange-style" itemprop="email">pauliceia_support@googlegroups.com</p>
+          <p class="orange-style" itemprop="email">pauliceia_support[at]googlegroups.com</p>
           <p><img class="picture2" style="width: 25px; " src="@/views/assets/images/facebook.png">/grupohimaco</p>
 
         </div>

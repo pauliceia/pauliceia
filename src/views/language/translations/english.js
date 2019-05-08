@@ -108,11 +108,11 @@ export default {
       "title2": "How?",
       "title3": "When will it be ready?",
       "title4": "How to cite?",
-      "column1": "Pauliceia 2.0 is a platform that aims to make the collaborative mapping of the history of São Paulo in the period from  1870 to 1940.",
-      "column2": `Through the interface of the platform, researchers and scholars of the city can share their spatial data sets, as long as they are spatially localizable.<br>
-                   In this way, a historical cartographic base of the city will be enriched at each feeding, making this data also available to all.<br>
-                   On the other hand, the user that collaborates will thus have a map or a view of his own research.`,
-      "column3": "A beta is currently available for testing. The final version is scheduled for january 2019.",
+      "column1": "Pauliceia 2.0 is a platform to make the collaborative mapping of history of the city of São Paulo for the period 1870 to 1940.",
+      "column2": `By means of an interface, researchers can share their spatial data sets in the platform. The data sets must be spatially localizable.<br>
+                    So, a historical cartographic base of the city will be enriched, also making this data available to all.<br>
+                    The user that collaborates will have a map or a view of his or her own research.`,
+      "column3": "A beta is currently available for testing. The final version is scheduled for January 2019.",
 
     },
     "contact":{
@@ -139,11 +139,11 @@ export default {
     "title5": "Support:",
     "title6": "Financing:",
     "title7": "Who are we?",
-    "text1": `The project is a partnership between UNIFESP (Campus of Guarulhos and São José dos Campos), the State Archive of SP, INPE (National Institute for Space Research) and Emory University (United States). <br>
-              But the concept of "open science" that guides the project makes it a friendly initiative to involve all stakeholders in various stages of its implementation.`,
-    "text2": "The project was one of the four contemplated by the call eScience 2016 of FAPESP (Foundation for Research Support of the State of São Paulo), which stimulates collaboration between computer science and other areas of knowledge.",
-    "text3": `The Pauliceia 2.0 platform is open source, web-based and service-oriented. It is implemented using the GIS library TerraLib and the web geoportal framework TerraBrasilis developed by INPE. The team also uses the gvSIG software, free alternative to open GIS.<br>
-              The platform is implemented based on the Single Page Application (SPA) concept using the framework Vue.js developed in JavaScript language and the tools jQuery and OpenLayers.`,
+    "text1": `The project is a partnership between INPE (National Institute for Space Research), UNIFESP (Guarulhos and São José dos Campos Units) and the State Archive of São Paulo and Emory University (United States). <br>
+                The concept of "open science" that guides the project makes it a friendly initiative to involve all stakeholders in various stages of its implementation.`,
+    "text2": "The project was one of the four contemplated by the eScience 2016 call of FAPESP (Foundation for Research Support of the State of São Paulo), which stimulates collaboration between areas of computer science and any other area of knowledge.",
+    "text3": `Pauliceia 2.0 platform is open source, web-based and service-oriented. It is implemented using the GIS library TerraLib and the web geoportal framework TerraBrasilis developed by INPE. The team also uses the gvSIG software, a free alternative to open GIS.<br>
+                The platform is implemented based on the Single Page Application (SPA) concept using the framework Vue.js developed in JavaScript language and the tools jQuery and OpenLayers.`,
     "name1": "Luís Ferla - coordinator",
     "desc1": "Luis Ferla is professor of contemporary history at Unifesp. In this University, he coordinates the research group Himaco (History, maps and computers) and lab.hum (Laboratory of Digital Humanities). Together with Karine Reis Ferreira, he is one of the coordinators of the project",
     "name2": "Karine Reis Ferreira - coordinator",
@@ -223,7 +223,7 @@ export default {
     "map":{
         "geocoding": {
             "label":  {
-                "search": "Search address",
+                "search": "Look for an Address",
                 "geocoding": "Search for an address via CSV"
             },
             "placeholder": "street name, number, year",
@@ -242,7 +242,7 @@ export default {
         },
         "sidebarLayer": {
             "title": "Layers",
-            "btnAdd": "Add and remove layers",
+            "btnAdd": "Add or remove layers",
             "options": {
                 "zoom": "Zoom",
                 "infosLayer": "Layer information",
@@ -256,7 +256,7 @@ export default {
             "title": "Edit"      
         },
         "addLayer": {
-            "title": "Add and remove layers",
+            "title": "Add or remove layers",
             "input": "Search by theme, layer or author:",
             "close": "Close",
             "box": {
