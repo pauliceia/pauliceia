@@ -104,7 +104,7 @@ export default {
         }
     },
     "home":{
-      "title1": "Which is?",
+      "title1": "What is it?",
       "title2": "How?",
       "title3": "When will it be ready?",
       "title4": "How to cite?",
@@ -112,7 +112,7 @@ export default {
       "column2": `By means of an interface, researchers can share their spatial data sets in the platform. The data sets must be spatially localizable.<br>
                     So, a historical cartographic base of the city will be enriched, also making this data available to all.<br>
                     The user that collaborates will have a map or a view of his or her own research.`,
-      "column3": "A beta is currently available for testing. The final version is scheduled for January 2019.",
+      "column3": "A beta is currently available for testing. The final version is scheduled for January 2021.",
 
     },
     "contact":{
