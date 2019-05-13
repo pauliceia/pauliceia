@@ -85,7 +85,7 @@ export default {
         },
         "keywords":{
             "keywords": "Palavras-chave",
-            "newKeyword": "Novas Palavras-Chave",
+            "newKeyword": "Nova Palavra-Chave",
             "myKeywords": "Minhas Palavras-Chave",
             "nameD": "Nome da nova palavra-chave. Ela é única no sistema.",
             "name": "Nome"

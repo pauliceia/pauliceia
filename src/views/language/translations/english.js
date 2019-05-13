@@ -18,7 +18,7 @@ export default {
             "home": "Home",
             "infos": "Information",
             "newLayer": "New Layer",
-            "keywords": "keywords",
+            "keywords": "Keywords",
             "layer": "Layers"
         },
         "home":{
@@ -36,7 +36,7 @@ export default {
             "addedReferences": "Addes References",
             "add": "Add Reference",
             "submit": "Submit",
-            "fileInput": "File Input",
+            "fileInput": "Input File",
             "zipFile": "ZIP File",
             "nameD": "Layer name. It is unique in the system.",
             "keywordsD": "Keyword is a tag/label related to the layer, which indicates what type it belongs, such as streets, addresses, crimes and so on.",
