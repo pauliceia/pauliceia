@@ -13,6 +13,9 @@ export default {
         "logout": "Logout",
         "msgLogout": "bye bye see you!"
     },
+    "main": {
+        "developedBy": "Developed by INPE"
+    },
     "dashboard": {
         "nav": {
             "home": "Home",
@@ -222,7 +225,7 @@ export default {
     },
     "map":{
         "geocoding": {
-            "label":  {
+            "form":  {
                 "search": "Look for an Address",
                 "geocoding": "Search for an address via CSV"
             },
@@ -238,6 +241,12 @@ export default {
                     <b>2nd Step:</b> Through the Browse button, selecting your CSV file, display the addresses found on the map.<br>
                     <b>3nd Step:</b> Through the Download button, it's possible to download the found data in Shapefile format.
                 `              
+            },
+            "label": {
+                "title": "Label",
+                "found": "Found",
+                "geocoded": "Geocoded",
+                "extrapolated": "Extrapolated"
             }
         },
         "sidebarLayer": {

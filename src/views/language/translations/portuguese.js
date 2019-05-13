@@ -13,6 +13,9 @@ export default {
         "logout": "Sair",
         "msgLogout": "Até breve!"
     },
+    "main": {
+        "developedBy": "Desenvolvido por INPE"
+    },
     "dashboard": {
         "nav": {
             "home": "Inicio",
@@ -224,7 +227,7 @@ export default {
     },
     "map":{
         "geocoding": {
-            "label":  {
+            "form":  {
                 "search": "Procure um endereço",
                 "geocoding": "Procure por endereços via CSV"
             },
@@ -240,6 +243,12 @@ export default {
                     <b>2° Passo:</b> Através do botão Procurar, selecionando o seu arquivo CSV, visualizar no mapa os endereços encontrados.<br>
                     <b>3° Passo:</b> Através do botão Download, é possível baixar os dados encontrados, em formato Shapefile.
                 `
+            },
+            "label": {
+                "title": "Legenda",
+                "found": "Encontrado",
+                "geocoded": "Geocodificado",
+                "extrapolated": "Extrapolado"
             }
         },
         "sidebarLayer": {
