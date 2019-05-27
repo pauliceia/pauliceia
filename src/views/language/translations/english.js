@@ -112,7 +112,7 @@ export default {
       "column2": `Through the interface of the platform, researchers and scholars of the city can share their spatial data sets, as long as they are spatially localizable.<br>
                    In this way, a historical cartographic base of the city will be enriched at each feeding, making this data also available to all.<br>
                    On the other hand, the user that collaborates will thus have a map or a view of his own research.`,
-      "column3": "A beta is currently available for testing. The final version is scheduled for january 2019.",
+      "column3": "A beta is currently available for testing. A new, improved, more comprehensive version will be available in the first half of this year.",
 
     },
     "contact":{

@@ -1,8 +1,9 @@
 <template>
     <section>
         <div class="box-item" v-for="layer in layers" :key="layer.title">
-            <el-switch v-model="layer.status" @click.native="modifyLayer(layer)" :active-color="color"></el-switch>
-            <span><b>{{ layer.title }}</b></span>
+            <span v-bind:class="{ active: layer.status }" @click="toggleLayer(layer)">
+                {{ layer.titleReal }}
+            </span>
         </div>
     </section>     
 </template>
@@ -18,24 +19,29 @@ export default {
             layers: [
                 {
                     status: true,
-                    title: "OSM"
+                    title: "OSM",
+                    titleReal: "Open Street Map"
                 }
             ]
         }
     },
     
     methods: {
-        modifyLayer(layerSelected) {
-            if(layerSelected.status == true) 
-                for(var i in this.layers){
-                    if(this.layers[i].title != layerSelected.title ) this.layers[i].status = false
+        toggleLayer(layerSelected) {
+            const items = {};
+            for (let i in this.layers) {
+                if (this.layers[i].title === layerSelected.title) {
+                  let status = !this.layers[i].status;
+                  this.layers[i].status = status;
+                  items[this.layers[i].title] = status;
                 }
-            
+            }
+
             this.group.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === layerSelected.title) 
-                    sublayer.setVisible(layerSelected.status)
-                else
-                    sublayer.setVisible(false)
+                if (typeof items[sublayer.get('title')] != 'undefined') {
+                  console.log(sublayer.get('title'), items[sublayer.get('title')]);
+                  sublayer.setVisible(items[sublayer.get('title')])
+                }
             })
         }
     }
@@ -44,12 +50,18 @@ export default {
 </script>
 <style lang="sass" scoped>
 .box-item
-    margin-top: 0px
-    padding: 5px 10px
+    margin: 0 0 5px
+    padding: 0
+    display: block
 
-    .el-switch
-        margin-top: -5px !important
     span
-        padding-left: 7.5px
+        padding: 8px 15px
         font-size: 1.2em
+        border-radius: 5px
+        font-weight: normal
+        display: inline-block
+        background: rgba(#333, .8)
+
+        &.active
+            background: orangered
 </style>

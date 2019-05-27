@@ -1,8 +1,9 @@
 <template>
     <section>
         <div class="box-item" v-for="layer of layers" :key="layer.title">
-            <el-switch v-model="layer.status" @click.native="modifyLayer(layer)" :active-color="color"></el-switch>
-            <span><b>{{ layer.titleReal }}</b></span>
+            <span v-bind:class="{ active: layer.status }" @click="modifyLayer(layer)">
+                {{ layer.titleReal }}
+            </span>
         </div>
     </section>
 </template>
@@ -90,35 +91,47 @@ export default {
 
     methods: {
         modifyLayer(layerSelected) {
-            if(overlayGroupRasters.getLayers().getLength() > 0) overlayGroupRasters.getLayers().pop()
+            const items = {};
 
-            if(layerSelected.status == true) {
-                for(var i in this.layers){
-                    if(this.layers[i].title != layerSelected.title ) this.layers[i].status = false
-                }
-            
-                this._openFullScreen()
-                let tiled
-                if(layerSelected.title=="saraBrasil30") tiled = true
-                overlayGroupRasters.getLayers().push(
-                    new ol.layer.Tile({
-                        title: layerSelected.title,
-                        visible: true,
-                        source: new ol.source.TileWMS({
-                            url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/wms',
-                            params: {
-                                'FORMAT': 'image/png',
-                                'VERSION': '1.1.1',
-                                tiled,
-                                STYLES: '',
-                                LAYERS: 'pauliceia:'+layerSelected.title,
-                                tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
-                            }
-                        })
-                    })
-                )
-                this.loading.close()
+            if(overlayGroupRasters.getLayers().getLength() > 0) {
+                overlayGroupRasters.getLayers().pop()
             }
+
+            for(let i in this.layers){
+                let status = false;
+                if (this.layers[i].title === layerSelected.title) {
+                    status = !this.layers[i].status;
+                }
+
+                this.layers[i].status = status;
+                items[this.layers[i].title] = status;
+            }
+
+            this._openFullScreen()
+
+            let tiled
+            if(layerSelected.title === 'saraBrasil30') {
+                tiled = true
+            }
+
+            overlayGroupRasters.getLayers().push(
+                new ol.layer.Tile({
+                    title: layerSelected.title,
+                    visible: true,
+                    source: new ol.source.TileWMS({
+                        url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/wms',
+                        params: {
+                            'FORMAT': 'image/png',
+                            'VERSION': '1.1.1',
+                            tiled,
+                            STYLES: '',
+                            LAYERS: 'pauliceia:'+layerSelected.title,
+                            tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
+                        }
+                    })
+                })
+            )
+            this.loading.close()
         },
         _openFullScreen() {
             this.loading = this.$loading({
@@ -135,12 +148,18 @@ export default {
 
 <style lang="sass" scoped>
 .box-item
-    margin-top: 0px
-    padding: 5px 10px
+    margin: 0 0 5px
+    padding: 0
+    display: block
 
-    .el-switch
-        margin-top: -5px !important
     span
-        padding-left: 7.5px
+        padding: 8px 15px
         font-size: 1.2em
+        border-radius: 5px
+        font-weight: normal
+        display: inline-block
+        background: rgba(#333, .8)
+
+        &.active
+            background: orangered
 </style>

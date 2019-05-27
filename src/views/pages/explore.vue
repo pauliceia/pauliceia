@@ -1,6 +1,5 @@
 <template>
   <section>
-
     <ol-map class="map">
       <p-timeline></p-timeline>
       <p-geocoding></p-geocoding>
@@ -13,7 +12,6 @@
       <p-subtitle :subShow="true"></p-subtitle>
       <p-alert></p-alert>
     </ol-map>
-
   </section>
 </template>
 

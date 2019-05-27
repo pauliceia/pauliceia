@@ -10,38 +10,33 @@ export default {
     return ApiGeocoding().get(`/multiplegeolocation/${address}/json`)
   },
 
-  getLayers(query) {
-    if(query != null) return ApiVGI().get(`/api/layer/?`+query)
+  getLayers (query) {
+    if (query != null) return ApiVGI().get(`/api/layer/?` + query)
     else return ApiVGI().get(`/api/layer/`)
   },
 
-  getLayers(query) {
-    if(query != null) return ApiVGI().get(`/api/layer/?`+query)
-    else return ApiVGI().get(`/api/layer/`)
-  },
-
-  getAttrLayer(query) {
+  getAttrLayer (query) {
     return ApiVGI().get(`/api/feature_table/?${query}`)
   },
 
-  getKeywords() {
+  getKeywords () {
     return ApiVGI().get(`/api/keyword/`)
   },
 
-  getReferences() {
+  getReferences () {
     return ApiVGI().get(`/api/reference/`)
   },
 
-  getAuthors() {
+  getAuthors () {
     return ApiVGI().get(`/api/user/`)
   },
 
-  getAuthorsLayers(query) {
-    if(query != null) return ApiVGI().get(`/api/user_layer/?${query}`)
+  getAuthorsLayers (query) {
+    if (query != null) return ApiVGI().get(`/api/user_layer/?${query}`)
     else return ApiVGI().get('/api/user_layer/')
   },
 
-  getPlacesList() {
+  getPlacesList () {
     return ApiGeocoding().get('/placeslist')
   }
 }

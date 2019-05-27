@@ -246,6 +246,7 @@ export default {
             "title": "Camadas",
             "btnAdd": "Adicionar e remover camadas",
             "options": {
+                "move": "Mover",
                 "zoom": "Zoom",
                 "infosLayer": "Informações da camada",
                 "infosVector": "Informações sobre os objetos",
@@ -253,6 +254,9 @@ export default {
                 "download": "Baixar .shp"
             },
             "msgEmpty": "Adicione as camadas para a visualização no mapa!"
+        },
+        "sidebarOsmLayer": {
+            "title": "Mapas"
         },
         "sidebarEdit": {
             "title": "Editor"      
