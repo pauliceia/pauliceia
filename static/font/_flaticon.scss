@@ -1,6 +1,6 @@
     /*
     Flaticon icon font: Flaticon
-    Creation date: 27/05/2019 14:03
+    Creation date: 30/05/2019 16:40
     */
 
     @font-face {
@@ -43,6 +43,8 @@
 .flaticon-download:before { content: "\f103"; }
 .flaticon-push-pin:before { content: "\f104"; }
 .flaticon-adjust:before { content: "\f105"; }
+.flaticon-chat:before { content: "\f106"; }
+.flaticon-menu:before { content: "\f107"; }
     
     $font-Flaticon-sort-up-and-down-arrows-couple: "\f100";
     $font-Flaticon-information: "\f101";
@@ -50,3 +52,5 @@
     $font-Flaticon-download: "\f103";
     $font-Flaticon-push-pin: "\f104";
     $font-Flaticon-adjust: "\f105";
+    $font-Flaticon-chat: "\f106";
+    $font-Flaticon-menu: "\f107";

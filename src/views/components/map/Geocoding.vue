@@ -1,25 +1,6 @@
 <template>
   <section class="box" v-show="boxGeocoding">
-
-    <header class="header">
-      <h1>{{ $t('map.geocoding.label.search') }}:
-
-        <el-popover class="info" placement="top-start" width="450"
-                    trigger="hover"
-                    type="primary">
-          <div v-html="$t('map.geocoding.popupInfo.search')" />
-          <button type="button" slot="reference" class="btn btn-outline-primary info">
-            <md-icon class="icon">error_outline</md-icon>
-          </button>
-        </el-popover>
-      </h1>
-
-      <button class="btn" @click="closeBox()">
-        <md-icon>close</md-icon>
-      </button>
-    </header>
-
-    <form @submit.prevent="search">
+    <form @submit.prevent="search" class="form-search">
       <div class="input-group">
         <el-autocomplete
           class="inline-input"
@@ -42,32 +23,42 @@
           </button>
         </div>
         <div class="input-group-append">
+          <el-popover class="info" placement="top-start" width="450" trigger="hover" type="primary">
+            <div v-html="$t('map.geocoding.popupInfo.search')" />
+            <button type="button" slot="reference" class="btn text-warning">
+              <md-icon class="icon">error_outline</md-icon>
+            </button>
+          </el-popover>
+
           <button type="button" class="btn" @click="setting()">
             <md-icon>settings</md-icon>
           </button>
-        </div>
 
+          <button class="btn btn-close" @click="closeBox()">
+            <md-icon>close</md-icon>
+          </button>
+        </div>
       </div>
     </form>
 
     <div class="box-multigeocoding" v-show="multigeocoding">
-      <h1>{{ $t('map.geocoding.label.geocoding') }}:
+      <h1>
+        {{ $t('map.geocoding.label.geocoding') }}:
 
-        <el-popover class="info" placement="bottom-start" width="450"
-                    trigger="hover"
-                    type="primary">
+        <el-popover class="info" placement="bottom-start" width="450" trigger="hover" type="primary">
           <div v-html="$t('map.geocoding.popupInfo.geocoding')" />
           <button type="button" slot="reference" class="btn btn-outline-primary info">
             <md-icon class="icon">error_outline</md-icon>
           </button>
         </el-popover>
       </h1>
+
+      <h2>{{ $t('map.geocoding.label.geocodingSubtitle') }}:</h2>
       <br>
 
       <label class="file-select">
         <!-- We can't use a normal button element here, as it would become the target of the label. -->
-        <div class="select-button">
-        </div>
+        <div class="select-button"></div>
         <!-- Now, the file input that we hide. -->
         <input type="file" @change="handleFileChange" />
       </label><br><br>
@@ -105,15 +96,11 @@
         <button class="btn btn-download" type="submit">Visualizar</button>
         <button class="btn btn-download" type="button" @click="download()">Download</button>
       </form>
-
     </div>
-
-
   </section>
 </template>
 
 <script>
-
   import ApiMap from '@/middleware/Map'
   import { mapState } from 'vuex'
   import GeoJSON from 'geojson'
@@ -413,52 +400,46 @@
       }
     }
   }
-
 </script>
 
 <style lang="sass">
   .box
     position: absolute
-    top: 20px
-    right: 60px
-    border-radius: 10px
-    overflow: auto
-    padding: 10px
-    background: rgba(#FFF, 0.7)
-    z-index: 1
-    max-width: 40%
-    min-width: 40%
+    width: 35%
+    top: 37px
+    right: 70px
+    background: transparent
+    z-index: 9999
 
-    .header
+    .form-search
       width: 100%
+      background: #fff
+      border: 1px solid #7777
+      padding: 8px 5px
+      border-radius: 10px
 
-      h1
-        padding: 5px 5px 1px 5px
-        font-size: 1.3em
-        font-weight: 400
-        font-family: 'Roboto' !important
-        display: inline-block
-        margin: 0 !important
+      .inline-input
 
-      .info
-        top: -7px !important
-        border: none
-        position: relative
-        border-radius: 30px
+        input
+          border: 0
 
-      .info:hover
-        background: #008ae6 !important
+          &::-webkit-input-placeholder  /* Chrome/Opera/Safari */
+            color: #111;
 
-      .btn
-        margin: 3px !important
-        padding: 2px !important
-        background: none
-        border: none
-        float: right
-        display: inline-block
+          &::-moz-placeholder  /* Firefox 19+ */
+            color: #111;
 
-      .btn:hover
-        background: rgba(#000, 0.1)
+          &:-ms-input-placeholder  /* IE 10+ */
+            color: #111;
+
+          &:-moz-placeholder  /* Firefox 18- */
+            color: #111;
+
+    .btn-close
+      border: 1px solid #666
+      margin: 4px 8px
+      padding: 3px 3px
+      border-radius: 5px!important
 
     .btn-search
       background: #f15a29
@@ -483,17 +464,21 @@
       padding: 25px
       border: 1px solid #CCC
       border-top: none
+      border-radius: 10px
 
       .file-select
-        padding: 10px 0px 0px 0px
+        padding: 10px 0 0 0
 
-      h1
-        padding: 5px 5px 1px 0px
+      h1, h2
+        padding: 5px 5px 1px 0
+        font-size: 1.4em
+        font-weight: bold
+        font-family: 'Roboto' !important
+        margin: 0 !important
+
+      h2
         font-size: 1.3em
         font-weight: 400
-        font-family: 'Roboto' !important
-        display: inline-block
-        margin: 0 !important
 
       .info
         top: -7px !important
@@ -516,5 +501,5 @@
 
     input:focus
       border-color: rgba(#58595b, 0.2) !important
-      box-shadow: 0px 0px 10px rgba(#58595b, 0.2) !important
+      box-shadow: 0 0 10px rgba(#58595b, 0.2) !important
 </style>

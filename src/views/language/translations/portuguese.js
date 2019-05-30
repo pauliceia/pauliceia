@@ -226,9 +226,10 @@ export default {
         "geocoding": {
             "label":  {
                 "search": "Procure um endereço",
-                "geocoding": "Procure por endereços via CSV"
+                "geocoding": "Pesquisa avançada",
+                "geocodingSubtitle": "Procure por endereços via CSV"
             },
-            "placeholder": "nome da rua, número, ano",
+            "placeholder": "Nome da rua, número, ano",
             "btnText": "Pesquisar",
             "popupInfo": {
                 "search": `
@@ -290,7 +291,7 @@ export default {
             "lbNotifications": "Notificações"
         },
         "viewInfoVector": {
-            "title": "Selecione as informações",
+            "title": "Atributos",
             "btnFeature": "Por localização",
             "btnBox": "Por região",
             "btnClean": "Limpar"

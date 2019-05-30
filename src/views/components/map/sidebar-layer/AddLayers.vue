@@ -10,10 +10,7 @@
         </div>
 
         <div class="modal-body">
-          <el-input
-            :placeholder="$t('map.addLayer.input')"
-            v-model="filterText">
-          </el-input>
+          <el-input :placeholder="$t('map.addLayer.input')" v-model="filterText"></el-input>
           <br />
 
           <article v-for="layer in listLayers" :key="layer.id">
@@ -21,12 +18,14 @@
               :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
               <div class="infos">
                 <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.properties.name }}</p>
-                <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
+                <p>
+                  <strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
                   <span v-for="author in layer.properties.authors" :key="author.properties.user_id">
-                                        {{ getAuthorName(author)[0].properties.name }};
-                                    </span>
+                    {{ getAuthorName(author) }};
+                  </span>
                 </p>
-                <p><strong>{{ $t('map.addLayer.box.lbTags') }}:</strong>
+                <p>
+                  <strong>{{ $t('map.addLayer.box.lbTags') }}:</strong>
                   <el-tag v-for="id in layer.properties.keyword" :key="id" style="margin-left: 5px">
                     {{ getTagName(id)[0].properties.name }}
                   </el-tag>
@@ -35,9 +34,8 @@
 
               <div class="btns">
                 <el-button :type="layers.some(id => id == layer.properties.layer_id) ? 'danger' : 'success'"
-                           round
-                           @click="layers.some(id => id == layer.properties.layer_id) ? disabled(layer) : active(layer)"
-                           :disabled="btnDisabled">
+                   round :disabled="btnDisabled"
+                   @click="layers.some(id => id == layer.properties.layer_id) ? disabled(layer) : active(layer)">
                   {{ layers.some(id => id == layer.properties.layer_id) ? $t('map.addLayer.btns.disable') :
                   $t('map.addLayer.btns.active') }}
                 </el-button>
@@ -70,7 +68,9 @@
         else {
           this.listLayers = this.allLayers.filter(infoLayer => {
             infoLayer.properties.authorName = this.allAuthorsLayers.map(item => {
-              if (infoLayer.properties.layer_id == item.properties.layer_id) return this.getAuthorName(item)[0].properties.name
+              if (infoLayer.properties.layer_id == item.properties.layer_id) {
+                return this.getAuthorName(item);
+              }
             })
             infoLayer.properties.tagName = infoLayer.properties.keyword.map(id => {
               return this.getTagName(id)[0].properties.name
@@ -132,7 +132,13 @@
         return this.allKeywords.filter(key => key.properties.keyword_id == id)
       },
       getAuthorName (item) {
-        return this.allAuthors.filter(author => author.properties.user_id == item.properties.user_id)
+        const result = this.allAuthors.filter(author => author.properties.user_id == item.properties.user_id);
+
+        if (!!result[0]) {
+          return result[0].properties.name;
+        }
+
+        return '';
       },
       disabled (layer) {
         if (this.btnDisabled == false)

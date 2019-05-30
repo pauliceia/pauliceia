@@ -1,7 +1,6 @@
 <template>
   <div class="body">
-
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="GENERAL" name="first" class="">
         <div class="notification-box-main" v-if="showInput">
           <textarea class="form-control" v-model="txtNotif" id="inputReference" rows="3"></textarea>
@@ -44,7 +43,7 @@
                     <md-icon>report</md-icon>
                   </button>
                   <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"
-                          v-if="userId === n.user_id_creator  || user.is_the_admin" title="Excluir">
+                          v-if="userId === n.user_id_creator  || user && !!user.is_the_admin && user.is_the_admin" title="Excluir">
                     <md-icon>clear</md-icon>
                   </button>
                 </div>
@@ -103,7 +102,7 @@
                       <md-icon>report</md-icon>
                     </button>
                     <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"
-                            v-if="userId === n.user_id_creator  || user.is_the_admin">
+                            v-if="userId === n.user_id_creator  || user && !!user.is_the_admin && user.is_the_admin">
                       <md-icon>clear</md-icon>
                     </button>
                   </div>
@@ -145,8 +144,7 @@
             <a style="color: white" class="btn btn-primary" @click="addNotif()">Submit</a>
           </div>
           <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
-                    v-if="txtReply !== null">
+            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
               <md-icon>clear</md-icon>
             </button>
           </p>
@@ -182,7 +180,7 @@
                       <md-icon>report</md-icon>
                     </button>
                     <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"
-                            v-if="userId === n.user_id_creator  || user.is_the_admin" title="Excluir">
+                            v-if="userId === n.user_id_creator  || user && !!user.is_the_admin && user.is_the_admin" title="Excluir">
                       <md-icon>clear</md-icon>
                     </button>
                   </p>
@@ -221,7 +219,7 @@
 <script>
   import DashLayout from '@/views/layouts/dashboard'
   import Api from '@/middleware/ApiVGI'
-  import {mapState} from 'vuex'
+  import { mapState } from 'vuex'
   import ModalNotification from '@/views/components/dashboard/ModalNotification'
   import ImgPerson from '@/views/assets/images/icon_person.png'
   import "element-ui/lib/theme-chalk/tabs.css"
@@ -370,30 +368,13 @@
           //console.log(error)
         }
 
-        Api().get('/api/notification/?user_id_creator=' + vm.user.user_id).then(function (userNotifications) {
-          userNotifications.data.features.forEach(userNotification => {
-            Api().get('/api/notification/?notification_id_parent=' + userNotification.properties.notification_id).then(function (notifications) {
-              notifications.data.features.forEach(notification => {
-                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  if (notification.properties.layer_id === null) {
-                    vm.notifP.push(
-                      {
-                        'description': notification.properties.description,
-                        'name': user.data.features[0].properties.name,
-                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                        'date': notification.properties.created_at,
-                        'type': 'message',
-                        'notification_id': notification.properties.notification_id,
-                        'user_id_creator': notification.properties.user_id_creator,
-                        'is_denunciation': notification.properties.is_denunciation,
-                        'keyword_id': notification.properties.keyword_id,
-                        'layer_id': notification.properties.layer_id,
-                        'notification_id_parent': notification.properties.notification_id_parent,
-                        'layer_name': null
-                      })
-                    vm.orderNotification(50)
-                  } else {
-                    Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
+        if (vm.user && !!vm.user.user_id) {
+          Api().get('/api/notification/?user_id_creator=' + vm.user.user_id).then(function (userNotifications) {
+            userNotifications.data.features.forEach(userNotification => {
+              Api().get('/api/notification/?notification_id_parent=' + userNotification.properties.notification_id).then(function (notifications) {
+                notifications.data.features.forEach(notification => {
+                  Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
+                    if (notification.properties.layer_id === null) {
                       vm.notifP.push(
                         {
                           'description': notification.properties.description,
@@ -407,159 +388,238 @@
                           'keyword_id': notification.properties.keyword_id,
                           'layer_id': notification.properties.layer_id,
                           'notification_id_parent': notification.properties.notification_id_parent,
+                          'layer_name': null
+                        })
+                      vm.orderNotification(50)
+                    } else {
+                      Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
+                        vm.notifP.push(
+                          {
+                            'description': notification.properties.description,
+                            'name': user.data.features[0].properties.name,
+                            'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
+                            'date': notification.properties.created_at,
+                            'type': 'message',
+                            'notification_id': notification.properties.notification_id,
+                            'user_id_creator': notification.properties.user_id_creator,
+                            'is_denunciation': notification.properties.is_denunciation,
+                            'keyword_id': notification.properties.keyword_id,
+                            'layer_id': notification.properties.layer_id,
+                            'notification_id_parent': notification.properties.notification_id_parent,
+                            'layer_name': layer.data.features[0].properties.name
+                          })
+                        vm.orderNotification(50)
+                      })
+                    }
+                  })
+                })
+              })
+            })
+          });
+
+          Api().get('/api/user_layer/?user_id=' + vm.user.user_id).then(function (userLayers) {
+            userLayers.data.features.forEach(userLayer => {
+              Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
+                notifications.data.features.forEach(notification => {
+                  Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
+                    Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
+                      vm.notifP.push(
+                        {
+                          'description': notification.properties.description,
+                          'name': user.data.features[0].properties.name,
+                          'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
+                          'date': notification.properties.created_at,
+                          'type': 'myLayer',
+                          'notification_id': notification.properties.notification_id,
+                          'user_id_creator': notification.properties.user_id_creator,
+                          'is_denunciation': notification.properties.is_denunciation,
+                          'keyword_id': notification.properties.keyword_id,
+                          'layer_id': notification.properties.layer_id,
+                          'notification_id_parent': notification.properties.notification_id_parent,
                           'layer_name': layer.data.features[0].properties.name
                         })
                       vm.orderNotification(50)
                     })
-                  }
-                })
-              })
-            })
-          })
-        })
-        Api().get('/api/user_layer/?user_id=' + vm.user.user_id).then(function (userLayers) {
-          userLayers.data.features.forEach(userLayer => {
-            Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
-              notifications.data.features.forEach(notification => {
-                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
-                    vm.notifP.push(
-                      {
-                        'description': notification.properties.description,
-                        'name': user.data.features[0].properties.name,
-                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                        'date': notification.properties.created_at,
-                        'type': 'myLayer',
-                        'notification_id': notification.properties.notification_id,
-                        'user_id_creator': notification.properties.user_id_creator,
-                        'is_denunciation': notification.properties.is_denunciation,
-                        'keyword_id': notification.properties.keyword_id,
-                        'layer_id': notification.properties.layer_id,
-                        'notification_id_parent': notification.properties.notification_id_parent,
-                        'layer_name': layer.data.features[0].properties.name
-                      })
-                    vm.orderNotification(50)
                   })
                 })
               })
             })
-          })
-        })
+          });
 
-
-        Api().get('/api/layer_follower/?user_id=' + vm.user.user_id).then(function (userLayers) {
-          userLayers.data.features.forEach(userLayer => {
-            Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
-              notifications.data.features.forEach(notification => {
-                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
-                    vm.notifF.push(
-                      {
-                        'description': notification.properties.description,
-                        'name': user.data.features[0].properties.name,
-                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                        'date': notification.properties.created_at,
-                        'type': 'general',
-                        'notification_id': notification.properties.notification_id,
-                        'user_id_creator': notification.properties.user_id_creator,
-                        'is_denunciation': notification.properties.is_denunciation,
-                        'keyword_id': notification.properties.keyword_id,
-                        'layer_id': notification.properties.layer_id,
-                        'notification_id_parent': notification.properties.notification_id_parent,
-                        'layer_name': layer.data.features[0].properties.name
+          Api().get('/api/layer_follower/?user_id=' + vm.user.user_id).then(function (userLayers) {
+            if (userLayers.data) {
+              userLayers.data.features.forEach(userLayer => {
+                Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
+                  notifications.data.features.forEach(notification => {
+                    Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
+                      Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
+                        vm.notifF.push(
+                          {
+                            'description': notification.properties.description,
+                            'name': user.data.features[0].properties.name,
+                            'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
+                            'date': notification.properties.created_at,
+                            'type': 'general',
+                            'notification_id': notification.properties.notification_id,
+                            'user_id_creator': notification.properties.user_id_creator,
+                            'is_denunciation': notification.properties.is_denunciation,
+                            'keyword_id': notification.properties.keyword_id,
+                            'layer_id': notification.properties.layer_id,
+                            'notification_id_parent': notification.properties.notification_id_parent,
+                            'layer_name': layer.data.features[0].properties.name
+                          })
+                        vm.orderNotification(50)
                       })
-                    vm.orderNotification(50)
+                    })
                   })
                 })
-              })
-            })
-          })
-        })
-
+              });
+            }
+          });
+        }
       }
     },
-
     mounted() {
-      this.userId = this.user.user_id
-      this.updateNotif()
+      if (this.user && !!this.user.user_id) {
+        this.userId = this.user.user_id;
+        this.updateNotif();
+      }
     }
   }
 </script>
 
-
 <style lang="sass" scoped>
-
-
   .notification-box-main
     margin: 10px
     background: #ffffff
     border-radius: 20px
 
 
-  .notification-box
-    margin: 10px
-    background: #E6E6E6
-    padding: 20px
-    border-radius: 10px
+    .notification-box
+      margin: 10px!important
+      background: #E6E6E6
+      padding: 20px
+      border-radius: 10px
 
-    .photo
-      width: 40px
-      padding-top: 20px
-      text-align: center
-      border-radius: 50%
+      .photo
+        width: 40px
+        padding-top: 20px
+        text-align: center
+        border-radius: 50%
 
-    .credentials
+      .credentials
+        display: inline-block
+        margin: 0 0 0 0px
+
+        .author
+          font-weight: 600
+          margin-top: 5px !important
+          font-size: 1.1em
+
+        .date
+          color: #666
+          font-size: 0.9em
+
+        p
+          margin: 0 0 5px 0 !important
+
+      .content
+        text-align: justify
+        margin-top: 10px
+
+      .comments
+        width: 100%
+        padding-right: 20px
+        position: absolute
+        text-align: right
+        color: #ff6107
+        cursor: pointer
+
+    .add
+      top: -1px
+      left: 0px
       display: inline-block
-      margin: 0 0 0 0px
+      border: none
+      padding: 0px
+      margin: 0px
+      position: relative
+      border-radius: 30px
 
-      .author
-        font-weight: 600
-        margin-top: 5px !important
-        font-size: 1.1em
+    .msgType
+      display: flex
+      color: #4D4D4D
 
-      .date
-        color: #666
-        font-size: 0.9em
 
-      p
-        margin: 0 0 5px 0 !important
+    .stylePicture
+      width: 50px
+      height: 50px
 
-    .content
-      text-align: justify
-      margin-top: 10px
 
-    .comments
-      width: 100%
-      padding-right: 20px
-      position: absolute
-      text-align: right
+    .el-tabs__item.is-active
+      color: #ff6107
+
+    .el-tabs__item:hover
       color: #ff6107
       cursor: pointer
+</style>
 
-  .add
-    top: -1px
-    left: 0px
-    display: inline-block
-    border: none
-    padding: 0px
-    margin: 0px
-    position: relative
-    border-radius: 30px
+<style lang="css">
+  .el-tabs__header {
+    width: 70%!important;
+    margin-top: -53px!important;
+    background: transparent!important;
+    top: 0;
+    left: 150px!important;
+    border: 0!important;
+  }
 
-  .msgType
-    display: flex
-    color: #4D4D4D
+  .dashboard .el-tabs__header {
+    width: 100%!important;
+    margin-top: 0!important;
+    top: 0;
+    left: 0!important;
+    border-bottom: 1px solid #ddd!important;
+  }
 
+  .el-tabs {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
 
-  .stylePicture
-    width: 50px
-    height: 50px
+  .dashboard .el-tabs {
+    border: 1px solid #ddd;
+  }
 
+  .el-tabs__content {
+    height: 400px;
+    overflow-y: auto;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid #7777;
+  }
 
-  .el-tabs__item.is-active
-    color: #ff6107
+  .dashboard .el-tabs__content {
+    height: 100%;
+    overflow: auto;
+    border: 0;
+  }
 
-  .el-tabs__item:hover
-    color: #ff6107
-    cursor: pointer
+  .el-tabs__item {
+    padding: 7px 30px 0;
+    margin: 0;
+    height: 54px;
+    border-top: 0;
+  }
+
+  .el-tabs--border-card > .el-tabs__header .el-tabs__item + .el-tabs__item,
+  .el-tabs--border-card > .el-tabs__header .el-tabs__item:first-child {
+    margin-left: 0;
+  }
+
+  .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active,
+  .el-tabs__item:hover {
+    color: #ff6107!important;
+    border-color: #DCDFE6;
+  }
 </style>

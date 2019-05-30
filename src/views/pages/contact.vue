@@ -19,6 +19,7 @@
             </p>
           </div>
 
+          <img src="@/views/assets/images/rodape.png">
         </div>
         <div class="col-sm-4 column-style">
           <p class="orange-style"><b>{{ $t('contact.links') }}</b></p>

@@ -1,7 +1,6 @@
 <template >
     <div style="background-color: rgba(255,168,134,0.66); min-height: 820px">
     <section class="col-md-6 mx-auto" >
-
         <!-- form card login -->
         <div class="card rounded stylecard">
             
@@ -70,7 +69,7 @@ export default {
     },
     methods: {
         loginSocial(type) {
-            window.location = process.env.urlVGI+"/api/auth/"+type
+          window.location = process.env.urlVGI + "/api/auth/" + type
         },
         async loginSubmit () {
             try {
@@ -102,7 +101,6 @@ export default {
                         type: 'success'
                     });
                 }
-                
             } catch (error) {
                 let msg = ''
                 if(error.response.status == 404) msg = this.$t('login.msg.err404')

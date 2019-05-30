@@ -15,9 +15,10 @@
             <span class="md-list-item-text">{{ $t('dashboard.nav.keywords') }}</span>
         </md-list-item>
 
-        <md-list-item :class="this.$route.path == '/dashboard/denunciations' ? 'active': ''" to="/dashboard/denunciations" v-if="user.is_the_admin">
-          <md-icon>report</md-icon>
-          <span class="md-list-item-text">Denunciations</span>
+        <md-list-item :class="this.$route.path == '/dashboard/denunciations' ? 'active': ''"
+          to="/dashboard/denunciations" v-if="user.is_the_admin">
+            <md-icon>report</md-icon>
+            <span class="md-list-item-text">Denunciations</span>
         </md-list-item>
 
         <!--<md-list-item :class="this.$route.path == '/dashboard/infos' ? 'active': ''" to="/dashboard/infos">-->
@@ -28,27 +29,26 @@
 </template>
 
 <script>
-
-  import {mapState} from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
     },
-    mounted() {
+    mounted () {
 
     }
   }
 </script>
 
 <style lang="sass" scoped>
-*
+  *
     color: #666
 
-.md-list
+  .md-list
     padding: 0 !important
 
     .md-list-item:hover, .active
-        background: rgba(#000, .08)
-        border-left: 3px solid #7188AD
+      background: rgba(#000, .08)
+      border-left: 3px solid #7188AD
 </style>

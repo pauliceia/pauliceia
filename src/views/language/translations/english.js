@@ -226,7 +226,7 @@ export default {
                 "search": "Search address",
                 "geocoding": "Search for an address via CSV"
             },
-            "placeholder": "street name, number, year",
+            "placeholder": "Street name, number, year",
             "btnText": "Search",
             "popupInfo": {
                 "search": `

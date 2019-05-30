@@ -10,37 +10,37 @@
     </section>
 </template>
 <script>
-import { mapState } from 'vuex'
+  import { mapState } from 'vuex'
 
-import Header from '@/views/components/application/Header'
-import AsideRight from '@/views/components/aside-right/Main'
+  import Header from '@/views/components/application/Header'
+  import AsideRight from '@/views/components/aside-right/Main'
 
-export default {
+  export default {
     components: {
-        'p-header': Header,
-        'p-aside-right': AsideRight
+      'p-header': Header,
+      'p-aside-right': AsideRight
     }
-    
-}
+
+  }
 </script>
 
 <style lang="sass">
-body
+  body
     background: #fff
 
-.application
-    width: 100% !important 
+  .application
+    width: 100% !important
     display: flex
     align-items: stretch
     height: 100%
 
     .content-app
-        width: 100% !important
+      width: 100% !important
 
-        .aside-right
-            position: absolute
-            width: 50px
-            right: 0
-            top: 84px
-            bottom: 0
+      .aside-right
+        position: absolute
+        width: 70px
+        right: 0
+        top: 84px
+        bottom: 0
 </style>
