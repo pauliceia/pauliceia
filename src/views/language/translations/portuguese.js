@@ -15,9 +15,9 @@ export default {
     },
     "dashboard": {
         "nav": {
-            "home": "Inicio",
+            "home": "Painel de Controle",
             "infos": "Informações",
-            "newLayer": "Nova Camada",
+            "newLayer": "Camadas",
             "keywords": "Palavras-chave",
             "layer": "Camadas"
         },

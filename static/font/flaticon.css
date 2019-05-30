@@ -1,6 +1,6 @@
 /*
     Flaticon icon font: Flaticon
-    Creation date: 30/05/2019 16:40
+    Creation date: 30/05/2019 21:44
     */
 
 @font-face {
@@ -58,4 +58,8 @@
 
 .flaticon-menu:before {
   content: "\f107";
+}
+
+.flaticon-layer:before {
+  content: "\f108";
 }
