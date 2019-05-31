@@ -13,6 +13,9 @@ export default {
         "logout": "Sair",
         "msgLogout": "Até breve!"
     },
+    "main": {
+        "developedBy": "Desenvolvido por INPE"
+    },
     "dashboard": {
         "nav": {
             "home": "Inicio",
@@ -85,7 +88,7 @@ export default {
         },
         "keywords":{
             "keywords": "Palavras-chave",
-            "newKeyword": "Novas Palavras-Chave",
+            "newKeyword": "Nova Palavra-Chave",
             "myKeywords": "Minhas Palavras-Chave",
             "nameD": "Nome da nova palavra-chave. Ela é única no sistema.",
             "name": "Nome"
@@ -113,7 +116,7 @@ export default {
       "column2": `Por meio da interface da plataforma, pesquisadores e estudiosos da cidade podem alimentar os seus dados, desde que sejam espacialmente localizáveis.<br>
           Dessa forma, uma base cartográfica histórica da cidade será enriquecida a cada alimentação, tornando esses dados também disponíveis a todos.<br>
           Por outro lado, o usuário que colaborar terá dessa forma um mapa ou uma visualização de sua própria pesquisa.`,
-      "column3": "Atualmente está disponível uma versão beta para testes.  A versão final está prevista para janeiro de 2019.",
+      "column3": "Uma versão beta está atualmente disponível para teste. A versão final está prevista para janeiro de 2021.",
 
     },
     "contact":{
@@ -123,6 +126,14 @@ export default {
       "institutional": "Institucionais",
       "platforms": "Plataformas / Softwares Livres",
       "base": "Base Cartográfica",
+      "envolvidos": {
+        "arquivo_publico_sp": "Arquivo Público do Estado de SP",
+        "emory_university": "Emory University",
+        "fapesp": "Fundação de Amparo a Pesquisa de SP",
+        "himaco": "Hímaco",
+        "inpe": "Instituto Nacional de Pesquisas Especial (INPE)",
+        "unifesp": "Universidade Federal de SP (UNIFESP)",
+      },
     },
     "about":{
       "title1": "Quem desenvolveu?",
@@ -216,7 +227,7 @@ export default {
     },
     "map":{
         "geocoding": {
-            "label":  {
+            "form":  {
                 "search": "Procure um endereço",
                 "geocoding": "Procure por endereços via CSV"
             },
@@ -232,6 +243,12 @@ export default {
                     <b>2° Passo:</b> Através do botão Procurar, selecionando o seu arquivo CSV, visualizar no mapa os endereços encontrados.<br>
                     <b>3° Passo:</b> Através do botão Download, é possível baixar os dados encontrados, em formato Shapefile.
                 `
+            },
+            "label": {
+                "title": "Legenda",
+                "found": "Encontrado",
+                "geocoded": "Geocodificado",
+                "extrapolated": "Extrapolado"
             }
         },
         "sidebarLayer": {
@@ -282,6 +299,24 @@ export default {
             "btnFeature": "Por localização",
             "btnBox": "Por região",
             "btnClean": "Limpar"
+        },
+        "betaVersionModal": {
+            "welcome": "Bem-vindo(a) Plataforma 'Pauliceia 2.0'",
+            "betaVersion": "VERSÃO BETA (fase de teste)",
+            "body": `
+                    <p style="text-align: justify">
+                        Informamos que atualmente está disponível uma <b> versão beta para testes da plataforma. </b><br>
+                        Explore o mapa, pesquise e insira dados. <br>
+                        Qualquer dúvida, sugestão ou erro que porventura seja detectado durante sua navegação, solicitamos que, por gentileza,
+                        nos reporte por e-mail que está na aba "Contatos", para que possamos juntos construir uma ferramenta melhor. <br>
+                        Por favor, se acontecer algum problema na plataforma, reporte no e-mail e descreva-o detalhadamente, anexando o CSV, o Shapefile,
+                        imagem, print-screen ou outro arquivo usado ou desejado, para facilitar o rastreio do problema por parte da equipe. Além de que, adicionar o dia, hora e minuto do ocorrido, se possível. <br>
+                        Informamos ainda que, por estarmos na fase de testes, pode ser que nós limpemos o banco, fazendo com que você perca o seu usuário e seus dados. 
+                        Isto é feito para melhor compatibilidade das novas funções que são criadas. 
+                        Pedimos a sua compreensão em relação a isso, para que se registre novamente. <br>
+                        Agradecemos sua compreensão e contribuição.
+                    </p>`,
+            "footnote": "Equipe Pauliceia 2.0"
         }
     },
     "terms": {

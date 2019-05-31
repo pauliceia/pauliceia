@@ -1,26 +1,32 @@
 <template>
   <section class="boxS" v-show="boxSubtitle">
     <header class="header">
-      <h1>Legenda</h1>
+      <h1> {{ $t('map.geocoding.label.title') }} </h1>
       <button class="btn" @click="closeBox()">
         <md-icon>close</md-icon>
       </button>
     </header>
     <br>
-    <p><img
-      src='@/views/assets/images/iconGeolocation.png'
-      name="Image1" align="left" width="24" height="36" border="0" class="img-style"/>
-      &ensp;Encontrado</p>
+    <p>
+      <img src='@/views/assets/images/iconGeolocation.png'
+            name="Image1" align="left" width="24" height="36" 
+            border="0" class="img-style"/>
+      &ensp; {{ $t('map.geocoding.label.found') }}
+    </p>
 
-    <p style="page-break-before: always"><img
-      src= '@/views/assets/images/iconGeocoding.png'
-      name="Image2" align="left" width="24" height="36" border="0" class="img-style"/>
-      &ensp;Geocodificado</p>
+    <p style="page-break-before: always">
+      <img src= '@/views/assets/images/iconGeocoding.png'
+            name="Image2" align="left" width="24" height="36"
+            border="0" class="img-style"/>
+      &ensp; {{ $t('map.geocoding.label.geocoded') }}
+    </p>
 
-    <p style="page-break-before: always"><img
-      src= '@/views/assets/images/iconExtrapolate.png'
-      name="Image3" align="left" width="24" height="36" border="0" class="img-style"/>
-      &ensp;Extrapolado</p>
+    <p style="page-break-before: always">
+      <img src= '@/views/assets/images/iconExtrapolate.png'
+            name="Image3" align="left" width="24" height="36" 
+            border="0" class="img-style"/>
+      &ensp; {{ $t('map.geocoding.label.extrapolated') }}
+    </p>
   </section>
 </template>
 

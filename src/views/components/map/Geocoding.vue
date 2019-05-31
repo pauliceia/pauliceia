@@ -2,7 +2,7 @@
     <section class="box" v-show="boxGeocoding">
 
         <header class="header">
-            <h1>{{ $t('map.geocoding.label.search') }}: 
+            <h1>{{ $t('map.geocoding.form.search') }}: 
 
             <el-popover class="info" placement="top-start" width="450"
                         trigger="hover"
@@ -50,7 +50,7 @@
         </form>
 
         <div class="box-multigeocoding" v-show="multigeocoding">
-            <h1>{{ $t('map.geocoding.label.geocoding') }}: 
+            <h1>{{ $t('map.geocoding.form.geocoding') }}: 
 
             <el-popover class="info" placement="bottom-start" width="450"
                         trigger="hover"

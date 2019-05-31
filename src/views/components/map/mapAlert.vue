@@ -7,20 +7,16 @@
       </button>
       <br>
     </header>
-    <p><b>Bem-vindo(a) Plataforma "Pauliceia 2.0"</b></p>
-    <p class="text1">VERSÃO BETA (fase de teste)</p>
-    <p style="text-align: justify">Informamos que atualmente está disponível uma <b> versão beta para testes da plataforma. </b><br>
-      Explore o mapa, pesquise e insira dados.<br>
-      Qualquer dúvida, sugestão ou erro que porventura seja detectado durante sua navegação, solicitamos que, por gentileza,
-      nos reporte por e-mail que está na aba "Contatos", para que possamos juntos construir uma ferramenta melhor.<br>
-      Por favor, se acontecer algum problema na plataforma, reporte no e-mail e descreva-o detalhadamente, anexando o CSV, o Shapefile,
-      imagem, print-screen ou outro arquivo usado e/ou desejado, para facilitar o rastreio do problema por parte da equipe. Além de que, adicionar o dia, hora e minuto do ocorrido, se possível.<br>
-      Informamos ainda que, por estarmos na fase de testes, pode ser que nós limpemos o banco, fazendo com que você perca o seu usuário e seus dados. Isto é feito para melhor compatibilidade das novas
-      funções que são criadas. Pedimos a sua compreensão em relação a isso, para que se registre novamente.<br>
-
-      Agradecemos sua compreensão e contribuição."
+    <p><b> 
+      {{ $t('map.betaVersionModal.welcome') }}
+    </b></p>
+    <p class="text1">
+      {{ $t('map.betaVersionModal.betaVersion') }}
     </p>
-    <p style="text-align: right"> Equipe Pauliceia 2.0</p>
+    <div v-html="$t('map.betaVersionModal.body')"/>
+    <p style="text-align: right">
+      {{ $t('map.betaVersionModal.footnote') }}
+    </p>
   </section>
 </template>
 

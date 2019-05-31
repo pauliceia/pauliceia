@@ -13,12 +13,15 @@ export default {
         "logout": "Logout",
         "msgLogout": "bye bye see you!"
     },
+    "main": {
+        "developedBy": "Developed by INPE"
+    },
     "dashboard": {
         "nav": {
             "home": "Home",
             "infos": "Information",
             "newLayer": "New Layer",
-            "keywords": "keywords",
+            "keywords": "Keywords",
             "layer": "Layers"
         },
         "home":{
@@ -36,7 +39,7 @@ export default {
             "addedReferences": "Addes References",
             "add": "Add Reference",
             "submit": "Submit",
-            "fileInput": "File Input",
+            "fileInput": "Input File",
             "zipFile": "ZIP File",
             "nameD": "Layer name. It is unique in the system.",
             "keywordsD": "Keyword is a tag/label related to the layer, which indicates what type it belongs, such as streets, addresses, crimes and so on.",
@@ -104,15 +107,15 @@ export default {
         }
     },
     "home":{
-      "title1": "Which is?",
+      "title1": "What is it?",
       "title2": "How?",
       "title3": "When will it be ready?",
       "title4": "How to cite?",
-      "column1": "Pauliceia 2.0 is a platform that aims to make the collaborative mapping of the history of São Paulo in the period from  1870 to 1940.",
-      "column2": `Through the interface of the platform, researchers and scholars of the city can share their spatial data sets, as long as they are spatially localizable.<br>
-                   In this way, a historical cartographic base of the city will be enriched at each feeding, making this data also available to all.<br>
-                   On the other hand, the user that collaborates will thus have a map or a view of his own research.`,
-      "column3": "A beta is currently available for testing. The final version is scheduled for january 2019.",
+      "column1": "Pauliceia 2.0 is a platform to make the collaborative mapping of history of the city of São Paulo for the period 1870 to 1940.",
+      "column2": `By means of an interface, researchers can share their spatial data sets in the platform. The data sets must be spatially localizable.<br>
+                    So, a historical cartographic base of the city will be enriched, also making this data available to all.<br>
+                    The user that collaborates will have a map or a view of his or her own research.`,
+      "column3": "A beta is currently available for testing. The final version is scheduled for January 2021.",
 
     },
     "contact":{
@@ -122,69 +125,77 @@ export default {
       "institutional": "Institutional",
       "platforms": "Platforms / Free Softwares",
       "base": "Cartographic base",
+      "envolvidos": {
+        "arquivo_publico_sp": "Public Archive of the State of Sao Paulo",
+        "emory_university": "Emory University",
+        "fapesp": "Foundation for Research Support of Sao Paulo",
+        "himaco": "Hímaco",
+        "inpe": "National Institute for Space Research (INPE)",
+        "unifesp": "Federal University of Sao Paulo (UNIFESP)",
+      },
     },
-  "about":{
-    "title1": "Who developed it?",
-    "title2": "Who finaced it?",
-    "title3": "What technology is used?",
-    "title4": "Realization:",
-    "title5": "Support:",
-    "title6": "Financing:",
-    "title7": "Who are we?",
-    "text1": `The project is a partnership between UNIFESP (Campus of Guarulhos and São José dos Campos), the State Archive of SP, INPE (National Institute for Space Research) and Emory University (United States). <br>
-              But the concept of "open science" that guides the project makes it a friendly initiative to involve all stakeholders in various stages of its implementation.`,
-    "text2": "The project was one of the four contemplated by the call eScience 2016 of FAPESP (Foundation for Research Support of the State of São Paulo), which stimulates collaboration between computer science and other areas of knowledge.",
-    "text3": `The Pauliceia 2.0 platform is open source, web-based and service-oriented. It is implemented using the GIS library TerraLib and the web geoportal framework TerraBrasilis developed by INPE. The team also uses the gvSIG software, free alternative to open GIS.<br>
-              The platform is implemented based on the Single Page Application (SPA) concept using the framework Vue.js developed in JavaScript language and the tools jQuery and OpenLayers.`,
-    "name1": "Luís Ferla - coordinator",
-    "desc1": "Luis Ferla is professor of contemporary history at Unifesp. In this University, he coordinates the research group Himaco (History, maps and computers) and lab.hum (Laboratory of Digital Humanities). Together with Karine Reis Ferreira, he is one of the coordinators of the project",
-    "name2": "Karine Reis Ferreira - coordinator",
-    "desc2": "Karine Reis is PhD in Applied Computer by the National Institute For Space Research (INPE), she works since 2003 on researching in geoinformatics and on geographic information systems development such as TerraLib TerraView and TerraBrasilis. She is professor of the Applied Computer Graduate Course at INPE and her main research topic is representation, processing and analysis of big spatiotemporal data and temporal GIS development.",
-    "name3": "Andrew Graham Britt",
-    "desc3": "Andrew G. Britt is a historian of Latin America (Brazil) and a digital scholarship developer. He is currently a Postdoctoral Fellow at Northwestern University and a member of the project team.",
-    "name4": "Ana Maria Alves Barbour",
-    "desc4": "Ana Maria Barbour is a journalist, historian and currently pursuing her master's degree in History at Unifesp. She is a collaborator in the Pauliceia 2.0 project.",
-    "name5": "Cíntia Rodrigues de Almeida",
-    "desc5": "Cintia Rodrigues de Almeida is majoring History at UNIFESP and has a research scholarship given by FAPESP.",
-    "name6": "Carlos Alberto Noronha",
-    "desc6": "Carlos Noronha, is a IC student at INPE and software developer with emphasis on web systems.",
-    "name7": "Cristiane Regina Myiasaka",
-    "desc7": "Cristiane Miyasaka, Ph.D, is a member of Hímaco (Unifesp). Coordinates the historical address database team.",
-    "name8": "Daniela Leal Musa",
-    "desc8": "Daniela Musa is professor at the Institute of Science and Tecnology of the Federal University of São Paulo (UNIFESP), Brazil. Her research interests include Databases, Semantic Web and spatial-temporal data.",
-    "name9": "Ester Dantas Reis Nunes",
-    "desc9": "Ester Reis, is a history student at EFLCH/UNIFESP, FAPESP scholarship about the use of the Geographic Information System (GIS) in historical research.",
-    "name10": "Denis Taveira de Lima",
-    "desc10": "Denis Taveira is a student of Computer Engineering at UNIFESP and a fellowship of Scientific Initiation at INPE by FAPESP. He is one of the responsible to development of the web platform of Pauliceia 2.0.",
-    "name11": "Fernando Atique",
-    "desc11": "Fernando Atique is Architect and Town Planner. Professor of History, Space and Built Heritage at EFLCH/UNIFESP. He contributed with spatial and historical data with the project.",
-    "name12": "Eduardo de Souza Goiabeira",
-    "desc12": "Eduardo Goiabeira holds a degree in History from EFLCH /UNIFESP.  FAPESP is one of the tools for creating a project database.",
-    "name13": "Jeffrey Lesser",
-    "desc13": "Jeffrey Lesser is a historian of Brazil and the Director of the Halle Institute for Global Research at Emory University, the international partner for the Project supported by FAPESP.",
-    "name14": "Gabriel Sansigolo",
-    "desc14": "Gabriel Sansigolo is taking master's degree in Applied Computation by the National Institute of Space Research. Technologist in Analysis and Development of Systems. Has IT Technician for Internet.",
-    "name15": "Luanna M. do Nascimento",
-    "desc15": "Luanna Nascimento is majoring History at UNIFESP and has a research scholarship given by FAPESP to the Project Pauliceia 2.0.",
-    "name16": "Gilberto Ribeiro de Queiroz",
-    "desc16": "Gilberto is an Associate Professor of Geoinformatics at INPE with a PhD in Applied Computing. In the Pauliceia 2.0 project he is involved with the conceptual design of the computational platform.",
-    "name17": "Monaliza Caetano",
-    "desc17": "Monaliza Caetano, is a historian, graduated in Federal University of São Paulo. She is one of the scholarship of the Project supported by FAPESP.",
-    "name18": "Nandamudi Vijaykumar",
-    "desc18": "N. L. Vijaykumar (Vijay) has experience in Software Engineering, Model Based Testing and Performance Evaluation. He is retired and Voluntary Collaborator at the Laboratory of Computing and Applied Mathematics (LAC) of the National Institute for Space Research (INPE).",
-    "name19": "Orlando Guarnier Farias",
-    "desc19": "Orlando Guarnier is an history student from EFLCH/UNIFESP and member of Hímaco group.",
-    "name20": "Rodrigo Monteiro Mariano",
-    "desc20": "Rodrigo Mariano is Systems Analyst and Developer, a Master's student at INPE in the area of Geocomputing. Its main activity in the project is the development of the data of the platform, since the control of users, layers, manipulation of spatiotemporal data, until the control of notifications and denunciations.",
-    "name21": "Priscila Machado Meireles",
-    "desc21": "Priscila Meireles is Architect and Urbanist, Specialist in Graphic Design. As a collaborator of the project she developed the Visual Identity elements, which include the creation of the \"Pauliceia 2.0\" brand, as well as web design: website and platform.",
-    "name22": "Thomas Rogers",
-    "desc22": "Thomas Rogers is Associate Professor of History at Emory University. He was co-coordinator of the FAPESP SPRINT grant that connected Emory to UNIFESP for Pauliceia 2.0.",
-    "name23": "Vitória Martins Fontes da Silva",
-    "desc23": "Vitoria Martins Fontes is a graduate student in History at EFLCH/UNIFESP. She is a scientific initiation scholarship student (PIBIC), by the group Hímaco. Participates in the composition of the Paulicea 2.0 database.",
-    "name24": "Wania Mazzarello",
-    "desc24": "Wania has a degree in history. She acts as a researcher, consultant and teacher. Has a research interest in urban history, identity, memory and technology. In the Project, he acts in the team that makes possible the introduction of the Pari area in the scope of the platform.",
-  },
+    "about":{
+        "title1": "Who developed it?",
+        "title2": "Who finaced it?",
+        "title3": "What technology is used?",
+        "title4": "Realization:",
+        "title5": "Support:",
+        "title6": "Financing:",
+        "title7": "Who are we?",
+        "text1": `The project is a partnership between INPE (National Institute for Space Research), UNIFESP (Guarulhos and São José dos Campos Units) and the State Archive of São Paulo and Emory University (United States). <br>
+                    The concept of "open science" that guides the project makes it a friendly initiative to involve all stakeholders in various stages of its implementation.`,
+        "text2": "The project was one of the four contemplated by the eScience 2016 call of FAPESP (Foundation for Research Support of the State of São Paulo), which stimulates collaboration between areas of computer science and any other area of knowledge.",
+        "text3": `Pauliceia 2.0 platform is open source, web-based and service-oriented. It is implemented using the GIS library TerraLib and the web geoportal framework TerraBrasilis developed by INPE. The team also uses the gvSIG software, a free alternative to open GIS.<br>
+                    The platform is implemented based on the Single Page Application (SPA) concept using the framework Vue.js developed in JavaScript language and the tools jQuery and OpenLayers.`,
+        "name1": "Luís Ferla - coordinator",
+        "desc1": "Luis Ferla is professor of contemporary history at Unifesp. In this University, he coordinates the research group Himaco (History, maps and computers) and lab.hum (Laboratory of Digital Humanities). Together with Karine Reis Ferreira, he is one of the coordinators of the project",
+        "name2": "Karine Reis Ferreira - coordinator",
+        "desc2": "Karine Reis is PhD in Applied Computer by the National Institute For Space Research (INPE), she works since 2003 on researching in geoinformatics and on geographic information systems development such as TerraLib TerraView and TerraBrasilis. She is professor of the Applied Computer Graduate Course at INPE and her main research topic is representation, processing and analysis of big spatiotemporal data and temporal GIS development.",
+        "name3": "Andrew Graham Britt",
+        "desc3": "Andrew G. Britt is a historian of Latin America (Brazil) and a digital scholarship developer. He is currently a Postdoctoral Fellow at Northwestern University and a member of the project team.",
+        "name4": "Ana Maria Alves Barbour",
+        "desc4": "Ana Maria Barbour is a journalist, historian and currently pursuing her master's degree in History at Unifesp. She is a collaborator in the Pauliceia 2.0 project.",
+        "name5": "Cíntia Rodrigues de Almeida",
+        "desc5": "Cintia Rodrigues de Almeida is majoring History at UNIFESP and has a research scholarship given by FAPESP.",
+        "name6": "Carlos Alberto Noronha",
+        "desc6": "Carlos Noronha, is a IC student at INPE and software developer with emphasis on web systems.",
+        "name7": "Cristiane Regina Myiasaka",
+        "desc7": "Cristiane Miyasaka, Ph.D, is a member of Hímaco (Unifesp). Coordinates the historical address database team.",
+        "name8": "Daniela Leal Musa",
+        "desc8": "Daniela Musa is professor at the Institute of Science and Tecnology of the Federal University of São Paulo (UNIFESP), Brazil. Her research interests include Databases, Semantic Web and spatial-temporal data.",
+        "name9": "Ester Dantas Reis Nunes",
+        "desc9": "Ester Reis, is a history student at EFLCH/UNIFESP, FAPESP scholarship about the use of the Geographic Information System (GIS) in historical research.",
+        "name10": "Denis Taveira de Lima",
+        "desc10": "Denis Taveira is a student of Computer Engineering at UNIFESP and a fellowship of Scientific Initiation at INPE by FAPESP. He is one of the responsible to development of the web platform of Pauliceia 2.0.",
+        "name11": "Fernando Atique",
+        "desc11": "Fernando Atique is Architect and Town Planner. Professor of History, Space and Built Heritage at EFLCH/UNIFESP. He contributed with spatial and historical data with the project.",
+        "name12": "Eduardo de Souza Goiabeira",
+        "desc12": "Eduardo Goiabeira holds a degree in History from EFLCH /UNIFESP.  FAPESP is one of the tools for creating a project database.",
+        "name13": "Jeffrey Lesser",
+        "desc13": "Jeffrey Lesser is a historian of Brazil and the Director of the Halle Institute for Global Research at Emory University, the international partner for the Project supported by FAPESP.",
+        "name14": "Gabriel Sansigolo",
+        "desc14": "Gabriel Sansigolo is taking master's degree in Applied Computation by the National Institute of Space Research. Technologist in Analysis and Development of Systems. Has IT Technician for Internet.",
+        "name15": "Luanna M. do Nascimento",
+        "desc15": "Luanna Nascimento is majoring History at UNIFESP and has a research scholarship given by FAPESP to the Project Pauliceia 2.0.",
+        "name16": "Gilberto Ribeiro de Queiroz",
+        "desc16": "Gilberto is an Associate Professor of Geoinformatics at INPE with a PhD in Applied Computing. In the Pauliceia 2.0 project he is involved with the conceptual design of the computational platform.",
+        "name17": "Monaliza Caetano",
+        "desc17": "Monaliza Caetano, is a historian, graduated in Federal University of São Paulo. She is one of the scholarship of the Project supported by FAPESP.",
+        "name18": "Nandamudi Vijaykumar",
+        "desc18": "N. L. Vijaykumar (Vijay) has experience in Software Engineering, Model Based Testing and Performance Evaluation. He is retired and Voluntary Collaborator at the Laboratory of Computing and Applied Mathematics (LAC) of the National Institute for Space Research (INPE).",
+        "name19": "Orlando Guarnier Farias",
+        "desc19": "Orlando Guarnier is an history student from EFLCH/UNIFESP and member of Hímaco group.",
+        "name20": "Rodrigo Monteiro Mariano",
+        "desc20": "Rodrigo Mariano is Systems Analyst and Developer, a Master's student at INPE in the area of Geocomputing. Its main activity in the project is the development of the data of the platform, since the control of users, layers, manipulation of spatiotemporal data, until the control of notifications and denunciations.",
+        "name21": "Priscila Machado Meireles",
+        "desc21": "Priscila Meireles is Architect and Urbanist, Specialist in Graphic Design. As a collaborator of the project she developed the Visual Identity elements, which include the creation of the \"Pauliceia 2.0\" brand, as well as web design: website and platform.",
+        "name22": "Thomas Rogers",
+        "desc22": "Thomas Rogers is Associate Professor of History at Emory University. He was co-coordinator of the FAPESP SPRINT grant that connected Emory to UNIFESP for Pauliceia 2.0.",
+        "name23": "Vitória Martins Fontes da Silva",
+        "desc23": "Vitoria Martins Fontes is a graduate student in History at EFLCH/UNIFESP. She is a scientific initiation scholarship student (PIBIC), by the group Hímaco. Participates in the composition of the Paulicea 2.0 database.",
+        "name24": "Wania Mazzarello",
+        "desc24": "Wania has a degree in history. She acts as a researcher, consultant and teacher. Has a research interest in urban history, identity, memory and technology. In the Project, he acts in the team that makes possible the introduction of the Pari area in the scope of the platform.",
+    },
     "register": {
         "title": "Register",
         "lbName": "Name",
@@ -214,8 +225,8 @@ export default {
     },
     "map":{
         "geocoding": {
-            "label":  {
-                "search": "Search address",
+            "form":  {
+                "search": "Look for an Address",
                 "geocoding": "Search for an address via CSV"
             },
             "placeholder": "street name, number, year",
@@ -230,11 +241,17 @@ export default {
                     <b>2nd Step:</b> Through the Browse button, selecting your CSV file, display the addresses found on the map.<br>
                     <b>3nd Step:</b> Through the Download button, it's possible to download the found data in Shapefile format.
                 `              
+            },
+            "label": {
+                "title": "Label",
+                "found": "Found",
+                "geocoded": "Geocoded",
+                "extrapolated": "Extrapolated"
             }
         },
         "sidebarLayer": {
             "title": "Layers",
-            "btnAdd": "Add and remove layers",
+            "btnAdd": "Add or remove layers",
             "options": {
                 "zoom": "Zoom",
                 "infosLayer": "Layer information",
@@ -248,7 +265,7 @@ export default {
             "title": "Edit"      
         },
         "addLayer": {
-            "title": "Add and remove layers",
+            "title": "Add or remove layers",
             "input": "Search by theme, layer or author:",
             "close": "Close",
             "box": {
@@ -280,6 +297,25 @@ export default {
             "btnFeature": "By location",
             "btnBox": "By region",
             "btnClean": "Clean"
+        },
+        "betaVersionModal": {
+            "welcome": "Welcome to 'Pauliceia 2.0' Platform",
+            "betaVersion": "BETA VERSION (test phase)",
+            "body": `
+                    <p style="text-align: justify">
+                        This is to inform that at the present moment, only a <b>beta version for testing purposes </b> is available within the Platform. <br>
+                        Explore the map, investigate and include data. <br>
+                        Any question, suggestion or error detected during the browsing, 
+                        it is kindly requested to report such error using the email in the Contacts tab. 
+                        This will enable the team to improve the tool. <br>
+                        Moreover, if any problem is encountered, please also report it to the same email by describing the problem in details as well as attaching CSV, Shapefile, 
+                        image, screen shot or any other file used or expected to be used so that it will enable the team to track down the problem and take measures to duly correct it. It is recommended, if possible, to also add the date and time of when the problem occurred. <br>
+                        As already mentioned, this version is under tests and many a time, the database may be wiped which will discontinue the work being conducted by the user as well as losing his or her data. 
+                        This is necessary in order to make the new functions compatible. 
+                        The team deeply regrets any inconvenience and hope that users understand the team’s efforts in developing a tool to the expectations of the users. <br>
+                        The team duly acknowledges the users for their contributions.
+                    </p>`,
+            "footnote": "Pauliceia 2.0 team"
         }
     },
     "terms": {
