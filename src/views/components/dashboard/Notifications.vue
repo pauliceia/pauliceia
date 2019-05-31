@@ -9,7 +9,7 @@
             <a class="btn btn-dark" @click="addNotif()"
                style="color: white; background-color: #ff6107; border-color: #ff6107">Submit</a>
           </div>
-          <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
+          <p style="left: 0; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
             <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
                     v-if="txtReply !== null">
               <md-icon>clear</md-icon>
@@ -66,7 +66,7 @@
           <div style="right: 30px; position: absolute">
             <a style="color: white" class="btn btn-primary" @click="addNotif()">Submit</a>
           </div>
-          <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
+          <p style="left: 0; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
             <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
                     v-if="txtReply !== null">
               <md-icon>clear</md-icon>
@@ -143,7 +143,7 @@
           <div style="right: 30px; position: absolute">
             <a style="color: white" class="btn btn-primary" @click="addNotif()">Submit</a>
           </div>
-          <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
+          <p style="left: 0; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
             <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
               <md-icon>clear</md-icon>
             </button>
@@ -509,7 +509,7 @@
 
       .credentials
         display: inline-block
-        margin: 0 0 0 0px
+        margin: 0 0 0 0
 
         .author
           font-weight: 600
@@ -537,11 +537,11 @@
 
     .add
       top: -1px
-      left: 0px
+      left: 0
       display: inline-block
       border: none
-      padding: 0px
-      margin: 0px
+      padding: 0
+      margin: 0
       position: relative
       border-radius: 30px
 
@@ -621,5 +621,53 @@
   .el-tabs__item:hover {
     color: #ff6107!important;
     border-color: #DCDFE6;
+  }
+
+  .dashboard .notification-box {
+    margin: 10px!important;
+    background: #E6E6E6;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .dashboard .notification-box .photo {
+    width: 40px;
+    padding-top: 20px;
+    text-align: center;
+    border-radius: 50%;
+  }
+
+  .dashboard .notification-box .credentials {
+    display: inline-block;
+    margin: 0 0 0 0;
+  }
+
+  .dashboard .notification-box .author {
+    font-weight: 600;
+    margin-top: 5px !important;
+    font-size: 1.1em;
+  }
+
+  .dashboard .notification-box .date {
+    color: #666;
+    font-size: 0.9em;
+  }
+
+  .dashboard .notification-box .date p {
+    margin: 0 0 5px 0 !important;
+  }
+
+  .dashboard .notification-box .content {
+    text-align: justify;
+    margin-top: 10px;
+  }
+
+  .dashboard .notification-box .comments {
+    width: 100%;
+    padding-right: 20px;
+    position: absolute;
+    text-align: right;
+    color: #ff6107;
+    cursor: pointer;
   }
 </style>

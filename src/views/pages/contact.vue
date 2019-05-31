@@ -1,13 +1,12 @@
 <template>
     <div>
-      <div class="row justify-content-md-center row-style">
+      <div class="row justify-content-md-center row-style" itemscope itemtype="https://schema.org/Organization">
         <div class="col-sm-4 column-style">
           <img class="picture" src="@/views/assets/images/untitled-4.png">
-          <p>PAULICEIA 2.0:</p>
+          <p itemprop="name">PAULICEIA 2.0:</p>
           <p style="position: relative; top: -10px;">{{ $t('contact.title1') }}</p>
           <br>
           <p>{{ $t('contact.contact') }}</p>
-
           <div class="cols2">
             <p class="orange-style">
               <span class="picture2 orange-style"><md-icon>mail</md-icon></span>

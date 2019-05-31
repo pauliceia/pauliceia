@@ -4,7 +4,7 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  urlVGI: '"http://localhost:8888"',
+  urlVGI: '"http://www.pauliceia.dpi.inpe.br/api/vgi"',
   keyCripto: '"keytest"',
   urlGeoserver: '"http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia"',
   urlGeocoding: '"http://www.pauliceia.dpi.inpe.br/api/geocoding"'

@@ -36,5 +36,5 @@ export default `
 <p>We have the right to update these terms at any time. For this reason, read it frequently. If we do any editing on these terms, we will warn you of this. So, you will know what information we collect and how we use it.</p>
 <br>
 <p><b>SECTION 9 - CONTACT</b></p>
-<p>If you have any questions regarding the terms, use of the platform, information, complaints or compliments, you may contact us at the following email: "pauliceia_support@googlegroups.com"</p>
+<p>If you have any questions regarding the terms, use of the platform, information, complaints or compliments, you may contact us at the following email: "pauliceia_support[at]googlegroups.com"</p>
 `

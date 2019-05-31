@@ -15,7 +15,7 @@
         </section>
 
         <div class="box-bottom">
-            <el-tooltip content="Desenvolvido por INPE" placement="left" effect="light">
+            <el-tooltip :content="$t('main.developedBy')" placement="left" effect="light">
                 <button type="button" class="btn">
                     <md-icon class="md-size-1x">help_outline</md-icon>
                 </button>

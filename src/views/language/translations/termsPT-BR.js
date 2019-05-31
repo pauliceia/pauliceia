@@ -36,5 +36,5 @@ export default `
 <p>Nós temos o direito de atualizar estes termos a qualquer momento. Por esta razão, leia-a com frequência. Caso façamos alguma edição nestes termos, nós iremos avisá-lo sobre isto. Logo, você ficará sabendo quais informações reunimos e como as usamos.</p>
 <br>
 <p><b>SEÇÃO 9 - CONTATO</b></p>
-<p>Se você tiver alguma dúvida relacionada aos termos, sobre o uso da plataforma, informações, reclamações ou elogios, você poderá entrar em contato conosco pelo seguinte e-mail: "pauliceia_support@googlegroups.com"</p>
+<p>Se você tiver alguma dúvida relacionada aos termos, sobre o uso da plataforma, informações, reclamações ou elogios, você poderá entrar em contato conosco pelo seguinte e-mail: "pauliceia_support[at]googlegroups.com"</p>
  `

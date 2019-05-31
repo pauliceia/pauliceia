@@ -2,16 +2,9 @@
   <section class="box" v-show="boxGeocoding">
     <form @submit.prevent="search" class="form-search">
       <div class="input-group">
-        <el-autocomplete
-          class="inline-input"
-          style="flex: 1 1 auto"
-          v-model="inputSearch"
-          ref="geocoding_search"
-          :fetch-suggestions="querySearch"
-          :placeholder="$t('map.geocoding.placeholder')"
-          :trigger-on-focus="false"
-          @select="handleSelect"
-        >
+        <el-autocomplete class="inline-input" style="flex: 1 1 auto" v-model="inputSearch"
+          ref="geocoding_search" :fetch-suggestions="querySearch" :placeholder="$t('map.geocoding.placeholder')"
+          :trigger-on-focus="false" @select="handleSelect">
           <template slot-scope="{ item }">
             <div class="value">{{ item }}</div>
           </template>

@@ -47,7 +47,7 @@
                     <!--</li>-->
                 </ul>
 
-                <div v-if="isUserLoggedIn && user && !!user.picture">
+                <div v-if="isUserLoggedIn && user && !!user.name">
                     <p-logAvatar :photo="user.picture" :name="user.name"/>
                 </div>
                 <div v-else>
