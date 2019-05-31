@@ -66,30 +66,15 @@
       <form class="headers-form" v-show="headers.length > 0" @submit.prevent="visualizar()">
         <div class="inputs">
           <el-select v-model="street" placeholder="Coluna Rua">
-            <el-option
-              v-for="item in headers"
-              :key="item"
-              :label="item"
-              :value="item"
-              :required="true">
+            <el-option v-for="item in headers" :key="item" :label="item" :value="item" :required="true">
             </el-option>
           </el-select>
           <el-select v-model="numberAddress" placeholder="Coluna Número">
-            <el-option
-              v-for="item in headers"
-              :key="item"
-              :label="item"
-              :value="item"
-              :required="true">
+            <el-option v-for="item in headers" :key="item" :label="item" :value="item" :required="true">
             </el-option>
           </el-select>
           <el-select v-model="year" placeholder="Coluna Ano">
-            <el-option
-              v-for="item in headers"
-              :key="item"
-              :label="item"
-              :value="item"
-              :required="true">
+            <el-option v-for="item in headers" :key="item" :label="item" :value="item" :required="true">
             </el-option>
           </el-select>
         </div>

@@ -11,46 +11,45 @@ import LayersItemRasters from '@/views/components/map/sidebar-layer/LayersItemRa
 import { mapState } from 'vuex'
 
 import {
-    overlayGroup,
-    overlayGroupExternal,
-    overlayGroupRasters
+  overlayGroup,
+  overlayGroupExternal,
+  overlayGroupRasters
 } from '@/views/assets/js/map/overlayGroup'
 
 export default {
-    components: {
-        // 'p-sidebarLayer-item': LayersItem,
-        'p-sidebarLayer-item-static': LayersItemStatic,
-        'p-sidebarLayer-item-rasters': LayersItemRasters
-    },
+  components: {
+    // 'p-sidebarLayer-item': LayersItem,
+    'p-sidebarLayer-item-static': LayersItemStatic,
+    'p-sidebarLayer-item-rasters': LayersItemRasters
+  },
 
-    computed: {
-        ...mapState('map', ['layers'])
-    },
-    
-    data(){
-        return {
-            vectorLayer: overlayGroup,
-            rasterLayers: overlayGroupRasters,
-            externalLayers: overlayGroupExternal
-        }
-    },
+  computed: {
+    ...mapState('map', ['layers'])
+  },
 
-    methods: {
-        reorder (event) {
-            this.layers.splice(event.newIndex, 0, this.layers.splice(event.oldIndex, 1)[0])
-            
-            this.vectorLayer.getLayers().forEach(sublayer => {
-                if(sublayer.values_.id) {
-                    sublayer.setZIndex( this.layers.indexOf(sublayer.values_.id)+2 )
-                }
-            })
-        }
+  data () {
+    return {
+      vectorLayer: overlayGroup,
+      rasterLayers: overlayGroupRasters,
+      externalLayers: overlayGroupExternal
     }
+  },
+
+  methods: {
+    reorder (event) {
+      this.layers.splice(event.newIndex, 0, this.layers.splice(event.oldIndex, 1)[0])
+
+      this.vectorLayer.getLayers().forEach(sublayer => {
+        if (sublayer.values_.id) {
+          sublayer.setZIndex(this.layers.indexOf(sublayer.values_.id) + 2)
+        }
+      })
+    }
+  }
 }
-    
 </script>
-<style lang="sass" scoped>  
-    .box-layers
-        padding: 0
-        color: #FFF
+<style lang="sass" scoped>
+  .box-layers
+    padding: 0
+    color: #FFF
 </style>

@@ -2,19 +2,16 @@
   <md-list>
     <md-list-item :class="this.$route.path == '/dashboard/home' ? 'active': ''" to="/dashboard/home">
       <span class="md-list-item-text">{{ $t('dashboard.nav.home') }}</span>
-      <!--<md-icon>account_balance</md-icon>-->
       <i class="flaticon-adjust md-icon"></i>
     </md-list-item>
 
     <md-list-item :class="this.$route.path == '/dashboard/newLayer' ? 'active': ''" to="/dashboard/newLayer">
       <span class="md-list-item-text">{{ $t('dashboard.nav.newLayer') }}</span>
-      <!--<md-icon>layers</md-icon>-->
       <i class="flaticon-layer md-icon"></i>
     </md-list-item>
 
     <md-list-item :class="this.$route.path == '/dashboard/keywords' ? 'active': ''" to="/dashboard/keywords">
       <span class="md-list-item-text">{{ $t('dashboard.nav.keywords') }}</span>
-      <!--<md-icon>add_to_photos</md-icon>-->
       <i class="flaticon-push-pin md-icon"></i>
     </md-list-item>
 
