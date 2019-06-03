@@ -115,7 +115,7 @@ export default {
       "column2": `By means of an interface, researchers can share their spatial data sets in the platform. The data sets must be spatially localizable.<br>
                     So, a historical cartographic base of the city will be enriched, also making this data available to all.<br>
                     The user that collaborates will have a map or a view of his or her own research.`,
-      "column3": "A beta is currently available for testing. The final version is scheduled for January 2021.",
+      "column3": "A beta is currently available for testing. A new, improved, more comprehensive version will be available in the first half of this year.",
 
     },
     "contact":{
@@ -229,7 +229,7 @@ export default {
                 "search": "Look for an Address",
                 "geocoding": "Search for an address via CSV"
             },
-            "placeholder": "street name, number, year",
+            "placeholder": "Street name, number, year",
             "btnText": "Search",
             "popupInfo": {
                 "search": `

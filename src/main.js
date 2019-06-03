@@ -15,6 +15,8 @@ import 'bootstrap/dist/js/bootstrap.js'
 import 'openlayers/dist/ol.css'
 import 'openlayers/dist/ol-debug.js'
 
+import '../static/font/flaticon.css'
+
 import { sync } from 'vuex-router-sync'
 import router from '@/router'
 import store from '@/store'

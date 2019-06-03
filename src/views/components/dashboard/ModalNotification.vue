@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="text" @click="showModal2()">Comments</el-button>
+    <el-button type="text" @click="showModal2()" class="btn-comments">Comments</el-button>
 
     <el-dialog title="Notification" :visible.sync="outerVisible" id="myModal" :append-to-body="true" class="mod">
 
@@ -21,7 +21,7 @@
         <div style="right: 30px; position: absolute">
           <a class="btn btn-primary" @click="addNotif()" style="color: white">Submit</a>
         </div>
-        <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
+        <p style="left: 0; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
           <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
             <md-icon>clear</md-icon>
           </button>
@@ -236,6 +236,7 @@
 <style lang="sass" scoped>
   .el-button
     color: #ff6107
+    margin-left: 10px
 
   .notification-box2
     margin: 10px
@@ -291,15 +292,14 @@
 
   .add
     top: -1px
-    left: 0px
+    left: 0
     display: inline-block
     border: none
-    padding: 0px
-    margin: 0px
+    padding: 0
+    margin: 0
     position: relative
     border-radius: 30px
 
   .msgType
     display: flex
-
 </style>

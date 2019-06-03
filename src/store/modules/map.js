@@ -14,7 +14,8 @@ const state = {
   idInfoLayer: null,
   //id da layer que está ativa a funaçã INFO FEATURE
   idInfoFeatureLayer: null,
-  sidebar: null
+  sidebar: null,
+  sidebarOsm: null
 }
 
 const mutations = {
@@ -54,6 +55,9 @@ const mutations = {
   },
   setSidebar (state, value) {
     state.sidebar = value
+  },
+  setSidebarOsm (state, value) {
+    state.sidebarOsm = value
   }
 }
 
@@ -61,28 +65,28 @@ const actions = {
   setYears ({commit}, years) {
     commit('setYears', years)
   },
-  setBoxGeocoding({commit}, value) {
+  setBoxGeocoding ({commit}, value) {
     commit('setBoxGeocoding', value)
   },
-  setBoxSubtitle({commit}, value) {
+  setBoxSubtitle ({commit}, value) {
     commit('setBoxSubtitle', value)
   },
-  setBoxAlert({commit}, value) {
+  setBoxAlert ({commit}, value) {
     commit('setBoxAlert', value)
   },
-  setBoxInfoLayer({commit}, value) {
+  setBoxInfoLayer ({commit}, value) {
     commit('setBoxInfoLayer', value)
   },
-  setBoxInfoVector({commit}, value) {
+  setBoxInfoVector ({commit}, value) {
     commit('setBoxInfoVector', value)
   },
-  setBoxNotifications({commit}, value) {
+  setBoxNotifications ({commit}, value) {
     commit('setBoxNotifications', value)
   },
-  setNewLayers({commit}, value) {
+  setNewLayers ({commit}, value) {
     commit('setNewLayers', value)
   },
-  setRemoveLayers({commit}, value) {
+  setRemoveLayers ({commit}, value) {
     commit('setRemoveLayers', value)
   },
   setIdInfoLayer ({commit}, value) {
@@ -93,6 +97,9 @@ const actions = {
   },
   setSidebar ({commit}, value) {
     commit('setSidebar', value)
+  },
+  setSidebarOsm ({commit}, value) {
+    commit('setSidebarOsm', value)
   }
 }
 

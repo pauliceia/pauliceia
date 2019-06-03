@@ -18,9 +18,9 @@ export default {
     },
     "dashboard": {
         "nav": {
-            "home": "Inicio",
+            "home": "Painel de Controle",
             "infos": "Informações",
-            "newLayer": "Nova Camada",
+            "newLayer": "Camadas",
             "keywords": "Palavras-chave",
             "layer": "Camadas"
         },
@@ -229,9 +229,10 @@ export default {
         "geocoding": {
             "form":  {
                 "search": "Procure um endereço",
-                "geocoding": "Procure por endereços via CSV"
+                "geocoding": "Pesquisa avançada",
+                "geocodingSubtitle": "Procure por endereços via CSV"
             },
-            "placeholder": "nome da rua, número, ano",
+            "placeholder": "Nome da rua, número, ano",
             "btnText": "Pesquisar",
             "popupInfo": {
                 "search": `
@@ -255,6 +256,7 @@ export default {
             "title": "Camadas",
             "btnAdd": "Adicionar e remover camadas",
             "options": {
+                "move": "Mover",
                 "zoom": "Zoom",
                 "infosLayer": "Informações da camada",
                 "infosVector": "Informações sobre os objetos",
@@ -262,6 +264,9 @@ export default {
                 "download": "Baixar .shp"
             },
             "msgEmpty": "Adicione as camadas para a visualização no mapa!"
+        },
+        "sidebarOsmLayer": {
+            "title": "Mapas"
         },
         "sidebarEdit": {
             "title": "Editor"      
@@ -295,7 +300,7 @@ export default {
             "lbNotifications": "Notificações"
         },
         "viewInfoVector": {
-            "title": "Selecione as informações",
+            "title": "Atributos",
             "btnFeature": "Por localização",
             "btnBox": "Por região",
             "btnClean": "Limpar"
