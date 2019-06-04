@@ -18,15 +18,15 @@
             </el-tooltip>
 
             <el-tooltip effect="dark" :content="$t('map.sidebarLayer.options.zoom')" placement="top-end">
-                <md-icon @click.native="extend()">radio_button_checked</md-icon>
+                <md-icon @click="extend()">radio_button_checked</md-icon>
             </el-tooltip>
 
             <el-tooltip effect="dark" :content="$t('map.sidebarLayer.options.infosLayer')" placement="top-end">
-                <i class="flaticon-edit edit" @click.native="infosLayer()"></i>
+                <i class="flaticon-edit edit" @click="infosLayer()"></i>
             </el-tooltip>
             
             <el-tooltip effect="dark" :content="$t('map.sidebarLayer.options.infosVector')" placement="top-end">
-                <i class="flaticon-information info" :class="getInfo ? 'active' : ''" @click.native="setStatusGetInfo()"></i>
+                <i class="flaticon-information info" :class="{ 'active' : getInfo }" @click="setStatusGetInfo()"></i>
             </el-tooltip>
 
             <el-tooltip effect="dark" :content="$t('map.sidebarLayer.options.editColor')" placement="top-end">
@@ -34,7 +34,7 @@
             </el-tooltip>
 
             <el-tooltip effect="dark" :content="$t('map.sidebarLayer.options.download')" placement="top-end">
-                <i class="flaticon-download download" @click.native="downloadSHP()"></i>
+                <i class="flaticon-download download" @click="downloadSHP()"></i>
             </el-tooltip>
         </div>
 
@@ -224,8 +224,11 @@
         }
       },
       setStatusGetInfo () {
-        if (this.getInfo == true) this.$store.dispatch('map/setIdInfoFeatureLayer', null)
-        else this.$store.dispatch('map/setIdInfoFeatureLayer', this.title)
+        if (this.getInfo == true) {
+          this.$store.dispatch('map/setIdInfoFeatureLayer', null);
+        } else {
+          this.$store.dispatch('map/setIdInfoFeatureLayer', this.title);
+        }
       },
       downloadSHP () {
         let link = 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:' + this.title.toLowerCase() + '&outputFormat=SHAPE-ZIP'
@@ -238,10 +241,9 @@
         vm.$root.olmap.getOverlays().clear()
 
         //CREATE POPUP
-        $("#popup")
-          .append(`<div id="popup-${vm.title}" title="information of vector">
-                    <div id="popup-content-${vm.title}"></div>
-                </div>`)
+        $("#popup").append(`<div id="popup-${vm.title}" title="information of vector">
+            <div id="popup-content-${vm.title}"></div>
+        </div>`)
 
         //SELECT POPUP
         vm.containerPopup = document.getElementById(`popup-${vm.title}`)
@@ -345,7 +347,7 @@
         cursor: pointer
 
       .md-icon:hover, .md-icon.active
-        color: #f15a29
+        color: #732c14
 
       .btn-color
         margin: 0 10px
@@ -353,6 +355,9 @@
       .info, .edit, .download
         font-size: 22px
         margin: auto
+
+      .info.active
+        color: #732c14 !important
 
       .handle
         cursor: pointer

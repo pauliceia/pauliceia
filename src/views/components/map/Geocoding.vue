@@ -36,7 +36,7 @@
 
     <div class="box-multigeocoding" v-show="multigeocoding">
       <h1>
-        {{ $t('map.geocoding.label.geocoding') }}:
+        {{ $t('map.geocoding.form.geocoding') }}:
 
         <el-popover class="info" placement="bottom-start" width="450" trigger="hover" type="primary">
           <div v-html="$t('map.geocoding.popupInfo.geocoding')" />
@@ -46,7 +46,7 @@
         </el-popover>
       </h1>
 
-      <h2>{{ $t('map.geocoding.label.geocodingSubtitle') }}:</h2>
+      <h2>{{ $t('map.geocoding.form.geocodingSubtitle') }}:</h2>
       <br>
 
       <label class="file-select">
@@ -387,7 +387,7 @@
     top: 37px
     right: 70px
     background: transparent
-    z-index: 9999
+    z-index: 999
 
     .form-search
       width: 100%

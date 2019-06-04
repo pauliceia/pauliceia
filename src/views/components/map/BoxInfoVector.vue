@@ -73,6 +73,7 @@
         this.$store.dispatch('map/setBoxInfoVector', false)
       },
       async getFeature () {
+        console.log(1);
         //REMOVE INTERATIONS
         if (this.select == null) {
           this.$store.dispatch('edit/setLayerId', null)
@@ -186,7 +187,7 @@
     top: 105px
     right: 70px
     background: transparent
-    z-index: 9999
+    z-index: 999
 
     .header
       width: 100%
