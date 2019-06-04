@@ -11,12 +11,11 @@
             </button>
         </header>
         <div class="body" v-if="resultProperties[0]">
-            <div class="row justify-content-md-center">
-              <button class="btn btn-danger" @click="clear()">{{ $t('map.viewInfoVector.btnClean') }}</button>
-            </div>
-
+            <button class="btn btn-danger pull-right" @click="clear()">{{ $t('map.viewInfoVector.btnClean') }}</button>
+            <h5 class="clearfix">
+                Atributos da Feature:
+            </h5>
             <div class="result">
-                <p>Atributos da Feature:</p>
                 <table class="table" v-for="resultAttr in resultProperties" :key="resultAttr.id">
                     <tr v-for="element in resultAttr" :key="element.key">
                         <td><strong><i>{{ element.key }}:</i></strong></td>
@@ -184,6 +183,7 @@
 <style lang="sass" scoped>
   .box-info
     position: absolute
+    width: 35%
     top: 105px
     right: 70px
     background: transparent
@@ -224,13 +224,13 @@
           height: 30px
           padding: 10px
           border-radius: 100%
-          text-indent: -2000px
+          text-indent: -20000px
           border: 0
 
         &.btn-box
           width: 30px
           height: 30px
-          text-indent: -2000px
+          text-indent: -20000px
           border: 2px dashed #ff6107
           margin-right: 15px!important
 
@@ -242,15 +242,19 @@
       background: #FFF
 
       button
-        margin: 0 10px 0 0
+        position: relative
+        top: 5px
+
+      h5
+        font-size: 1.3em
+        font-weight: 700
+        padding: 10px 10px 5px
+        margin: 2px 2px 10px
+        border-left: 2px solid #000
 
       .result
-        p
-          font-size: 1.3em
-          font-weight: 700
-          padding: 0px 10px
-          margin: 25px 2px 10px 2px
-          border-left: 2px solid #000
+        height: 300px
+        overflow-y: auto
 
         .table td
           border: 1px solid #CCC
