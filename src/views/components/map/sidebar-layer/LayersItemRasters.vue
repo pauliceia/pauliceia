@@ -25,42 +25,43 @@ export default {
                     title: 'saraBrasil30',
                     titleReal: '1930',
                     status: true,
-                    range: [1930,1940]
+                    range: [1930, 1940]
                 },
-                // {
-                //     title: '1920',
-                //     status: false,
-                //     range: [1920,1930]
-                // },
+                {
+                    title: '1924',
+                    titleReal: '1924',
+                    status: false,
+                    range: [1920, 1930]
+                },
                 {
                     title: '1910',
                     titleReal: '1905',
                     status: false,
-                    range: [1910,1920]
+                    range: [1910, 1920]
                 },
                 {
                     title: '1890',
                     titleReal: '1890',
                     status: false,
-                    range: [1890,1910]
+                    range: [1890, 1910]
                 },
                 {
                     title: '1880',
                     titleReal: '1881',
                     status: false,
-                    range: [1880,1890]
+                    range: [1880, 1890]
                 },
                 {
                     title: '1870',
                     titleReal: '1877',
                     status: false,
-                    range: [1870,1880]
+                    range: [1870, 1880]
                 },
                 {
                     title: '1868',
                     titleReal: '1868',
                     status: false,
-                    range: [1868,1880]
+                    range: [1868, 1870]
                 }
             ]
         }
@@ -74,7 +75,7 @@ export default {
                 title: 'saraBrasil30',
                 visible: true,
                 source: new ol.source.TileWMS({
-                    url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/wms',
+                    url: process.env.urlGeoserver + '/wms',
                     params: {
                         'FORMAT': 'image/png',
                         'VERSION': '1.1.1',
@@ -105,7 +106,7 @@ export default {
                         title: layerSelected.title,
                         visible: true,
                         source: new ol.source.TileWMS({
-                            url: 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/wms',
+                            url: process.env.urlGeoserver + '/wms',
                             params: {
                                 'FORMAT': 'image/png',
                                 'VERSION': '1.1.1',

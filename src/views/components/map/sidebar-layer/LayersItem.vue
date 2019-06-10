@@ -47,6 +47,7 @@
         <div id="popup" class="ol-popup"></div>
     </div>           
 </template>
+
 <script>
 import { mapState } from 'vuex'
 import {
@@ -220,7 +221,7 @@ export default {
             else this.$store.dispatch('map/setIdInfoFeatureLayer', this.title)
         },
         downloadSHP() {
-            let link = 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+this.title.toLowerCase()+'&outputFormat=SHAPE-ZIP'
+            let link = process.env.urlGeoserver + '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+this.title.toLowerCase()+'&outputFormat=SHAPE-ZIP'
             window.open(link, '_blank')
         },
         _getInfosFeatures(){
@@ -287,8 +288,8 @@ export default {
         }
     }
 }
-    
 </script>
+
 <style lang="sass" scoped>
 .box-item
     margin-top: 5px
