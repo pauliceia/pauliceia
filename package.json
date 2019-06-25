@@ -1,7 +1,7 @@
 {
   "name": "pauliceia",
   "version": "1.0.0",
-  "description": "portal of pauliceia",
+  "description": "Pauliceia 2.0 portal",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
