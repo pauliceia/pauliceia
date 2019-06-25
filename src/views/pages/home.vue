@@ -47,11 +47,15 @@
           <p>{{ $t('home.column3') }}</p>
         </div>
       </div>
+
       <br>
+
       <div class="row justify-content-md-center">
         <div class="col-sm-9 column-style">
           <b>{{ $t('home.title4') }}</b>
           <br><br>
+        </div>
+        <div class="col-sm-9 column-style">          
           <p>
             FERREIRA, K. R.; FERLA, L.; QUEIROZ, G. R.; VIJAYKUMAR, N. L.; NORONHA, C. A.; 
             MARIANO, R. M.; TAVEIRA, D.; SANSIGOLO, G.; GUARNIERI, O.; ROGERS, T.; 
@@ -65,8 +69,6 @@
             </a>
           </p>
         </div>
-      </div>
-      <div class="row justify-content-md-center">
         <div class="col-sm-9 column-style">
           <br>
           <p>
@@ -81,7 +83,9 @@
           </p>
         </div>
       </div>
+
     </div>
+
   </div>
 </template>
 
