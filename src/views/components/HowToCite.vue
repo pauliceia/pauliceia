@@ -1,7 +1,10 @@
 <template>
   <div>
-    <b>{{ $t('home.title4') }}</b>
-    <br><br>
+    <h5>
+      {{ $t('home.title4') }}
+    </h5>
+    <br>
+    <!-- <div class="card-text" v-html="$t('about.text1')"/> -->
     <p>
       FERREIRA, K. R.; FERLA, L.; QUEIROZ, G. R.; VIJAYKUMAR, N. L.; NORONHA, C. A.; 
       MARIANO, R. M.; TAVEIRA, D.; SANSIGOLO, G.; GUARNIERI, O.; ROGERS, T.; 
@@ -32,7 +35,5 @@
 export default {}
 </script>
 
-<style lang="sass" scoped>
-.column-style
-  padding-right: 80px
+<style>
 </style>

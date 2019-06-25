@@ -31,24 +31,22 @@
     <div class="text-style">
       <div class="row justify-content-md-center">
         <div class="col-sm-3 column-style">
-          <b>{{ $t('home.title1') }}</b>
-          <br><br>
+          <h5>{{ $t('home.title1') }}</h5>
+          <br>
           <p>{{ $t('home.column1') }}</p>
         </div>
         <div class="col-sm-3 column-style">
-          <b>{{ $t('home.title2') }}</b>
-          <br><br>
+          <h5>{{ $t('home.title2') }}</h5>
+          <br>
           <div v-html="$t('home.column2')"/>
           <p>&nbsp;</p>
         </div>
         <div class="col-sm-3 column-style">
-          <b>{{ $t('home.title3') }}</b>
-          <br><br>
+          <h5>{{ $t('home.title3') }}</h5>
+          <br>
           <p>{{ $t('home.column3') }}</p>
         </div>
       </div>
-
-      <br>
       
       <div class="row justify-content-md-center">
         <div class="col-sm-9 column-style">
