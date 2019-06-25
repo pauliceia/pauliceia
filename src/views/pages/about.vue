@@ -36,7 +36,9 @@
       <header class="row row-style justify-content-md-center">
         <div class="col-sm-12 column-style">
           <div class="card card-style">
-            <div class="card-body"><br>
+
+            <div class="card-body">              
+              <br>
               <h5 class="card-title">{{ $t('home.title4') }}</h5><br>
               <!-- <div class="card-text" v-html="$t('about.text1')"/> -->
               <div class="card-text">
@@ -64,6 +66,7 @@
                 </p>
               </div>
             </div>
+
           </div>
         </div>
       </header>
@@ -322,6 +325,13 @@
 </template>
 
 <script>
+import HowToCite from '@/views/components/HowToCite.vue'
+
+export default {
+  components: {
+    HowToCite
+  }
+}
 </script>
 
 <style lang="sass" scoped>
