@@ -24,9 +24,9 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-    <div class="logo">
-      <img v-if="$t('home.title2')==='Como?'" src="@/views/assets/images/untitled-3.png">
-      <img v-else src="@/views/assets/images/chamada-slider.png">
+    <div class="logo" style="z-index: 1000;">
+      <img v-if="$t('home.title2')==='Como?'" src="@/views/assets/images/home_slider_pt_br.png">
+      <img v-else src="@/views/assets/images/home_slider_en.png">
     </div>
     <div class="text-style">
       <div class="row justify-content-md-center">
