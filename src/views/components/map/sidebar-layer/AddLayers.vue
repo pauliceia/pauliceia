@@ -23,9 +23,9 @@
                                 <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
                                     <span v-for="author in layer.properties.authors" :key="author.properties.user_id">
                                         {{ getAuthorName(author)[0].properties.name }};
-                                    </span> 
+                                    </span>
                                 </p>
-                                <p><strong>{{ $t('map.addLayer.box.lbTags') }}:</strong> 
+                                <p><strong>{{ $t('map.addLayer.box.lbTags') }}:</strong>
                                     <el-tag v-for="id in layer.properties.keyword" :key="id" style="margin-left: 5px">
                                         {{ getTagName(id)[0].properties.name }}
                                     </el-tag>
@@ -141,15 +141,17 @@ export default {
                         this.btnDisabled = false
                         return true
                     }
-                })  
+                })
         },
         async active(layer) {
             if(this.btnDisabled == false)
                 this.btnDisabled = true
                 this._openFullScreen()
                 const vm = this
+
                 try {
                     let response = await axios.get(process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson')
+
                     if(response.data.type != undefined) {
                         let vectorLayer = new ol.layer.Vector({
                             title: layer.properties.f_table_name,
@@ -163,7 +165,8 @@ export default {
                         })
 
                         overlayGroup.getLayers().push( vectorLayer )
-                        setTimeout( _ => { 
+
+                        setTimeout( _ => {
                             this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
                             this.loading.close()
                             this.btnDisabled = false
@@ -189,7 +192,6 @@ export default {
             });
         }
     }
-    
   }
 </script>
 
@@ -201,13 +203,13 @@ export default {
             margin: 20px 0 10px 0
         .title-box
             color: #58595b !important
-        
+
         .box-layer-info
             padding: 10px
             margin: 10px 0 0 0
             border-radius: 10px
-            display: flex         
-            justify-content: center   
+            display: flex
+            justify-content: center
             .infos
                 width: 75%
                 strong
