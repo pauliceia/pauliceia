@@ -59,7 +59,7 @@
     position: absolute
     display: inline-block
     top: 550px
-    right: 60px
+    right: 70px
     width: 180px
     height: 180px
     border-radius: 10px

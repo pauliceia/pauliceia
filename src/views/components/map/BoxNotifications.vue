@@ -42,7 +42,7 @@
     top: 167px
     right: 70px
     background: transparent
-    z-index: 9999
+    z-index: 999
 
     .header
       width: 100%

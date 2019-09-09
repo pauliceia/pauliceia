@@ -5,7 +5,7 @@
                 {{ layer.titleReal }}
             </span>
         </div>
-    </section>     
+    </section>
 </template>
 
 <script>
@@ -21,7 +21,7 @@
           {
             status: true,
             title: "OSM",
-            titleReal: "Open Street Map"
+            titleReal: "Atual (OSM)"
           }
         ]
       }

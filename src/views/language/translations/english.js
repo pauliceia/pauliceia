@@ -111,7 +111,7 @@ export default {
       "title2": "How?",
       "title3": "When will it be ready?",
       "title4": "How to cite?",
-      "column1": "Pauliceia 2.0 is a platform to make the collaborative mapping of history of the city of São Paulo for the period 1870 to 1940.",
+      "column1": "Pauliceia 2.0 is a platform to make the collaborative mapping of the history of the city of São Paulo for the period 1870 to 1940.",
       "column2": `By means of an interface, researchers can share their spatial data sets in the platform. The data sets must be spatially localizable.<br>
                     So, a historical cartographic base of the city will be enriched, also making this data available to all.<br>
                     The user that collaborates will have a map or a view of his or her own research.`,
@@ -136,7 +136,7 @@ export default {
     },
     "about":{
         "title1": "Who developed it?",
-        "title2": "Who finaced it?",
+        "title2": "Who financed it?",
         "title3": "What technology is used?",
         "title4": "Realization:",
         "title5": "Support:",
@@ -240,7 +240,7 @@ export default {
                     <b>Rules:</b> First header line, written addresses in first column, one per line, following structure street name , number, year<br>
                     <b>2nd Step:</b> Through the Browse button, selecting your CSV file, display the addresses found on the map.<br>
                     <b>3nd Step:</b> Through the Download button, it's possible to download the found data in Shapefile format.
-                `              
+                `
             },
             "label": {
                 "title": "Label",
@@ -262,7 +262,7 @@ export default {
             "msgEmpty": "Add layers to the view on the map!"
         },
         "sidebarEdit": {
-            "title": "Edit"      
+            "title": "Edit"
         },
         "addLayer": {
             "title": "Add or remove layers",
@@ -305,13 +305,13 @@ export default {
                     <p style="text-align: justify">
                         This is to inform that at the present moment, only a <b>beta version for testing purposes </b> is available within the Platform. <br>
                         Explore the map, investigate and include data. <br>
-                        Any question, suggestion or error detected during the browsing, 
-                        it is kindly requested to report such error using the email in the Contacts tab. 
+                        Any question, suggestion or error detected during the browsing,
+                        it is kindly requested to report such error using the email in the Contacts tab.
                         This will enable the team to improve the tool. <br>
-                        Moreover, if any problem is encountered, please also report it to the same email by describing the problem in details as well as attaching CSV, Shapefile, 
+                        Moreover, if any problem is encountered, please also report it to the same email by describing the problem in details as well as attaching CSV, Shapefile,
                         image, screen shot or any other file used or expected to be used so that it will enable the team to track down the problem and take measures to duly correct it. It is recommended, if possible, to also add the date and time of when the problem occurred. <br>
-                        As already mentioned, this version is under tests and many a time, the database may be wiped which will discontinue the work being conducted by the user as well as losing his or her data. 
-                        This is necessary in order to make the new functions compatible. 
+                        As already mentioned, this version is under tests and many a time, the database may be wiped which will discontinue the work being conducted by the user as well as losing his or her data.
+                        This is necessary in order to make the new functions compatible.
                         The team deeply regrets any inconvenience and hope that users understand the team’s efforts in developing a tool to the expectations of the users. <br>
                         The team duly acknowledges the users for their contributions.
                     </p>`,
