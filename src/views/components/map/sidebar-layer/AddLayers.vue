@@ -150,13 +150,15 @@ export default {
                 const vm = this
 
                 try {
-                    let response = await axios.get(process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson')
+                    let url = process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson';
+
+                    let response = await axios.get(url)
 
                     if(response.data.type != undefined) {
                         let vectorLayer = new ol.layer.Vector({
                             title: layer.properties.f_table_name,
                             source: new ol.source.Vector({
-                                url: process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson',
+                                url: url,
                                 format: new ol.format.GeoJSON(),
                                 crossOrigin: 'anonymous',
                             }),
