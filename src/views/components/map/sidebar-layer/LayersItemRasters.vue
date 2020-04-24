@@ -28,6 +28,12 @@ export default {
                     range: [1930, 1940]
                 },
                 {
+                    title: '1930_1_5000',
+                    titleReal: '1930 1:5000',
+                    status: false,
+                    range: [1930, 1940]
+                },
+                {
                     title: '1924',
                     titleReal: '1924',
                     status: false,
@@ -97,7 +103,7 @@ export default {
                 for(var i in this.layers){
                     if(this.layers[i].title != layerSelected.title ) this.layers[i].status = false
                 }
-            
+
                 this._openFullScreen()
                 let tiled
                 if(layerSelected.title=="saraBrasil30") tiled = true
@@ -131,7 +137,7 @@ export default {
         }
     }
 }
-    
+
 </script>
 
 <style lang="sass" scoped>

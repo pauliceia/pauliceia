@@ -1,5 +1,6 @@
 # Paulicéia 2.0 (front-end)
-> A Vue.js project
+
+Pauliceia 2.0 project front-end.
 
 ## Build Setup
 
