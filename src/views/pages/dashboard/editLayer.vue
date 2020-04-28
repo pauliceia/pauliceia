@@ -6,7 +6,7 @@
         <div class="card">
           <div class="card-body">
 
-            <!-- title page -->
+            <!-- page title -->
             <h5 class="card-title">{{ $t('dashboard.editLayer.layer') }}</h5>
 
             <p class="card-text">
@@ -37,6 +37,7 @@
                         <md-icon class="icon">error_outline</md-icon>
                       </button>
                     </el-popover>
+                    <!-- button to go to the new keyword page -->
                     <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
                       <md-icon>add_circle_outline</md-icon>
                     </button>
@@ -142,7 +143,9 @@
       <div class="col-sm-6 tam">
         <div class="card" v-if="shapeCorrect">
           <div class="card-body">
+            <!-- page title -->
             <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
+
             <div class="card-text">
               <form>
                 <div class="form-row">
@@ -257,14 +260,14 @@
         })
       },
       Upload2(){
+        // this method sends the temporal columns to VGIMWS
 
         const vm = this
-        if(this.startDate === null || this.endDate === null){
+
+        if (this.startDate === null || this.endDate === null) {
           let msg = "Date is missing"
           vm.$message.error(msg)
-        }
-        else {
-
+        } else {
           let timeColumn = {
             'properties': {
               'f_table_name': this.tableName,
@@ -278,10 +281,8 @@
             'type': 'TemporalColumns'
           }
           //console.log(timeColumn)
-          Api().put('/api/temporal_columns',
-            timeColumn
-          ).then(function (response) {
-            vm.$message.success("The layer was updated with success!")
+          Api().put('/api/temporal_columns', timeColumn).then(function (response) {
+            vm.$message.success("The layer was updated successfully!")
             vm.$router.push({
               path: '/dashboard/home'
             })
@@ -296,8 +297,11 @@
         }
       },
       Upload() {
+        // this method sends a layer to VGIMWS
+
         const vm = this
         this.chosenKeywordsID = []
+
         this.chosenKeywords.forEach(e => {
           this.chosenKeywordsID.push(e.keyword_id)
         })
@@ -307,15 +311,13 @@
         if (this.chosenKeywordsID.length === 0) {
           let msg = "It's necessary have at least one keyword"
           vm.$message.error(msg)
-        }
-        else {
+        } else {
           const loading = this.$loading({
             lock: true,
             text: 'Loading',
             spinner: 'el-icon-loading',
             background: 'rgba(0, 0, 0, 0.7)'
           })
-
 
           let layer = {
             'type': 'Layer',
@@ -336,10 +338,7 @@
             Api().delete('/api/user_layer/?layer_id=' + vm.layer_id + '&user_id=' + u.user_id)
           })
 
-          Api().put('/api/layer',
-            layer
-          ).then(function (response) {
-
+          Api().put('/api/layer', layer).then(function (response) {
             vm.chosenUsers.forEach(u => {          //POST cada usuario colaborar da layer
               let user_layer = {
                 'properties': {
@@ -350,9 +349,8 @@
                 'type': 'UserLayer'
               }
 
-              Api().post('/api/user_layer/create',
-                user_layer
-              )//.then(function (response) {})
+              Api().post('/api/user_layer/create', user_layer)
+              //.then(function (response) {})
             })
 
             Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then(function (response) {    //Pega as colunas do shapefile enviado
@@ -405,8 +403,7 @@
       removeRef(index) {
         const vm = this
         //console.log(vm.chosenRef[index].reference_id)
-        Api().delete('/api/reference/' + vm.chosenRef[index].reference_id
-        ).then(function (response) {
+        Api().delete('/api/reference/' + vm.chosenRef[index].reference_id).then(function (response) {
           //console.log(response)
         })
         this.chosenRef.splice(index, 1)
@@ -425,9 +422,7 @@
               }
           }
 
-          Api().post('/api/reference/create',
-            ref
-          ).then(function (response) {
+          Api().post('/api/reference/create', ref).then(function (response) {
             ref_id = response.data.reference_id
             vm.chosenRef.push({description: vm.auxRef, reference_id: ref_id})
             //console.log(vm.chosenRef)
@@ -462,9 +457,7 @@
         vm.$router.push({
           path: '/dashboard/home'
         })
-      }
-      else {
-
+      } else {
         Api().get('/api/user').then(function (response) {
           response.data.features.filter(e => {
             vm.users.push(e.properties)
@@ -552,8 +545,6 @@
       }
     }
   }
-
-
 </script>
 
 <style lang="sass" scoped>
