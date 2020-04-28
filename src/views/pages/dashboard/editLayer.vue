@@ -1,110 +1,131 @@
 <template>
   <p-dash-layout :title="$t('dashboard.nav.layer')">
     <div class="row">
+      <!-- edit layer -->
       <div class="col-sm-6"  v-if="shapeCorrect === false">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{ $t('dashboard.editLayer.layer') }}</h5>
-            <p class="card-text">
-            <form>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content= " $t('dashboard.newLayer.nameD')"
-                              type="primary">
-                    <button type="button" slot="reference" class="btn btn-outline-primary info">
-                      <md-icon class="icon">error_outline</md-icon>
-                    </button>
-                  </el-popover>
-                  <input class="form-control" id="inputName" disabled>
-                </div>
-                <div class="form-group col-md-6">
-                  <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content="$t('dashboard.newLayer.keywordsD')"
-                              type="primary">
-                    <button type="button" slot="reference" class="btn btn-outline-primary info">
-                      <md-icon class="icon">error_outline</md-icon>
-                    </button>
-                  </el-popover>
-                  <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
-                    <md-icon>add_circle_outline</md-icon>
-                  </button>
-                  <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
-                            value="description"
-                            id="keywordsSelect"></v-select>
-                </div>
-              </div>
-              <div class="form-group">
-              </div>
-              <div class="form-group">
-                <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>
-                <el-popover class="info" placement="top-start" width="200"
-                            trigger="hover"
-                            :content="$t('dashboard.newLayer.collaboratorsD')"
-                            type="primary">
-                  <button type="button" slot="reference" class="btn btn-outline-primary info">
-                    <md-icon class="icon">error_outline</md-icon>
-                  </button>
-                </el-popover>
-                <v-select multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
-                          id="userSelect"></v-select>
-              </div>
-              <div class="form-group">
-                <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>
-                <el-popover class="info" placement="top-start" width="200"
-                            trigger="hover"
-                            :content="$t('dashboard.newLayer.descriptionD')"
-                            type="primary">
-                  <button type="button" slot="reference" class="btn btn-outline-primary info">
-                    <md-icon class="icon">error_outline</md-icon>
-                  </button>
-                </el-popover>
-                <textarea class="form-control" id="inputDescription" rows="3"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="inputReference">{{ $t('dashboard.newLayer.reference') }}</label>
-                <el-popover class="info" placement="top-start" width="200"
-                            trigger="hover"
-                            :content="$t('dashboard.newLayer.referenceD')"
-                            type="primary">
-                  <button type="button" slot="reference" class="btn btn-outline-primary info">
-                    <md-icon class="icon">error_outline</md-icon>
-                  </button>
-                </el-popover>
-                <div class="form-row">
-                  <div class="form-group col-md-12">
-                    <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
-                    <!--<input type="text" class="form-control" id="inputReference" placeholder="">
-                    <select class="form-control">
-                      <option v-for="r in references" :value="r.reference_id">{{r.description}}</option>
-                    </select>-->
-                  </div>
-                  <div class="form-group col-md-4">
-                    <a href="#" class="btn btn-primary" @click="addRef()">{{ $t('dashboard.newLayer.add') }}</a>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group" v-show="chosenRef.length !== 0">
-                <label for="inputReference" >{{ $t('dashboard.newLayer.addedReferences') }}</label>
 
-                <ol>
-                  <li v-for="(t, index) in chosenRef">
-                    {{ t.description }}
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
-                      <md-icon>clear</md-icon>
+            <!-- title page -->
+            <h5 class="card-title">{{ $t('dashboard.editLayer.layer') }}</h5>
+
+            <p class="card-text">
+              <form>
+                <!-- layer name and select keywords -->
+                <div class="form-row">
+                  <!-- layer name -->
+                  <div class="form-group col-md-6">
+                    <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                :content= " $t('dashboard.newLayer.nameD')"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <input class="form-control" id="inputName" disabled>
+                  </div>
+                  <!-- select keywords -->
+                  <div class="form-group col-md-6">
+                    <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                :content="$t('dashboard.newLayer.keywordsD')"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
+                      <md-icon>add_circle_outline</md-icon>
                     </button>
-                  </li>
-                </ol>
-              </div>
-              <div class="form-group">
-              </div>
-            </form>
+                    <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
+                              value="description"
+                              id="keywordsSelect"></v-select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                </div>
+
+                <!-- collaborators -->
+                <div class="form-group">
+                  <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              :content="$t('dashboard.newLayer.collaboratorsD')"
+                              type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
+                  <v-select multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
+                            id="userSelect"></v-select>
+                </div>
+
+                <!-- description -->
+                <div class="form-group">
+                  <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              :content="$t('dashboard.newLayer.descriptionD')"
+                              type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
+                  <textarea class="form-control" id="inputDescription" rows="3"></textarea>
+                </div>
+
+                <!-- reference -->
+                <div class="form-group">
+                  <label for="inputReference">{{ $t('dashboard.newLayer.reference') }}</label>
+                  <el-popover class="info" placement="top-start" width="200"
+                              trigger="hover"
+                              :content="$t('dashboard.newLayer.referenceD')"
+                              type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
+                  <div class="form-row">
+                    <!-- text area to add a new reference -->
+                    <div class="form-group col-md-12">
+                      <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
+                      <!--<input type="text" class="form-control" id="inputReference" placeholder="">
+                      <select class="form-control">
+                        <option v-for="r in references" :value="r.reference_id">{{r.description}}</option>
+                      </select>-->
+                    </div>
+                    <!-- button to add a new references -->
+                    <div class="form-group col-md-4">
+                      <a href="#" class="btn btn-primary" @click="addRef()">{{ $t('dashboard.newLayer.add') }}</a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- added references -->
+                <div class="form-group" v-show="chosenRef.length !== 0">
+                  <label for="inputReference" >{{ $t('dashboard.newLayer.addedReferences') }}</label>
+
+                  <ol>
+                    <!-- <li class="list-group-item" v-for="type in types"  v-bind:key="type"></li> -->
+                    <li v-for="(reference, index) in chosenRef" v-bind:key="reference">
+                      {{ reference.description }}
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
+                        <md-icon>clear</md-icon>
+                      </button>
+                    </li>
+                  </ol>
+                </div>
+
+                <div class="form-group"></div>
+              </form>
             </p>
+
+            <!-- submit and delete buttons -->
             <div class="row">
               <div class="col align-self-end">
                 <br>
@@ -112,9 +133,12 @@
                 <a href="#" class="btn btn-danger" @click="Delete()">{{ $t('dashboard.editLayer.delete') }}</a>
               </div>
             </div>
+
           </div>
         </div>
       </div>
+
+      <!-- edit temporal columns -->
       <div class="col-sm-6 tam">
         <div class="card" v-if="shapeCorrect">
           <div class="card-body">
@@ -170,6 +194,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </p-dash-layout>
 </template>
