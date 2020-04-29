@@ -9,6 +9,9 @@
             <!-- page title -->
             <h5 class="card-title">{{ $t('dashboard.editLayer.layer') }}</h5>
 
+            <!-- <p class="card-text">Creator? {{ isTheCurrentUserTheLayerCreator }}</p>
+            <p class="card-text">Collaborator? {{ isTheCurrentUserALayerCollaborator }}</p> -->
+
             <p class="card-text">
               <form>
                 <!-- layer name and select keywords -->
@@ -47,8 +50,7 @@
                   </div>
                 </div>
 
-                <div class="form-group">
-                </div>
+                <div class="form-group"></div>
 
                 <!-- collaborators -->
                 <div class="form-group">
@@ -61,8 +63,10 @@
                       <md-icon class="icon">error_outline</md-icon>
                     </button>
                   </el-popover>
-                  <v-select multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
-                            id="userSelect"></v-select>
+                  <v-select
+                    multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
+                    id="userSelect" :disabled="!isTheCurrentUserTheLayerCreator"
+                  ></v-select>
                 </div>
 
                 <!-- description -->
@@ -112,7 +116,7 @@
 
                   <ol>
                     <!-- <li class="list-group-item" v-for="type in types"  v-bind:key="type"></li> -->
-                    <li v-for="(reference, index) in chosenRef" v-bind:key="reference">
+                    <li v-for="(reference, index) in chosenRef" v-bind:key="reference.reference_id">
                       {{ reference.description }}
                       &nbsp;&nbsp;&nbsp;&nbsp;
                       <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
@@ -219,9 +223,36 @@
       "p-popover-labels": PopoverLabels
     },
     computed: {
-      ...mapState('auth', ['isUserLoggedIn', 'user'])
+      ...mapState('auth', ['isUserLoggedIn', 'user']),
+      ...mapState('dashboard', ['myLayers', 'sharedLayers']),
+
+      isTheCurrentUserTheLayerCreator () {
+        // this method checks if the current user is the layer creator or not of the current layer
+
+        // if the current user is editing his own layer, then the method returns True...
+        for (const myLayer of this.myLayers) {
+          if (myLayer.layer_id === this.layer_id)
+            return true;
+        }
+
+        // ... else, it returns False
+        return false;
+      },
+
+      isTheCurrentUserALayerCollaborator () {
+        // this method checks if the current user is the layer collaborator or not of the current layer
+
+        // if the current user is editing a shared layer that he is a collaborator, then the method returns True...
+        for (const myLayer of this.sharedLayers) {
+          if (myLayer.layer_id === this.layer_id)
+            return true;
+        }
+
+        // ... else, it returns False
+        return false;
+      }
     },
-    data: function () {
+    data () {
       return {
         tableName: null,
         chosenUsers: [],
@@ -281,18 +312,20 @@
             'type': 'TemporalColumns'
           }
           //console.log(timeColumn)
-          Api().put('/api/temporal_columns', timeColumn).then(function (response) {
+          Api().put('/api/temporal_columns', timeColumn).then((response) => {
             vm.$message.success("The layer was updated successfully!")
             vm.$router.push({
               path: '/dashboard/home'
             })
-          }, function (cause) {
-            let msg = ''
-            if (cause.response.status === 403) msg = "Just the owner of layer or administrator can create/update a time columns."
-            else if (cause.response.status === 401) msg = "It is necessary an Authorization valid!"
-            else msg = cause.toString()
-            //console.log(cause.response)
-            vm.$message.error(msg)
+          }, (cause) => {
+            console.log(cause.response)
+
+            if (cause.response.status === 403)
+              vm.$message.error("Just the layer creator or a collaborator user can update the temporal columns.")
+            else if (cause.response.status === 401)
+              vm.$message.error("A valid Authorization is necessary!")
+            else
+              vm.$message.error(cause.toString())
           })
         }
       },
@@ -309,8 +342,7 @@
         //if(this.chosenRefID == null) this.chosenRefID = []
 
         if (this.chosenKeywordsID.length === 0) {
-          let msg = "It's necessary have at least one keyword"
-          vm.$message.error(msg)
+          vm.$message.error("Having at least one keyword is mandatory!")
         } else {
           const loading = this.$loading({
             lock: true,
@@ -332,28 +364,33 @@
             }
           }
           //vm.tableName = document.getElementById("inputName").value
-          //console.log(layer)
 
-          vm.usersAux.forEach(u => {
-            Api().delete('/api/user_layer/?layer_id=' + vm.layer_id + '&user_id=' + u.user_id)
-          })
-
-          Api().put('/api/layer', layer).then(function (response) {
-            vm.chosenUsers.forEach(u => {          //POST cada usuario colaborar da layer
-              let user_layer = {
-                'properties': {
-                  'is_the_creator': 'false',
-                  'user_id': u.user_id,
-                  'layer_id': vm.layer_id
-                },
-                'type': 'UserLayer'
-              }
-
-              Api().post('/api/user_layer/create', user_layer)
-              //.then(function (response) {})
+          // only the layer creator can remove layer collaborators
+          if (vm.isTheCurrentUserTheLayerCreator) {
+            vm.usersAux.forEach(user => {
+              Api().delete('/api/user_layer/?layer_id=' + vm.layer_id + '&user_id=' + user.user_id)
             })
+          }
 
-            Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then(function (response) {    //Pega as colunas do shapefile enviado
+          Api().put('/api/layer', layer).then((response) => {
+            // only the layer creator can add layer collaborators
+            if (vm.isTheCurrentUserTheLayerCreator) {
+              vm.chosenUsers.forEach(u => {          // PUT cada usuario colaborar da layer
+                let user_layer = {
+                  'properties': {
+                    'is_the_creator': 'false',
+                    'user_id': u.user_id,
+                    'layer_id': vm.layer_id
+                  },
+                  'type': 'UserLayer'
+                }
+
+                Api().post('/api/user_layer/create', user_layer)
+                //.then((response) => {})
+              })
+            }
+
+            Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then((response) => {    //Pega as colunas do shapefile enviado
               response.data.features.filter(e => {
                 //console.log(vm.columns)
                 vm.columns = e.properties
@@ -365,25 +402,23 @@
                 vm.shapeCorrect = true;
                 loading.close();
                 //console.log(vm.columnsName)
-              }, function (cause) {
+              }, (cause) => {
                 loading.close()
-                let msg = ''
-                msg = cause.toString()
-                vm.$message.error(msg)
+                vm.$message.error(cause.toString())
               })
-            }, function (cause) {
+            }, (cause) => {
               loading.close()
-              let msg = ''
-              msg = cause.toString()
-              vm.$message.error(msg)
+              vm.$message.error(cause.toString())
             })
-          }, function (cause) {
+          }, (cause) => {
             loading.close()
-            let msg = ''
-            if (cause.response.status === 403) msg = "The owner of layer or administrator are who can manage a layer."
-            else if (cause.response.status === 401) msg = "It is necessary an Authorization valid!"
-            else msg = cause.toString()
-            vm.$message.error(msg)
+
+            if (cause.response.status === 403)
+              vm.$message.error("Just the layer creator or a collaborator user can update the layer.")
+            else if (cause.response.status === 401)
+              vm.$message.error("A valid Authorization is necessary!")
+            else
+              vm.$message.error(cause.toString())
           })
 
           // this.$router.push({
@@ -411,6 +446,7 @@
       },
       addRef() {
         const vm = this
+
         if (this.auxRef != null) {
           let ref_id
           let ref = {
@@ -422,18 +458,19 @@
               }
           }
 
-          Api().post('/api/reference/create', ref).then(function (response) {
+          Api().post('/api/reference/create', ref).then((response) => {
             ref_id = response.data.reference_id
             vm.chosenRef.push({description: vm.auxRef, reference_id: ref_id})
             //console.log(vm.chosenRef)
             vm.chosenRefID.push(ref_id)
             vm.auxRef = null
-          }, function (cause) {
-            let msg = ''
-            if (cause.response.status === 400) msg = "Reference text already exists!"
-            else msg = cause.toString()
+          }, (cause) => {
             console.log(cause.response)
-            vm.$message.error(msg)
+
+            if (cause.response.status === 400)
+              vm.$message.error("Reference text already exists!")
+            else
+              vm.$message.error(cause.toString())
           })
         }
       },

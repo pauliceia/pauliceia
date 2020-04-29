@@ -1,12 +1,12 @@
 <template>
   <p-dash-layout :title="$t('dashboard.nav.layer')">
     <div class="row">
-    
+
       <div class="col-sm-12" v-if="shapeCorrect === false">
         <div class="card">
           <div class="card-body">
             <h6 class="mb-0">{{ $t('dashboard.nav.newLayer') }}</h6><br>
-              
+
             <form class="row">
               <div class="card-left col-sm-6">
                 <div class="form-row">
@@ -77,10 +77,10 @@
                     <!--<el-radio-button label="input">{{ $t('dashboard.newLayer.mountLayer.btnRadio.create') }}</el-radio-button>-->
                   <!--</el-radio-group>-->
                 <!--</div>-->
-                
+
                 <div class="box-layer-file" v-if="typeSubmit == 'file'">
                   <label for="Upload">{{ $t('dashboard.newLayer.fileInput') }}</label>&nbsp;
-                  <p-popover-labels :text="$t('dashboard.newLayer.fileInputD')" />                  
+                  <p-popover-labels :text="$t('dashboard.newLayer.fileInputD')" />
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text">{{ $t('dashboard.newLayer.zipFile') }}</span>
@@ -191,7 +191,7 @@
                               v-model="startDateMask"></v-select>
                   </div>
                 </div>
-                
+
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
@@ -226,7 +226,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </p-dash-layout>
 </template>
@@ -476,7 +476,7 @@
             this.upload_from_file(file)
           } else                          //Criando a camada em branco
             this.upload_from_input()
-        } 
+        }
 
       },
       async upload_from_file(file) {
@@ -486,7 +486,7 @@
           vm._msgError("Um arquivo é necessário")
         else if(file.size > 104857600) //Colocar 50mb
           vm._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
-          
+
         else {
           vm.timeout_upload()
 
@@ -515,9 +515,8 @@
                     },
                     'type': 'UserLayer'
                   }
-                  Api().post('/api/user_layer/create',
-                    user_layer
-                  )
+
+                  Api().post('/api/user_layer/create', user_layer)
                 })
               let changeset = {
                 'properties': {
@@ -615,12 +614,12 @@
           if(this.optTpGeom == null)
             this._msgError('Tipo da geometria é necessário!')
 
-          else {  
-            let getNullAcenOrNumber = await this.optionsAttr.filter( 
+          else {
+            let getNullAcenOrNumber = await this.optionsAttr.filter(
               attr => attr.column_name === '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name)) || (/[^a-zA-Z0-9_]/.test(attr.column_name))
             )
 
-            let getWordNative = await this.optionsAttr.filter( 
+            let getWordNative = await this.optionsAttr.filter(
               attr => ['id', 'changeset_id', 'version'].some(attrName => attrName === attr.column_name)
             )
             if(getNullAcenOrNumber.length > 0)
@@ -774,7 +773,7 @@
         this.optionsAttr = await this.optionsAttr.filter( attr => attr.id != id )
       },
       _msgError(msg){
-        if(this.loading != '' && this.loading != null) 
+        if(this.loading != '' && this.loading != null)
           this.loading.close()
         this.$message.error({
           message: msg,

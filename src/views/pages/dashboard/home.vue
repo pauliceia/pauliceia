@@ -96,26 +96,33 @@
         vm.sharedLayers = []
         vm.myLayers = []
 
-        Api().get('/api/layer').then(function (response) {
+        // Api().get('/api/layer').then(function (response) {
+        //   response.data.features.filter(e => {
+        //     vm.layers.push({name: e.properties.name, id: e.properties.layer_id})
+        //   })
+
+        Api().get('/api/user_layer/?user_id='+vm.user.user_id).then(function (response) {
+
           response.data.features.filter(e => {
-            vm.layers.push({name: e.properties.name, id: e.properties.layer_id})
-          })
+            Api().get('/api/layer/?layer_id=' + e.properties.layer_id).then(function (response2) {
+              if (e.properties.is_the_creator) {
+                vm.myLayers.push(response2.data.features[0].properties)
+              } else {
+                vm.sharedLayers.push(response2.data.features[0].properties)
+              }
 
-          Api().get('/api/user_layer/?user_id='+vm.user.user_id).then(function (response) {
-            response.data.features.filter(e => {
-              Api().get('/api/layer/?layer_id='+e.properties.layer_id).then(function (response2) {
-                if(e.properties.is_the_creator === true){
-                  vm.myLayers.push(response2.data.features[0].properties)
-                }
-                else{
-                  vm.sharedLayers.push(response2.data.features[0].properties)
-                }
+              vm.orderLayers(10)
 
-                vm.orderLayers(10)
-              })
+              // save the layers inside the state
+              vm.$store.dispatch('dashboard/setMyLayers', vm.myLayers)
+              vm.$store.dispatch('dashboard/setSharedLayers', vm.sharedLayers)
             })
           })
+
         })
+
+        // })
+
       },
       orderLayers(x){
         const vm = this

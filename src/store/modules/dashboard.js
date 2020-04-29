@@ -4,7 +4,9 @@ const state = {
   ref: [],
   usersSaved: [],
   description: "",
-  refId: []
+  refId: [],
+  myLayers: [],
+  sharedLayers: []
 }
 
 const mutations = {
@@ -26,6 +28,12 @@ const mutations = {
   setRefId (state, refId) {
     state.refId = refId
   },
+  setMyLayers (state, myLayers) {
+    state.myLayers = myLayers
+  },
+  setSharedLayers (state, sharedLayers) {
+    state.sharedLayers = sharedLayers
+  }
 }
 
 const actions = {
@@ -47,6 +55,12 @@ const actions = {
   setRefId ({commit}, refId) {
     commit('setRefId', refId)
   },
+  setMyLayers ({commit}, myLayers) {
+    commit('setMyLayers', myLayers)
+  },
+  setSharedLayers ({commit}, sharedLayers) {
+    commit('setSharedLayers', sharedLayers)
+  }
 }
 
 export default {

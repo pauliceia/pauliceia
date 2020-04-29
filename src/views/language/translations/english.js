@@ -43,7 +43,7 @@ export default {
             "zipFile": "ZIP File",
             "nameD": "Layer name. It is unique in the system.",
             "keywordsD": "Keyword is a tag/label related to the layer, which indicates what type it belongs, such as streets, addresses, crimes and so on.",
-            "collaboratorsD": "Collaborators are the people who can add, edit or remove the vectors from the layer. Vectors are the geometries from the layer, such as a point, line, or polygon.",
+            "collaboratorsD": "Collaborators are the people who can add, edit or remove the vectors from the layer. Vectors are the geometries from the layer, such as a point, line or polygon. Only the layer creator can edit this field for security!",
             "descriptionD": "Description is a description/information about the layer.",
             "referenceD": "Reference is the source of that data, whether it is from a book, article, dissertation or so on. It should be in the ABNT format.",
             "epsgD": "It is the projection of the Shapefile, a integer number, for example 4326",
@@ -240,7 +240,7 @@ export default {
                     <b>Rules:</b> First header line, written addresses in first column, one per line, following structure street name , number, year<br>
                     <b>2nd Step:</b> Through the Browse button, selecting your CSV file, display the addresses found on the map.<br>
                     <b>3nd Step:</b> Through the Download button, it's possible to download the found data in Shapefile format.
-                `              
+                `
             },
             "label": {
                 "title": "Label",
@@ -262,7 +262,7 @@ export default {
             "msgEmpty": "Add layers to the view on the map!"
         },
         "sidebarEdit": {
-            "title": "Edit"      
+            "title": "Edit"
         },
         "addLayer": {
             "title": "Add or remove layers",
@@ -305,13 +305,13 @@ export default {
                     <p style="text-align: justify">
                         This is to inform that at the present moment, only a <b>beta version for testing purposes </b> is available within the Platform. <br>
                         Explore the map, investigate and include data. <br>
-                        Any question, suggestion or error detected during the browsing, 
-                        it is kindly requested to report such error using the email in the Contacts tab. 
+                        Any question, suggestion or error detected during the browsing,
+                        it is kindly requested to report such error using the email in the Contacts tab.
                         This will enable the team to improve the tool. <br>
-                        Moreover, if any problem is encountered, please also report it to the same email by describing the problem in details as well as attaching CSV, Shapefile, 
+                        Moreover, if any problem is encountered, please also report it to the same email by describing the problem in details as well as attaching CSV, Shapefile,
                         image, screen shot or any other file used or expected to be used so that it will enable the team to track down the problem and take measures to duly correct it. It is recommended, if possible, to also add the date and time of when the problem occurred. <br>
-                        As already mentioned, this version is under tests and many a time, the database may be wiped which will discontinue the work being conducted by the user as well as losing his or her data. 
-                        This is necessary in order to make the new functions compatible. 
+                        As already mentioned, this version is under tests and many a time, the database may be wiped which will discontinue the work being conducted by the user as well as losing his or her data.
+                        This is necessary in order to make the new functions compatible.
                         The team deeply regrets any inconvenience and hope that users understand the team’s efforts in developing a tool to the expectations of the users. <br>
                         The team duly acknowledges the users for their contributions.
                     </p>`,

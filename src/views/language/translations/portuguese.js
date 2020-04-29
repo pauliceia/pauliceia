@@ -43,7 +43,7 @@ export default {
             "zipFile": "Arquivo ZIP",
             "nameD": "Nome da camada. Ela é única no sistema.",
             "keywordsD": "Palavra-chave é uma etiqueta/rótulo relacionado a camada, que indica qual tipo ela pertence, como ruas, endereços, crimes e etc.",
-            "collaboratorsD": "Colaboradores são as pessoas que poderão adicionar, editar ou remover os vetores da camada. Vetores são as geometrias da camada, como um ponto, linha ou polígono.",
+            "collaboratorsD": "Colaboradores são as pessoas que poderão adicionar, editar ou remover os vetores da camada. Vetores são as geometrias da camada, como um ponto, linha ou polígono. Apenas o criador da camada pode editar este campo por segurança!",
             "descriptionD": "Descrição é uma descrição/informação sobre a camada.",
             "referenceD": "Referência é a fonte daquele dado, se ele é de um livro, artigo, dissertação ou etc. Ele deve estar no formato ABNT.",
             "epsgD": "É a projeção do Shapefile, um número inteiro, por exemplo 4326.",
@@ -145,8 +145,8 @@ export default {
       "title7": "Quem somos?",
       "text1": `O projeto é uma parceria entre a UNIFESP (campi de Guarulhos e São José dos Campos), o Arquivo do Estado de SP, o INPE (Instituto Nacional de Pesquisas Espaciais) e a Emory University (Estados Unidos). <br> Mas a concepção de “ciência aberta” que orienta o projeto faz dele uma iniciativa amigável à participação de todos os interessados em diversas etapas de sua execução.`,
       "text2": "O projeto foi um dos 4 contemplados pela chamada eScience 2016 da FAPESP (Fundação de Amparo a Pesquisa do Estado de São Paulo), que estimula a colaboração entre as ciências da computação e outras áreas de conhecimento.",
-      "text3": `A Pauliceia 2.0 é uma plataforma de código aberto, base web e orientada a serviços. Ela foi implementada usando a biblioteca GIS TerraLib e o geoportal TerraBrasilis desenvolvido pelo INPE. <br> 
-                A equipe também utiliza o software gvSIG, alternativa livre a aberta de SIG. <br> 
+      "text3": `A Pauliceia 2.0 é uma plataforma de código aberto, base web e orientada a serviços. Ela foi implementada usando a biblioteca GIS TerraLib e o geoportal TerraBrasilis desenvolvido pelo INPE. <br>
+                A equipe também utiliza o software gvSIG, alternativa livre a aberta de SIG. <br>
                 A plataforma foi implementada com base no conceito de Single Page Application (SPA) usando a estrutura Vue.js desenvolvido em linguagem JavaScript e as ferramentas jQuery e OpenLayers.`,
       "name1": "Luís Ferla - coordenador",
       "desc1": "Luis Ferla é professor de história contemporânea da UNIFESP. Nessa Universidade, coordena o grupo de pesquisas Hímaco (História, mapas e computadores) e o lab.hum (Laboratório de Humanidades Digitais). Juntamente com Karine Reis Ferreira, é um dos coordenadores do projeto.",
@@ -264,7 +264,7 @@ export default {
             "msgEmpty": "Adicione as camadas para a visualização no mapa!"
         },
         "sidebarEdit": {
-            "title": "Editor"      
+            "title": "Editor"
         },
         "addLayer": {
             "title": "Adicionar e remover camadas",
@@ -311,8 +311,8 @@ export default {
                         nos reporte por e-mail que está na aba "Contatos", para que possamos juntos construir uma ferramenta melhor. <br>
                         Por favor, se acontecer algum problema na plataforma, reporte no e-mail e descreva-o detalhadamente, anexando o CSV, o Shapefile,
                         imagem, print-screen ou outro arquivo usado ou desejado, para facilitar o rastreio do problema por parte da equipe. Além de que, adicionar o dia, hora e minuto do ocorrido, se possível. <br>
-                        Informamos ainda que, por estarmos na fase de testes, pode ser que nós limpemos o banco, fazendo com que você perca o seu usuário e seus dados. 
-                        Isto é feito para melhor compatibilidade das novas funções que são criadas. 
+                        Informamos ainda que, por estarmos na fase de testes, pode ser que nós limpemos o banco, fazendo com que você perca o seu usuário e seus dados.
+                        Isto é feito para melhor compatibilidade das novas funções que são criadas.
                         Pedimos a sua compreensão em relação a isso, para que se registre novamente. <br>
                         Agradecemos sua compreensão e contribuição.
                     </p>`,
