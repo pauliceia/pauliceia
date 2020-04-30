@@ -286,7 +286,6 @@
         fullscreenLoading: false,
         typeSubmit: 'file',
         layer_id: null,
-        is_the_admin: false,
         loading: '',
         finished: 1,
         visibleRemove: false,
@@ -344,7 +343,6 @@
         //console.log(vm.dateMask)
       })
 
-      this.is_the_admin = this.user.is_the_admin
       this.chosenKeywords =  this.key
       this.chosenRef = this.ref
       this.chosenRefID = this.refId

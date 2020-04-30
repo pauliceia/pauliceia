@@ -6,7 +6,7 @@
                 <md-icon>close</md-icon>
             </button>
             <el-tooltip v-if="follow === false" effect="dark"
-                    :content="$t('map.viewInfo.btnFollow')" 
+                    :content="$t('map.viewInfo.btnFollow')"
                     placement="top-end">
 
                 <button class="btn" @click="followLayer()">
@@ -21,26 +21,26 @@
                 <md-icon>person_add_disabled</md-icon>
               </button>
             </el-tooltip>
-            
+
         </header>
         <div class="body">
             <ul class="description">
-                <li><b> {{ $t('map.viewInfo.lbTags') }}:</b> 
+                <li><b> {{ $t('map.viewInfo.lbTags') }}:</b>
                     <el-tag v-show="layer != null" v-for="id in infos.keywords" :key="'tag'+id" style="margin-left: 5px">
                         {{ getTagName(id)[0].properties.name }}
                     </el-tag>
                 </li>
                 <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b> {{ infos.description }} </li>
                 <li><b>{{ $t('map.viewInfo.lbDate') }}:</b> {{ infos.date }}</li>
-                <li><b>{{ $t('map.viewInfo.lbAuthors') }}:</b> 
+                <li><b>{{ $t('map.viewInfo.lbAuthors') }}:</b>
                     <span v-show="layer != null" v-for="author in infos.authors" :key="author.properties.user_id">
                         {{ getAuthorName(author)[0].properties.name }};
-                    </span> 
+                    </span>
                 </li>
-                <li><b>{{ $t('map.viewInfo.lbReferences') }}:</b> 
+                <li><b>{{ $t('map.viewInfo.lbReferences') }}:</b>
                     <span v-show="layer != null" v-for="id in infos.references" :key="'ref'+id">
                         {{ getReferenceDescription(id)[0].properties.description }};
-                    </span> 
+                    </span>
                 </li>
             </ul>
 
@@ -157,14 +157,14 @@ export default {
         Map.getKeywords().then(keywords => {
             this.allKeywords = keywords.data.features
         })
-        
+
         Map.getAuthors().then(authors => {
             this.allAuthors = authors.data.features
         })
 
         Map.getReferences().then(references => {
             this.allReferences = references.data.features
-        })        
+        })
 
         Map.getAuthorsLayers(null).then(authors_layers => {
             this.allAuthorsLayers = authors_layers.data.features
@@ -208,9 +208,9 @@ export default {
           this.is_denunciation = false
           this.layer_id = this.id
         },
-        handleClick(tab, event) {
-          // console.log(tab, event);
-        },
+        // handleClick(tab, event) {
+        //   console.log(tab, event);
+        // },
         addNotif(){
           const vm = this
           let msg = ''
@@ -397,7 +397,7 @@ export default {
         async _getInfos() {
             let layers = await Map.getLayers('layer_id='+this.id)
             this.layer = layers.data.features[0].properties
-            
+
             this.infos.name = this.layer.name
             this.infos.description = this.layer.description
             this.infos.keywords = this.layer.keyword
@@ -453,7 +453,7 @@ export default {
             display: inline-block
         .btn:hover
             background: rgba(#000, 0.1)
-    
+
     .body
         background: #FFF
         .description
@@ -462,7 +462,7 @@ export default {
             li
                 padding: 15px 0 0 0
                 text-align: justify
-        
+
         .nofitication
             padding: 0 20px 15px 20px
 

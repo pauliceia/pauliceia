@@ -74,11 +74,9 @@ export default {
         'p-logAvatar': LogAvatar,
         'p-dropLanguage': dropLanguage
     },
-
     computed: {
         ...mapState('auth', ['isUserLoggedIn', 'user'])
     },
-
     data() {
         return {
             logo
@@ -125,7 +123,7 @@ export default {
         .btn-login:hover
             text-decoration: none
             background: #f0470f
-        
+
         .btn-active
             background: rgba(#f15a29, 0.5)
         .btn-active:hover

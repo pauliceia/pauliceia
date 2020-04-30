@@ -115,7 +115,6 @@
                   <label for="inputReference" >{{ $t('dashboard.newLayer.addedReferences') }}</label>
 
                   <ol>
-                    <!-- <li class="list-group-item" v-for="type in types"  v-bind:key="type"></li> -->
                     <li v-for="(reference, index) in chosenRef" v-bind:key="reference.reference_id">
                       {{ reference.description }}
                       &nbsp;&nbsp;&nbsp;&nbsp;
@@ -296,8 +295,7 @@
         const vm = this
 
         if (this.startDate === null || this.endDate === null) {
-          let msg = "Date is missing"
-          vm.$message.error(msg)
+          vm.$message.error("Date is missing")
         } else {
           let timeColumn = {
             'properties': {
