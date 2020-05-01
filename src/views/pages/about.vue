@@ -37,7 +37,7 @@
         <div class="col-sm-12 column-style">
           <div class="card card-style">
 
-            <div class="card-body">              
+            <div class="card-body">
               <br>
               <!-- <h5 class="card-title">
                 {{ $t('home.title4') }}
@@ -225,7 +225,7 @@
             <img class="picture" src="@/views/assets/images/perfil/20.png">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
-            <h5 class="title2" itemprop="name">Rodrigo Monteiro Mariano</h5>
+            <h5 class="title2" itemprop="name">Rodrigo Mariano</h5>
             {{ $t('about.desc20') }}
           </div>
         </div>
