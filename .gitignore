@@ -1,3 +1,5 @@
+config/prod.env.js
+
 .DS_Store
 node_modules/
 dist/
