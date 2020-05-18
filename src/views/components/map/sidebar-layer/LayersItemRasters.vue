@@ -27,6 +27,12 @@ export default {
                     status: true,
                     range: [1930, 1940]
                 },
+                // {
+                //     title: '1930_1_1000',
+                //     titleReal: '1930 1:1000',
+                //     status: false,
+                //     range: [1930, 1940]
+                // },
                 {
                     title: '1930_1_5000',
                     titleReal: '1930 1:5000',
@@ -97,16 +103,21 @@ export default {
 
     methods: {
         modifyLayer(layerSelected) {
-            if(overlayGroupRasters.getLayers().getLength() > 0) overlayGroupRasters.getLayers().pop()
+            if(overlayGroupRasters.getLayers().getLength() > 0)
+                overlayGroupRasters.getLayers().pop()
 
             if(layerSelected.status == true) {
                 for(var i in this.layers){
-                    if(this.layers[i].title != layerSelected.title ) this.layers[i].status = false
+                    if(this.layers[i].title != layerSelected.title)
+                        this.layers[i].status = false
                 }
 
                 this._openFullScreen()
+
                 let tiled
-                if(layerSelected.title=="saraBrasil30") tiled = true
+                if(layerSelected.title == "saraBrasil30")
+                    tiled = true
+
                 overlayGroupRasters.getLayers().push(
                     new ol.layer.Tile({
                         title: layerSelected.title,
@@ -118,7 +129,7 @@ export default {
                                 'VERSION': '1.1.1',
                                 tiled,
                                 STYLES: '',
-                                LAYERS: 'pauliceia:'+layerSelected.title,
+                                LAYERS: 'pauliceia:' + layerSelected.title,
                                 tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
                             }
                         })
