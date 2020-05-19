@@ -75,35 +75,37 @@
         // check if a tc exists inside the list by `f_table_name`, it returns a boolean
         return this.loadedTC.some(tc => tc.properties.f_table_name === f_table_name)
       },
-      updateFeatureVisibility (feature, tc) {
+      updateFeatureVisibility (vectorLayerFeatures, tc) {
         let minYear = this.years.first
         let maxYear = this.years.last
 
-        let startDate = new Date(String(feature.getProperties()[tc.properties.start_date_column_name])).getFullYear()
-        let endDate = new Date(String(feature.getProperties()[tc.properties.end_date_column_name])).getFullYear()
+        vectorLayerFeatures.forEach(feature => {
+          let startDate = new Date(String(feature.getProperties()[tc.properties.start_date_column_name])).getFullYear()
+          let endDate = new Date(String(feature.getProperties()[tc.properties.end_date_column_name])).getFullYear()
 
-        if(startDate-5 < this.startYear)
-          this.startYear = startDate-5
+          if(startDate-5 < this.startYear)
+            this.startYear = startDate-5
 
-        if(endDate+5 > this.startYear)
-          this.endYear = endDate+5
+          if(endDate+5 > this.startYear)
+            this.endYear = endDate+5
 
-        //if(isNaN(startDate)) startDate = 0
-        //if(isNaN(endDate)) endDate = (new Date).getFullYear()
+          //if(isNaN(startDate)) startDate = 0
+          //if(isNaN(endDate)) endDate = (new Date).getFullYear()
 
-        if(isNaN(startDate))
-          startDate = new Date(String(tc.properties.start_date)).getFullYear()
+          if(isNaN(startDate))
+            startDate = new Date(String(tc.properties.start_date)).getFullYear()
 
-        if(isNaN(endDate))
-          endDate = new Date(String(tc.properties.end_date)).getFullYear()
+          if(isNaN(endDate))
+            endDate = new Date(String(tc.properties.end_date)).getFullYear()
 
-        if (startDate <= maxYear && endDate >= minYear) {
-          // removes the style from the feature
-          feature.setStyle(null)
-        } else {
-          // sets an `invisible` style to the feature
-          feature.setStyle(emptyStyle)
-        }
+          if (startDate <= maxYear && endDate >= minYear) {
+            // removes the style from the feature
+            feature.setStyle(null)
+          } else {
+            // sets an `invisible` style to the feature
+            feature.setStyle(emptyStyle)
+          }
+        })
       },
       filterUpdate () {
         overlayGroup.getLayers().forEach(vectorLayer => {
@@ -113,13 +115,17 @@
 
           // if the tc has already been loaded, then use it and not request it again
           if (this.hasAlreadyBeenSavedTheTemporalColumns(f_table_name)) {
-            this.loadedTC.forEach(tc => {
-              vectorLayerFeatures.forEach(feature => {
-                this.updateFeatureVisibility(feature, tc)
-              })
-            })
+
+            for (let tc of this.loadedTC) {
+              if (tc.properties.f_table_name === f_table_name) {
+                this.updateFeatureVisibility(vectorLayerFeatures, tc)
+                break;
+              }
+            }
+
           // if the tc has not already been loaded, then request it
           } else {
+
             Api().get('/api/temporal_columns/?f_table_name=' + f_table_name).then(result => {
               let tc = result.data.features[0]
 
@@ -129,10 +135,9 @@
                 this.loadedTC.push(tc)
               }
 
-              vectorLayerFeatures.forEach(feature => {
-                this.updateFeatureVisibility(feature, tc)
-              })
+              this.updateFeatureVisibility(vectorLayerFeatures, tc)
             })
+
           }
 
         })
