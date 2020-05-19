@@ -31,6 +31,7 @@
     },
     mounted () {
       let slider = document.getElementById('slider')
+
       //this.filterUpdate()
       noUiSlider.create(slider, {
         start: [this.startYear, this.endYear],
@@ -49,58 +50,64 @@
           density: 4
         },
         format: {
-          to: function (value) {
+          to: value => {
             return value + ''
           },
-          from: function (value) {
+          from: value => {
             return value.replace(',-', '')
           }
         }
       })
 
-      const vm = this
-      slider.noUiSlider.on('update', function (values, handle) {
-        vm.$store.dispatch('map/setYears', {
+      slider.noUiSlider.on('update', (values, handle) => {
+        this.$store.dispatch('map/setYears', {
           first: values[0],
           last: values[1]
         })
-        vm.filterUpdate()
+
+        this.filterUpdate()
       })
 
     },
     methods: {
       filterUpdate () {
-        const vm = this
-        let yearFirst = this.years.first
-        let yearLast = this.years.last
+        // console.log('\n filterUpdate() \n')
 
-        overlayGroup.getLayers().forEach(sublayer => {
-          Api().get('/api/temporal_columns/?f_table_name='+sublayer.values_.title).then(function (tc) {
+        let minYear = this.years.first
+        let maxYear = this.years.last
 
-
-            sublayer.getSource().getFeatures().forEach(feature => {
+        overlayGroup.getLayers().forEach(vectorLayer => {
+          Api().get('/api/temporal_columns/?f_table_name=' + vectorLayer.values_.title).then(tc => {
+            vectorLayer.getSource().getFeatures().forEach(feature => {
 
               let startDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.start_date_column_name])).getFullYear()
               let endDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.end_date_column_name])).getFullYear()
 
-              if(startDate-5 < vm.startYear) vm.startYear = startDate-5
-              if(endDate+5 > vm.startYear) vm.endYear = endDate+5
+              if(startDate-5 < this.startYear)
+                this.startYear = startDate-5
 
+              if(endDate+5 > this.startYear)
+                this.endYear = endDate+5
 
               //if(isNaN(startDate)) startDate = 0
               //if(isNaN(endDate)) endDate = (new Date).getFullYear()
 
-              if(isNaN(startDate)) startDate = new Date(String(tc.data.features[0].properties.start_date)).getFullYear()
-              if(isNaN(endDate)) endDate = new Date(String(tc.data.features[0].properties.end_date)).getFullYear()
+              if(isNaN(startDate))
+                startDate = new Date(String(tc.data.features[0].properties.start_date)).getFullYear()
 
-              if (startDate <= yearLast && endDate >= yearFirst) {
-                feature.setStyle(vm.style)
+              if(isNaN(endDate))
+                endDate = new Date(String(tc.data.features[0].properties.end_date)).getFullYear()
+
+              if (startDate <= maxYear && endDate >= minYear) {
+                feature.setStyle(this.style)
               } else {
                 feature.setStyle(emptyStyle)
               }
+
             })
           })
         })
+
       }
     }
   }
@@ -130,5 +137,4 @@
   #contentSlider .sliders .noUi-connect{
     background: #58595b !important;
   }
-        
 </style>
