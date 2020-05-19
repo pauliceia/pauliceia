@@ -21,9 +21,10 @@
     name: 'Timeline',
     data () {
       return {
-        style: null,
         startYear: 1886,
         endYear: 1970,
+        // loaded temporal columns
+        loadedTC: []
       }
     },
     computed: {
@@ -70,42 +71,70 @@
 
     },
     methods: {
-      filterUpdate () {
-        // console.log('\n filterUpdate() \n')
-
+      hasAlreadyBeenSavedTheTemporalColumns (f_table_name) {
+        // check if a tc exists inside the list by `f_table_name`, it returns a boolean
+        return this.loadedTC.some(tc => tc.properties.f_table_name === f_table_name)
+      },
+      updateFeatureVisibility (feature, tc) {
         let minYear = this.years.first
         let maxYear = this.years.last
 
+        let startDate = new Date(String(feature.getProperties()[tc.properties.start_date_column_name])).getFullYear()
+        let endDate = new Date(String(feature.getProperties()[tc.properties.end_date_column_name])).getFullYear()
+
+        if(startDate-5 < this.startYear)
+          this.startYear = startDate-5
+
+        if(endDate+5 > this.startYear)
+          this.endYear = endDate+5
+
+        //if(isNaN(startDate)) startDate = 0
+        //if(isNaN(endDate)) endDate = (new Date).getFullYear()
+
+        if(isNaN(startDate))
+          startDate = new Date(String(tc.properties.start_date)).getFullYear()
+
+        if(isNaN(endDate))
+          endDate = new Date(String(tc.properties.end_date)).getFullYear()
+
+        if (startDate <= maxYear && endDate >= minYear) {
+          // removes the style from the feature
+          feature.setStyle(null)
+        } else {
+          // sets an `invisible` style to the feature
+          feature.setStyle(emptyStyle)
+        }
+      },
+      filterUpdate () {
         overlayGroup.getLayers().forEach(vectorLayer => {
-          Api().get('/api/temporal_columns/?f_table_name=' + vectorLayer.values_.title).then(tc => {
-            vectorLayer.getSource().getFeatures().forEach(feature => {
 
-              let startDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.start_date_column_name])).getFullYear()
-              let endDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.end_date_column_name])).getFullYear()
+          let f_table_name = vectorLayer.values_.title
+          let vectorLayerFeatures = vectorLayer.getSource().getFeatures()
 
-              if(startDate-5 < this.startYear)
-                this.startYear = startDate-5
+          // if the tc has already been loaded, then use it and not request it again
+          if (this.hasAlreadyBeenSavedTheTemporalColumns(f_table_name)) {
+            this.loadedTC.forEach(tc => {
+              vectorLayerFeatures.forEach(feature => {
+                this.updateFeatureVisibility(feature, tc)
+              })
+            })
+          // if the tc has not already been loaded, then request it
+          } else {
+            Api().get('/api/temporal_columns/?f_table_name=' + f_table_name).then(result => {
+              let tc = result.data.features[0]
 
-              if(endDate+5 > this.startYear)
-                this.endYear = endDate+5
-
-              //if(isNaN(startDate)) startDate = 0
-              //if(isNaN(endDate)) endDate = (new Date).getFullYear()
-
-              if(isNaN(startDate))
-                startDate = new Date(String(tc.data.features[0].properties.start_date)).getFullYear()
-
-              if(isNaN(endDate))
-                endDate = new Date(String(tc.data.features[0].properties.end_date)).getFullYear()
-
-              if (startDate <= maxYear && endDate >= minYear) {
-                feature.setStyle(this.style)
-              } else {
-                feature.setStyle(emptyStyle)
+              // if the tc has not already been saved in the list, then save it
+              if (!this.hasAlreadyBeenSavedTheTemporalColumns(f_table_name)) {
+                // add a tc to a list of loaded tc in order to avoid to request the tc again
+                this.loadedTC.push(tc)
               }
 
+              vectorLayerFeatures.forEach(feature => {
+                this.updateFeatureVisibility(feature, tc)
+              })
             })
-          })
+          }
+
         })
 
       }
