@@ -21,8 +21,8 @@
     name: 'Timeline',
     data () {
       return {
-        startYear: 1886,
-        endYear: 1970,
+        sliderStartYear: 1886,
+        sliderEndYear: 1970,
         // loaded temporal columns
         loadedTC: []
       }
@@ -35,15 +35,15 @@
 
       //this.filterUpdate()
       noUiSlider.create(slider, {
-        start: [this.startYear, this.endYear],
+        start: [this.sliderStartYear, this.sliderEndYear],
         connect: true,
         orientation: 'horizontal',
         step: 1,
         tooltips: true,
         direction: 'ltr',
         range: {
-          'min': this.startYear,
-          'max': this.endYear
+          'min': this.sliderStartYear,
+          'max': this.sliderEndYear
         },
         pips: {
           mode: 'count',
@@ -82,18 +82,21 @@
           return null
       },
       updateFeatureVisibility (vectorLayerFeatures, tc) {
-        let minYear = this.years.first
-        let maxYear = this.years.last
+        let selectedMinYear = this.years.first
+        let selectedMaxYear = this.years.last
 
         vectorLayerFeatures.forEach(feature => {
-          let startDate = new Date(String(feature.getProperties()[tc.properties.start_date_column_name])).getFullYear()
-          let endDate = new Date(String(feature.getProperties()[tc.properties.end_date_column_name])).getFullYear()
+          // feature properties
+          let fProperties = feature.getProperties()
 
-          if(startDate-5 < this.startYear)
-            this.startYear = startDate-5
+          let startDate = new Date(String(fProperties[tc.properties.start_date_column_name])).getFullYear()
+          let endDate = new Date(String(fProperties[tc.properties.end_date_column_name])).getFullYear()
 
-          if(endDate+5 > this.startYear)
-            this.endYear = endDate+5
+          if(startDate-5 < this.sliderStartYear)
+            this.sliderStartYear = startDate-5
+
+          if(endDate+5 > this.sliderStartYear)
+            this.sliderEndYear = endDate+5
 
           //if(isNaN(startDate)) startDate = 0
           //if(isNaN(endDate)) endDate = (new Date).getFullYear()
@@ -104,7 +107,7 @@
           if(isNaN(endDate))
             endDate = new Date(String(tc.properties.end_date)).getFullYear()
 
-          if (startDate <= maxYear && endDate >= minYear) {
+          if (startDate <= selectedMaxYear && endDate >= selectedMinYear) {
             // removes the style from the feature
             feature.setStyle(null)
           } else {
