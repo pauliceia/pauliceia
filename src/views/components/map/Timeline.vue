@@ -71,9 +71,15 @@
 
     },
     methods: {
-      hasAlreadyBeenSavedTheTemporalColumns (f_table_name) {
-        // check if a tc exists inside the list by `f_table_name`, it returns a boolean
-        return this.loadedTC.some(tc => tc.properties.f_table_name === f_table_name)
+      getTemporalColumns (f_table_name) {
+        // tcs - array with the selected temporal columns
+        let tcs = this.loadedTC.filter(tc => tc.properties.f_table_name === f_table_name)
+
+        // if array is not empty, it returns the only one element inside the array
+        if (Array.isArray(tcs) && tcs.length)
+          return tcs[0]
+        else
+          return null
       },
       updateFeatureVisibility (vectorLayerFeatures, tc) {
         let minYear = this.years.first
@@ -113,35 +119,26 @@
           let f_table_name = vectorLayer.values_.title
           let vectorLayerFeatures = vectorLayer.getSource().getFeatures()
 
-          // if the tc has already been loaded, then use it and not request it again
-          if (this.hasAlreadyBeenSavedTheTemporalColumns(f_table_name)) {
+          // try to get a `tc` again if it has already been loaded
+          let tc = this.getTemporalColumns(f_table_name)
 
-            for (let tc of this.loadedTC) {
-              if (tc.properties.f_table_name === f_table_name) {
-                this.updateFeatureVisibility(vectorLayerFeatures, tc)
-                break;
-              }
-            }
+          // check if this `tc` has already been loaded (i.e. if `tc` is not null), in order to not request it again
+          if (tc) {
+            this.updateFeatureVisibility(vectorLayerFeatures, tc)
 
-          // if the tc has not already been loaded, then request it
+          // if the `tc` has not already been loaded, then request it to the server
           } else {
-
             Api().get('/api/temporal_columns/?f_table_name=' + f_table_name).then(result => {
               let tc = result.data.features[0]
 
-              // if the tc has not already been saved in the list, then save it
-              if (!this.hasAlreadyBeenSavedTheTemporalColumns(f_table_name)) {
-                // add a tc to a list of loaded tc in order to avoid to request the tc again
-                this.loadedTC.push(tc)
-              }
+              // add the new `tc` to a list of loaded `tc` in order to avoid to request it again
+              this.loadedTC.push(tc)
 
               this.updateFeatureVisibility(vectorLayerFeatures, tc)
             })
-
           }
 
         })
-
       }
     }
   }
