@@ -5,7 +5,7 @@
             <div v-if="user != null && user.user_id !== undefined && user.user_id != null">
                 <p class="title">
                     <i class="el-icon-edit-outline"></i>
-                    Selecione uma camada para editar: 
+                    Selecione uma camada para editar:
                 </p>
                 <el-radio-group v-model="layerIdSelected">
                     <div class="layers" v-for="layerId in myLayersId" :key="layerId">
@@ -49,7 +49,7 @@ export default {
     computed: {
         ...mapState('auth', ['user'])
     },
-    
+
     watch: {
         layerIdSelected(val) {
             this._alterLayer(val)
@@ -106,12 +106,12 @@ export default {
                     if (action === 'confirm') {
                         instance.confirmButtonLoading = true
                         instance.confirmButtonText = 'Loading...'
-                        
+
                         if(instance.inputValue != '') {
                             try{
                                 let changesetProps = {
-                                    'changeset_id': -1, 
-                                    'layer_id': layerId, 
+                                    'changeset_id': -1,
+                                    'layer_id': layerId,
                                     'description': instance.inputValue
                                 }
                                 let changeset = {
@@ -119,7 +119,8 @@ export default {
                                     'type': 'Changeset'
                                 }
                                 let response = await Edit.createChangeset(changeset)
-                                this.changeset = response.data.changeset_id
+                                this.changeset = response.data
+
                                 vm.$store.dispatch('edit/setChangesetId', this.changeset)
                                 vm.$store.dispatch('edit/setLayerId', layerId)
 
@@ -137,7 +138,7 @@ export default {
                         } else {
                             instance.confirmButtonLoading = false
                             instance.confirmButtonText = 'INICIALIZAR'
-                        }              
+                        }
 
                     } else {
                         instance.inputValue = ''
@@ -171,17 +172,17 @@ export default {
     }
 
 }
-    
+
 </script>
-<style lang="sass" scoped>  
+<style lang="sass" scoped>
 .box-edit
     //BOX LAYERS
     .box-layers
         background: rgba(#FFF, 0.2)
-        padding: 20px 10px 20px 10px 
+        padding: 20px 10px 20px 10px
         color: #FFF
         overflow: auto
-        
+
         .title
             text-transform: uppercase
             font-size: 1.2em
@@ -189,13 +190,13 @@ export default {
             width: 100%
             text-align: center
 
-    .box-layers::-webkit-scrollbar 
+    .box-layers::-webkit-scrollbar
         width: 0.7em
- 
-    .box-layers::-webkit-scrollbar-track 
+
+    .box-layers::-webkit-scrollbar-track
         -webkit-box-shadow: inset 0 0 6px rgba(#000, 0.5)
 
-    .box-layers::-webkit-scrollbar-thumb 
+    .box-layers::-webkit-scrollbar-thumb
         background-color: rgba(#000, 0.5)
         outline: 1px solid red
 </style>

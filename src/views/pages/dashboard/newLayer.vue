@@ -387,6 +387,8 @@
         this.fname = document.getElementById("Upload").files[0].name
       },
       Upload2(){  //Cadastrar a segunda parte da camada - time column
+        // console.log('\n Upload2()')
+
         this._openFullLoading()
 
         if (this.startDate === null || this.endDate === null) {
@@ -394,26 +396,29 @@
         } else {
           this.timeout_upload()
 
+          // console.log('\n this.endColumnsName: ', this.endColumnsName)
+          // console.log('\n this.startColumnsName: ', this.startColumnsName)
+
           let temporalColumns = {
             'properties': {
               'f_table_name': this.tableName,
               'start_date': this.startDate,
               'end_date': this.endDate,
-              'end_date_column_name': this.endColumnsName!=null ? this.endColumnsName[0] : null,
-              'start_date_column_name': this.startColumnsName!=null ? this.startColumnsName[0] : null,
-              'start_date_mask_id': this.startDateMask!=null ? this.startDateMask.mask_id : null,
-              'end_date_mask_id': this.endDateMask!=null ? this.endDateMask.mask_id : null,
+              'end_date_column_name': this.endColumnsName != null ? this.endColumnsName[0] : null,
+              'start_date_column_name': this.startColumnsName != null ? this.startColumnsName[0] : null,
+              'start_date_mask_id': this.startDateMask != null ? this.startDateMask.mask_id : null,
+              'end_date_mask_id': this.endDateMask != null ? this.endDateMask.mask_id : null,
             },
             'type': 'TemporalColumns'
           }
+
+          // console.log('\n temporalColumns: ', temporalColumns)
 
           Api().post('/api/temporal_columns/create', temporalColumns).then(response => {
             this.loading.close()
             this.$message.success("A layer foi adicionada com sucesso!")
             this.finished = 1
-            this.$router.push({
-              path: '/dashboard/home'
-            })
+            this.$router.push({path: '/dashboard/home'})
           }, cause => {
             Api().delete('/api/layer/' + this.layer_id)
 
@@ -518,7 +523,10 @@
               }
 
               Api().post('/api/changeset/create', changeset).then(response => {
-                Api().post('api/import/shp/?f_table_name=' + this.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id, file).then(response => {
+                Api().post(
+                  'api/import/shp/?f_table_name=' + this.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data,
+                  file
+                ).then(response => {
                   Api().get('/api/feature_table/?f_table_name=' + this.tableName).then(response => {    //Pega as colunas do shapefile enviado
                     response.data.features.filter(e => {
                       this.columns = e.properties
@@ -541,38 +549,18 @@
 
                     this.loading.close()
                     this.finished = 1
-                    this._msgError(cause.toString())
+
+                    this._showErrorMessages(cause)
                   })
                 }, cause => {
                   // error `post('api/import/shp')`
 
                   Api().delete('/api/layer/' + this.layer_id)
-                  Api().delete('/api/changeset/?changeset_id=' + response.data.changeset_id)
 
                   this.loading.close()
                   this.finished = 1
 
-                  if (cause.response.status === 400)
-                    this._msgError("1) ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP." +
-                                "2) The Shapefile has an invalid attribute: . It has a special character. Please, rename it.")
-                  else if (cause.response.status === 403)
-                    this._msgError("Just the owner of the layer or administrator can create/update a feature table or do a import.")
-                  else if (cause.response.status === 404)
-                    this._msgError("Not found .prj inside the zip.")
-                  else if (cause.response.status === 409)
-                    this._msgError("1) File is not a zip file." +
-                                "2) It was not possible to find one EPSG from the .prj." +
-                                "3) There is not a list of codes in the result. So it is an invalid .prj." +
-                                "4) The Shapefile has the 'version' or 'changeset_id' attribute. Please, rename them." +
-                                "5) Shapefile is not inside the default city of the project.")
-                  else if (cause.response.status === 500)
-                    this._msgError("1) Problem when to import the Shapefile. Fiona was not able to read the Shapefile. One reason can be that the Shapefile has an empty column name, so name it." +
-                                "2) Some geometries of the Shapefile are with problem. Please, verify them and try to import again later." +
-                                "3) Problem when import a resource. Please, contact the administrator.")
-                  else if (cause.response.status === 503)
-                    this._msgError("Problem with the prj2epsg web service.")
-                  else
-                    this._msgError(cause.toString())
+                  this._showErrorMessages(cause)
                 })
               }, cause => {
                 // error `post('/api/changeset/create')`
@@ -582,10 +570,7 @@
                 this.loading.close()
                 this.finished = 1
 
-                if (cause.response.status === 500)
-                  this._msgError("Problem when create a resource. Please, contact the administrator.")
-                else
-                  this._msgError(cause.toString())
+                this._showErrorMessages(cause)
               })
             }, cause => {
               // error `.post('/api/layer/create'`
@@ -593,14 +578,7 @@
               this.finished = 1
               this.loading.close();
 
-              if (cause.response.status === 409)
-                this._msgError("1) The table name already exist or is a reserved word. Please, rename it. 2) The maximum of keywords allowed to a layer are 5.")
-              else if (cause.response.status === 500)
-                this._msgError("Problem when create a resource. Please, contact the administrator.")
-              else if (cause.response.status === 401)
-                this._msgError("É necessário uma autorização válida!")
-              else
-                this._msgError(cause.toString())
+              this._showErrorMessages(cause)
             })
 
           } catch (error) {
@@ -769,6 +747,15 @@
       async removeAttr(id) {
         this.optionsAttr = await this.optionsAttr.filter( attr => attr.id != id )
       },
+      _showErrorMessages (cause) {
+        if ('data' in cause.response)
+          this._msgError(cause.response.data)
+        else
+          this._msgError(cause.toString())
+
+        if (cause.response.status >= 500)
+          this._msgError("Problem when creating a resource. Please, contact the administrator.")
+      },
       _msgError(msg){
         if(this.loading != '' && this.loading != null)
           this.loading.close()
@@ -776,7 +763,7 @@
         this.$message.error({
           message: msg,
           center: true,
-          duration: 8000,
+          duration: 10000,
           showClose: true,
         })
       },
