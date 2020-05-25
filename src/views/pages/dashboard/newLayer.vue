@@ -387,36 +387,29 @@
         this.fname = document.getElementById("Upload").files[0].name
       },
       Upload2(){  //Cadastrar a segunda parte da camada - time column
-        // console.log('\n Upload2()')
-
         this._openFullLoading()
 
         if (this.startDate === null || this.endDate === null) {
-          this._msgError("Datas são necessárias")
+          this._msgError("O preenchimento das datas é obrigatório!")
         } else {
           this.timeout_upload()
-
-          // console.log('\n this.endColumnsName: ', this.endColumnsName)
-          // console.log('\n this.startColumnsName: ', this.startColumnsName)
 
           let temporalColumns = {
             'properties': {
               'f_table_name': this.tableName,
               'start_date': this.startDate,
               'end_date': this.endDate,
-              'end_date_column_name': this.endColumnsName != null ? this.endColumnsName[0] : null,
-              'start_date_column_name': this.startColumnsName != null ? this.startColumnsName[0] : null,
+              'start_date_column_name': this.startColumnsName != null ? this.startColumnsName : null,
+              'end_date_column_name': this.endColumnsName != null ? this.endColumnsName : null,
               'start_date_mask_id': this.startDateMask != null ? this.startDateMask.mask_id : null,
               'end_date_mask_id': this.endDateMask != null ? this.endDateMask.mask_id : null,
             },
             'type': 'TemporalColumns'
           }
 
-          // console.log('\n temporalColumns: ', temporalColumns)
-
           Api().post('/api/temporal_columns/create', temporalColumns).then(response => {
             this.loading.close()
-            this.$message.success("A layer foi adicionada com sucesso!")
+            this.$message.success("A camada foi adicionada com sucesso!")
             this.finished = 1
             this.$router.push({path: '/dashboard/home'})
           }, cause => {
@@ -425,12 +418,7 @@
             this.loading.close()
             this.finished = 1
 
-            if (cause.response.status === 403)
-              this._msgError("Apenas o dono da camada ou administrador pode criar/atualizar uma coluna de tempo.")
-            else if (cause.response.status === 401)
-              this._msgError("Você não tem permissão. É necessário uma autorização válida!")
-            else
-              this._msgError(cause.toString())
+            this._showErrorMessages(cause)
           })
         }
 
