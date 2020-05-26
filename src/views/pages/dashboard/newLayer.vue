@@ -386,7 +386,7 @@
       updateName() {  //Salvar os dados no Store
         this.fname = document.getElementById("Upload").files[0].name
       },
-      Upload2(){  //Cadastrar a segunda parte da camada - time column
+      Upload2(){  // cadastrar a segunda parte da camada - temporal columns
         this._openFullLoading()
 
         if (this.startDate === null || this.endDate === null) {
@@ -399,10 +399,10 @@
               'f_table_name': this.tableName,
               'start_date': this.startDate,
               'end_date': this.endDate,
-              'start_date_column_name': this.startColumnsName != null ? this.startColumnsName : null,
-              'end_date_column_name': this.endColumnsName != null ? this.endColumnsName : null,
-              'start_date_mask_id': this.startDateMask != null ? this.startDateMask.mask_id : null,
-              'end_date_mask_id': this.endDateMask != null ? this.endDateMask.mask_id : null,
+              'start_date_column_name': this.startColumnsName,
+              'end_date_column_name': this.endColumnsName,
+              'start_date_mask_id': (this.startDateMask != null && 'mask_id' in this.startDateMask) ? this.startDateMask.mask_id : null,
+              'end_date_mask_id': (this.endDateMask != null && 'mask_id' in this.endDateMask) ? this.endDateMask.mask_id : null,
             },
             'type': 'TemporalColumns'
           }
@@ -735,15 +735,6 @@
       async removeAttr(id) {
         this.optionsAttr = await this.optionsAttr.filter( attr => attr.id != id )
       },
-      _showErrorMessages (cause) {
-        if ('data' in cause.response)
-          this._msgError(cause.response.data)
-        else
-          this._msgError(cause.toString())
-
-        if (cause.response.status >= 500)
-          this._msgError("Problem when creating a resource. Please, contact the administrator.")
-      },
       _msgError(msg){
         if(this.loading != '' && this.loading != null)
           this.loading.close()
@@ -754,6 +745,15 @@
           duration: 10000,
           showClose: true,
         })
+      },
+      _showErrorMessages(cause) {
+        if ('data' in cause.response)
+          this._msgError(cause.response.data)
+        else
+          this._msgError(cause.toString())
+
+        if (cause.response.status >= 500)
+          this._msgError("Problem when creating a resource. Please, contact the administrator.")
       },
       _openFullLoading(){
         this.loading = this.$loading({

@@ -292,12 +292,10 @@
       Upload2(){
         // this method sends the temporal columns to VGIMWS
 
-        const vm = this
-
         if (this.startDate === null || this.endDate === null) {
-          vm.$message.error("Date is missing")
+          this._msgError("O preenchimento das datas é obrigatório!")
         } else {
-          let timeColumn = {
+          let temporalColumns = {
             'properties': {
               'f_table_name': this.tableName,
               'start_date': this.startDate,
@@ -309,23 +307,17 @@
             },
             'type': 'TemporalColumns'
           }
-          //console.log(timeColumn)
-          Api().put('/api/temporal_columns', timeColumn).then((response) => {
-            vm.$message.success("The layer was updated successfully!")
-            vm.$router.push({
-              path: '/dashboard/home'
-            })
-          }, (cause) => {
-            console.log(cause.response)
 
-            if (cause.response.status === 403)
-              vm.$message.error("Just the layer creator or a collaborator user can update the temporal columns.")
-            else if (cause.response.status === 401)
-              vm.$message.error("A valid Authorization is necessary!")
-            else
-              vm.$message.error(cause.toString())
+          //console.log('temporalColumns: ', temporalColumns)
+
+          Api().put('/api/temporal_columns', temporalColumns).then(response => {
+            this.$message.success("A camada foi atualizada com sucesso!")
+            this.$router.push({path: '/dashboard/home'})
+          }, cause => {
+            this._showErrorMessages(cause)
           })
         }
+
       },
       Upload() {
         // this method sends a layer to VGIMWS
@@ -475,12 +467,22 @@
       _msgError(msg){
         if(this.loading != '' && this.loading != null)
           this.loading.close()
+
         this.$message.error({
           message: msg,
           center: true,
-          duration: 6000,
+          duration: 10000,
           showClose: true,
         })
+      },
+      _showErrorMessages(cause) {
+        if ('data' in cause.response)
+          this._msgError(cause.response.data)
+        else
+          this._msgError(cause.toString())
+
+        if (cause.response.status >= 500)
+          this._msgError("Problem when creating a resource. Please, contact the administrator.")
       },
     },
     mounted() {
