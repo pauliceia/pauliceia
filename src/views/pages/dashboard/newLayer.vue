@@ -14,7 +14,7 @@
                   <div class="form-group col-md-6">
                     <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.nameD')" />
-                    <input :value="name" @blur="saveName()" class="form-control"  id="inputName"><!--placeholder="Name">-->
+                    <input v-model="name" @blur="saveName()" class="form-control" id="inputName"><!--placeholder="Name">-->
                   </div>
 
                   <!-- keywords -->
@@ -24,16 +24,17 @@
                     <button @click="newKeyword()" class="btn btn-outline-warning btn-sm add" type="button">
                       <md-icon>add_circle_outline</md-icon>
                     </button>
-                    <v-select :options="all_keywords" @blur="saveKeywords()" id="keywordsSelect" label="name" multiple
-                      track-by="name" v-model="keywords">
+                    <v-select :options="allKeywords" @blur="saveKeywords()" id="keywordsSelect" label="name" multiple
+                      track-by="name" v-model="selectedKeywords">
                     </v-select>
                   </div>
                 </div>
 
+                <!-- collaborators -->
                 <div class="form-group">
                   <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.collaboratorsD')" />
-                  <v-select v-model="chosenUsers" :options="users" @blur="saveUsers()" id="userSelect"
+                  <v-select v-model="selectedCollaborators" :options="users" @blur="saveCollaborators()" id="userSelect"
                       label="username" track-by="username" multiple
                   ></v-select>
                 </div>
@@ -42,7 +43,7 @@
                 <div class="form-group">
                   <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.descriptionD')" />
-                  <textarea :value="description" @blur="saveDescription()" class="form-control" id="inputDescription" rows="3"> </textarea>
+                  <textarea v-model="description" @blur="saveDescription()" class="form-control" id="inputDescription" rows="3"> </textarea>
                 </div>
 
                 <!-- reference -->
@@ -62,10 +63,10 @@
                 </div>
 
                 <!-- added references -->
-                <div class="form-group" v-show="references.length !== 0">
+                <div class="form-group" v-show="selectedReferences.length !== 0">
                   <label for="inputReference">{{ $t('dashboard.newLayer.addedReferences') }}</label>
                   <ol>
-                    <li v-for="reference in references" :key="reference.reference_id">
+                    <li v-for="reference in selectedReferences" :key="reference.reference_id">
                       {{ reference.description }}
                       &nbsp;&nbsp;&nbsp;&nbsp;
                       <button @click="removeReference(reference.reference_id)" class="btn btn-outline-danger btn-sm del" type="button">
@@ -179,7 +180,7 @@
               <form>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
+                    <label for="start_date">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
                     <input class="form-control" id="start_date" type="date" v-model="startDate">
                   </div>
@@ -194,14 +195,14 @@
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
-                    <v-select :options="dateMask" id="start_date_mask" label="mask" track-by="mask"
+                    <v-select :options="allMasks" id="start_date_mask" label="mask" track-by="mask"
                               v-model="startDateMask"></v-select>
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
+                    <label for="end_date">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
                     <input class="form-control" id="end_date" type="date" v-model="endDate">
                   </div>
@@ -216,7 +217,7 @@
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
-                    <v-select :options="dateMask" id="end_date_mask" label="mask" track-by="mask"
+                    <v-select :options="allMasks" id="end_date_mask" label="mask" track-by="mask"
                               v-model="endDateMask"></v-select>
                   </div>
                 </div>
@@ -254,27 +255,58 @@
   // configure language
   locale.use(lang)
 
+  function doesTheStringHaveSpecialChars(string) {
+    /*
+    To be a valid string, it must:
+    - start with a character without number (i.e. '^[a-zA-Z_]')
+    - end with a character that can have numbers (i.e. '[a-zA-Z0-9_]+$')
+    - have one or more occurrences of that letter (i.e. '+')
+    - not have special characters (i.e. '^[a-zA-Z_]+[a-zA-Z0-9_]+$')
+
+    Return: `True` if the string has some special character, else it returns `False`
+    */
+
+    let english_checker = /^[a-zA-Z_]+[a-zA-Z0-9_]+$/
+
+    return !(english_checker.test(string))
+  }
+
   export default {
     name: "newLayer",
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
-      ...mapState('dashboard', ['name', 'key', 'ref', 'usersSaved', 'description'])
+      // ...mapState('dashboard', ['name', 'key', 'ref', 'usersSaved', 'description']),
+
+      ...mapState({
+        storedName: state => state.dashboardNewLayer.name,
+        storedSelectedKeywords: state => state.dashboardNewLayer.selectedKeywords,
+        storedSelectedCollaborators: state => state.dashboardNewLayer.selectedCollaborators,
+        storedDescription: state => state.dashboardNewLayer.description,
+        storedSelectedReferences: state => state.dashboardNewLayer.selectedReferences,
+        // storedFile: state => state.dashboardNewLayer.file
+      })
+
     },
     data() {
       return {
-        tableName: null,
-        all_keywords: [],
-        reference_description: null,
+        // layer form
+        name: '',
+        fTableName: '',
+        allKeywords: [],
+        selectedKeywords: [],
+        selectedCollaborators: [],
         users: [],
-        chosenUsers: [],
-        references: [],
-        keywords: [],
+        description: '',
+        reference_description: null,
+        selectedReferences: [],
         fname: this.$t('dashboard.newLayer.chooseFile'),
+
+        // temporal columns form
         columns: null,
         columnsName: [],
         startColumnsName: null,
         endColumnsName: null,
-        dateMask: [],
+        allMasks: [],
         startDateMask: null,
         endDateMask: null,
         startDate: null,
@@ -319,15 +351,6 @@
       this.shapeCorrect = false
 
       // get the information of all users, except the current one
-      // Api().get('/api/user').then(response => {
-      //   this.users = response.data.features.filter(u => {
-      //     if (u.properties.user_id !== this.user.user_id) {
-      //       return u.properties
-      //     }
-      //   })
-      //   console.log('this.users: ', this.users)
-      // })
-
       Api().get('/api/user').then(response => {
         response.data.features.forEach(u => {
           if (u.properties.user_id !== this.user.user_id)
@@ -337,22 +360,25 @@
 
       // get all the available keywords
       Api().get('/api/keyword').then(response => {
-        this.all_keywords = response.data.features.map(k => k.properties)
+        this.allKeywords = response.data.features.map(k => k.properties)
       })
 
       // get all the available masks
       Api().get('/api/mask').then(response => {
-        this.dateMask = response.data.features.map(m => m.properties)
+        this.allMasks = response.data.features.map(m => m.properties)
       })
 
-      this.keywords =  this.key
-      this.references = this.ref
-      this.chosenUsers = this.usersSaved
+      // get the stored properties
+      this.name = this.storedName
+      this.selectedKeywords =  this.storedSelectedKeywords
+      this.selectedReferences = this.storedSelectedReferences
+      this.selectedCollaborators = this.storedSelectedCollaborators
+      this.description = this.storedDescription
     },
     methods: {
       newKeyword() {
-        this.saveName()
-        //Limpar valores: this.$store.dispatch('dashboard/setName',  "")
+        // all form information is stored in the state by the "@blur"s in the template (e.g. `@blur="saveName()"`)
+
         this.$router.push({
           name: 'Keyword',
           params: {name: 'NewLayer'}
@@ -361,29 +387,28 @@
       clearData(){
         // this method cleans the store data
 
-        this.$store.dispatch('dashboard/setName',  "")
-        this.$store.dispatch('dashboard/setUsers',  [])
-        this.$store.dispatch('dashboard/setReferences',  [])
-        this.$store.dispatch('dashboard/setKeywords',  [])
-        this.$store.dispatch('dashboard/setDescription',  "")
+        this.$store.dispatch('dashboardNewLayer/setName',  '')
+        this.$store.dispatch('dashboardNewLayer/setKeywords',  [])
+        this.$store.dispatch('dashboardNewLayer/setCollaborators',  [])
+        this.$store.dispatch('dashboardNewLayer/setDescription',  '')
+        this.$store.dispatch('dashboardNewLayer/setReferences',  [])
       },
       saveName(){ //Salvar os dados no Store
-        this.$store.dispatch('dashboard/setName', document.getElementById("inputName").value)
-      },
-      saveUsers(){  //Salvar os dados no Store
-        this.$store.dispatch('dashboard/setUsers',  this.chosenUsers)
-      },
-      saveReferences(){
-        // this method stores the references in the store
-        this.$store.dispatch('dashboard/setReferences', this.references)
-      },
-      saveDescription(){  //Salvar os dados no Store
-        this.$store.dispatch('dashboard/setDescription',  document.getElementById("inputDescription").value)
+        this.$store.dispatch('dashboardNewLayer/setName', this.name)
       },
       saveKeywords(){ //Salvar os dados no Store
-        this.$store.dispatch('dashboard/setKeywords', this.keywords)
+        this.$store.dispatch('dashboardNewLayer/setKeywords', this.selectedKeywords)
       },
-      updateName() {  //Salvar os dados no Store
+      saveCollaborators(){  //Salvar os dados no Store
+        this.$store.dispatch('dashboardNewLayer/setCollaborators',  this.selectedCollaborators)
+      },
+      saveDescription(){  //Salvar os dados no Store
+        this.$store.dispatch('dashboardNewLayer/setDescription',  this.description)
+      },
+      saveReferences(){ //Salvar os dados no Store
+        this.$store.dispatch('dashboardNewLayer/setReferences', this.selectedReferences)
+      },
+      updateName() {
         this.fname = document.getElementById("Upload").files[0].name
       },
       timeout_upload(){ //Erro de estouro de tempo ao criar a nova camada
@@ -409,7 +434,7 @@
 
         let temporalColumns = {
           'properties': {
-            'f_table_name': this.tableName,
+            'f_table_name': this.fTableName,
             'start_date': this.startDate,
             'end_date': this.endDate,
             'start_date_column_name': this.startColumnsName,
@@ -438,23 +463,17 @@
       Upload() {  //Cadastrar a primeira parte da Camada
         this._openFullLoading()
 
-        let tableName2 = document.getElementById("inputName").value
+        this.fTableName = this.name.trim().replace(/ /g, '_').toLocaleLowerCase()
 
-        if (tableName2.indexOf(' ') === 0)
-          tableName2 = tableName2.slice(1)
-        if (tableName2.lastIndexOf(' ') === tableName2.length - 1)
-          tableName2 = tableName2.slice(0, tableName2.length - 1)
-
-        tableName2 = tableName2.split(" ").join("_")
-        tableName2 = tableName2.toLocaleLowerCase()
-        this.tableName = tableName2
-
-        if (document.getElementById("inputName").value === '') {
+        if (this.name === '') {
           this._msgError("O nome é necessário!")
-        } else if(!/^[a-zA-Z]{1}\w/.test(this.tableName) || (/[^a-zA-Z0-9_]/.test(this.tableName))) {
-          this._msgError("O nome da layer NÃO pode começar com 'número' e nem possuir 'acentuação'!")
-        } else if (this.keywords.length === 0) {
+
+        } else if (doesTheStringHaveSpecialChars(this.fTableName)) {
+          this._msgError("O nome da camada NÃO pode começar com `número` e nem conter caracteres especiais, como `acentuação`!")
+
+        } else if (this.selectedKeywords.length === 0) {
           this._msgError("É necessário adicionar pelo menos uma palavra-chave!")
+
         } else {
           if (this.typeSubmit === 'file') {   //Importando o arquivo
             let file = document.getElementById("Upload").files[0]
@@ -477,19 +496,19 @@
               'type': 'Layer',
               'properties': {
                 'layer_id': -1,
-                'f_table_name': this.tableName,
-                'name': document.getElementById("inputName").value,
-                'description': document.getElementById("inputDescription").value,
-                'source_description': document.getElementById("inputDescription").value,
-                'reference': this.references.map(r => r.reference_id),
-                'keyword': this.keywords.map(k => k.keyword_id),
+                'f_table_name': this.fTableName,
+                'name': this.name,
+                'description': this.description,
+                'source_description': this.description,
+                'reference': this.selectedReferences.map(r => r.reference_id),
+                'keyword': this.selectedKeywords.map(k => k.keyword_id),
               }
             }
 
             Api().post('/api/layer/create', layer).then(response => {   //Cadastrando nova Layer
               this.layer_id = response.data.layer_id
 
-              this.chosenUsers.forEach(u => {
+              this.selectedCollaborators.forEach(u => {
                 let user_layer = {
                   'properties': {
                     'is_the_creator': 'false',
@@ -506,17 +525,17 @@
                 'properties': {
                   'changeset_id': -1,
                   'layer_id': response.data.layer_id,
-                  'description': 'Creating layer_' + response.data.layer_id
+                  'description': 'Creating layer ' + response.data.layer_id
                 },
                 'type': 'Changeset'
               }
 
               Api().post('/api/changeset/create', changeset).then(response => {
                 Api().post(
-                  'api/import/shp/?f_table_name=' + this.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data,
+                  'api/import/shp/?f_table_name=' + this.fTableName + '&file_name=' + file.name + '&changeset_id=' + response.data,
                   file
                 ).then(response => {
-                  Api().get('/api/feature_table/?f_table_name=' + this.tableName).then(response => {    //Pega as colunas do shapefile enviado
+                  Api().get('/api/feature_table/?f_table_name=' + this.fTableName).then(response => {    //Pega as colunas do shapefile enviado
                     response.data.features.filter(e => {
                       this.columns = e.properties
 
@@ -612,19 +631,19 @@
                 'type': 'Layer',
                 'properties': {
                   'layer_id': -1,
-                  'f_table_name': this.tableName,
-                  'name': document.getElementById("inputName").value,
-                  'description': document.getElementById("inputDescription").value,
-                  'source_description': document.getElementById("inputDescription").value,
-                  'reference': this.references.map(r => r.reference_id),
-                  'keyword': this.keywords.map(k => k.keyword_id),
+                  'f_table_name': this.fTableName,
+                  'name': this.name,
+                  'description': this.description,
+                  'source_description': this.description,
+                  'reference': this.selectedReferences.map(r => r.reference_id),
+                  'keyword': this.selectedKeywords.map(k => k.keyword_id),
                 }
               }
 
               //ADD USER IN LAYER
               let responseCreateLayer = await Dashboard.createLayer(layer)
               this.layer_id = responseCreateLayer.data.layer_id
-              this.chosenUsers.forEach(async u => {
+              this.selectedCollaborators.forEach(async u => {
                 let user_layer = {
                   'properties': {
                     'is_the_creator': 'false',
@@ -646,7 +665,7 @@
 
               let featureTableInfo = {
                 'type': 'FeatureTable',
-                'f_table_name': this.tableName,
+                'f_table_name': this.fTableName,
                 'properties': properties,
                 'geometry': {
                     'crs': {'type': 'name', 'properties': {'name': 'EPSG:4326'}},
@@ -656,7 +675,7 @@
 
               let responseCreateFeatureTable = await Dashboard.createFeatureTable(featureTableInfo)
 
-              let responseGetFeatureTable = await Dashboard.getFeatureTable(this.tableName)
+              let responseGetFeatureTable = await Dashboard.getFeatureTable(this.fTableName)
               let vm = this
               responseGetFeatureTable.data.features.filter(e => {
                 vm.columns = e.properties
@@ -670,8 +689,8 @@
               })
             }
           }
-          vm.clearData()
 
+          vm.clearData()
         }
         catch(error) {
           console.log(error)
@@ -701,7 +720,7 @@
           }
 
           Api().post('/api/reference/create', new_reference).then(response => {
-            this.references.push(
+            this.selectedReferences.push(
               {
                 reference_id: response.data.reference_id,
                 description: this.reference_description
@@ -718,10 +737,10 @@
         }
       },
       removeReference(reference_id) {
-        Api().delete('/api/reference/' + reference_id).then(response => {})
+        Api().delete('/api/reference/' + reference_id)
 
         // remove the `reference_id` from the references lists
-        this.references = this.references.filter(r => r.reference_id !== reference_id)
+        this.selectedReferences = this.selectedReferences.filter(r => r.reference_id !== reference_id)
         // save the references in the state
         this.saveReferences()
       },

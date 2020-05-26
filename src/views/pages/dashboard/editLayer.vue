@@ -283,10 +283,9 @@
     },
     methods: {
       newKeyword() {
-        const vm = this
         this.$router.push({
           name: 'Keyword',
-          params: {name: "EditLayer", layer_id: vm.layer_id}
+          params: {name: "EditLayer", layer_id: this.layer_id}
         })
       },
       Upload2(){
@@ -321,7 +320,6 @@
       Upload() {
         // this method sends a layer to VGIMWS
 
-        const vm = this
         this.chosenKeywordsID = []
 
         this.chosenKeywords.forEach(e => {
@@ -331,7 +329,7 @@
         //if(this.chosenRefID == null) this.chosenRefID = []
 
         if (this.chosenKeywordsID.length === 0) {
-          vm.$message.error("Having at least one keyword is mandatory!")
+          this.$message.error("Having at least one keyword is mandatory!")
         } else {
           const loading = this.$loading({
             lock: true,
@@ -343,8 +341,8 @@
           let layer = {
             'type': 'Layer',
             'properties': {
-              'layer_id': vm.layer_id,
-              'f_table_name': vm.tableName,
+              'layer_id': this.layer_id,
+              'f_table_name': this.tableName,
               'name': document.getElementById("inputName").value,
               'description': document.getElementById("inputDescription").value,
               'source_description': document.getElementById("inputDescription").value,
@@ -352,24 +350,24 @@
               'keyword': this.chosenKeywordsID,
             }
           }
-          //vm.tableName = document.getElementById("inputName").value
+          //this.tableName = document.getElementById("inputName").value
 
           // only the layer creator can remove layer collaborators
-          if (vm.isTheCurrentUserTheLayerCreator) {
-            vm.usersAux.forEach(user => {
-              Api().delete('/api/user_layer/?layer_id=' + vm.layer_id + '&user_id=' + user.user_id)
+          if (this.isTheCurrentUserTheLayerCreator) {
+            this.usersAux.forEach(user => {
+              Api().delete('/api/user_layer/?layer_id=' + this.layer_id + '&user_id=' + user.user_id)
             })
           }
 
-          Api().put('/api/layer', layer).then((response) => {
+          Api().put('/api/layer', layer).then(response => {
             // only the layer creator can add layer collaborators
-            if (vm.isTheCurrentUserTheLayerCreator) {
-              vm.chosenUsers.forEach(u => {          // PUT cada usuario colaborar da layer
+            if (this.isTheCurrentUserTheLayerCreator) {
+              this.chosenUsers.forEach(u => {          // PUT cada usuario colaborar da layer
                 let user_layer = {
                   'properties': {
                     'is_the_creator': 'false',
                     'user_id': u.user_id,
-                    'layer_id': vm.layer_id
+                    'layer_id': this.layer_id
                   },
                   'type': 'UserLayer'
                 }
@@ -379,35 +377,29 @@
               })
             }
 
-            Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then((response) => {    //Pega as colunas do shapefile enviado
+            Api().get('/api/feature_table/?f_table_name=' + this.tableName).then(response => {    //Pega as colunas do shapefile enviado
               response.data.features.filter(e => {
-                //console.log(vm.columns)
-                vm.columns = e.properties
+                //console.log(this.columns)
+                this.columns = e.properties
                 Object.getOwnPropertyNames(e.properties).forEach(c => {
                   if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
-                    vm.columnsName.push(c)
+                    this.columnsName.push(c)
                   }
                 })
-                vm.shapeCorrect = true;
+                this.shapeCorrect = true;
                 loading.close();
-                //console.log(vm.columnsName)
-              }, (cause) => {
+                //console.log(this.columnsName)
+              }, cause => {
                 loading.close()
-                vm.$message.error(cause.toString())
+                this._showErrorMessages(cause)
               })
-            }, (cause) => {
+            }, cause => {
               loading.close()
-              vm.$message.error(cause.toString())
+              this._showErrorMessages(cause)
             })
-          }, (cause) => {
+          }, cause => {
             loading.close()
-
-            if (cause.response.status === 403)
-              vm.$message.error("Just the layer creator or a collaborator user can update the layer.")
-            else if (cause.response.status === 401)
-              vm.$message.error("A valid Authorization is necessary!")
-            else
-              vm.$message.error(cause.toString())
+            this._showErrorMessages(cause)
           })
 
           // this.$router.push({
@@ -416,50 +408,33 @@
         }
       },
       Delete() {
-        const vm = this;
-        Api().delete('/api/layer/' + this.layer_id).then(function (response) {
-          //console.log(response)
-        })
-        this.$router.push({
-          path: '/dashboard/home'
-        })
+        Api().delete('/api/layer/' + this.layer_id)
+
+        this.$router.push({ path: '/dashboard/home' })
       },
       removeRef(index) {
-        const vm = this
-        //console.log(vm.chosenRef[index].reference_id)
-        Api().delete('/api/reference/' + vm.chosenRef[index].reference_id).then(function (response) {
-          //console.log(response)
-        })
+        //console.log(this.chosenRef[index].reference_id)
+
+        Api().delete('/api/reference/' + this.chosenRef[index].reference_id)
+
         this.chosenRef.splice(index, 1)
         this.chosenRefID.splice(index, 1)
       },
       addRef() {
-        const vm = this
-
         if (this.auxRef != null) {
-          let ref_id
-          let ref = {
+          let reference = {
             'type': 'Reference',
-            'properties':
-              {
-                'reference_id': -1,
-                'description': vm.auxRef
-              }
+            'properties': { 'reference_id': -1, 'description': this.auxRef }
           }
 
-          Api().post('/api/reference/create', ref).then((response) => {
-            ref_id = response.data.reference_id
-            vm.chosenRef.push({description: vm.auxRef, reference_id: ref_id})
-            //console.log(vm.chosenRef)
-            vm.chosenRefID.push(ref_id)
-            vm.auxRef = null
-          }, (cause) => {
-            console.log(cause.response)
-
-            if (cause.response.status === 400)
-              vm.$message.error("Reference text already exists!")
-            else
-              vm.$message.error(cause.toString())
+          Api().post('/api/reference/create', reference).then(response => {
+            let ref_id = response.data.reference_id
+            this.chosenRef.push({description: this.auxRef, reference_id: ref_id})
+            //console.log(this.chosenRef)
+            this.chosenRefID.push(ref_id)
+            this.auxRef = null
+          }, cause => {
+            this,_showErrorMessages(cause)
           })
         }
       },
@@ -490,17 +465,20 @@
       if (id === undefined) {
         this.$router.push({path: '/dashboard/home'})
       } else {
-        Api().get('/api/user').then(response => {
-          response.data.features.filter(e => {
-            this.users.push(e.properties)
-          })
-        })
 
-        Api().get('/api/keyword').then(response => {
-          response.data.features.filter(e => {
-            this.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
+        // if array is empty, then I'm going to search them
+        if (Array.isArray(this.users) && this.users.length === 0) {
+          Api().get('/api/user').then(response => {
+            this.users = response.data.features.map(e => e.properties)
           })
-        })
+        }
+
+        // if array is empty, then I'm going to search them
+        if (Array.isArray(this.keywords) && this.keywords.length === 0) {
+          Api().get('/api/keyword').then(response => {
+            this.keywords = response.data.features.map(e => e.properties)
+          })
+        }
 
         Api().get('/api/layer/?layer_id=' + id).then(response => {
           this.layer = response.data.features[0].properties
@@ -544,40 +522,41 @@
           })
 
           Api().get('/api/mask').then(response => {
-            response.data.features.forEach(e => {
-              this.dateMask.push(e.properties)
+            this.dateMask = response.data.features.map(e => e.properties)
+
+            Api().get('/api/temporal_columns/?f_table_name=' + this.layer.f_table_name).then(response => {
+              let p = response.data.features[0].properties
+
+              this.startDate = p.start_date
+              this.endDate = p.end_date
+              this.endColumnsName = p.end_date_column_name === 'None' || p.end_date_column_name === '' ? null : p.end_date_column_name
+              this.startColumnsName = p.start_date_column_name === 'None' || p.start_date_column_name === '' ? null : p.start_date_column_name
+              this.startDateMask_mask_id = p.start_date_mask_id
+              this.endDateMask_mask_id = p.end_date_mask_id
+
+              if(p.start_date_mask_id != null) {
+                Api().get('/api/mask/?mask_id=' + p.start_date_mask_id).then(response => {
+                  response.data.features.forEach(e => {
+                    this.startDateMask = e.properties
+                  })
+                })
+              } else {
+                this.startDateMask = null
+              }
+
+              if(p.end_date_mask_id != null) {
+                Api().get('/api/mask/?mask_id=' + p.end_date_mask_id).then(response => {
+                  response.data.features.forEach(e => {
+                    this.endDateMask = e.properties
+                  })
+                })
+              } else {
+                this.endDateMask = null
+              }
             })
+
           })
 
-          Api().get('/api/temporal_columns/?f_table_name=' + this.layer.f_table_name).then(response => {
-            let p = response.data.features[0].properties
-
-            this.startDate = p.start_date
-            this.endDate = p.end_date
-            this.endColumnsName = p.end_date_column_name === 'None' || p.end_date_column_name === '' ? null : p.end_date_column_name
-            this.startColumnsName = p.start_date_column_name === 'None' || p.start_date_column_name === '' ? null : p.start_date_column_name
-            this.startDateMask_mask_id = p.start_date_mask_id
-            this.endDateMask_mask_id = p.end_date_mask_id
-
-            if(p.start_date_mask_id != null) {
-              Api().get('/api/mask/?mask_id=' + p.start_date_mask_id).then(response => {
-                response.data.features.forEach(e => {
-                  this.startDateMask = e.properties
-                })
-              })
-            } else {
-              this.startDateMask = null
-            }
-
-            if(p.end_date_mask_id != null)
-              Api().get('/api/mask/?mask_id=' + p.end_date_mask_id).then(response => {
-                response.data.features.forEach(e => {
-                  this.endDateMask = e.properties
-                })
-              })
-            else
-              this.endDateMask = null
-          })
         })
       }
     }
