@@ -292,31 +292,30 @@
       Upload2(){
         // this method sends the temporal columns to VGIMWS
 
-        if (this.startDate === null || this.endDate === null) {
+        if ((this.startDate === "" || this.endDate === "") || (this.startDate === null || this.endDate === null)) {
           this._msgError("O preenchimento das datas é obrigatório!")
-        } else {
-          let temporalColumns = {
-            'properties': {
-              'f_table_name': this.tableName,
-              'start_date': this.startDate,
-              'end_date': this.endDate,
-              'end_date_column_name': this.endColumnsName!=null ? this.endColumnsName[0] : null,
-              'start_date_column_name': this.startColumnsName!=null ? this.startColumnsName[0] : null,
-              'start_date_mask_id': (this.startDateMask.mask_id!==1 || this.startDateMask.mask_id!==2 || this.startDateMask.mask_id!==3) ? null : this.startDateMask.mask_id,
-              'end_date_mask_id': (this.endDateMask.mask_id!==1 || this.endDateMask.mask_id!==2 || this.endDateMask.mask_id!==3) ? null : this.endDateMask.mask_id ,
-            },
-            'type': 'TemporalColumns'
-          }
-
-          //console.log('temporalColumns: ', temporalColumns)
-
-          Api().put('/api/temporal_columns', temporalColumns).then(response => {
-            this.$message.success("A camada foi atualizada com sucesso!")
-            this.$router.push({path: '/dashboard/home'})
-          }, cause => {
-            this._showErrorMessages(cause)
-          })
+          return;
         }
+
+        let temporalColumns = {
+          'properties': {
+            'f_table_name': this.tableName,
+            'start_date': this.startDate,
+            'end_date': this.endDate,
+            'start_date_column_name': this.startColumnsName,
+            'end_date_column_name': this.endColumnsName,
+            'start_date_mask_id': (this.startDateMask != null && 'mask_id' in this.startDateMask) ? this.startDateMask.mask_id : null,
+            'end_date_mask_id': (this.endDateMask != null && 'mask_id' in this.endDateMask) ? this.endDateMask.mask_id : null,
+          },
+          'type': 'TemporalColumns'
+        }
+
+        Api().put('/api/temporal_columns', temporalColumns).then(response => {
+          this.$message.success("A camada foi atualizada com sucesso!")
+          this.$router.push({path: '/dashboard/home'})
+        }, cause => {
+          this._showErrorMessages(cause)
+        })
 
       },
       Upload() {
@@ -486,97 +485,98 @@
       },
     },
     mounted() {
-      const vm = this
-
       let id = this.$route.params.layer_id
 
       if (id === undefined) {
-        vm.$router.push({
-          path: '/dashboard/home'
-        })
+        this.$router.push({path: '/dashboard/home'})
       } else {
-        Api().get('/api/user').then(function (response) {
+        Api().get('/api/user').then(response => {
           response.data.features.filter(e => {
-            vm.users.push(e.properties)
+            this.users.push(e.properties)
           })
         })
 
-        Api().get('/api/keyword').then(function (response) {
+        Api().get('/api/keyword').then(response => {
           response.data.features.filter(e => {
-            vm.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
+            this.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
           })
         })
 
-        Api().get('/api/layer/?layer_id=' + id).then(function (response) {
-          vm.layer = response.data.features[0].properties
-          //console.log(vm.layer)
-          document.getElementById("inputName").value = vm.layer.name
-          document.getElementById("inputDescription").value = vm.layer.description
-          vm.chosenKeywordsID = vm.layer.keyword
-          if (vm.layer.reference !== null) vm.chosenRefID = vm.layer.reference
-          else vm.chosenRefID = []
-          vm.tableName = vm.layer.f_table_name
+        Api().get('/api/layer/?layer_id=' + id).then(response => {
+          this.layer = response.data.features[0].properties
 
-          //console.log(vm.layer)
+          document.getElementById("inputName").value = this.layer.name
+          document.getElementById("inputDescription").value = this.layer.description
 
-          vm.chosenKeywordsID.forEach(key => {
-            Api().get('/api/keyword/?keyword_id=' + key).then(function (response) {
+          this.chosenKeywordsID = this.layer.keyword
+
+          if (this.layer.reference !== null)
+            this.chosenRefID = this.layer.reference
+          else
+            this.chosenRefID = []
+
+          this.tableName = this.layer.f_table_name
+
+          this.chosenKeywordsID.forEach(key => {
+            Api().get('/api/keyword/?keyword_id=' + key).then(response => {
               response.data.features.filter(e => {
-                vm.chosenKeywords.push(e.properties)
+                this.chosenKeywords.push(e.properties)
               })
             })
           })
-          vm.chosenRefID.forEach(id => {
-            Api().get('/api/reference/?reference_id=' + id).then(function (response) {
+          this.chosenRefID.forEach(id => {
+            Api().get('/api/reference/?reference_id=' + id).then(response => {
               response.data.features.filter(e => {
-                vm.chosenRef.push({description: e.properties.description, reference_id: e.properties.reference_id})
+                this.chosenRef.push({description: e.properties.description, reference_id: e.properties.reference_id})
               })
             })
           })
 
-          Api().get('/api/user_layer/?layer_id=' + id).then(function (response) {
-            //console.log(response.data.features)
+          Api().get('/api/user_layer/?layer_id=' + id).then(response => {
             response.data.features.forEach(u => {
-              Api().get('/api/user/?user_id=' + u.properties.user_id).then(function (response) {
-                //console.log(response.data.features)
-                if (response.data.features[0].properties.user_id !== vm.user.user_id)
-                  vm.chosenUsers.push(response.data.features[0].properties)
+              Api().get('/api/user/?user_id=' + u.properties.user_id).then(response => {
+                if (response.data.features[0].properties.user_id !== this.user.user_id)
+                  this.chosenUsers.push(response.data.features[0].properties)
               })
-              if (u.properties.user_id !== vm.user.user_id)
-                vm.usersAux.push(u.properties)
+              if (u.properties.user_id !== this.user.user_id)
+                this.usersAux.push(u.properties)
             })
           })
 
-          Api().get('/api/mask').then(function (response) {
-            response.data.features.filter(e => {
-              vm.dateMask.push(e.properties)
+          Api().get('/api/mask').then(response => {
+            response.data.features.forEach(e => {
+              this.dateMask.push(e.properties)
             })
           })
 
-          Api().get('/api/temporal_columns/?f_table_name=' + vm.layer.f_table_name).then(function (response) {
-            //console.log(response.data.features[0])
-            vm.startDate = response.data.features[0].properties.start_date
-            vm.endDate = response.data.features[0].properties.end_date
-            vm.endColumnsName = response.data.features[0].properties.end_date_column_name === 'None' ? null : response.data.features[0].properties.end_date_column_name
-            vm.startColumnsName = response.data.features[0].properties.start_date_column_name === "None" ? null : response.data.features[0].properties.start_date_column_name
-            vm.startDateMask_mask_id = response.data.features[0].properties.start_date_mask_id
-            vm.endDateMask_mask_id = response.data.features[0].properties.end_date_mask_id
+          Api().get('/api/temporal_columns/?f_table_name=' + this.layer.f_table_name).then(response => {
+            let p = response.data.features[0].properties
 
-            if(response.data.features[0].properties.start_date_mask_id != null)
-              Api().get('/api/mask/?mask_id=' + response.data.features[0].properties.start_date_mask_id).then(function (response) {
-                response.data.features.filter(e => {
-                  vm.startDateMask = e.properties
+            this.startDate = p.start_date
+            this.endDate = p.end_date
+            this.endColumnsName = p.end_date_column_name === 'None' || p.end_date_column_name === '' ? null : p.end_date_column_name
+            this.startColumnsName = p.start_date_column_name === 'None' || p.start_date_column_name === '' ? null : p.start_date_column_name
+            this.startDateMask_mask_id = p.start_date_mask_id
+            this.endDateMask_mask_id = p.end_date_mask_id
+
+            if(p.start_date_mask_id != null) {
+              Api().get('/api/mask/?mask_id=' + p.start_date_mask_id).then(response => {
+                response.data.features.forEach(e => {
+                  this.startDateMask = e.properties
                 })
               })
-            else vm.startDateMask = ''
+            } else {
+              this.startDateMask = null
+            }
 
-            if(response.data.features[0].properties.end_date_mask_id != null)
-              Api().get('/api/mask/?mask_id=' + response.data.features[0].properties.end_date_mask_id).then(function (response) {
-                response.data.features.filter(e => {
-                  vm.endDateMask = e.properties
+            if(p.end_date_mask_id != null)
+              Api().get('/api/mask/?mask_id=' + p.end_date_mask_id).then(response => {
+                response.data.features.forEach(e => {
+                  this.endDateMask = e.properties
                 })
               })
-            else vm.endDateMask = ''
+            else
+              this.endDateMask = null
           })
         })
       }

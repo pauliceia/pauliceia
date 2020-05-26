@@ -386,43 +386,6 @@
       updateName() {  //Salvar os dados no Store
         this.fname = document.getElementById("Upload").files[0].name
       },
-      Upload2(){  // cadastrar a segunda parte da camada - temporal columns
-        this._openFullLoading()
-
-        if (this.startDate === null || this.endDate === null) {
-          this._msgError("O preenchimento das datas é obrigatório!")
-        } else {
-          this.timeout_upload()
-
-          let temporalColumns = {
-            'properties': {
-              'f_table_name': this.tableName,
-              'start_date': this.startDate,
-              'end_date': this.endDate,
-              'start_date_column_name': this.startColumnsName,
-              'end_date_column_name': this.endColumnsName,
-              'start_date_mask_id': (this.startDateMask != null && 'mask_id' in this.startDateMask) ? this.startDateMask.mask_id : null,
-              'end_date_mask_id': (this.endDateMask != null && 'mask_id' in this.endDateMask) ? this.endDateMask.mask_id : null,
-            },
-            'type': 'TemporalColumns'
-          }
-
-          Api().post('/api/temporal_columns/create', temporalColumns).then(response => {
-            this.loading.close()
-            this.$message.success("A camada foi adicionada com sucesso!")
-            this.finished = 1
-            this.$router.push({path: '/dashboard/home'})
-          }, cause => {
-            Api().delete('/api/layer/' + this.layer_id)
-
-            this.loading.close()
-            this.finished = 1
-
-            this._showErrorMessages(cause)
-          })
-        }
-
-      },
       timeout_upload(){ //Erro de estouro de tempo ao criar a nova camada
         this.finished = 0
 
@@ -433,6 +396,44 @@
             this._msgError("Timeout! Caso o erro persista entre em contato com os administradores da plataforma!")
           }
         }, 20000);
+      },
+      Upload2(){  // cadastrar a segunda parte da camada - temporal columns
+        this._openFullLoading()
+
+        if ((this.startDate === null || this.endDate === null) || (this.startDate === "" || this.endDate === "")) {
+          this._msgError("O preenchimento das datas é obrigatório!")
+          return;
+        }
+
+        this.timeout_upload()
+
+        let temporalColumns = {
+          'properties': {
+            'f_table_name': this.tableName,
+            'start_date': this.startDate,
+            'end_date': this.endDate,
+            'start_date_column_name': this.startColumnsName,
+            'end_date_column_name': this.endColumnsName,
+            'start_date_mask_id': (this.startDateMask != null && 'mask_id' in this.startDateMask) ? this.startDateMask.mask_id : null,
+            'end_date_mask_id': (this.endDateMask != null && 'mask_id' in this.endDateMask) ? this.endDateMask.mask_id : null,
+          },
+          'type': 'TemporalColumns'
+        }
+
+        Api().post('/api/temporal_columns/create', temporalColumns).then(response => {
+          this.loading.close()
+          this.$message.success("A camada foi adicionada com sucesso!")
+          this.finished = 1
+          this.$router.push({path: '/dashboard/home'})
+        }, cause => {
+          Api().delete('/api/layer/' + this.layer_id)
+
+          this.loading.close()
+          this.finished = 1
+
+          this._showErrorMessages(cause)
+        })
+
       },
       Upload() {  //Cadastrar a primeira parte da Camada
         this._openFullLoading()
