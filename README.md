@@ -2,6 +2,7 @@
 
 Pauliceia 2.0 project front-end.
 
+
 ## Build Setup
 
 ``` bash
@@ -17,4 +18,3 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-

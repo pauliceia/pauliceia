@@ -295,14 +295,16 @@
         storedDescription: state => state.dashboardNewLayer.description,
         storedSelectedReferences: state => state.dashboardNewLayer.selectedReferences,
         // storedFile: state => state.dashboardNewLayer.file
-      })
+      }),
 
+      fTableName(){
+        return this.name.trim().replace(/ /g, '_').toLocaleLowerCase()
+      }
     },
     data() {
       return {
         // layer form
         name: '',
-        fTableName: '',
         allKeywords: [],
         selectedKeywords: [],
         selectedCollaborators: [],
@@ -481,8 +483,6 @@
       Upload() {  //Cadastrar a primeira parte da Camada
         this._openFullLoading()
 
-        this.fTableName = this.name.trim().replace(/ /g, '_').toLocaleLowerCase()
-
         if (this.name === '') {
           this._msgError("O nome é necessário!")
 
@@ -502,10 +502,7 @@
       },
       async upload_from_file() {
 
-        // console.log('\n this.file: ', this.file)
-        // console.log('\n this.file.size: ', this.file.size)
-
-        if (this.file === undefined) {
+        if (!('size' in this.file)) {
           this._msgError("Um arquivo é necessário!")
         } else if (this.file.size > 104857600) {  // 104857600 == 50mb
           this._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
