@@ -8,7 +8,9 @@ const state = {
   selectedCollaborators: [],
   description: '',
   selectedReferences: [],
-  file: ''
+  // file: {
+  //   name: this.$t('dashboard.newLayer.chooseFile')
+  // },
 }
 
 const mutations = {
@@ -27,9 +29,9 @@ const mutations = {
   setDescription (state, description) {
     state.description = description
   },
-  setFile (state, file) {
-    state.file = file
-  }
+  // setFile (state, file) {
+  //   state.file = file
+  // }
 }
 
 const actions = {
@@ -48,9 +50,9 @@ const actions = {
   setDescription ({commit}, description) {
     commit('setDescription', description)
   },
-  setFile ({commit}, file) {
-    commit('setFile', file)
-  }
+  // setFile ({commit}, file) {
+  //   commit('setFile', file)
+  // }
 }
 
 export default {

@@ -2,12 +2,15 @@
   <p-dash-layout :title="$t('dashboard.nav.layer')">
     <div class="row">
 
+      <!-- new layer -->
       <div class="col-sm-12" v-if="shapeCorrect === false">
         <div class="card">
           <div class="card-body">
             <h6 class="mb-0">{{ $t('dashboard.nav.newLayer') }}</h6><br>
 
             <form class="row">
+
+              <!-- left form -->
               <div class="card-left col-sm-6">
                 <div class="form-row">
                   <!-- name -->
@@ -75,10 +78,13 @@
                     </li>
                   </ol>
                 </div>
-              </div><!--end card left-->
+              </div>
 
+              <!-- right form -->
               <div class="card-right col-sm-6">
-                <div class="btn styleBtn" style="padding-left: 50px; padding-right: 50px; margin-bottom: 30px">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</div>
+                <div class="btn styleBtn" style="padding-left: 50px; padding-right: 50px; margin-bottom: 30px">
+                  {{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}
+                </div>
                 <!--<div class="box-radio">-->
                   <!--<el-radio-group v-model="typeSubmit">-->
                     <!--<el-radio-button label="file">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</el-radio-button>-->
@@ -94,8 +100,8 @@
                       <span class="input-group-text">{{ $t('dashboard.newLayer.zipFile') }}</span>
                     </div>
                     <div class="custom-file">
-                      <input @change="updateName()" accept=".zip" class="custom-file-input" id="Upload" type="file">
-                      <label class="custom-file-label" for="Upload">{{fname}}</label>
+                      <label class="custom-file-label" for="Upload">{{ file.name }}</label>
+                      <input @change="processFile($event)" accept=".zip" class="custom-file-input" id="Upload" type="file">
                     </div>
                   </div>
                 </div> <!--end box-file-->
@@ -164,15 +170,20 @@
                   </div>
                 </div><!--end box-input-->
 
-                <button @click="Upload()" class="btn styleBtn" style="color: #FFF; margin-right: 15px; float: right" type="button"> {{ $t('dashboard.newLayer.submit') }}</button>
-              </div><!--end card right-->
+                <button @click="Upload()" class="btn styleBtn" type="button"
+                        style="color: #FFF; margin-right: 15px; float: right">
+                  {{ $t('dashboard.newLayer.submit') }}
+                </button>
+              </div>
+
             </form>
 
           </div>
         </div>
-      </div><!--end box newLayer-->
+      </div>
 
-      <div class="col-sm-6"><!--start bounding box temporal-->
+      <!-- temporal bounding box -->
+      <div class="col-sm-6">
         <div class="card" v-if="shapeCorrect">
           <div class="card-body">
             <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
@@ -275,8 +286,8 @@
     name: "newLayer",
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
-      // ...mapState('dashboard', ['name', 'key', 'ref', 'usersSaved', 'description']),
 
+      // rename the default name
       ...mapState({
         storedName: state => state.dashboardNewLayer.name,
         storedSelectedKeywords: state => state.dashboardNewLayer.selectedKeywords,
@@ -299,7 +310,9 @@
         description: '',
         reference_description: null,
         selectedReferences: [],
-        fname: this.$t('dashboard.newLayer.chooseFile'),
+        file: {
+          name: this.$t('dashboard.newLayer.chooseFile')
+        },
 
         // temporal columns form
         columns: null,
@@ -374,6 +387,7 @@
       this.selectedReferences = this.storedSelectedReferences
       this.selectedCollaborators = this.storedSelectedCollaborators
       this.description = this.storedDescription
+      // this.file = this.storedFile
     },
     methods: {
       newKeyword() {
@@ -408,8 +422,12 @@
       saveReferences(){ //Salvar os dados no Store
         this.$store.dispatch('dashboardNewLayer/setReferences', this.selectedReferences)
       },
-      updateName() {
-        this.fname = document.getElementById("Upload").files[0].name
+      // saveFile(){ //Salvar os dados no Store
+      //   this.$store.dispatch('dashboardNewLayer/setFile', this.file)
+      // },
+      processFile(event){
+        // I get the only one chose file
+        this.file = event.target.files[0]
       },
       timeout_upload(){ //Erro de estouro de tempo ao criar a nova camada
         this.finished = 0
@@ -476,17 +494,20 @@
 
         } else {
           if (this.typeSubmit === 'file') {   //Importando o arquivo
-            let file = document.getElementById("Upload").files[0]
-            this.upload_from_file(file)
+            this.upload_from_file()
           } else {                         //Criando a camada em branco
             this.upload_from_input()
           }
         }
       },
-      async upload_from_file(file) {
-        if (file === undefined) {
+      async upload_from_file() {
+
+        // console.log('\n this.file: ', this.file)
+        // console.log('\n this.file.size: ', this.file.size)
+
+        if (this.file === undefined) {
           this._msgError("Um arquivo é necessário!")
-        } else if (file.size > 104857600) {  // 104857600 == 50mb
+        } else if (this.file.size > 104857600) {  // 104857600 == 50mb
           this._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
         } else {
           this.timeout_upload()
@@ -532,8 +553,8 @@
 
               Api().post('/api/changeset/create', changeset).then(response => {
                 Api().post(
-                  'api/import/shp/?f_table_name=' + this.fTableName + '&file_name=' + file.name + '&changeset_id=' + response.data,
-                  file
+                  'api/import/shp/?f_table_name=' + this.fTableName + '&file_name=' + this.file.name + '&changeset_id=' + response.data,
+                  this.file
                 ).then(response => {
                   Api().get('/api/feature_table/?f_table_name=' + this.fTableName).then(response => {    //Pega as colunas do shapefile enviado
                     response.data.features.filter(e => {
