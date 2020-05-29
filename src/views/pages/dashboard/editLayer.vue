@@ -513,8 +513,10 @@
           Api().get('/api/user_layer/?layer_id=' + id).then(response => {
             response.data.features.forEach(u => {
               Api().get('/api/user/?user_id=' + u.properties.user_id).then(response => {
-                if (response.data.features[0].properties.user_id !== this.user.user_id)
-                  this.chosenUsers.push(response.data.features[0].properties)
+                let properties = response.data.features[0].properties
+
+                if (properties.user_id !== this.user.user_id)
+                  this.chosenUsers.push(properties)
               })
               if (u.properties.user_id !== this.user.user_id)
                 this.usersAux.push(u.properties)

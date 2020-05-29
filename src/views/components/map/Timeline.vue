@@ -17,6 +17,31 @@
 
   import 'nouislider/distribute/nouislider.css'
 
+  function extractYearFromDateAsString(date, default_value){
+    let year = default_value
+    let splittedDate = date.split('/')
+
+    // if there is a complete date (i.e. day, month and year), I create a date object and I get its year
+    if (splittedDate.length === 3) {
+      year = new Date(date).getFullYear()
+
+    // if there is just one value, I consider it as a year
+    } else if (splittedDate.length === 1) {
+      year = parseInt(date)
+
+    // if there are two values, then there are month and year
+    } else if (splittedDate.length === 2) {
+      // I check if the first or second position is the year, by checking which one contains 4 characters
+      if (splittedDate[0].length === 4)
+        year = parseInt(splittedDate[0])
+
+      else if (splittedDate[1].length === 4)
+        year = parseInt(splittedDate[1])
+    }
+
+    return year
+  }
+
   export default {
     name: 'Timeline',
     data () {
@@ -28,7 +53,13 @@
       }
     },
     computed: {
-      ...mapState('map', ['years'])
+      ...mapState('map', ['years']),
+      selectedStartYear() {
+        return this.years.first
+      },
+      selectedEndYear(){
+        return this.years.last
+      }
     },
     mounted () {
       let slider = document.getElementById('slider')
@@ -68,7 +99,6 @@
 
         this.filterUpdate()
       })
-
     },
     methods: {
       getTemporalColumns (f_table_name) {
@@ -82,36 +112,36 @@
           return null
       },
       updateFeatureVisibility (vectorLayerFeatures, tc) {
-        let selectedMinYear = this.years.first
-        let selectedMaxYear = this.years.last
-
         vectorLayerFeatures.forEach(feature => {
-          // feature properties
+          // feature and temporal column properties
           let fProperties = feature.getProperties()
+          let tcProperties = tc.properties
 
-          let startDate = new Date(String(fProperties[tc.properties.start_date_column_name])).getFullYear()
-          let endDate = new Date(String(fProperties[tc.properties.end_date_column_name])).getFullYear()
+          // When I convert a date with hyphens, the generated date object is related to the previous date.
+          // For this reeason, I need to replace all occurrences of hyphens by slashs
+          // Discussion: https://stackoverflow.com/a/31732581/8447990
+          let startDate = String(fProperties[tcProperties.start_date_column_name]).replace(/-/g, '\/')
+          let endDate = String(fProperties[tcProperties.end_date_column_name]).replace(/-/g, '\/')
 
-          if(startDate-5 < this.sliderStartYear)
-            this.sliderStartYear = startDate-5
+          // Extracting the year from the dates as strings.
+          // The default values are the values from the slider temporal bounding
+          let startYear = extractYearFromDateAsString(startDate, this.sliderStartYear)
+          let endYear = extractYearFromDateAsString(endDate, this.sliderEndYear)
 
-          if(endDate+5 > this.sliderStartYear)
-            this.sliderEndYear = endDate+5
+          // if for some reason, the `startYear` or `endYear` return a `NaN` value,
+          // then I use the feature temporal bounding
+          // (e.g. when `endDate` is an invalid string (e.g. "null"), then finding a year is not possible)
+          if(isNaN(startYear))
+            startYear = new Date(String(tcProperties.start_date).replace(/-/g, '\/')).getFullYear()
+          if(isNaN(endYear))
+            endYear = new Date(String(tcProperties.end_date).replace(/-/g, '\/')).getFullYear()
 
-          //if(isNaN(startDate)) startDate = 0
-          //if(isNaN(endDate)) endDate = (new Date).getFullYear()
-
-          if(isNaN(startDate))
-            startDate = new Date(String(tc.properties.start_date)).getFullYear()
-
-          if(isNaN(endDate))
-            endDate = new Date(String(tc.properties.end_date)).getFullYear()
-
-          if (startDate <= selectedMaxYear && endDate >= selectedMinYear) {
-            // removes the style from the feature
+          // check if the feature is inside the selected period
+          if (startYear <= this.selectedEndYear && endYear >= this.selectedStartYear) {
+            // the feature style is removed, in other words, the feature is showed on the map
             feature.setStyle(null)
           } else {
-            // sets an `invisible` style to the feature
+            // an `invisible` style is set to the feature, in other words, the feature is hidden from the map
             feature.setStyle(emptyStyle)
           }
         })
