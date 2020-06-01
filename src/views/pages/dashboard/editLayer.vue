@@ -276,9 +276,7 @@
         endDate: null,
         shapeCorrect: false,
         fullscreenLoading: false,
-        layer_id: this.$route.params.layer_id,
-        startDateMask_mask_id: null,
-        endDateMask_mask_id: null,
+        layer_id: this.$route.params.layer_id
       }
     },
     methods: {
@@ -533,28 +531,11 @@
               this.endDate = p.end_date
               this.endColumnsName = p.end_date_column_name === 'None' || p.end_date_column_name === '' ? null : p.end_date_column_name
               this.startColumnsName = p.start_date_column_name === 'None' || p.start_date_column_name === '' ? null : p.start_date_column_name
-              this.startDateMask_mask_id = p.start_date_mask_id
-              this.endDateMask_mask_id = p.end_date_mask_id
 
-              if(p.start_date_mask_id != null) {
-                Api().get('/api/mask/?mask_id=' + p.start_date_mask_id).then(response => {
-                  response.data.features.forEach(e => {
-                    this.startDateMask = e.properties
-                  })
-                })
-              } else {
-                this.startDateMask = null
-              }
-
-              if(p.end_date_mask_id != null) {
-                Api().get('/api/mask/?mask_id=' + p.end_date_mask_id).then(response => {
-                  response.data.features.forEach(e => {
-                    this.endDateMask = e.properties
-                  })
-                })
-              } else {
-                this.endDateMask = null
-              }
+              // if `mask_id` is null, then it returns null
+              // if `mask_id` is not null, then I get the mask object from the `this.dateMask` array by the `mask_id` property
+              this.startDateMask = p.start_date_mask_id === null ? null : this.dateMask.filter(m => m.mask_id === p.start_date_mask_id)[0]
+              this.endDateMask = p.end_date_mask_id === null ? null : this.dateMask.filter(m => m.mask_id === p.end_date_mask_id)[0]
             })
 
           })
