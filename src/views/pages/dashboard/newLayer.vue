@@ -298,7 +298,13 @@
       }),
 
       fTableName(){
-        return this.name.trim().replace(/ /g, '_').toLocaleLowerCase()
+        let tTableName = this.name.trim().replace(/ /g, '_').toLocaleLowerCase()
+
+        // Replace accent letters by simple ones.
+        // Source: https://stackoverflow.com/a/37511463
+        tTableName = tTableName.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+
+        return tTableName
       }
     },
     data() {
@@ -487,7 +493,7 @@
           this._msgError("O nome é necessário!")
 
         } else if (doesTheStringHaveSpecialChars(this.fTableName)) {
-          this._msgError("O nome da camada NÃO pode começar com `número` e nem conter caracteres especiais, como `acentuação`!")
+          this._msgError("O nome da camada NÃO pode começar com `número` e nem conter `caracteres especiais`!")
 
         } else if (this.selectedKeywords.length === 0) {
           this._msgError("É necessário adicionar pelo menos uma palavra-chave!")
