@@ -45,17 +45,14 @@ export default {
     components: {
         'p-sidebarEdit-item': LayersItem
     },
-
     computed: {
         ...mapState('auth', ['user'])
     },
-
     watch: {
         layerIdSelected(val) {
             this._alterLayer(val)
         }
     },
-
     data(){
         return {
             myLayersId: [],
@@ -65,7 +62,6 @@ export default {
             changeset: null
         }
     },
-
     async mounted() {
         if(this.user != null && this.user.user_id != undefined && this.user.user_id != null) {
             let response = await Map.getAuthorsLayers('user_id='+this.user.user_id)
@@ -73,7 +69,6 @@ export default {
                 this.myLayersId = response.data.features.map( layer => layer.properties.layer_id )
         }
     },
-
     methods: {
         _alterLayer(layerId) {
             if(this.layerIdSelected != null)
@@ -95,7 +90,7 @@ export default {
             this.$msgbox({
                 title: 'Inicializando modificação de uma Layer',
                 message: h('p', null, [
-                    h('span', null, 'Adicione um titulo para suas alterações:'),
+                    h('span', null, 'Adicione um título para suas alterações:'),
                 ]),
                 showInput: true,
                 inputValue: vm.description,
@@ -170,10 +165,9 @@ export default {
             });
         }
     }
-
 }
-
 </script>
+
 <style lang="sass" scoped>
 .box-edit
     //BOX LAYERS

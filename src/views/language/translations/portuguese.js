@@ -271,9 +271,9 @@ export default {
             "input": "Pesquise por tema, camada ou autor:",
             "close": "Fechar",
             "box": {
-                "lbTitle": "TITULO",
+                "lbTitle": "TÍTULO",
                 "lbAuthors": "AUTORES",
-                "lbTags": "TAGS"
+                "lbKeywods": "PALAVRAS-CHAVE"
             },
             "btns": {
                 "active": "Ativar",
@@ -287,8 +287,9 @@ export default {
         "viewInfo": {
             "btnFollow": "Seguir Camada",
             "btnUnFollow": "Deixar de Seguir Camada",
+            "lbTitle": "TÍTULO",
             "lbDescription": "DESCRIÇÃO",
-            "lbTags": "TAGS",
+            "lbKeywods": "PALAVRAS-CHAVE",
             "lbAuthors": "AUTORES",
             "lbDate": "DATA DE CRIAÇÃO",
             "lbReferences": "REFERÊNCIAS",

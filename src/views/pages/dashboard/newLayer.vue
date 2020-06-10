@@ -302,9 +302,7 @@
 
         // Replace accent letters by simple ones.
         // Source: https://stackoverflow.com/a/37511463
-        tTableName = tTableName.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-
-        return tTableName
+        return tTableName.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       }
     },
     data() {

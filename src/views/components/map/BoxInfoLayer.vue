@@ -25,7 +25,7 @@
         </header>
         <div class="body">
             <ul class="description">
-                <li><b> {{ $t('map.viewInfo.lbTags') }}:</b>
+                <li><b> {{ $t('map.viewInfo.lbKeywods') }}:</b>
                     <el-tag v-show="layer != null" v-for="id in infos.keywords" :key="'tag'+id" style="margin-left: 5px">
                         {{ getTagName(id)[0].properties.name }}
                     </el-tag>
@@ -111,7 +111,6 @@ export default {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
       ...mapState('map', ['boxNotifications']),
     },
-
     watch: {
         idInfoLayer(val) {
             if(val != null){
@@ -124,7 +123,6 @@ export default {
             }
         }
     },
-
     data() {
         return {
             id: null,
@@ -152,7 +150,6 @@ export default {
             follow: false,
         }
     },
-
     created() {
         Map.getKeywords().then(keywords => {
             this.allKeywords = keywords.data.features
@@ -171,7 +168,6 @@ export default {
         })
         this.layer_id = this.id
     },
-
     methods: {
         changeFollow(){
           const vm = this

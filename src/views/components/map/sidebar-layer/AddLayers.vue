@@ -25,7 +25,7 @@
                                         {{ getAuthorName(author)[0].properties.name }};
                                     </span>
                                 </p>
-                                <p><strong>{{ $t('map.addLayer.box.lbTags') }}:</strong>
+                                <p><strong>{{ $t('map.addLayer.box.lbKeywods') }}:</strong>
                                     <el-tag v-for="id in layer.properties.keyword" :key="id" style="margin-left: 5px">
                                         {{ getTagName(id)[0].properties.name }}
                                     </el-tag>
@@ -80,11 +80,9 @@ export default {
             }
         }
     },
-
     computed: {
       ...mapState('map', ['layers'])
     },
-
     data() {
       return {
         loading: '',
@@ -96,7 +94,6 @@ export default {
         allAuthorsLayers: []
       }
     },
-
     async mounted() {
         try {
             let layers = await Map.getLayers(null)
@@ -123,7 +120,6 @@ export default {
             });
         }
     },
-
     methods: {
         getTagName(id){
             return this.allKeywords.filter( key => key.properties.keyword_id == id)
@@ -194,7 +190,7 @@ export default {
             });
         }
     }
-  }
+}
 </script>
 
 <style lang="sass" scoped>

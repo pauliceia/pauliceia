@@ -271,7 +271,7 @@ export default {
             "box": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
-                "lbTags": "TAGS"
+                "lbKeywods": "KEYWORDS"
             },
             "btns": {
                 "active": "Active",
@@ -285,8 +285,9 @@ export default {
         "viewInfo": {
             "btnFollow": "Follow Layer",
             "btnUnFollow": "Unfollow Layer",
+            "lbTitle": "TITLE",
             "lbDescription": "DESCRIPTION",
-            "lbTags": "TAGS",
+            "lbKeywods": "KEYWORDS",
             "lbAuthors": "AUTHORS",
             "lbDate": "CREATION DATE",
             "lbReferences": "REFERENCES",
