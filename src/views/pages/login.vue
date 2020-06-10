@@ -4,7 +4,7 @@
 
         <!-- form card login -->
         <div class="card rounded stylecard">
-            
+
             <div class="card-body">
 
                 <h5 class="mb-0">Acesse sua conta</h5>
@@ -20,7 +20,7 @@
                         <input type="password" v-model="password" class="form-control form-control-lg" :placeholder="$t('login.inputPassword')" required>
                     </div>
                     <br />
-                    
+
                     <router-link to="/register" class="register">{{ $t('login.register') }}</router-link><br>
                     <div><button type="submit" class="btn style-btn btn-lg btn-block">{{ $t('login.btnText') }}</button>
                     </div>
@@ -45,7 +45,7 @@
             </div>
         </div>
         <!-- /form card login -->
-        
+
         <p-terms></p-terms>
     </section>
     </div>
@@ -70,7 +70,7 @@ export default {
     },
     methods: {
         loginSocial(type) {
-            window.location = process.env.urlVGI+"/api/auth/"+type
+            window.location = process.env.urlVGI + "/api/auth/" + type
         },
         async loginSubmit () {
             try {
@@ -79,18 +79,22 @@ export default {
                 let password = new jsSHA("SHA-512", "TEXT")
                 password.update(this.password)
                 password = password.getHash('HEX')
-                let credentials = decodeURI(window.btoa(encodeURI(this.email+":"+password)))
+
+                let credentials = decodeURI(window.btoa(encodeURI(this.email + ":" + password)))
 
                 const response = await User.login(credentials)
                 let token = response.headers.authorization
+
                 if(response.status == 200) {
                     this.$store.dispatch('auth/setToken', token)
-                    
+
                     const response = await User.getUser(`email=${this.email}`)
                     this.$store.dispatch('auth/setUser', response.data.features[0].properties)
-                    
+
                     this.loading.close()
+
                     let query = this.$route.query.redirect ? this.$route.query.redirect : '/explore';
+
                     this.$router.push({
                         path: query
                     })
@@ -102,11 +106,15 @@ export default {
                         type: 'success'
                     });
                 }
-                
+
             } catch (error) {
                 let msg = ''
-                if(error.response.status == 404) msg = this.$t('login.msg.err404')
-                else if(error.response.status == 409) msg = this.$t('login.msg.err409')
+
+                if(error.response.status == 404)
+                  msg = this.$t('login.msg.err404')
+                else if(error.response.status == 409)
+                  msg = this.$t('login.msg.err409')
+
                 this._msgBox(
                     'ERROR',
                     msg,
@@ -131,7 +139,6 @@ export default {
             });
         }
     }
-
 }
 </script>
 

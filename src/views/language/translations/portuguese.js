@@ -211,7 +211,8 @@ export default {
         "lbToLogin": "Você já está cadastrado?",
         "lbToLoginLink": "CLIQUE AQUI",
         "msg": {
-            "success": "seu cadastro está quase pronto. Basta acessar seu e-mail e seguir as instruções.",
+            "registerBtnHover": "Você deve aceitar os Termos de Uso para se registrar!",
+            "success": "O teu cadastro está quase pronto. Basta acessar o teu e-mail e seguir as instruções.",
             "emptyField": "ERRO: complete todos os campos!",
             "err500": "Erro no servidor interno - entre em contato com o administrador",
             "err409": "<strong>E-mail</strong> ou <strong>nome de usuário</strong> já existe em nosso sistema."

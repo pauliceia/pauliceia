@@ -209,7 +209,8 @@ export default {
         "lbToLogin": "Are you already registered?",
         "lbToLoginLink": "CLICK HERE",
         "msg": {
-            "success": "your registration is almost ready. Just access your email and follow the instructions.",
+            "registerBtnHover": "You must accept the Use Terms in order to register yourself!",
+            "success": "Your registration is almost ready. Just access your email and follow the instructions.",
             "emptyField": "ERROR: complete all fields!",
             "err500": "Error internal server - contact your administrator",
             "err409": "<strong>email</strong> or <strong>username</strong> already exists in our system."

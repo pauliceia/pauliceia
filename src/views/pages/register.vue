@@ -32,14 +32,18 @@
                             <input type="password" v-model="user.password" class="form-control form-control-lg" :placeholder="$t('register.lbPassword')" required>
                         </div>
                     </div>
-                    
+
                     <div class="box-check">
                         <el-checkbox :label="$t('register.lbCheckNotification')" v-model="user.receive_notification_by_email"></el-checkbox>
                         <br />
                         <el-checkbox :label="$t('register.lbCheckAgree')" v-model="terms_agreed"></el-checkbox> <a data-toggle="modal" data-target="#modalTerms"> ( {{ $t('register.lbReadme') }} ) </a>
                     </div>
 
-                    <button type="submit" disabled class="btn btn-lg btn-block" id="btn-register" style="background-color: #ff6107; color: #ffffff">{{ $t('register.btnTitle') }}</button>
+                    <button id="btn-register" type="submit" disabled class="btn btn-lg btn-block"
+                            :title="$t('register.msg.registerBtnHover')"
+                            style="background-color: #ff6107; color: #ffffff">
+                      {{ $t('register.btnTitle') }}
+                    </button>
                 </form>
             </div>
             <div class="col-lg-12">
@@ -79,14 +83,17 @@ export default {
             },
             loading: '',
             terms_agreed: false,
-            emailSuporte: 'suporte@pauliceia.com.br'
+            emailSuporte: 'pauliceia_support@googlegroups.com'
         }
     },
     watch: {
         terms_agreed(val){
             this.user.terms_agreed = this.terms_agreed
-            if(this.user.terms_agreed) $('#btn-register').removeAttr('disabled')
-            else $('#btn-register').attr('disabled', 'disabled')
+
+            if(this.user.terms_agreed)
+              $('#btn-register').removeAttr('disabled')
+            else
+              $('#btn-register').attr('disabled', 'disabled')
         }
     },
     methods: {
@@ -115,7 +122,7 @@ export default {
                     const infoUser = await User.getUser('user_id='+idUser)
 
                     this.$store.dispatch('auth/setUser', infoUser.data.features[0].properties)
-                    
+
                     this.loading.close()
                     let query = '/login';
                     this.$router.push({
@@ -130,15 +137,15 @@ export default {
 
                     this._cleanForm()
                 }
-                
+
             } catch (error) {
-                if( error.response == undefined || error.response.status == 500 ) 
+                if (error.response == undefined || error.response.status == 500)
                     this._msgBox(
                         'ERROR',
-                        this.$t('register.msg.err500')+' - '+this.emailSuporte,
+                        this.$t('register.msg.err500') + ' - ' + this.emailSuporte,
                         'error'
                     )
-                else 
+                else
                     this._msgBox(
                         'ERROR',
                         this.$t('register.msg.err409'),
@@ -177,12 +184,10 @@ export default {
             });
         }
     }
-
 }
 </script>
 
 <style lang="sass" scoped>
-
 .stylecard
   border-radius: 70px
   border-color: #ff6107
@@ -196,11 +201,11 @@ section
         color: #666
         text-align: center
         padding: 25px 0
-    
+
     .box-check
         padding: 10px
 
-        a 
+        a
             color: #ff6107
             cursor: pointer
 
