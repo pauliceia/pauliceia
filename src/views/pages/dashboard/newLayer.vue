@@ -698,6 +698,7 @@
               let responseCreateFeatureTable = await Dashboard.createFeatureTable(featureTableInfo)
 
               let responseGetFeatureTable = await Dashboard.getFeatureTable(this.fTableName)
+
               let vm = this
               responseGetFeatureTable.data.features.filter(e => {
                 vm.columns = e.properties

@@ -4,7 +4,7 @@
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>
 
         <span>
-            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.slice(0,18)+' ...' : nameLayer : title }}</b>
+            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.slice(0, 18) + ' ...' : nameLayer : title }}</b>
             <span v-show="layerStatus">
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -91,7 +91,7 @@ export default {
         this.title = this.titleInit
 
         if(this.id != undefined) {
-            let layers = await Map.getLayers('layer_id='+this.id)
+            let layers = await Map.getLayers('layer_id=' + this.id)
             this.nameLayer = layers.data.features[0].properties.name
             this.title = layers.data.features[0].properties.f_table_name
         }
@@ -99,11 +99,12 @@ export default {
         this.getColor()
     },
     watch: {
-        //active and disable layer
+        // active and disable the layer
         layerStatus(val) {
-            this.group.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === this.title) sublayer.setVisible(this.layerStatus)
-            })
+          this.group.getLayers().forEach(sublayer => {
+            if (sublayer.get('title') === this.title)
+              sublayer.setVisible(this.layerStatus)
+          })
         },
         //edit color of layer
         colorVector(val) {
@@ -146,46 +147,58 @@ export default {
                             })
                         }
 
-                        sublayer.getSource().getFeatures().map(features => {
-                            if(features.getStyle() !== emptyStyle) features.setStyle(newStyle)
+                        sublayer.getSource().getFeatures().map(feature => {
+                          if(feature.getStyle() !== emptyStyle)
+                            feature.setStyle(newStyle)
                         });
                         sublayer.setStyle(newStyle)
                     }
-            })
+                })
         },
         //active 'info attrib' feature
         idInfoFeatureLayer(val){
-            if(val == this.title) {
-                this.getInfo = true
-                this._getInfosFeatures()
-            } else {
-                this.getInfo = false
-                this._clearInteractions()
-            }
+          if(val == this.title) {
+            this.getInfo = true
+            this._getInfosFeatures()
+          } else {
+            this.getInfo = false
+            this._clearInteractions()
+          }
         }
     },
     methods: {
         async getColor() {
-            let response = await Dashboard.getFeatureTable(this.title)
+          let response = await Dashboard.getFeatureTable(this.title)
 
-            this.group.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === this.title) {
-                    this.type = response.data.features[0].geometry.type.toLowerCase()
+          for (let layer of this.group.getLayers().getArray()) {
 
-                    if(this.type == 'multilinestring' || this.type == 'linestring') {
-                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(lineStyle)
-                        this.colorVector = sublayer.getStyle().getStroke().getColor()
+            if (layer.get('title') === this.title) {
+              this.type = response.data.features[0].geometry.type.toLowerCase()
+              let styleType = typeof(layer.getStyle())
 
-                    } else if(this.type == 'multipoint' || this.type == 'point') {
-                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
-                        this.colorVector = sublayer.getStyle().getImage().getFill().getColor()
+              if (this.type === 'multilinestring' || this.type === 'linestring') {
+                if (styleType === 'function')
+                  layer.setStyle(lineStyle)
 
-                    } else if(this.type == 'multipolygon' || this.type == 'polygon') {
-                        if(typeof(sublayer.getStyle()) == 'function') sublayer.setStyle(polygonStyle)
-                        this.colorVector = sublayer.getStyle().getFill().getColor()
-                    }
-                }
-            })
+                this.colorVector = lineStyle.getStroke().getColor()
+
+              } else if (this.type === 'multipoint' || this.type === 'point') {
+                if (styleType === 'function')
+                  layer.setStyle(pointStyle)
+
+                this.colorVector = pointStyle.getImage().getFill().getColor()
+
+              } else if (this.type === 'multipolygon' || this.type === 'polygon') {
+                if (styleType === 'function')
+                  layer.setStyle(polygonStyle)
+
+                this.colorVector = polygonStyle.getFill().getColor()
+              }
+
+              break;
+            }
+
+          }
         },
         extend(){
             this.group.getLayers().forEach(sublayer => {

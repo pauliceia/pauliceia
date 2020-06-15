@@ -301,7 +301,7 @@ export default {
             "btnClean": "Clean"
         },
         "betaVersionModal": {
-            "welcome": "Welcome to 'Pauliceia 2.0' Platform",
+            "welcome": "Welcome to the `Pauliceia 2.0` platform",
             "betaVersion": "BETA VERSION (test phase)",
             "body": `
                     <p style="text-align: justify">

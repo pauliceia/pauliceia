@@ -303,7 +303,7 @@ export default {
             "btnClean": "Limpar"
         },
         "betaVersionModal": {
-            "welcome": "Bem-vindo(a) Plataforma 'Pauliceia 2.0'",
+            "welcome": "Bem-vindo a plataforma `Pauliceia 2.0`",
             "betaVersion": "VERSÃO BETA (fase de teste)",
             "body": `
                     <p style="text-align: justify">
