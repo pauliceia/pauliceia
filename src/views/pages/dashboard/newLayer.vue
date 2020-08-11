@@ -488,7 +488,10 @@
         this._openFullLoading()
 
         if (this.name === '') {
-          this._msgError("O nome é necessário!")
+          this._msgError("O nome da camada é necessário!")
+
+        } else if (this.fTableName.length < 5 ||  this.fTableName.length > 63) {
+          this._msgError("O nome da camada deve ter entre 5 e 63 caracteres!")
 
         } else if (doesTheStringHaveSpecialChars(this.fTableName)) {
           this._msgError("O nome da camada NÃO pode começar com `número` e nem conter `caracteres especiais`!")
