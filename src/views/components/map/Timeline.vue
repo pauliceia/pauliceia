@@ -17,31 +17,64 @@
 
   import 'nouislider/distribute/nouislider.css'
 
+  function extractYearFromDateAsString(date, default_value){
+    let year = default_value
+    let splittedDate = date.split('/')
+
+    // if there is a complete date (i.e. day, month and year), I create a date object and I get its year
+    if (splittedDate.length === 3) {
+      year = new Date(date).getFullYear()
+
+    // if there is just one value, I consider it as a year
+    } else if (splittedDate.length === 1) {
+      year = parseInt(date)
+
+    // if there are two values, then there are month and year
+    } else if (splittedDate.length === 2) {
+      // I check if the first or second position is the year, by checking which one contains 4 characters
+      if (splittedDate[0].length === 4)
+        year = parseInt(splittedDate[0])
+
+      else if (splittedDate[1].length === 4)
+        year = parseInt(splittedDate[1])
+    }
+
+    return year
+  }
+
   export default {
     name: 'Timeline',
     data () {
       return {
-        style: null,
-        startYear: 1886,
-        endYear: 1970,
+        sliderStartYear: 1886,
+        sliderEndYear: 1970,
+        // loaded temporal columns
+        loadedTC: []
       }
     },
     computed: {
-      ...mapState('map', ['years'])
+      ...mapState('map', ['years']),
+      selectedStartYear() {
+        return this.years.first
+      },
+      selectedEndYear(){
+        return this.years.last
+      }
     },
     mounted () {
       let slider = document.getElementById('slider')
+
       //this.filterUpdate()
       noUiSlider.create(slider, {
-        start: [this.startYear, this.endYear],
+        start: [this.sliderStartYear, this.sliderEndYear],
         connect: true,
         orientation: 'horizontal',
         step: 1,
         tooltips: true,
         direction: 'ltr',
         range: {
-          'min': this.startYear,
-          'max': this.endYear
+          'min': this.sliderStartYear,
+          'max': this.sliderEndYear
         },
         pips: {
           mode: 'count',
@@ -49,57 +82,95 @@
           density: 4
         },
         format: {
-          to: function (value) {
+          to: value => {
             return value + ''
           },
-          from: function (value) {
+          from: value => {
             return value.replace(',-', '')
           }
         }
       })
 
-      const vm = this
-      slider.noUiSlider.on('update', function (values, handle) {
-        vm.$store.dispatch('map/setYears', {
+      slider.noUiSlider.on('update', (values, handle) => {
+        this.$store.dispatch('map/setYears', {
           first: values[0],
           last: values[1]
         })
-        vm.filterUpdate()
-      })
 
+        this.filterUpdate()
+      })
     },
     methods: {
+      getTemporalColumns (f_table_name) {
+        // tcs - array with the selected temporal columns
+        let tcs = this.loadedTC.filter(tc => tc.properties.f_table_name === f_table_name)
+
+        // if array is not empty, it returns the only one element inside the array
+        if (Array.isArray(tcs) && tcs.length)
+          return tcs[0]
+        else
+          return null
+      },
+      updateFeatureVisibility (vectorLayerFeatures, tc) {
+        vectorLayerFeatures.forEach(feature => {
+          // feature and temporal column properties
+          let fProperties = feature.getProperties()
+          let tcProperties = tc.properties
+
+          // When I convert a date with hyphens, the generated date object is related to the previous date.
+          // For this reeason, I need to replace all occurrences of hyphens by slashs
+          // Discussion: https://stackoverflow.com/a/31732581/8447990
+          let startDate = String(fProperties[tcProperties.start_date_column_name]).replace(/-/g, '\/')
+          let endDate = String(fProperties[tcProperties.end_date_column_name]).replace(/-/g, '\/')
+
+          // Extracting the year from the dates as strings.
+          // The default values are the values from the slider temporal bounding
+          let startYear = extractYearFromDateAsString(startDate, this.sliderStartYear)
+          let endYear = extractYearFromDateAsString(endDate, this.sliderEndYear)
+
+          // if for some reason, the `startYear` or `endYear` return a `NaN` value,
+          // then I use the feature temporal bounding
+          // (e.g. when `endDate` is an invalid string (e.g. "null"), then finding a year is not possible)
+          if(isNaN(startYear))
+            startYear = new Date(String(tcProperties.start_date).replace(/-/g, '\/')).getFullYear()
+          if(isNaN(endYear))
+            endYear = new Date(String(tcProperties.end_date).replace(/-/g, '\/')).getFullYear()
+
+          // check if the feature is inside the selected period
+          if (startYear <= this.selectedEndYear && endYear >= this.selectedStartYear) {
+            // the feature style is removed, in other words, the feature is showed on the map
+            feature.setStyle(null)
+          } else {
+            // an `invisible` style is set to the feature, in other words, the feature is hidden from the map
+            feature.setStyle(emptyStyle)
+          }
+        })
+      },
       filterUpdate () {
-        const vm = this
-        let yearFirst = this.years.first
-        let yearLast = this.years.last
+        overlayGroup.getLayers().forEach(vectorLayer => {
 
-        overlayGroup.getLayers().forEach(sublayer => {
-          Api().get('/api/temporal_columns/?f_table_name='+sublayer.values_.title).then(function (tc) {
+          let f_table_name = vectorLayer.values_.title
+          let vectorLayerFeatures = vectorLayer.getSource().getFeatures()
 
+          // try to get a `tc` again if it has already been loaded
+          let tc = this.getTemporalColumns(f_table_name)
 
-            sublayer.getSource().getFeatures().forEach(feature => {
+          // check if this `tc` has already been loaded (i.e. if `tc` is not null), in order to not request it again
+          if (tc) {
+            this.updateFeatureVisibility(vectorLayerFeatures, tc)
 
-              let startDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.start_date_column_name])).getFullYear()
-              let endDate = new Date(String(feature.getProperties()[tc.data.features[0].properties.end_date_column_name])).getFullYear()
+          // if the `tc` has not already been loaded, then request it to the server
+          } else {
+            Api().get('/api/temporal_columns/?f_table_name=' + f_table_name).then(result => {
+              let tc = result.data.features[0]
 
-              if(startDate-5 < vm.startYear) vm.startYear = startDate-5
-              if(endDate+5 > vm.startYear) vm.endYear = endDate+5
+              // add the new `tc` to a list of loaded `tc` in order to avoid to request it again
+              this.loadedTC.push(tc)
 
-
-              //if(isNaN(startDate)) startDate = 0
-              //if(isNaN(endDate)) endDate = (new Date).getFullYear()
-
-              if(isNaN(startDate)) startDate = new Date(String(tc.data.features[0].properties.start_date)).getFullYear()
-              if(isNaN(endDate)) endDate = new Date(String(tc.data.features[0].properties.end_date)).getFullYear()
-
-              if (startDate <= yearLast && endDate >= yearFirst) {
-                feature.setStyle(vm.style)
-              } else {
-                feature.setStyle(emptyStyle)
-              }
+              this.updateFeatureVisibility(vectorLayerFeatures, tc)
             })
-          })
+          }
+
         })
       }
     }
@@ -130,5 +201,4 @@
   #contentSlider .sliders .noUi-connect{
     background: #58595b !important;
   }
-        
 </style>

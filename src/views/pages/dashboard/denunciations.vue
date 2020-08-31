@@ -21,6 +21,7 @@
             </div>
           </div>
         </div>
+
         <div class="card  ">
           <div class="card-header text-center">
             Denounced Comments
@@ -59,8 +60,8 @@
           <div class="card-header">
             Layer
             <ul class="description" >
-              <li><b> Name:</b> {{chosenLayer.name}}</li>
-              <li><b> {{ $t('map.viewInfo.lbTags') }}:</b>
+              <li><b> {{ $t('map.viewInfo.lbTitle') }}:</b> {{chosenLayer.name}}</li>
+              <li><b> {{ $t('map.viewInfo.lbKeywods') }}:</b>
                 <el-tag v-show="is_layer" v-for="id in chosenLayer.keyword" :key="'tag'+id" style="margin-left: 5px">
                   {{ allKeywords[id] }}
                 </el-tag>
@@ -109,166 +110,163 @@
 </template>
 
 <script>
-
   import DashLayout from '@/views/layouts/dashboard'
   import Api from '@/middleware/ApiVGI'
   import {mapState} from 'vuex'
 
-    export default {
-        components: {
-          "p-dash-layout": DashLayout
+  export default {
+    name: "denunciations",
+    components: {
+      "p-dash-layout": DashLayout
+    },
+    computed: {
+      ...mapState('auth', ['isUserLoggedIn', 'user']),
+    },
+    data: function () {
+      return {
+        denouncedLayers: [],
+        denouncedComments: [],
+        notifications: [],
+        denunciations: [],
+        nameLayers: [],
+        nameUsers: [],
+        is_layer: false,
+        is_comment: false,
+        chosenLayer: [],
+        chosenComment: [],
+        allKeywords: [],
+        allReferences: [],
+        layers: [],
+        nameLayer: null,
+      }
+    },
+    mounted() {
+      const vm = this
+      vm.getDenunciations()
+      vm.getInfos()
+      setTimeout(_ => {
+      }, 1000);
+    },
+    methods: {
+        clearNot(notification){
+          const vm = this
+          Api().delete('/api/notification/?notification_id='+notification.notification_id,
+          ).then(function (response) {
+            //console.log(response)
+            vm.denunciations.splice(vm.denunciations.indexOf(notification), 1)
+            vm.getDenunciations()
+          })
         },
-      computed: {
-        ...mapState('auth', ['isUserLoggedIn', 'user']),
-      },
-        name: "denunciations",
+        selectLayer(id){
+          const vm = this
+          this.chosenComment = []
+          this.is_comment = false
+          this.is_layer = true
+          this.chosenLayer = this.layers[id]
+          vm.denunciations = Object.values(this.notifications).filter( notif => {
+            return (notif.layer_id === id && notif.notification_id_parent === null  && notif.is_denunciation === true)
+          })
+        },
+        selectComment(id){
+          const vm = this
+          this.chosenLayer = []
+          this.is_comment = true
+          this.is_layer = false
+          this.chosenComment = this.notifications[id]
+          this.denunciations = Object.values(this.notifications).filter( notif => {
+            return (notif.notification_id_parent === id && notif.is_denunciation === true)
+          })
+          vm.nameLayer = vm.chosenComment.layer_id === null ? 'Global' : vm.layers[vm.chosenComment.layer_id].name
+        },
+        clean(){
+          const vm = this
+          this.chosenComment = []
+          this.is_comment = false
+          this.is_layer = false
+          vm.denunciations = []
+          vm.nameLayer = null
+        },
+        getInfos(){
+          const vm = this
+          Api().get('/api/keyword/').then(function (keys) {
+            keys.data.features.forEach(key => {
+              vm.allKeywords = {...vm.allKeywords, [key.properties.keyword_id]: key.properties.name,}
+            })
+          })
+          Api().get('/api/reference/').then(function (references) {
+            references.data.features.forEach(reference => {
+              vm.allReferences = {...vm.allReferences, [reference.properties.reference_id]: reference.properties.description,}
+            })
+          })
+        },
+        deleteNotification(notification){
+          const vm = this
 
-      data: function () {
-        return {
-          denouncedLayers: [],
-          denouncedComments: [],
-          notifications: [],
-          denunciations: [],
-          nameLayers: [],
-          nameUsers: [],
-          is_layer: false,
-          is_comment: false,
-          chosenLayer: [],
-          chosenComment: [],
-          allKeywords: [],
-          allReferences: [],
-          layers: [],
-          nameLayer: null,
-        }
-      },
-      mounted() {
-        const vm = this
-        vm.getDenunciations()
-        vm.getInfos()
-        setTimeout(_ => {
-        }, 1000);
-      },
-      methods: {
-          clearNot(notification){
-            const vm = this
-            Api().delete('/api/notification/?notification_id='+notification.notification_id,
-            ).then(function (response) {
-              //console.log(response)
-              vm.denunciations.splice(vm.denunciations.indexOf(notification), 1)
-              vm.getDenunciations()
-            })
-          },
-          selectLayer(id){
-            const vm = this
-            this.chosenComment = []
-            this.is_comment = false
-            this.is_layer = true
-            this.chosenLayer = this.layers[id]
-            vm.denunciations = Object.values(this.notifications).filter( notif => {
-              return (notif.layer_id === id && notif.notification_id_parent === null  && notif.is_denunciation === true)
-            })
-          },
-          selectComment(id){
-            const vm = this
-            this.chosenLayer = []
-            this.is_comment = true
-            this.is_layer = false
-            this.chosenComment = this.notifications[id]
-            this.denunciations = Object.values(this.notifications).filter( notif => {
-              return (notif.notification_id_parent === id && notif.is_denunciation === true)
-            })
-            vm.nameLayer = vm.chosenComment.layer_id === null ? 'Global' : vm.layers[vm.chosenComment.layer_id].name
-          },
-          clean(){
-            const vm = this
-            this.chosenComment = []
-            this.is_comment = false
-            this.is_layer = false
-            vm.denunciations = []
-            vm.nameLayer = null
-          },
-          getInfos(){
-            const vm = this
-            Api().get('/api/keyword/').then(function (keys) {
-              keys.data.features.forEach(key => {
-                vm.allKeywords = {...vm.allKeywords, [key.properties.keyword_id]: key.properties.name,}
+          Api().delete('/api/notification/?notification_id='+notification.id,
+          ).then(function (response) {
+            delete vm.denouncedComments[notification.id.toString()]
+            vm.getDenunciations()
+            vm.clean()
+          })
+        },
+        deleteLayer(layer_id){
+          const vm = this;
+          Api().delete('/api/layer/' + layer_id).then(function (response) {
+            delete vm.denouncedLayers[layer_id.toString()]
+            vm.getDenunciations()
+            vm.clean()
+          })
+        },
+        getDenunciations(){
+          const vm = this
+
+          Api().get('/api/notification/?is_denunciation=True&notification_id_parent=NULL').then(function (response) {
+            //vm.notifications.push(response.data.features)
+            Api().get('/api/layer/').then(function (layers) {
+              layers.data.features.forEach(layer => {
+                vm.nameLayers = {...vm.nameLayers, [layer.properties.layer_id]: layer.properties.name,}
+                vm.layers = {...vm.layers, [layer.properties.layer_id]: layer.properties,}
               })
             })
-            Api().get('/api/reference/').then(function (references) {
-              references.data.features.forEach(reference => {
-                vm.allReferences = {...vm.allReferences, [reference.properties.reference_id]: reference.properties.description,}
+            setTimeout(_ => {
+                vm.denouncedLayers = response.data.features.reduce((acc, currvalue) => {
+
+                  const id = currvalue.properties.layer_id;
+                  const idCont = acc[id] ? acc[id].n + 1 : 1;
+
+                  return {...acc, [id]: {'n': idCont, 'name': vm.nameLayers[id], 'id': id},}
+                }, {})
+
+            }, 100);
+          })
+
+          Api().get('/api/notification/').then(function (response) {
+              response.data.features.forEach( notification => {
+                vm.notifications = {...vm.notifications, [notification.properties.notification_id]: notification.properties}
               })
-            })
-          },
-          deleteNotification(notification){
-            const vm = this
 
-            Api().delete('/api/notification/?notification_id='+notification.id,
-            ).then(function (response) {
-              delete vm.denouncedComments[notification.id.toString()]
-              vm.getDenunciations()
-              vm.clean()
-            })
-          },
-          deleteLayer(layer_id){
-            const vm = this;
-            Api().delete('/api/layer/' + layer_id).then(function (response) {
-              delete vm.denouncedLayers[layer_id.toString()]
-              vm.getDenunciations()
-              vm.clean()
-            })
-          },
-          getDenunciations(){
-            const vm = this
-
-            Api().get('/api/notification/?is_denunciation=True&notification_id_parent=NULL').then(function (response) {
-              //vm.notifications.push(response.data.features)
-              Api().get('/api/layer/').then(function (layers) {
-                layers.data.features.forEach(layer => {
-                  vm.nameLayers = {...vm.nameLayers, [layer.properties.layer_id]: layer.properties.name,}
-                  vm.layers = {...vm.layers, [layer.properties.layer_id]: layer.properties,}
+              Api().get('/api/user/').then(function (users) {
+                users.data.features.forEach(user => {
+                  vm.nameUsers = {...vm.nameUsers, [user.properties.user_id]: user.properties.name,}
                 })
               })
               setTimeout(_ => {
-                  vm.denouncedLayers = response.data.features.reduce((acc, currvalue) => {
+                  vm.denouncedComments = response.data.features.filter( e => {
+                    return (e.properties.notification_id_parent !== null && e.properties.is_denunciation === true)
+                  }).reduce((acc, currvalue) => {
+                    const id = currvalue.properties.notification_id_parent;
+                    const idCont = acc[id]!=null ? acc[id].n + 1 : 1
 
-                    const id = currvalue.properties.layer_id;
-                    const idCont = acc[id] ? acc[id].n + 1 : 1;
-
-                    return {...acc, [id]: {'n': idCont, 'name': vm.nameLayers[id], 'id': id},}
+                    return {...acc, [id]: {'n': idCont, 'name': vm.nameUsers[vm.notifications[currvalue.properties.notification_id_parent].user_id_creator], 'id': id},}
                   }, {})
-
               }, 100);
-            })
-
-            Api().get('/api/notification/').then(function (response) {
-                response.data.features.forEach( notification => {
-                  vm.notifications = {...vm.notifications, [notification.properties.notification_id]: notification.properties}
-                })
-
-                Api().get('/api/user/').then(function (users) {
-                  users.data.features.forEach(user => {
-                    vm.nameUsers = {...vm.nameUsers, [user.properties.user_id]: user.properties.name,}
-                  })
-                })
-                setTimeout(_ => {
-                    vm.denouncedComments = response.data.features.filter( e => {
-                      return (e.properties.notification_id_parent !== null && e.properties.is_denunciation === true)
-                    }).reduce((acc, currvalue) => {
-                      const id = currvalue.properties.notification_id_parent;
-                      const idCont = acc[id]!=null ? acc[id].n + 1 : 1
-
-                      return {...acc, [id]: {'n': idCont, 'name': vm.nameUsers[vm.notifications[currvalue.properties.notification_id_parent].user_id_creator], 'id': id},}
-                    }, {})
-                }, 100);
-            })
-          }
-      }
+          })
+        }
     }
+  }
 </script>
 
 <style lang="sass"  scoped>
-
   .notification-box
     margin: 10px
     background: rgba(#000, 0.1)
@@ -319,5 +317,4 @@
     margin: 0px
     position: relative
     border-radius: 30px
-
 </style>

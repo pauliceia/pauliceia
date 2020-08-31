@@ -36,18 +36,19 @@ export default {
     watch: {
         async attr(val) {
             if(val != null){
-                let layerInfo = await Map.getLayers('layer_id='+this.layerId)
+                let layerInfo = await Map.getLayers('layer_id=' + this.layerId)
                 let f_name = layerInfo.data.features[0].properties.f_table_name
 
-                let attrLayer = await Map.getAttrLayer('f_table_name='+f_name)
+                let attrLayer = await Map.getAttrLayer('f_table_name=' + f_name)
                 let attr = attrLayer.data.features[0].properties
 
-                this.properties = Object.keys(val).map( index => {
-                if(index != "geometry" && index != "geom" && index != "id" && index != "changeset_id" && index != "version")
+                this.properties = Object.keys(val).map(index => {
+                    if(index != "geometry" && index != "geom" && index != "id" && index != "changeset_id" && index != "version")
                         return {key: index, value: val[index], type: attr[index]}
                 })
-            } else 
+            } else {
                 this.properties = null
+            }
         }
     },
 
@@ -73,11 +74,11 @@ export default {
                     }
 
                     console.log(newFeature)
-                
+
                     let response = await Edit.addFeature(newFeature)
                     console.log(response)
                     //atualizar as propriedades da feature
-                    
+
                 } catch(error) {
                     this.$alert("Erro ao cadastrar o vetor, contate o administrador do sistema!", "Desculpa", {
                         dangerouslyUseHTMLString: true,
@@ -127,7 +128,7 @@ export default {
 
         label
             margin: 0px 0 2.5px 0
-        input 
+        input
             margin-bottom: 8px
         .el-button
             display: block

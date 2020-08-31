@@ -18,14 +18,14 @@
           <br>
         </div>
         <div class="nofitication">
-          <div v-for="n in notifG">
+          <div v-for="notification in notifG" v-bind:key="notification.notification_id">
             <div class="row notification-box">
               <div class="col-3 col-md-3 col-lg-1 col-sm-3">
                 <div style="display: flex; align-items: center;">
                   <div class="photo">
                     <md-avatar class="md-avatar-icon stylePicture">
                       <div class="logo">
-                        <img :src="n.photo"/>
+                        <img :src="notification.photo"/>
                       </div>
                     </md-avatar>
                   </div>
@@ -33,27 +33,26 @@
               </div>
               <div class="col-9 col-md-9  col-lg-11 col-sm-9">
                 <div class="comments">
-                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)" v-if="showInput"
-                          title="Responder">
+                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(notification)"
+                          v-if="showInput" title="Responder">
                     <md-icon>replay</md-icon>
                   </button>
-                  <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"
-                          v-if="showInput"
-                          title="Denunciar">
+                  <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(notification)"
+                          v-if="showInput" title="Denunciar">
                     <md-icon>report</md-icon>
                   </button>
-                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"
-                          v-if="userId === n.user_id_creator  || user && !!user.is_the_admin && user.is_the_admin" title="Excluir">
+                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(notification)"
+                          v-if="canUserRemoveIt(notification)" title="Excluir">
                     <md-icon>clear</md-icon>
                   </button>
                 </div>
                 <div class="credentials">
-                  <div class="author">{{n.name}}</div>
-                  <div class="date">{{n.date}}</div>
+                  <div class="author">{{notification.name}}</div>
+                  <div class="date">{{notification.date}}</div>
                 </div>
-                <p class="content">{{n.description}}</p>
+                <p class="content">{{notification.description}}</p>
               </div>
-              <p-modal-notification :notification_id="n.notification_id"></p-modal-notification>
+              <p-modal-notification :notification_id="notification.notification_id"></p-modal-notification>
             </div>
           </div>
         </div>
@@ -75,7 +74,7 @@
           <br>
         </div>
         <div class="nofitication">
-          <div v-for="n in notifP">
+          <div v-for="notification in notifP" v-bind:key="notification.notification_id">
             <div class="notification-box">
               <div class="row">
                 <div class="col-3 col-md-3 col-lg-1 col-sm-3">
@@ -83,7 +82,7 @@
                     <div class="photo">
                       <md-avatar class="md-avatar-icon stylePicture">
                         <div class="logo">
-                          <img :src="n.photo"/>
+                          <img :src="notification.photo"/>
                         </div>
                       </md-avatar>
                     </div>
@@ -91,44 +90,46 @@
                 </div>
                 <div class="col-9 col-md-9  col-lg-11 col-sm-9">
                   <div class="comments">
-                    <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)"
-                            v-if="showInput"
-                            title="Responder">
+                    <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(notification)"
+                            v-if="showInput" title="Responder">
                       <md-icon>replay</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"
-                            v-if="showInput"
-                            title="Denunciar">
+                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(notification)"
+                            v-if="showInput" title="Denunciar">
                       <md-icon>report</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"
-                            v-if="userId === n.user_id_creator  || user && !!user.is_the_admin && user.is_the_admin">
+                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(notification)"
+                            v-if="canUserRemoveIt(notification)">
                       <md-icon>clear</md-icon>
                     </button>
                   </div>
 
                   <div class="credentials">
-                    <div class="author">{{n.name}}</div>
-                    <div class="date">{{n.date}}</div>
+                    <div class="author">{{notification.name}}</div>
+                    <div class="date">{{notification.date}}</div>
                   </div>
-
-                  <p class="content">{{n.description}}</p>
+                  <p class="content">{{notification.description}}</p>
                 </div>
               </div>
               <div class="msgType">
-                <div class="msgType" v-if="n.is_denunciation !== false">Denunciation&nbsp;
-                  <div v-if="n.notification_id_parent !== null">of your message on layer {{n.layer_name}}</div>
-                  <div v-else-if="n.layer_id !== null">of your layer {{n.layer_name}}</div>
+                <div class="msgType" v-if="notification.is_denunciation !== false">Denunciation&nbsp;
+                  <div v-if="notification.notification_id_parent !== null">of your message on layer {{notification.layer_name}}</div>
+                  <div v-else-if="notification.layer_id !== null">of your layer {{notification.layer_name}}</div>
                   <div v-else>of your message on your global notification</div>
                 </div>
 
-                <div v-else-if="n.layer_id !== null && n.type === 'myLayer'">Comment on your layer {{n.layer_name}}
+                <div v-else-if="notification.layer_id !== null && notification.type === 'myLayer'">
+                  Comment on your layer {{notification.layer_name}}
                 </div>
 
-                <div class="msgType" v-else-if="n.notification_id_parent !== null && n.type === 'message'">Reply of your
-                  message&nbsp;
-                  <div v-if="n.layer_id !== null">on your layer {{n.layer_name}}</div>
-                  <div v-else>on your global notification</div>
+                <div class="msgType" v-else-if="notification.notification_id_parent !== null && notification.type === 'message'">
+                  Reply of your message&nbsp;
+                  <div v-if="notification.layer_id !== null">
+                    on your layer {{notification.layer_name}}
+                  </div>
+                  <div v-else>
+                    on your global notification
+                  </div>
                 </div>
               </div>
             </div>
@@ -151,7 +152,7 @@
           <br>
         </div>
         <div class="nofitication">
-          <div v-for="n in notifF">
+          <div v-for="notification in notifF" v-bind:key="notification.notification_id">
             <div class="notification-box">
 
               <div class="row">
@@ -160,7 +161,7 @@
                     <div class="photo">
                       <md-avatar class="md-avatar-icon stylePicture">
                         <div class="logo">
-                          <img :src="n.photo"/>
+                          <img :src="notification.photo"/>
                         </div>
                       </md-avatar>
                     </div>
@@ -169,44 +170,53 @@
 
                 <div class="col-9 col-md-9  col-lg-11 col-sm-9">
                   <p class="comments">
-                    <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)"
-                            v-if="showInput"
-                            title="Responder">
+                    <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(notification)"
+                            v-if="showInput" title="Responder">
                       <md-icon>replay</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)"
-                            v-if="showInput"
-                            title="Denunciar">
+                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(notification)"
+                            v-if="showInput" title="Denunciar">
                       <md-icon>report</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)"
-                            v-if="userId === n.user_id_creator  || user && !!user.is_the_admin && user.is_the_admin" title="Excluir">
+                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(notification)"
+                            v-if="canUserRemoveIt(notification)" title="Excluir">
                       <md-icon>clear</md-icon>
                     </button>
                   </p>
 
                   <div class="credentials">
-                    <div class="author">{{n.name}}</div>
-                    <div class="date">{{n.date}}</div>
+                    <div class="author">{{notification.name}}</div>
+                    <div class="date">{{notification.date}}</div>
                   </div>
-
-                  <p class="content">{{n.description}}</p>
+                  <p class="content">{{notification.description}}</p>
                 </div>
               </div>
               <div class="msgType">
-                <div class="msgType" v-if="n.is_denunciation !== false">Denunciation&nbsp;
-                  <div v-if="n.notification_id_parent !== null">of some message on layer {{n.layer_name}}</div>
-                  <div v-else-if="n.layer_id !== null">of layer {{n.layer_name}}</div>
-                  <div v-else>of your message on global notification</div>
+                <div class="msgType" v-if="notification.is_denunciation !== false">
+                  Denunciation&nbsp;
+                  <div v-if="notification.notification_id_parent !== null">
+                    of some message on layer {{notification.layer_name}}
+                  </div>
+                  <div v-else-if="notification.layer_id !== null">
+                    of layer {{notification.layer_name}}
+                  </div>
+                  <div v-else>
+                    of your message on global notification
+                  </div>
                 </div>
 
-
-                <div class="msgType" v-else-if="n.notification_id_parent !== null">Reply of some message&nbsp;
-                  <div v-if="n.layer_id !== null">on layer {{n.layer_name}}</div>
-                  <div v-else>on global notification</div>
+                <div class="msgType" v-else-if="notification.notification_id_parent !== null">
+                  Reply of some message&nbsp;
+                  <div v-if="notification.layer_id !== null">
+                    on layer {{notification.layer_name}}
+                  </div>
+                  <div v-else>
+                    on global notification
+                  </div>
                 </div>
-
-                <div v-else>Comment on layer {{n.layer_name}}</div>
+                <div v-else>
+                  Comment on layer {{notification.layer_name}}
+                </div>
               </div>
             </div>
           </div>
@@ -225,21 +235,13 @@
   import "element-ui/lib/theme-chalk/tabs.css"
 
   export default {
-    components: {
-      "p-dash-layout": DashLayout,
-      "p-modal-notification": ModalNotification
-    },
-
+    name: "Notifications",
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
-      ...mapState('map', ['boxNotifications']),
+      ...mapState('map', ['boxNotifications'])
     },
-
-    name: "Notifications",
-
     props: ['showInput'],
-
-    data: function () {
+    data () {
       return {
         activeName: 'first',
         notifications: [],
@@ -257,8 +259,24 @@
         showInput2: false
       }
     },
+    // mounted() {
+    // Rodrigo's version
+    //   if (this.user !== null)
+    //     this.userId = this.user.user_id
 
+    //   this.updateNotif()
+    // },
+    mounted() {
+      // Silas' version
+      if (this.user && !!this.user.user_id) {
+        this.userId = this.user.user_id
+        this.updateNotif()
+      }
+    },
     methods: {
+      canUserRemoveIt(notification) {
+        return this.userId !== null && (this.userId === notification.user_id_creator || this.user.is_the_admin)
+      },
       replyNot(notification) {
         this.showInput2 = true
         this.txtReply = 'Reply to ' + notification.name
@@ -415,7 +433,7 @@
                 })
               })
             })
-          });
+          })
 
           Api().get('/api/user_layer/?user_id=' + vm.user.user_id).then(function (userLayers) {
             userLayers.data.features.forEach(userLayer => {
@@ -444,7 +462,7 @@
                 })
               })
             })
-          });
+          })
 
           Api().get('/api/layer_follower/?user_id=' + vm.user.user_id).then(function (userLayers) {
             if (userLayers.data) {
@@ -467,24 +485,24 @@
                             'layer_id': notification.properties.layer_id,
                             'notification_id_parent': notification.properties.notification_id_parent,
                             'layer_name': layer.data.features[0].properties.name
-                          })
+                          }
+                        )
                         vm.orderNotification(50)
                       })
                     })
                   })
                 })
-              });
+              })
             }
-          });
+          })
         }
+
       }
     },
-    mounted() {
-      if (this.user && !!this.user.user_id) {
-        this.userId = this.user.user_id;
-        this.updateNotif();
-      }
-    }
+    components: {
+      "p-dash-layout": DashLayout,
+      "p-modal-notification": ModalNotification
+    },
   }
 </script>
 
@@ -494,9 +512,8 @@
     background: #ffffff
     border-radius: 20px
 
-
     .notification-box
-      margin: 10px!important
+      margin: 10px !important
       background: #E6E6E6
       padding: 20px
       border-radius: 10px
@@ -549,11 +566,9 @@
       display: flex
       color: #4D4D4D
 
-
     .stylePicture
       width: 50px
       height: 50px
-
 
     .el-tabs__item.is-active
       color: #ff6107

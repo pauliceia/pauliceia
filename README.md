@@ -1,5 +1,7 @@
 # Paulicéia 2.0 (front-end)
-> A Vue.js project
+
+Pauliceia 2.0 project front-end.
+
 
 ## Build Setup
 
@@ -16,4 +18,3 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-

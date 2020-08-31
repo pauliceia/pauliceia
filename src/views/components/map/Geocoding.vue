@@ -73,290 +73,247 @@
         </div>
         <button class="btn btn-download" type="submit">Visualizar</button>
         <button class="btn btn-download" type="button" @click="download()">Download</button>
+
+        <!-- Rodrigo's version -->
+        <!-- <button class="btn btn-download" type="button" v-if="showDownloadButton" @click="download()">
+              Download
+            </button> -->
       </form>
     </div>
   </section>
 </template>
 
 <script>
-  import ApiMap from '@/middleware/Map'
-  import { mapState } from 'vuex'
-  import GeoJSON from 'geojson'
-  import shpwrite from 'shp-write'
+import ApiMap from '@/middleware/Map'
+import { mapState } from 'vuex'
+import GeoJSON from 'geojson'
+import shpwrite from 'shp-write'
 
-  import {
-    overlayGroup
-  } from '@/views/assets/js/map/overlayGroup'
+import {
+  overlayGroup
+} from '@/views/assets/js/map/overlayGroup'
 
-  import {
-    placeStyle,
-    placeStyleSearch1,
-    placeStyleSearch0,
-    placeStyleSearch3
-  } from '@/views/assets/js/map/Styles'
+import {
+  placeStyle,
+  placeStyleSearch1,
+  placeStyleSearch0,
+  placeStyleSearch3
+} from '@/views/assets/js/map/Styles'
 
-  import {
-    CSV2JSON,
-    CSVToArray,
-    getUrl
-  } from '@/views/assets/js/map/multiplegeocode'
+import {
+  CSV2JSON,
+  CSVToArray,
+  getUrl
+} from '@/views/assets/js/map/multiplegeocode'
 
-  import {
-    overlayGroupGeolocation
-  } from '@/views/assets/js/map/overlayGroup'
+import {
+  overlayGroupGeolocation
+} from '@/views/assets/js/map/overlayGroup'
 
-  export default {
-    data () {
-      return {
-        inputSearch: '',
-        multigeocoding: false,
-        placesList: [],
-        geojson: '',
-        csvjson: '',
-        loading: null,
-        headers: [],
-        street: '',
-        numberAddress: '',
-        year: '',
+export default {
+  data() {
+    return {
+      inputSearch: '',
+      multigeocoding: false,
+      placesList: [],
+      geojson: '',
+      file: null,
+      csvjson: '',
+      loading: null,
+      headers: [],
+      street: '',
+      numberAddress: '',
+      year: '',
+      showDownloadButton: false
+    }
+  },
+  computed: {
+    ...mapState('map', ['boxGeocoding', 'boxSubtitle']),
+
+    fileName(){
+      // get the file name, without the extension (i.e. without the `.csv`)
+      let fileName = this.file === null ? null : this.file.name.split('.')[0]
+
+      // if there is a `file`, then it returns the file name, by removing white spaces and special chars
+      return fileName === null ? 'default' : fileName.trim().replace(/ /g, '_').toLowerCase().replace(/[^\w]/gi, "")
+    }
+  },
+  async mounted(){
+    try {
+      let response = await ApiMap.getPlacesList()
+      this.placesList = response.data
+    } catch(_) {
+      this.$alert('Serviço de GEOCODING indisponível, tente mais tarde ou comunique nosso suporte!', 'Erro Interno', {
+        confirmButtonText: 'OK',
+        type: 'error'
+      })
+    }
+  },
+  methods: {
+    setting() {
+      this.multigeocoding = !this.multigeocoding
+    },
+    querySearch(queryString, cb) {
+      let links = this.placesList
+      let results = queryString ? links.filter( link => link.toLowerCase().indexOf(queryString.toLowerCase()) >= 0 ) : links
+      cb(results)
+    },
+    handleSelect(item) {
+      this.inputSearch = item
+    },
+    handleFileChange(event) {
+      this._openFullScreen()
+
+      // add default values
+      this.headers = []
+      this.showDownloadButton = false
+
+      this.file = event.target.files[0]
+      this.$emit('input', this.file)
+
+      let reader = new FileReader()
+
+      reader.onload = async file => {
+        let text = reader.result;
+        let node = document.getElementById('output')
+        let csv = text.replace('\r','')
+        let headers = csv.split('\n')[0].split(',')
+
+        // check if there is some blank header
+        if (headers.some(e => e === '')) {
+          this._msgError('Há nome de coluna(s) (i.e. cabeçalho(s)) em branco. Dê um nome a ela(s) ou remova-a(s)!')
+          return
+        }
+
+        this.headers = headers
+        //this.headers = csv.split('\n')[0].split(',').map( header => header.substr(header.indexOf('"')+1, header.lastIndexOf('"')-1).replace('"', '') )
+        this.csvjson = CSV2JSON(csv)
+
+        this.loading.close()
       }
+      reader.readAsText(event.target.files[0])
     },
+    async visualizar() {
+      console.log('\n visualizar()')
+      console.log('this.headers: ', this.headers)
+      console.log('this.csvjson: ', this.csvjson)
 
-    computed: {
-      ...mapState('map', ['boxGeocoding', 'boxSubtitle'])
-    },
+      this._openFullScreen()
 
-    async mounted () {
+      let json = JSON.parse(this.csvjson)
+      let jsonResults = []
+      let jsonErros = "Erros: \n \n"
+      let CsvTotalStatus = "Status da busca de endereços via CSV: \n \n"
+      let errosCount = 0
+
+      for (let i = 0; i < json.length; i++) {
+        let address = json[i][this.street].toLowerCase()+", "+json[i][this.numberAddress]+", "+json[i][this.year];
+
+        console.log(address)
+
+        try {
+          let response = await ApiMap.geolocationOne(address);
+
+          if (response.data[1][0].name != "Point not found") {
+            let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'"'+"}]");
+            let geomPoint = response.data[1][0].geom.substr(response.data[1][0].geom.indexOf("(")+1);
+            geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
+
+            let x = parseFloat(geomPoint.split(' ')[0]);
+            let y = parseFloat(geomPoint.split(' ')[1]);
+            let geom = ('{'+'"geom":'+'['+x +','+y+'], "confidence":'+response.data[1][0].confidence+'}');
+
+            console.log(geom)
+
+            let jsonAddress = JSON.parse(geom);
+            let jsonSlice = json[i];
+            let results = Object.assign(jsonSlice, jsonAddress);
+
+            jsonResults.push(JSON.stringify(results));
+
+            if (response.data[1][0].confidence == 1){
+              let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" foi Encontrado. \n'
+              CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
+
+            } else if (response.data[1][0].confidence == 0){
+              let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" foi Extrapolado espacialmente. \n'
+              CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
+
+            } else {
+              let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" foi Geocodificado. \n'
+              CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
+            }
+
+          } else {
+            errosCount = errosCount + 1
+            let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" não foi encontrado. \n'
+            jsonErros = jsonErros.concat(erro);
+          }
+        } catch (_) {
+          errosCount = errosCount + 1
+          let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" não foi encontrado. \n'
+          jsonErros = jsonErros.concat(erro);
+        }
+      }
+
+      if (errosCount > 0) {
+        alert(jsonErros)
+      }
+
+      alert(CsvTotalStatus)
+
+      let textJsonResults = ('['+jsonResults+']');
+      let final = JSON.parse(textJsonResults);
+      let resultGeoJSON = GeoJSON.parse(final, {'Point': "geom"});
+      this.geojson = resultGeoJSON
+
       try {
-        let response = await ApiMap.getPlacesList()
-        this.placesList = response.data
-      } catch (_) {
-        this.$alert('Serviço de GEOCODING indisponível, tente mais tarde ou comunique nosso suporte!', 'Erro Interno', {
+        let vectorLayer = new ol.layer.Vector({
+          title: "multipligeolocation",
+          source: new ol.source.Vector({
+            features: (new ol.format.GeoJSON()).readFeatures(resultGeoJSON)
+          }),
+          name: 'placesSearchMultiple',
+          style: placeStyleSearch1,
+          zIndex: 999
+        });
+
+        overlayGroupGeolocation.getLayers().clear()
+        overlayGroupGeolocation.getLayers().push(vectorLayer)
+
+        this.loading.close()
+        this.showDownloadButton = true
+
+      } catch (error) {
+        this.$alert('Não foi possível ler o arquivo CSV', 'Erro no arquivo', {
           confirmButtonText: 'OK',
           type: 'error'
         });
+        this.loading.close()
       }
     },
-
-    methods: {
-      setting () {
-        this.multigeocoding = !this.multigeocoding
-      },
-      querySearch (queryString, cb) {
-        let links = this.placesList
-        let results = queryString ? links.filter(link => link.toLowerCase().indexOf(queryString.toLowerCase()) >= 0) : links
-        cb(results)
-      },
-      handleSelect (item) {
-        this.inputSearch = item
-      },
-      handleFileChange (e) {
-        this._openFullScreen()
-        let vm = this
-
-        this.$emit('input', e.target.files[0])
-        let reader = new FileReader();
-        reader.onload = async _ => {
-          let text = reader.result;
-          let node = document.getElementById('output');
-          let csv = text.replace('\r', '');
-          this.headers = csv.split('\n')[0].split(',')
-          //this.headers = csv.split('\n')[0].split(',').map( header => header.substr(header.indexOf('"')+1, header.lastIndexOf('"')-1).replace('"', '') )
-          this.csvjson = CSV2JSON(csv);
-          this.loading.close();
+    download(){
+      let options = {
+        folder: 'myshapes',
+        types: {
+          point: this.fileName
         }
-        reader.readAsText(e.target.files[0]);
-      },
-      async visualizar () {
-        console.log(this.headers)
-        console.log(this.csvjson)
-        this._openFullScreen()
-        let json = JSON.parse(this.csvjson);
-        let jsonResults = [];
-        let jsonErros = "Erros: \n \n";
-        let CsvTotalStatus = "Status da busca de endereços via CSV: \n \n"
-        let errosCount = 0;
-        for (let i = 0; i < json.length; i++) {
-          let address = json[i][this.street].toLowerCase() + ", " + json[i][this.numberAddress] + ", " + json[i][this.year];
-          console.log(address)
-          try {
-            let response = await ApiMap.geolocationOne(address);
-            if (response.data[1][0].name != "Point not found") {
-              let textAddress = ("[{" + '"address":' + '"' + json[i][this.street] + ", " + json[i][this.numberAddress] + ", " + json[i][this.year] + '"' + "}]");
-              let geomPoint = response.data[1][0].geom.substr(response.data[1][0].geom.indexOf("(") + 1);
-              geomPoint = geomPoint.substr(0, geomPoint.indexOf(")"));
-              let x = parseFloat(geomPoint.split(' ')[0]);
-              let y = parseFloat(geomPoint.split(' ')[1]);
-              let geom = ('{' + '"geom":' + '[' + x + ',' + y + '], "confidence":' + response.data[1][0].confidence + '}');
-              console.log(geom)
-              let jsonAddress = JSON.parse(geom);
-              let jsonSlice = json[i];
-              let results = Object.assign(jsonSlice, jsonAddress);
-              jsonResults.push(JSON.stringify(results));
+      }
+      shpwrite.download(this.geojson, options);
+    },
+    closeBox() {
+      this.$store.dispatch('map/setBoxGeocoding', false)
+    },
+    async search () {
+      try {
+        //this._openFullScreen()
+        let regex = new RegExp(/\s*,( )*\d{4}/);
+        let search = this.inputSearch.replace(/( )+/g, ' ');
 
-              if (response.data[1][0].confidence == 1) {
+        if (regex.test(search)) {
+          const result = await ApiMap.geolocationOne(search)
 
-                let currentStatus = 'O endereço "' + json[i][this.street] + ", " + json[i][this.numberAddress] + ", " + json[i][this.year] + '" foi Encontrado. \n'
-                CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
-
-              } else if (response.data[1][0].confidence == 0) {
-
-                let currentStatus = 'O endereço "' + json[i][this.street] + ", " + json[i][this.numberAddress] + ", " + json[i][this.year] + '" foi Extrapolado espacialmente. \n'
-                CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
-
-              } else {
-
-                let currentStatus = 'O endereço "' + json[i][this.street] + ", " + json[i][this.numberAddress] + ", " + json[i][this.year] + '" foi Geocodificado. \n'
-                CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
-
-              }
-
-            } else {
-
-              errosCount = errosCount + 1
-              let erro = 'O endereço "' + json[i][this.street] + ", " + json[i][this.numberAddress] + ", " + json[i][this.year] + '" não foi encontrado. \n'
-              jsonErros = jsonErros.concat(erro);
-
-            }
-          } catch (_) {
-
-            errosCount = errosCount + 1
-            let erro = 'O endereço "' + json[i][this.street] + ", " + json[i][this.numberAddress] + ", " + json[i][this.year] + '" não foi encontrado. \n'
-            jsonErros = jsonErros.concat(erro);
-
-          }
-        }
-
-        if (errosCount > 0) {
-          alert(jsonErros)
-        }
-
-        alert(CsvTotalStatus)
-
-        let textJsonResults = ('[' + jsonResults + ']');
-        let final = JSON.parse(textJsonResults);
-        let resultGeoJSON = GeoJSON.parse(final, {'Point': "geom"});
-        this.geojson = resultGeoJSON
-
-        try {
-
-          let vectorLayer = new ol.layer.Vector({
-            title: "multipligeolocation",
-            source: new ol.source.Vector({
-              features: (new ol.format.GeoJSON()).readFeatures(resultGeoJSON)
-            }),
-            name: 'placesSearchMultiple',
-            style: placeStyleSearch1,
-            zIndex: 999
-          });
-          overlayGroupGeolocation.getLayers().clear()
-          overlayGroupGeolocation.getLayers().push(vectorLayer)
-
-          this.loading.close()
-
-        } catch (error) {
-          this.$alert('Não foi possível ler o arquivo CSV', 'Erro no arquivo', {
-            confirmButtonText: 'OK',
-            type: 'error'
-          });
-          this.loading.close()
-        }
-      },
-      download () {
-        var options = {
-          folder: 'myshapes',
-          types: {
-            point: 'mypoints'
-          }
-        }
-        shpwrite.download(this.geojson, options);
-      },
-      closeBox () {
-        this.$store.dispatch('map/setBoxGeocoding', false)
-      },
-      async search () {
-
-        try {
-
-          //this._openFullScreen()
-          let regex = new RegExp(/\s*,( )*\d{4}/);
-          let search = this.inputSearch.replace(/( )+/g, ' ');
-
-          if (regex.test(search)) {
-            const result = await ApiMap.geolocationOne(search)
-
-            if (result.data[1][0].geom == undefined) {
-
-              let text = "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" + search + ")"
-
-              this.$alert(text, 'Erro', {
-                dangerouslyUseHTMLString: true,
-                confirmButtonText: 'OK',
-                type: 'error'
-              });
-              this.loading.close()
-            }
-
-            if (result.data[1][0].geom != undefined) {
-
-              let myStyle = placeStyleSearch1
-              //console.log(result.data[1][0].confidence)
-              if (result.data[1][0].confidence == 1) {
-                //console.log('1')
-                myStyle = placeStyleSearch1
-              } else {
-                if (result.data[1][0].confidence == 0) {
-                  //console.log('0')
-                  myStyle = placeStyleSearch0
-                } else {
-                  //console.log('0-1')
-                  myStyle = placeStyleSearch3
-                  //console.log(myStyle)
-                }
-              }
-
-              this.$store.dispatch('map/setBoxSubtitle', true)
-
-              let coordPoint = result.data[1][0].geom.substring(6).replace(")", "").split(" ")
-              let feature = new ol.Feature(new ol.geom.Point(coordPoint))
-              let layerSearch = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                  features: [feature]
-                }),
-                name: 'placesSearch',
-                style: myStyle,
-                zIndex: 999
-              });
-              overlayGroupGeolocation.getLayers().clear()
-              overlayGroupGeolocation.getLayers().push(
-                layerSearch
-              )
-              let extent = ol.extent.createEmpty();
-              ol.extent.extend(extent, feature.getGeometry().getExtent());
-              this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
-              //this.loading.close()
-            }
-          } else {
-
-            this.$alert('<strong>Pesquise por:</strong> rua, número, ano (0000)', 'Formato inválido', {
-              dangerouslyUseHTMLString: true,
-              confirmButtonText: 'OK',
-              type: 'warning'
-            });
-            this.loading.close()
-          }
-
-        } catch (error) {
-
-          if (error.response != undefined && error.response.data != undefined && error.response.data[1][0].alertMsg != undefined) {
-
-            this.$alert(error.response.data[1][0].alertMsg, 'Erro', {
-              dangerouslyUseHTMLString: true,
-              confirmButtonText: 'OK',
-              type: 'error'
-            });
-            this.loading.close()
-          } else {
-
+          if(result.data[1][0].geom == undefined) {
             let text = "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" + search + ")"
 
             this.$alert(text, 'Erro', {
@@ -366,19 +323,98 @@
             });
             this.loading.close()
           }
+
+          if (result.data[1][0].geom != undefined) {
+            let myStyle = placeStyleSearch1
+            //console.log(result.data[1][0].confidence)
+            if (result.data[1][0].confidence == 1){
+                //console.log('1')
+                myStyle = placeStyleSearch1
+            } else {
+              if (result.data[1][0].confidence == 0){
+                //console.log('0')
+                myStyle = placeStyleSearch0
+              } else {
+                //console.log('0-1')
+                myStyle = placeStyleSearch3
+                //console.log(myStyle)
+              }
+            }
+
+            this.$store.dispatch('map/setBoxSubtitle', true)
+
+            let coordPoint = result.data[1][0].geom.substring(6).replace(")", "").split(" ")
+            let feature = new ol.Feature(new ol.geom.Point(coordPoint))
+            let layerSearch = new ol.layer.Vector({
+              source: new ol.source.Vector({
+                  features: [feature]
+              }),
+              name: 'placesSearch',
+              style: myStyle,
+              zIndex: 999
+            });
+            overlayGroupGeolocation.getLayers().clear()
+            overlayGroupGeolocation.getLayers().push(
+                layerSearch
+            )
+            let extent = ol.extent.createEmpty();
+            ol.extent.extend(extent, feature.getGeometry().getExtent());
+            this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
+            //this.loading.close()
+          }
+        } else {
+          this.$alert('<strong>Pesquise por:</strong> rua, número, ano (0000)', 'Formato inválido', {
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: 'OK',
+            type: 'warning'
+          });
+          this.loading.close()
         }
-      },
-      _openFullScreen () {
-        this.loading = this.$loading({
-          lock: true,
-          text: 'Geocodificando',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        });
+      } catch (error) {
+        if(error.response != undefined && error.response.data != undefined && error.response.data[1][0].alertMsg != undefined) {
+
+          this.$alert(error.response.data[1][0].alertMsg, 'Erro', {
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: 'OK',
+            type: 'error'
+          });
+          this.loading.close()
+
+        } else {
+          let text = "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" + search + ")"
+
+          this.$alert(text, 'Erro', {
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: 'OK',
+            type: 'error'
+          });
+          this.loading.close()
+        }
       }
+    },
+    _openFullScreen() {
+      this.loading = this.$loading({
+        lock: true,
+        text: 'Geocodificando',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+    },
+    _msgError(msg){
+      if(this.loading != '' && this.loading != null)
+        this.loading.close()
+
+      this.$message.error({
+        message: msg,
+        center: true,
+        duration: 10000,
+        showClose: true,
+      })
     }
   }
+}
 </script>
+
 
 <style lang="sass">
   .box
@@ -434,7 +470,6 @@
 
     .btn-download:hover
       background: rgba(#f15a29, 0.7)
-
 
     .box-multigeocoding
       width: 100%

@@ -1,93 +1,107 @@
 <template>
   <p-dash-layout :title="$t('dashboard.nav.layer')">
     <div class="row">
-    
+
+      <!-- new layer -->
       <div class="col-sm-12" v-if="shapeCorrect === false">
         <div class="card">
           <div class="card-body">
             <h6 class="mb-0">{{ $t('dashboard.nav.newLayer') }}</h6><br>
-              
+
             <form class="row">
+
+              <!-- left form -->
               <div class="card-left col-sm-6">
                 <div class="form-row">
+                  <!-- name -->
                   <div class="form-group col-md-6">
                     <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.nameD')" />
-                    <input :value="name" @blur="saveName()" class="form-control"  id="inputName"><!--placeholder="Name">-->
+                    <input v-model="name" @blur="saveName()" class="form-control" id="inputName"><!--placeholder="Name">-->
                   </div>
 
+                  <!-- keywords -->
                   <div class="form-group col-md-6">
                     <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
                     <p-popover-labels :text="$t('dashboard.newLayer.keywordsD')" />
                     <button @click="newKeyword()" class="btn btn-outline-warning btn-sm add" type="button">
                       <md-icon>add_circle_outline</md-icon>
                     </button>
-                    <v-select :options="keywords" @blur="saveKeywords()" id="keywordsSelect" label="name" multiple
-                      track-by="name" v-model="chosenKeywords">
+                    <v-select :options="allKeywords" @blur="saveKeywords()" id="keywordsSelect" label="name" multiple
+                      track-by="name" v-model="selectedKeywords">
                     </v-select>
                   </div>
                 </div>
 
-
+                <!-- collaborators -->
                 <div class="form-group">
                   <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.collaboratorsD')" />
-                  <v-select :options="users" @blur="saveUsers()" id="userSelect" label="username" multiple
-                      track-by="username" v-model="chosenUsers"></v-select>
+                  <v-select v-model="selectedCollaborators" :options="users" @blur="saveCollaborators()" id="userSelect"
+                      label="username" track-by="username" multiple
+                  ></v-select>
                 </div>
 
+                <!-- description -->
                 <div class="form-group">
                   <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.descriptionD')" />
-                  <textarea :value="description" @blur="saveDescription()" class="form-control" id="inputDescription" rows="3"> </textarea>
+                  <textarea v-model="description" @blur="saveDescription()" class="form-control" id="inputDescription" rows="3"> </textarea>
                 </div>
 
+                <!-- reference -->
                 <div class="form-group">
                   <label for="inputReference">{{ $t('dashboard.newLayer.reference') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.referenceD')" />
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <textarea class="form-control" id="inputReference" rows="3" v-model="auxRef"></textarea>
+                      <textarea class="form-control" id="inputReference" rows="3"
+                                v-model="reference_description"
+                      ></textarea>
                     </div>
                     <div class="form-group  col-md-12">
-                      <a @click="addRef()" class="btn styleBtn" style="position: relative; float: right">{{ $t('dashboard.newLayer.add') }}</a>
+                      <a @click="addReference()" class="btn styleBtn" style="position: relative; float: right">{{ $t('dashboard.newLayer.add') }}</a>
                     </div>
                   </div>
                 </div>
 
-                <div class="form-group" v-show="chosenRef.length !== 0">
+                <!-- added references -->
+                <div class="form-group" v-show="selectedReferences.length !== 0">
                   <label for="inputReference">{{ $t('dashboard.newLayer.addedReferences') }}</label>
                   <ol>
-                    <li :key="index" v-for="(t, index) in chosenRef">
-                      {{ t.description }}
+                    <li v-for="reference in selectedReferences" :key="reference.reference_id">
+                      {{ reference.description }}
                       &nbsp;&nbsp;&nbsp;&nbsp;
-                      <button @click="removeRef(index)" class="btn btn-outline-danger btn-sm del" type="button">
+                      <button @click="removeReference(reference.reference_id)" class="btn btn-outline-danger btn-sm del" type="button">
                         <md-icon>clear</md-icon>
                       </button>
                     </li>
                   </ol>
                 </div>
-              </div><!--end card left-->
+              </div>
 
+              <!-- right form -->
               <div class="card-right col-sm-6">
-                <div class="btn styleBtn" style="padding-left: 50px; padding-right: 50px; margin-bottom: 30px">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</div>
+                <div class="btn styleBtn" style="padding-left: 50px; padding-right: 50px; margin-bottom: 30px">
+                  {{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}
+                </div>
                 <!--<div class="box-radio">-->
                   <!--<el-radio-group v-model="typeSubmit">-->
                     <!--<el-radio-button label="file">{{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}</el-radio-button>-->
                     <!--<el-radio-button label="input">{{ $t('dashboard.newLayer.mountLayer.btnRadio.create') }}</el-radio-button>-->
                   <!--</el-radio-group>-->
                 <!--</div>-->
-                
+
                 <div class="box-layer-file" v-if="typeSubmit == 'file'">
                   <label for="Upload">{{ $t('dashboard.newLayer.fileInput') }}</label>&nbsp;
-                  <p-popover-labels :text="$t('dashboard.newLayer.fileInputD')" />                  
+                  <p-popover-labels :text="$t('dashboard.newLayer.fileInputD')" />
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text">{{ $t('dashboard.newLayer.zipFile') }}</span>
                     </div>
                     <div class="custom-file">
-                      <input @change="updateName()" accept=".zip" class="custom-file-input" id="Upload" type="file">
-                      <label class="custom-file-label" for="Upload">{{fname}}</label>
+                      <label class="custom-file-label" for="Upload">{{ file.name }}</label>
+                      <input @change="processFile($event)" accept=".zip" class="custom-file-input" id="Upload" type="file">
                     </div>
                   </div>
                 </div> <!--end box-file-->
@@ -156,15 +170,20 @@
                   </div>
                 </div><!--end box-input-->
 
-                <button @click="Upload()" class="btn styleBtn" style="color: #FFF; margin-right: 15px; float: right" type="button"> {{ $t('dashboard.newLayer.submit') }}</button>
-              </div><!--end card right-->
+                <button @click="Upload()" class="btn styleBtn" type="button"
+                        style="color: #FFF; margin-right: 15px; float: right">
+                  {{ $t('dashboard.newLayer.submit') }}
+                </button>
+              </div>
+
             </form>
 
           </div>
         </div>
-      </div><!--end box newLayer-->
+      </div>
 
-      <div class="col-sm-6"><!--start bounding box temporal-->
+      <!-- temporal bounding box -->
+      <div class="col-sm-6">
         <div class="card" v-if="shapeCorrect">
           <div class="card-body">
             <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
@@ -172,7 +191,7 @@
               <form>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
+                    <label for="start_date">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
                     <input class="form-control" id="start_date" type="date" v-model="startDate">
                   </div>
@@ -187,14 +206,14 @@
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
-                    <v-select :options="dateMask" id="start_date_mask" label="mask" track-by="mask"
+                    <v-select :options="allMasks" id="start_date_mask" label="mask" track-by="mask"
                               v-model="startDateMask"></v-select>
                   </div>
                 </div>
-                
+
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
+                    <label for="end_date">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
                     <input class="form-control" id="end_date" type="date" v-model="endDate">
                   </div>
@@ -209,7 +228,7 @@
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
-                    <v-select :options="dateMask" id="end_date_mask" label="mask" track-by="mask"
+                    <v-select :options="allMasks" id="end_date_mask" label="mask" track-by="mask"
                               v-model="endDateMask"></v-select>
                   </div>
                 </div>
@@ -226,7 +245,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </p-dash-layout>
 </template>
@@ -247,37 +266,66 @@
   // configure language
   locale.use(lang)
 
+  function doesTheStringHaveSpecialChars(string) {
+    /*
+    To be a valid string, it must:
+    - start with a character without number (i.e. '^[a-zA-Z_]')
+    - end with a character that can have numbers (i.e. '[a-zA-Z0-9_]+$')
+    - have one or more occurrences of that letter (i.e. '+')
+    - not have special characters (i.e. '^[a-zA-Z_]+[a-zA-Z0-9_]+$')
+
+    Return: `True` if the string has some special character, else it returns `False`
+    */
+
+    let english_checker = /^[a-zA-Z_]+[a-zA-Z0-9_]+$/
+
+    return !(english_checker.test(string))
+  }
+
   export default {
     name: "newLayer",
-
-    components: {
-      "p-dash-layout": DashLayout,
-      "p-popover-labels": PopoverLabels
-    },
-
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
-      ...mapState('dashboard', ['name', 'key', 'ref', 'refId', 'usersSaved', 'description'])
-    },
 
+      // rename the default name
+      ...mapState({
+        storedName: state => state.dashboardNewLayer.name,
+        storedSelectedKeywords: state => state.dashboardNewLayer.selectedKeywords,
+        storedSelectedCollaborators: state => state.dashboardNewLayer.selectedCollaborators,
+        storedDescription: state => state.dashboardNewLayer.description,
+        storedSelectedReferences: state => state.dashboardNewLayer.selectedReferences,
+        // storedFile: state => state.dashboardNewLayer.file
+      }),
+
+      fTableName(){
+        let tTableName = this.name.trim().replace(/ /g, '_').toLocaleLowerCase()
+
+        // Replace accent letters by simple ones.
+        // Source: https://stackoverflow.com/a/37511463
+        return tTableName.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      }
+    },
     data() {
       return {
-        tableName: null,
-        chosenUsers: [],
-        references: [],
-        chosenRef: [],
-        chosenRefID: [],
-        auxRef: null,
+        // layer form
+        name: '',
+        allKeywords: [],
+        selectedKeywords: [],
         users: [],
-        keywords: [],
-        chosenKeywords: [],
-        chosenKeywordsID: [],
-        fname: this.$t('dashboard.newLayer.chooseFile'),
+        selectedCollaborators: [],
+        description: '',
+        reference_description: null,
+        selectedReferences: [],
+        file: {
+          name: this.$t('dashboard.newLayer.chooseFile')
+        },
+
+        // temporal columns form
         columns: null,
         columnsName: [],
         startColumnsName: null,
         endColumnsName: null,
-        dateMask: [],
+        allMasks: [],
         startDateMask: null,
         endDateMask: null,
         startDate: null,
@@ -286,7 +334,6 @@
         fullscreenLoading: false,
         typeSubmit: 'file',
         layer_id: null,
-        is_the_admin: false,
         loading: '',
         finished: 1,
         visibleRemove: false,
@@ -319,337 +366,309 @@
         }]
       }
     },
-
     mounted() {
-      const vm = this
-
       this.shapeCorrect = false
-      Api().get('/api/user').then(function (response) { //Pegando as informações de todos os usuários
-        response.data.features.filter(e => {
-          if (e.properties.user_id !== vm.user.user_id)
-            vm.users.push(e.properties)
+
+      // get the information of all users, except the current one
+      Api().get('/api/user').then(response => {
+        response.data.features.forEach(u => {
+          if (u.properties.user_id !== this.user.user_id)
+            this.users.push(u.properties)
         })
       })
 
-      Api().get('/api/keyword').then(function (response) {  //Pegando todas as keywords
-        response.data.features.filter(e => {
-          vm.keywords.push({name: e.properties.name, keyword_id: e.properties.keyword_id})
-        })
+      // get all the available keywords
+      Api().get('/api/keyword').then(response => {
+        this.allKeywords = response.data.features.map(k => k.properties)
       })
 
-      Api().get('/api/mask').then(function (response) {     //Pegando as informações de todas as máscaras
-        response.data.features.filter(e => {
-          vm.dateMask.push(e.properties)
-        })
-        //console.log(vm.dateMask)
+      // get all the available masks
+      Api().get('/api/mask').then(response => {
+        this.allMasks = response.data.features.map(m => m.properties)
       })
 
-      this.is_the_admin = this.user.is_the_admin
-      this.chosenKeywords =  this.key
-      this.chosenRef = this.ref
-      this.chosenRefID = this.refId
-      this.chosenUsers = this.usersSaved
-
+      // get the stored properties
+      this.name = this.storedName
+      this.selectedKeywords =  this.storedSelectedKeywords
+      this.selectedReferences = this.storedSelectedReferences
+      this.selectedCollaborators = this.storedSelectedCollaborators
+      this.description = this.storedDescription
+      // this.file = this.storedFile
     },
     methods: {
       newKeyword() {
-        this.saveName()
-        //Limpar valores: this.$store.dispatch('dashboard/setName',  "")
+        // all form information is stored in the state by the "@blur"s in the template (e.g. `@blur="saveName()"`)
+
         this.$router.push({
           name: 'Keyword',
           params: {name: 'NewLayer'}
         })
-
       },
-      clearData(){        //Limpa os dados do Store
-        this.$store.dispatch('dashboard/setName',  "")
-        this.$store.dispatch('dashboard/setUsers',  [])
-        this.$store.dispatch('dashboard/setReferences',  [])
-        this.$store.dispatch('dashboard/setRefId',  [])
-        this.$store.dispatch('dashboard/setKeywords',  [])
-        this.$store.dispatch('dashboard/setDescription',  "")
+      clearData(){
+        // this method cleans the store data
+
+        this.$store.dispatch('dashboardNewLayer/setName',  '')
+        this.$store.dispatch('dashboardNewLayer/setKeywords',  [])
+        this.$store.dispatch('dashboardNewLayer/setCollaborators',  [])
+        this.$store.dispatch('dashboardNewLayer/setDescription',  '')
+        this.$store.dispatch('dashboardNewLayer/setReferences',  [])
       },
       saveName(){ //Salvar os dados no Store
-        this.$store.dispatch('dashboard/setName',  document.getElementById("inputName").value)
-      },
-      saveUsers(){  //Salvar os dados no Store
-        this.$store.dispatch('dashboard/setUsers',  this.chosenUsers)
-      },
-      saveReferences(){ //Salvar os dados no Store
-        this.$store.dispatch('dashboard/setReferences',  this.chosenRef)
-        this.$store.dispatch('dashboard/setRefId',  this.chosenRefID)
-      },
-      saveDescription(){  //Salvar os dados no Store
-        this.$store.dispatch('dashboard/setDescription',  document.getElementById("inputDescription").value)
+        this.$store.dispatch('dashboardNewLayer/setName', this.name)
       },
       saveKeywords(){ //Salvar os dados no Store
-        this.$store.dispatch('dashboard/setKeywords',  this.chosenKeywords)
+        this.$store.dispatch('dashboardNewLayer/setKeywords', this.selectedKeywords)
       },
-      updateName() {  //Salvar os dados no Store
-        this.fname = document.getElementById("Upload").files[0].name
+      saveCollaborators(){  //Salvar os dados no Store
+        this.$store.dispatch('dashboardNewLayer/setCollaborators',  this.selectedCollaborators)
       },
-      Upload2(){  //Cadastrar a segunda parte da camada - time column
-        const vm = this
-        this._openFullLoading()
-
-        if(this.startDate === null || this.endDate === null) {
-          this._msgError("Datas são necessárias")
-        }
-        else {
-          vm.timeout_upload()
-
-          let timeColumn = {
-            'properties': {
-              'f_table_name': this.tableName,
-              'start_date': this.startDate,
-              'end_date': this.endDate,
-              'end_date_column_name': this.endColumnsName!=null ? this.endColumnsName[0] : null,
-              'start_date_column_name': this.startColumnsName!=null ? this.startColumnsName[0] : null,
-              'start_date_mask_id': this.startDateMask!=null ? this.startDateMask.mask_id : null,
-              'end_date_mask_id': this.endDateMask!=null ? this.endDateMask.mask_id : null,
-            },
-            'type': 'TemporalColumns'
-          }
-          Api().post('/api/temporal_columns/create',
-            timeColumn
-          ).then(function (response) {
-            vm.loading.close()
-            vm.$message.success("A layer foi adicionada com sucesso!")
-            vm.finished = 1
-            vm.$router.push({
-              path: '/dashboard/home'
-            })
-          }, function (cause) {
-            Api().delete('/api/layer/'+vm.layer_id)
-            vm.loading.close()
-            let msg = ''
-            if (cause.response.status === 403) msg = "Apenas o dono da camada ou administrador pode criar/atualizar uma coluna de tempo."
-            else if (cause.response.status === 401) msg = "Você não tem permissão. É necessário uma autorização válida!"
-            else msg = cause.toString()
-            vm.finished = 1
-            vm._msgError(msg)
-          })
-        }
-
+      saveDescription(){  //Salvar os dados no Store
+        this.$store.dispatch('dashboardNewLayer/setDescription',  this.description)
+      },
+      saveReferences(){ //Salvar os dados no Store
+        this.$store.dispatch('dashboardNewLayer/setReferences', this.selectedReferences)
+      },
+      // saveFile(){ //Salvar os dados no Store
+      //   this.$store.dispatch('dashboardNewLayer/setFile', this.file)
+      // },
+      processFile(event){
+        // I get the only one chose file
+        this.file = event.target.files[0]
       },
       timeout_upload(){ //Erro de estouro de tempo ao criar a nova camada
-        const vm = this
         this.finished = 0
 
         setTimeout(_=>{
-          if(vm.finished === 0){
-            Api().delete('/api/layer/'+vm.layer_id)
-            vm.loading.close();
-            vm._msgError("Timeout! Caso o erro persista entre em contato com os administradores da plataforma!")
+          if(this.finished === 0){
+            Api().delete('/api/layer/' + this.layer_id)
+            this.loading.close();
+            this._msgError("Timeout! Caso o erro persista entre em contato com os administradores da plataforma!")
           }
         }, 20000);
       },
-      Upload() {  //Cadastrar a primeira parte da Camada
+      Upload2(){  // cadastrar a segunda parte da camada - temporal columns
         this._openFullLoading()
-        const vm = this
 
-        this.chosenKeywordsID = []
-        this.chosenKeywords.forEach(e => {
-          this.chosenKeywordsID.push(e.keyword_id)
+        if ((this.startDate === null || this.endDate === null) || (this.startDate === "" || this.endDate === "")) {
+          this._msgError("O preenchimento das datas é obrigatório!")
+          return;
+        }
+
+        this.timeout_upload()
+
+        let temporalColumns = {
+          'properties': {
+            'f_table_name': this.fTableName,
+            'start_date': this.startDate,
+            'end_date': this.endDate,
+            'start_date_column_name': this.startColumnsName,
+            'end_date_column_name': this.endColumnsName,
+            'start_date_mask_id': (this.startDateMask != null && 'mask_id' in this.startDateMask) ? this.startDateMask.mask_id : null,
+            'end_date_mask_id': (this.endDateMask != null && 'mask_id' in this.endDateMask) ? this.endDateMask.mask_id : null,
+          },
+          'type': 'TemporalColumns'
+        }
+
+        Api().post('/api/temporal_columns/create', temporalColumns).then(response => {
+          this.loading.close()
+          this.$message.success("A camada foi adicionada com sucesso!")
+          this.finished = 1
+          this.$router.push({path: '/dashboard/home'})
+        }, cause => {
+          Api().delete('/api/layer/' + this.layer_id)
+
+          this.loading.close()
+          this.finished = 1
+
+          this._showErrorMessages(cause)
         })
 
-        let tableName2 = document.getElementById("inputName").value
-        //let epsg = document.getElementById("inputEpsg").value
-        if (tableName2.indexOf(' ') === 0) tableName2 = tableName2.slice(1)
-        if (tableName2.lastIndexOf(' ') === tableName2.length - 1) tableName2 = tableName2.slice(0, tableName2.length - 1)
-        tableName2 = tableName2.split(" ").join("_")
-        tableName2 = tableName2.toLocaleLowerCase()
-        this.tableName = tableName2
-
-        if(document.getElementById("inputName").value === '')
-          vm._msgError("O nome é necessário!")
-        else if(!/^[a-zA-Z]{1}\w/.test(this.tableName) || (/[^a-zA-Z0-9_]/.test(this.tableName))) {
-          vm._msgError("O nome da layer NÃO pode começar com 'número' e nem possuir 'acentuação'!")
-          console.log(this.tableName)
-        }
-        else if(this.chosenKeywordsID.length === 0)
-          vm._msgError("É necessário adicionar pelo menos uma palavra-chave!")
-
-        else {
-          if(vm.typeSubmit === 'file'){   //Importando o arquivo
-            let file = document.getElementById("Upload").files[0]
-            this.upload_from_file(file)
-          } else                          //Criando a camada em branco
-            this.upload_from_input()
-        } 
-
       },
-      async upload_from_file(file) {
-        const vm = this
+      Upload() {  //Cadastrar a primeira parte da Camada
+        this._openFullLoading()
 
-        if(file === undefined)
-          vm._msgError("Um arquivo é necessário")
-        else if(file.size > 104857600) //Colocar 50mb
-          vm._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
-          
-        else {
-          vm.timeout_upload()
+        if (this.name === '') {
+          this._msgError("O nome da camada é necessário!")
+
+        } else if (this.fTableName.length < 5 ||  this.fTableName.length > 63) {
+          this._msgError("O nome da camada deve ter entre 5 e 63 caracteres!")
+
+        } else if (doesTheStringHaveSpecialChars(this.fTableName)) {
+          this._msgError("O nome da camada NÃO pode começar com `número` e nem conter `caracteres especiais`!")
+
+        } else if (this.selectedKeywords.length === 0) {
+          this._msgError("É necessário adicionar pelo menos uma palavra-chave!")
+
+        } else {
+          if (this.typeSubmit === 'file') {   //Importando o arquivo
+            this.upload_from_file()
+          } else {                         //Criando a camada em branco
+            this.upload_from_input()
+          }
+        }
+      },
+      async upload_from_file() {
+
+        if (!('size' in this.file)) {
+          this._msgError("Um arquivo é necessário!")
+        } else if (this.file.size > 104857600) {  // 104857600 == 50mb
+          this._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
+        } else {
+          this.timeout_upload()
 
           try {
             let layer = {
               'type': 'Layer',
               'properties': {
                 'layer_id': -1,
-                'f_table_name': this.tableName,
-                'name': document.getElementById("inputName").value,
-                'description': document.getElementById("inputDescription").value,
-                'source_description': document.getElementById("inputDescription").value,
-                'reference': this.chosenRefID,
-                'keyword': this.chosenKeywordsID,
+                'f_table_name': this.fTableName,
+                'name': this.name,
+                'description': this.description,
+                'source_description': this.description,
+                'reference': this.selectedReferences.map(r => r.reference_id),
+                'keyword': this.selectedKeywords.map(k => k.keyword_id),
               }
             }
 
-            Api().post('/api/layer/create', layer).then(function (response) {   //Cadastrando nova Layer
-                vm.layer_id = response.data.layer_id
-                vm.chosenUsers.forEach(u => {
-                  let user_layer = {
-                    'properties': {
-                      'is_the_creator': 'false',
-                      'user_id': u.user_id,
-                      'layer_id': response.data.layer_id
-                    },
-                    'type': 'UserLayer'
-                  }
-                  Api().post('/api/user_layer/create',
-                    user_layer
-                  )
-                })
+            Api().post('/api/layer/create', layer).then(response => {   //Cadastrando nova Layer
+              this.layer_id = response.data.layer_id
+
+              this.selectedCollaborators.forEach(u => {
+                let user_layer = {
+                  'properties': {
+                    'is_the_creator': 'false',
+                    'user_id': u.user_id,
+                    'layer_id': response.data.layer_id
+                  },
+                  'type': 'UserLayer'
+                }
+
+                Api().post('/api/user_layer/create', user_layer)
+              })
+
               let changeset = {
                 'properties': {
                   'changeset_id': -1,
                   'layer_id': response.data.layer_id,
-                  'description': 'Creating layer_' + response.data.layer_id
+                  'description': 'Creating layer ' + response.data.layer_id
                 },
                 'type': 'Changeset'
               }
 
-              Api().post('/api/changeset/create', changeset).then(function (response) {   //Cadastrando Changeset
+              Api().post('/api/changeset/create', changeset).then(response => {
+                Api().post(
+                  'api/import/shp/?f_table_name=' + this.fTableName + '&file_name=' + this.file.name + '&changeset_id=' + response.data,
+                  this.file
+                ).then(response => {
+                  Api().get('/api/feature_table/?f_table_name=' + this.fTableName).then(response => {    //Pega as colunas do shapefile enviado
+                    response.data.features.filter(e => {
+                      this.columns = e.properties
 
-                  Api().post('api/import/shp/?f_table_name=' + vm.tableName + '&file_name=' + file.name + '&changeset_id=' + response.data.changeset_id, file).then(function (response) {   //Cadastrando o Import
-                      Api().get('/api/feature_table/?f_table_name=' + vm.tableName).then(function (response) {    //Pega as colunas do shapefile enviado
-                        response.data.features.filter(e => {
-                          vm.columns = e.properties
-                          Object.getOwnPropertyNames(e.properties).forEach(c => {
-                            if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') vm.columnsName.push(c)  //Adiciona as colunas do shapefile na variavel
-                          })
-                          vm.shapeCorrect = true;
-                          vm.loading.close();
-                          vm.clearData()
-                          vm.finished = 1
-                        })
-                      }, function (cause) {   //Erro ao ler a feature table
-                        Api().delete('/api/layer/'+vm.layer_id)
-                        vm.loading.close();
-
-                        let msg = ''
-                        msg = cause.toString()
-                        vm.finished = 1
-                        vm._msgError(msg)
+                      Object.getOwnPropertyNames(this.columns).forEach(column => {
+                        // add the shapefile file columns inside the property
+                        if (column !== 'geom' && column !== '__ob__' && column !== 'changeset_id')
+                          this.columnsName.push(column)
                       })
-                    }, function (cause) {     //Erro ao criar o import
-                      Api().delete('/api/layer/'+vm.layer_id)
-                      Api().delete('/api/changeset/?changeset_id='+response.data.changeset_id)
-                      vm.loading.close();
 
-                      let msg = ''
-                      if (cause.response.status === 400) msg = "1) ZIP inválido! É necessário existir um ShapeFile (.shp) dentro do ZIP." +
-                        "2) The Shapefile has an invalid attribute: . It has a special character. Please, rename it."
-                      else if (cause.response.status === 403) msg = "Just the owner of the layer or administrator can create/update a feature table or do a import."
-                      else if (cause.response.status === 404) msg = "Not found .prj inside the zip."
-                      else if (cause.response.status === 409) msg = "1) File is not a zip file." +
-                        "2) It was not possible to find one EPSG from the .prj." +
-                        "3) There is not a list of codes in the result. So it is an invalid .prj." +
-                        "4) The Shapefile has the 'version' or 'changeset_id' attribute. Please, rename them." +
-                        "5) Shapefile is not inside the default city of the project."
-                      else if (cause.response.status === 500) msg = "1) Problem when to import the Shapefile. Fiona was not able to read the Shapefile. One reason can be that the Shapefile has an empty column name, so name it." +
-                        "2) Some geometries of the Shapefile are with problem. Please, verify them and try to import again later." +
-                        "3) Problem when import a resource. Please, contact the administrator."
-                      else if (cause.response.status === 503) msg = "Problem with the prj2epsg web service."
-                      else msg = cause.toString()
+                      this.shapeCorrect = true;
+                      this.loading.close();
+                      this.clearData()
+                      this.finished = 1
+                    })
+                  }, cause => {
+                    // error in get('/api/feature_table')
 
-                      vm.finished = 1
-                      vm._msgError(msg)
+                    Api().delete('/api/layer/' + this.layer_id)
+
+                    this.loading.close()
+                    this.finished = 1
+
+                    this._showErrorMessages(cause)
                   })
-              }, function (cause) {           //Erro ao criar o changeset
-                Api().delete('/api/layer/'+vm.layer_id)
-                vm.loading.close();
+                }, cause => {
+                  // error `post('api/import/shp')`
 
-                let msg = ''
-                if (cause.response.status === 500) msg = "Problem when create a resource. Please, contact the administrator."
-                else msg = cause.toString()
-                vm.finished = 1
-                msg = cause.toString()
-                vm._msgError(msg)
+                  Api().delete('/api/layer/' + this.layer_id)
+
+                  this.loading.close()
+                  this.finished = 1
+
+                  this._showErrorMessages(cause)
+                })
+              }, cause => {
+                // error `post('/api/changeset/create')`
+
+                Api().delete('/api/layer/' + this.layer_id)
+
+                this.loading.close()
+                this.finished = 1
+
+                this._showErrorMessages(cause)
               })
-            }, function (cause) {           //Erro ao criar a layer
-              let msg = ''
-              vm.finished = 1
-              vm.loading.close();
-              if (cause.response.status === 409) msg = "1) The table name already exist or is a reserved word. Please, rename it. 2) The maximum of keywords allowed to a layer are 5."
-              else if (cause.response.status === 500) msg = "Problem when create a resource. Please, contact the administrator."
-              else if (cause.response.status === 401) msg = "É necessário uma autorização válida!"
-              else msg = cause.toString()
-              vm._msgError(msg)
+            }, cause => {
+              // error `.post('/api/layer/create'`
+
+              this.finished = 1
+              this.loading.close();
+
+              this._showErrorMessages(cause)
             })
 
           } catch (error) {
-            this.$alert("Erro ao criar a camada, confira as informações inseridas. Caso o erro persista entre em contato com os administradores da plataforma!", "Erro ao cadastrar", {
+            this.$alert(
+              "Erro ao criar a camada, confira as informações inseridas. Caso o erro persista entre em contato com os administradores da plataforma!",
+              "Erro ao cadastrar",
+              {
                 dangerouslyUseHTMLString: true,
                 confirmButtonText: 'OK',
                 type: 'error'
-            });
-            vm.finished = 1
+              }
+            );
+            this.finished = 1
             this.loading.close()
           }
         }
       },
       async upload_from_input(){
         const vm = this
-        try {
-          //console.log(this.optionsAttr)
-          if(this.optTpGeom == null)
-            this._msgError('Tipo da geometria é necessário!')
 
-          else {  
-            let getNullAcenOrNumber = await this.optionsAttr.filter( 
+        try {
+          if (this.optTpGeom == null) {
+            this._msgError('Tipo da geometria é necessário!')
+          } else {
+            let getNullAcenOrNumber = await this.optionsAttr.filter(
               attr => attr.column_name === '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name)) || (/[^a-zA-Z0-9_]/.test(attr.column_name))
             )
 
-            let getWordNative = await this.optionsAttr.filter( 
+            let getWordNative = await this.optionsAttr.filter(
               attr => ['id', 'changeset_id', 'version'].some(attrName => attrName === attr.column_name)
             )
-            if(getNullAcenOrNumber.length > 0)
+
+            if (getNullAcenOrNumber.length > 0) {
               this._msgError('Atributos Inválidos. Lembrando que cada atributo NÃO pode começar com "números" e possuir "acentuação"!')
-
-            else if(getWordNative.length > 0)
+            } else if (getWordNative.length > 0) {
               this._msgError('Atributos Inválidos. O nome do do atributo precisa ser diferente: id, changeset_id e version!')
-
-            else {
-              vm.timeout_upload()
+            } else {
+              this.timeout_upload()
 
               //CREATE LAYER
               let layer = {
                 'type': 'Layer',
                 'properties': {
                   'layer_id': -1,
-                  'f_table_name': this.tableName,
-                  'name': document.getElementById("inputName").value,
-                  'description': document.getElementById("inputDescription").value,
-                  'source_description': document.getElementById("inputDescription").value,
-                  'reference': this.chosenRefID,
-                  'keyword': this.chosenKeywordsID,
+                  'f_table_name': this.fTableName,
+                  'name': this.name,
+                  'description': this.description,
+                  'source_description': this.description,
+                  'reference': this.selectedReferences.map(r => r.reference_id),
+                  'keyword': this.selectedKeywords.map(k => k.keyword_id),
                 }
               }
 
               //ADD USER IN LAYER
               let responseCreateLayer = await Dashboard.createLayer(layer)
               this.layer_id = responseCreateLayer.data.layer_id
-              this.chosenUsers.forEach(async u => {
+              this.selectedCollaborators.forEach(async u => {
                 let user_layer = {
                   'properties': {
                     'is_the_creator': 'false',
@@ -671,7 +690,7 @@
 
               let featureTableInfo = {
                 'type': 'FeatureTable',
-                'f_table_name': this.tableName,
+                'f_table_name': this.fTableName,
                 'properties': properties,
                 'geometry': {
                     'crs': {'type': 'name', 'properties': {'name': 'EPSG:4326'}},
@@ -681,7 +700,8 @@
 
               let responseCreateFeatureTable = await Dashboard.createFeatureTable(featureTableInfo)
 
-              let responseGetFeatureTable = await Dashboard.getFeatureTable(this.tableName)
+              let responseGetFeatureTable = await Dashboard.getFeatureTable(this.fTableName)
+
               let vm = this
               responseGetFeatureTable.data.features.filter(e => {
                 vm.columns = e.properties
@@ -695,8 +715,8 @@
               })
             }
           }
-          vm.clearData()
 
+          vm.clearData()
         }
         catch(error) {
           console.log(error)
@@ -718,49 +738,37 @@
           this.loading.close()
         }
       },
-      removeRef(index) {
-        const vm = this
-        //console.log(vm.chosenRef[index].reference_id)
-        Api().delete('/api/reference/' + vm.chosenRef[index].reference_id
-        ).then(function (response) {
-          //console.log(response)
-        })
-
-        this.chosenRef.splice(index, 1)
-        this.chosenRefID.splice(index, 1)
-      },
-      addRef() {
-        const vm = this
-        if (this.auxRef != null) {
-
-          //vm.chosenRef.push({description: vm.auxRef})
-          let ref_id
-          let ref = {
+      addReference() {
+        if (this.reference_description != null) {
+          let new_reference = {
             'type': 'Reference',
-            'properties':
-              {
-                'reference_id': -1,
-                'description': vm.auxRef
-              }
+            'properties': { 'reference_id': -1, 'description': this.reference_description }
           }
 
-          Api().post('/api/reference/create',
-            ref
-          ).then(function (response) {
-            ref_id = response.data.reference_id
-            vm.chosenRef.push({description: vm.auxRef, reference_id: ref_id})
-            //console.log(vm.chosenRef)
-            vm.chosenRefID.push(ref_id)
-            vm.auxRef = null
-            vm.saveReferences()
-          }, function (cause) {
-            let msg = ''
-            if (cause.response.status === 400) msg = "O texto de referência já existe!"
-            else msg = cause.toString()
-            vm.$message.error(msg)
+          Api().post('/api/reference/create', new_reference).then(response => {
+            this.selectedReferences.push(
+              {
+                reference_id: response.data.reference_id,
+                description: this.reference_description
+              }
+            )
+            this.reference_description = null
+            this.saveReferences()
+          }, cause => {
+            if (cause.response.status === 400)
+              this.$message.error("O texto de referência já existe!")
+            else
+              this.$message.error(cause.toString())
           })
         }
-        //this.auxRef = null
+      },
+      removeReference(reference_id) {
+        Api().delete('/api/reference/' + reference_id)
+
+        // remove the `reference_id` from the references lists
+        this.selectedReferences = this.selectedReferences.filter(r => r.reference_id !== reference_id)
+        // save the references in the state
+        this.saveReferences()
       },
       addAttr() {
         this.optionsAttr.push({
@@ -774,14 +782,24 @@
         this.optionsAttr = await this.optionsAttr.filter( attr => attr.id != id )
       },
       _msgError(msg){
-        if(this.loading != '' && this.loading != null) 
+        if(this.loading != '' && this.loading != null)
           this.loading.close()
+
         this.$message.error({
           message: msg,
           center: true,
-          duration: 8000,
+          duration: 10000,
           showClose: true,
         })
+      },
+      _showErrorMessages(cause) {
+        if ('data' in cause.response)
+          this._msgError(cause.response.data)
+        else
+          this._msgError(cause.toString())
+
+        if (cause.response.status >= 500)
+          this._msgError("Problem when creating a resource. Please, contact the administrator.")
       },
       _openFullLoading(){
         this.loading = this.$loading({
@@ -791,6 +809,10 @@
           background: 'rgba(0, 0, 0, 0.7)'
         })
       }
+    },
+    components: {
+      "p-dash-layout": DashLayout,
+      "p-popover-labels": PopoverLabels
     }
   }
 </script>

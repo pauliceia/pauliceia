@@ -43,7 +43,7 @@ export default {
             "zipFile": "ZIP File",
             "nameD": "Layer name. It is unique in the system.",
             "keywordsD": "Keyword is a tag/label related to the layer, which indicates what type it belongs, such as streets, addresses, crimes and so on.",
-            "collaboratorsD": "Collaborators are the people who can add, edit or remove the vectors from the layer. Vectors are the geometries from the layer, such as a point, line, or polygon.",
+            "collaboratorsD": "Collaborators are the people who can add, edit or remove the vectors from the layer. Vectors are the geometries from the layer, such as a point, line or polygon. Only the layer creator can edit this field for security!",
             "descriptionD": "Description is a description/information about the layer.",
             "referenceD": "Reference is the source of that data, whether it is from a book, article, dissertation or so on. It should be in the ABNT format.",
             "epsgD": "It is the projection of the Shapefile, a integer number, for example 4326",
@@ -185,8 +185,8 @@ export default {
         "desc18": "N. L. Vijaykumar (Vijay) has experience in Software Engineering, Model Based Testing and Performance Evaluation. He is retired and Voluntary Collaborator at the Laboratory of Computing and Applied Mathematics (LAC) of the National Institute for Space Research (INPE).",
         "name19": "Orlando Guarnier Farias",
         "desc19": "Orlando Guarnier is an history student from EFLCH/UNIFESP and member of Hímaco group.",
-        "name20": "Rodrigo Monteiro Mariano",
-        "desc20": "Rodrigo Mariano is Systems Analyst and Developer, a Master's student at INPE in the area of Geocomputing. Its main activity in the project is the development of the data of the platform, since the control of users, layers, manipulation of spatiotemporal data, until the control of notifications and denunciations.",
+        "name20": "Rodrigo Mariano",
+        "desc20": "Rodrigo Mariano is Systems Analyst and Developer, and a master in Applied Computing by INPE in the area of Geocomputing. His main activity in the project is the development of the platform's data management service, since the user control, layers, spatio-temporal data manipulation, to the control of notifications and denunciations.",
         "name21": "Priscila Machado Meireles",
         "desc21": "Priscila Meireles is Architect and Urbanist, Specialist in Graphic Design. As a collaborator of the project she developed the Visual Identity elements, which include the creation of the \"Pauliceia 2.0\" brand, as well as web design: website and platform.",
         "name22": "Thomas Rogers",
@@ -209,7 +209,8 @@ export default {
         "lbToLogin": "Are you already registered?",
         "lbToLoginLink": "CLICK HERE",
         "msg": {
-            "success": "your registration is almost ready. Just access your email and follow the instructions.",
+            "registerBtnHover": "You must accept the Use Terms in order to register yourself!",
+            "success": "Your registration is almost ready. Just access your email and follow the instructions.",
             "emptyField": "ERROR: complete all fields!",
             "err500": "Error internal server - contact your administrator",
             "err409": "<strong>email</strong> or <strong>username</strong> already exists in our system."
@@ -271,7 +272,7 @@ export default {
             "box": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
-                "lbTags": "TAGS"
+                "lbKeywods": "KEYWORDS"
             },
             "btns": {
                 "active": "Active",
@@ -285,8 +286,9 @@ export default {
         "viewInfo": {
             "btnFollow": "Follow Layer",
             "btnUnFollow": "Unfollow Layer",
+            "lbTitle": "TITLE",
             "lbDescription": "DESCRIPTION",
-            "lbTags": "TAGS",
+            "lbKeywods": "KEYWORDS",
             "lbAuthors": "AUTHORS",
             "lbDate": "CREATION DATE",
             "lbReferences": "REFERENCES",
@@ -299,7 +301,7 @@ export default {
             "btnClean": "Clean"
         },
         "betaVersionModal": {
-            "welcome": "Welcome to 'Pauliceia 2.0' Platform",
+            "welcome": "Welcome to the `Pauliceia 2.0` platform",
             "betaVersion": "BETA VERSION (test phase)",
             "body": `
                     <p style="text-align: justify">

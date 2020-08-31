@@ -6,7 +6,7 @@
                 <md-icon>close</md-icon>
             </button>
             <el-tooltip v-if="follow === false" effect="dark"
-                    :content="$t('map.viewInfo.btnFollow')" 
+                    :content="$t('map.viewInfo.btnFollow')"
                     placement="top-end">
 
                 <button class="btn" @click="followLayer()">
@@ -21,26 +21,26 @@
                 <md-icon>person_add_disabled</md-icon>
               </button>
             </el-tooltip>
-            
+
         </header>
         <div class="body">
             <ul class="description">
-                <li><b> {{ $t('map.viewInfo.lbTags') }}:</b> 
+                <li><b> {{ $t('map.viewInfo.lbKeywods') }}:</b>
                     <el-tag v-show="layer != null" v-for="id in infos.keywords" :key="'tag'+id" style="margin-left: 5px">
                         {{ getTagName(id)[0].properties.name }}
                     </el-tag>
                 </li>
                 <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b> {{ infos.description }} </li>
                 <li><b>{{ $t('map.viewInfo.lbDate') }}:</b> {{ infos.date }}</li>
-                <li><b>{{ $t('map.viewInfo.lbAuthors') }}:</b> 
+                <li><b>{{ $t('map.viewInfo.lbAuthors') }}:</b>
                     <span v-show="layer != null" v-for="author in infos.authors" :key="author.properties.user_id">
                         {{ getAuthorName(author)[0].properties.name }};
-                    </span> 
+                    </span>
                 </li>
-                <li><b>{{ $t('map.viewInfo.lbReferences') }}:</b> 
+                <li><b>{{ $t('map.viewInfo.lbReferences') }}:</b>
                     <span v-show="layer != null" v-for="id in infos.references" :key="'ref'+id">
                         {{ getReferenceDescription(id)[0].properties.description }};
-                    </span> 
+                    </span>
                 </li>
             </ul>
 
@@ -111,7 +111,6 @@
       ...mapState('auth', ['isUserLoggedIn', 'user']),
       ...mapState('map', ['boxNotifications']),
     },
-
     watch: {
       idInfoLayer (val) {
         if (val != null) {
@@ -124,7 +123,6 @@
         }
       }
     },
-
     data () {
       return {
         id: null,
@@ -152,7 +150,6 @@
         follow: false,
       }
     },
-
     created () {
       Map.getKeywords().then(keywords => {
         this.allKeywords = keywords.data.features
@@ -171,7 +168,6 @@
       })
       this.layer_id = this.id
     },
-
     methods: {
       changeFollow () {
         const vm = this
@@ -251,6 +247,7 @@
         let msg = ''
         if (vm.txtNotif !== null) {
           this.layer_id = this.id
+
           let notification = {
             'properties': {
               'notification_id': -1,

@@ -21,14 +21,14 @@
                 <p>
                   <strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
                   <span v-for="author in layer.properties.authors" :key="author.properties.user_id">
-                    {{ getAuthorName(author) }};
+                      {{ getAuthorName(author) }};
                   </span>
                 </p>
                 <p>
-                  <strong>{{ $t('map.addLayer.box.lbTags') }}:</strong>
-                  <el-tag v-for="id in layer.properties.keyword" :key="id" style="margin-left: 5px">
-                    {{ getTagName(id)[0].properties.name }}
-                  </el-tag>
+                  <strong>{{ $t('map.addLayer.box.lbKeywods') }}:</strong>
+                    <el-tag v-for="id in layer.properties.keyword" :key="id" style="margin-left: 5px">
+                        {{ getTagName(id)[0].properties.name }}
+                    </el-tag>
                 </p>
               </div>
 
@@ -36,8 +36,7 @@
                 <el-button :type="layers.some(id => id == layer.properties.layer_id) ? 'danger' : 'success'"
                    round :disabled="btnDisabled"
                    @click="layers.some(id => id == layer.properties.layer_id) ? disabled(layer) : active(layer)">
-                  {{ layers.some(id => id == layer.properties.layer_id) ? $t('map.addLayer.btns.disable') :
-                  $t('map.addLayer.btns.active') }}
+                  {{ layers.some(id => id == layer.properties.layer_id) ? $t('map.addLayer.btns.disable') : $t('map.addLayer.btns.active') }}
                 </el-button>
               </div>
             </div>
@@ -64,12 +63,14 @@
   export default {
     watch: {
       filterText (val) {
-        if (val == '') this.listLayers = this.allLayers
+        if (val == '')
+          this.listLayers = this.allLayers
         else {
           this.listLayers = this.allLayers.filter(infoLayer => {
             infoLayer.properties.authorName = this.allAuthorsLayers.map(item => {
               if (infoLayer.properties.layer_id == item.properties.layer_id) {
-                return this.getAuthorName(item);
+                return this.getAuthorName(item)
+                // return this.getAuthorName(item)[0].properties.name  // Beto's version
               }
             })
             infoLayer.properties.tagName = infoLayer.properties.keyword.map(id => {
@@ -78,16 +79,15 @@
 
             if (infoLayer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
               infoLayer.properties.authorName.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-              infoLayer.properties.tagName.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0) return infoLayer
+              infoLayer.properties.tagName.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0)
+                return infoLayer
           })
         }
       }
     },
-
     computed: {
       ...mapState('map', ['layers'])
     },
-
     data () {
       return {
         loading: '',
@@ -99,7 +99,6 @@
         allAuthorsLayers: []
       }
     },
-
     async mounted () {
       try {
         let layers = await Map.getLayers(null)
@@ -126,11 +125,11 @@
         });
       }
     },
-
     methods: {
       getTagName (id) {
         return this.allKeywords.filter(key => key.properties.keyword_id == id)
       },
+      // Silas' version
       getAuthorName (item) {
         const result = this.allAuthors.filter(author => author.properties.user_id == item.properties.user_id);
 
@@ -139,6 +138,53 @@
         }
 
         return '';
+      },
+      // Beto's version
+      // getAuthorName(item){
+        //     return this.allAuthors.filter( author => author.properties.user_id == item.properties.user_id )
+      // },
+      async active(layer) {
+        if(this.btnDisabled == false)
+            this.btnDisabled = true
+
+        this._openFullScreen()
+        const vm = this
+
+        try {
+            let url = process.env.urlGeoserver+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson';
+
+            let response = await axios.get(url)
+
+            if(response.data.type != undefined) {
+              let vectorLayer = new ol.layer.Vector({
+                title: layer.properties.f_table_name,
+                source: new ol.source.Vector({
+                  url: url,
+                  format: new ol.format.GeoJSON(),
+                  crossOrigin: 'anonymous',
+                }),
+                zIndex: vm.layers.length+2,
+                id: layer.properties.layer_id
+              })
+
+              overlayGroup.getLayers().push( vectorLayer )
+
+              setTimeout( _ => {
+                this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
+                this.loading.close()
+                this.btnDisabled = false
+              }, 500)
+            } else throw {}
+
+        } catch(error) {
+          this.loading.close()
+          this.btnDisabled = false
+          this.$alert("Por favor, confira se a camada foi importada corretamente em nosso sistema ou entre em contato com nosso suporte!", "Erro ao importar a camada", {
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: 'OK',
+            type: "error"
+          })
+        }
       },
       disabled (layer) {
         if (this.btnDisabled == false)
@@ -152,43 +198,6 @@
           }
         })
       },
-      async active (layer) {
-        if (this.btnDisabled == false)
-          this.btnDisabled = true
-        this._openFullScreen()
-        const vm = this
-        try {
-          let response = await axios.get(process.env.urlGeoserver + '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:' + layer.properties.f_table_name + '&outputFormat=application%2Fjson')
-          if (response.data.type != undefined) {
-            let vectorLayer = new ol.layer.Vector({
-              title: layer.properties.f_table_name,
-              source: new ol.source.Vector({
-                url: process.env.urlGeoserver + '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:' + layer.properties.f_table_name + '&outputFormat=application%2Fjson',
-                format: new ol.format.GeoJSON(),
-                crossOrigin: 'anonymous',
-              }),
-              zIndex: vm.layers.length + 2,
-              id: layer.properties.layer_id
-            })
-
-            overlayGroup.getLayers().push(vectorLayer)
-            setTimeout(_ => {
-              this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
-              this.loading.close()
-              this.btnDisabled = false
-            }, 500)
-          } else throw {}
-
-        } catch (error) {
-          this.loading.close()
-          this.btnDisabled = false
-          this.$alert("Por favor, confira se a camada foi importada corretamente em nosso sistema ou entre em contato com nosso suporte!", "Erro ao importar a camada", {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: 'OK',
-            type: "error"
-          })
-        }
-      },
       _openFullScreen () {
         this.loading = this.$loading({
           lock: true,
@@ -198,7 +207,6 @@
         });
       }
     }
-
   }
 </script>
 
@@ -240,5 +248,4 @@
 
       .box-layer-info.disabled
         background: #ffd6cc
-
 </style>

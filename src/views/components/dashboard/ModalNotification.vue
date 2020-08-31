@@ -137,9 +137,9 @@
         this.is_denunciation = false
         this.showInput2 = false
       },
-      handleClick(tab, event) {
-        // console.log(tab, event);
-      },
+      // handleClick(tab, event) {
+      //   console.log(tab, event);
+      // },
       addNotif() {
         const vm = this
         let msg = ''
@@ -280,7 +280,6 @@
       font-size: 0.9em
     p
       margin: 0 0 5px 0 !important
-
 
   .comments
     width: 100%

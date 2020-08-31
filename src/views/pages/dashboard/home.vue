@@ -1,6 +1,8 @@
 <template>
   <p-dash-layout :title="$t('dashboard.home.dashboard')">
     <div class="row">
+
+      <!-- notifications -->
       <div class="col-sm-8">
         <div class="card ">
           <div class="card-body">
@@ -10,14 +12,17 @@
           </div>
         </div>
       </div>
+
+      <!-- layers lists -->
       <div class="col-sm-4">
+
+        <!-- my layers list -->
         <div class="card ">
           <div class="card-body">
-            <h6 class="mb-0">
-              {{ $t('dashboard.home.myLayers') }}</h6>
+            <h6 class="mb-0">{{ $t('dashboard.home.myLayers') }}</h6>
             <br>
             <div class="card-text">
-              <div class="row" v-for="layer in myLayers">
+              <div class="row" v-for="layer in myLayers" v-bind:key="layer.layer_id">
                 <div class="col-sm-7">{{ layer.name }}</div>
                 <div class="col-sm-5">
                   <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteLayer(layer.layer_id)">
@@ -32,13 +37,14 @@
             </div>
           </div>
         </div>
+
+        <!-- shared layers list -->
         <div class="card " style="margin-top: 20px">
           <div class="card-body">
-            <h6 class="mb-0">
-              {{ $t('dashboard.home.sharedLayers') }}</h6>
+            <h6 class="mb-0">{{ $t('dashboard.home.sharedLayers') }}</h6>
             <br>
             <div class="card-text">
-              <div class="row" v-for="layer in sharedLayers">
+              <div class="row" v-for="layer in sharedLayers" v-bind:key="layer.layer_id">
                 <div class="col-sm-8">{{ layer.name }}</div>
                 <div class="col-sm-2">
                   <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)">
@@ -53,7 +59,9 @@
             </div>
           </div>
         </div>
+
       </div>
+
     </div>
   </p-dash-layout>
 </template>
@@ -65,114 +73,107 @@
   import Notifications from '@/views/components/dashboard/Notifications'
 
   export default {
-    components: {
-      "p-dash-layout": DashLayout,
-      'p-notifications': Notifications
+    data () {
+      return {
+        myLayers: [],
+        sharedLayers: []
+      }
+    },
+    mounted() {
+      this.updateLayers()
+      this.orderLayers(500)
     },
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
       ...mapState('map', ['boxNotifications']),
     },
-    data: function () {
-      return {
-        myLayers: [],
-        sharedLayers: [],
-        layers: [],
-        users: [],
-        shownNotif: [],
-        is_the_admin: false,
-      }
-    },
     methods: {
-      deleteLayer (id) {
-        const vm = this;
-        Api().delete('/api/layer/' + id).then(function (response) {
-          vm.updateLayers()
+      deleteLayer(id){
+        Api().delete('/api/layer/' + id).then((response) => {
+          this.updateLayers()
         })
       },
       editLayer (id) {
         this.$router.push({name: 'EditLayer', params: {layer_id: id}})
       },
-      handleClick (tab, event) {
-        // console.log(tab, event);
-      },
-      updateLayers () {
-        const vm = this
+      // handleClick(tab, event) {
+      //   console.log('\n handleClick: ');
+      //   console.log(' tab: ', tab);
+      //   console.log(' event: ', event);
+      // },
+      updateLayers(){
+        this.sharedLayers = []
+        this.myLayers = []
 
-        vm.sharedLayers = []
-        vm.myLayers = []
-
-        Api().get('/api/layer').then(function (response) {
+        Api().get('/api/user_layer/?user_id='+this.user.user_id).then((response) => {
           response.data.features.filter(e => {
-            vm.layers.push({name: e.properties.name, id: e.properties.layer_id})
-          })
 
-          Api().get('/api/user_layer/?user_id=' + vm.user.user_id).then(function (response) {
-            response.data.features.filter(e => {
-              Api().get('/api/layer/?layer_id=' + e.properties.layer_id).then(function (response2) {
-                if (e.properties.is_the_creator === true) {
-                  vm.myLayers.push(response2.data.features[0].properties)
-                } else {
-                  vm.sharedLayers.push(response2.data.features[0].properties)
-                }
+            Api().get('/api/layer/?layer_id=' + e.properties.layer_id).then((response2) => {
+              if (e.properties.is_the_creator)
+                this.myLayers.push(response2.data.features[0].properties)
+              else
+                this.sharedLayers.push(response2.data.features[0].properties)
 
-                vm.orderLayers(10)
-              })
+              this.orderLayers(10)
+
+              // save the layers inside the state
+              this.$store.dispatch('dashboard/setMyLayers', this.myLayers)
+              this.$store.dispatch('dashboard/setSharedLayers', this.sharedLayers)
             })
+
           })
         })
       },
-      orderLayers (x) {
-        const vm = this
+      orderLayers(x){
+        // const vm = this
         setTimeout(_ => {
-          vm.myLayers.sort(function (a, b) {
-            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+          this.myLayers.sort((a, b) => {
+            if (a.name.toLowerCase() > b.name.toLowerCase())
               return 1;
-            }
-            if (a.name.toLowerCase() < b.name.toLowerCase()) {
+
+            if (a.name.toLowerCase() < b.name.toLowerCase())
               return -1;
-            }
+
             // a must be equal to b
             return 0;
           })
-          vm.sharedLayers.sort(function (a, b) {
-            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+          this.sharedLayers.sort((a, b) => {
+            if (a.name.toLowerCase() > b.name.toLowerCase())
               return 1;
-            }
-            if (a.name.toLowerCase() < b.name.toLowerCase()) {
+
+            if (a.name.toLowerCase() < b.name.toLowerCase())
               return -1;
-            }
+
             // a must be equal to b
             return 0;
           })
         }, x);
       }
     },
-    mounted () {
-      this.updateLayers()
-      this.orderLayers(500)
-      this.is_the_admin = this.user.is_the_admin
+    components: {
+      "p-dash-layout": DashLayout,
+      'p-notifications': Notifications
     }
   }
 </script>
 
 <style lang="sass" scoped>
-  .add
-    top: 0px
-    display: inline-block
-    padding: 0px
-    margin: 0px
-    border: none
-    float: right
-    border-radius: 20px
+.add
+  top: 0px
+  display: inline-block
+  padding: 0px
+  margin: 0px
+  border: none
+  float: right
+  border-radius: 20px
 
-  .add2
-    top: 0px
-    float: right
-    display: inline-block
-    padding: 0px
-    margin-left: 10px
-    color: #ff6107
-    border-color: #ff6107
-    border-radius: 20px
+.add2
+  top: 0px
+  float: right
+  display: inline-block
+  padding: 0px
+  margin-left: 10px
+  color: #ff6107
+  border-color: #ff6107
+  border-radius: 20px
 </style>

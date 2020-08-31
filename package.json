@@ -1,7 +1,7 @@
 {
   "name": "pauliceia",
-  "version": "1.0.0",
-  "description": "portal of pauliceia",
+  "version": "1.0.1",
+  "description": "Pauliceia 2.0 portal",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -9,7 +9,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.0.0",
     "bootstrap-tree-view": "^1.8.0",
@@ -53,7 +53,7 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "node-notifier": "^5.1.2",
-    "node-sass": "^4.8.3",
+    "node-sass": "^4.13.1",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
     "portfinder": "^1.0.13",
@@ -73,7 +73,7 @@
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.9.1",
+    "webpack-dev-server": "^2.11.5",
     "webpack-merge": "^4.1.0"
   },
   "engines": {

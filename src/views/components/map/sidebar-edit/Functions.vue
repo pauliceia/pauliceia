@@ -66,8 +66,9 @@ export default {
             let response = await Map.getLayers('layer_id='+id)
             let properties = response.data.features[0].properties
             this.layer.name = properties.name.toUpperCase()
-            
+
             let infoFeatureTable = await Dashboard.getFeatureTable(properties.f_table_name)
+
             overlayGroup.getLayers().forEach(sublayer => {
                 if (sublayer.get('title') === properties.f_table_name) {
                     this.layer.type = infoFeatureTable.data.features[0].geometry.type.toLowerCase()
@@ -80,7 +81,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-//BOX FUNCTIONS 
+// BOX FUNCTIONS
 .box-function
     border-top: 1px solid #CCC
     padding: 20px 10px

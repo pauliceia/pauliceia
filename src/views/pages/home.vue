@@ -24,57 +24,49 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-    <div class="logo">
-      <img v-if="$t('home.title2')==='Como?'" src="@/views/assets/images/untitled-3.png">
-      <img v-else src="@/views/assets/images/chamada-slider.png">
+    <div class="logo" style="z-index: 1000;">
+      <img v-if="$t('home.title2')==='Como?'" src="@/views/assets/images/home_slider_pt_br.png">
+      <img v-else src="@/views/assets/images/home_slider_en.png">
     </div>
     <div class="text-style">
       <div class="row justify-content-md-center">
         <div class="col-sm-3 column-style">
-          <b>{{ $t('home.title1') }}</b>
-          <br><br>
+          <h5>{{ $t('home.title1') }}</h5>
+          <br>
           <p>{{ $t('home.column1') }}</p>
         </div>
         <div class="col-sm-3 column-style">
-          <b>{{ $t('home.title2') }}</b>
-          <br><br>
+          <h5>{{ $t('home.title2') }}</h5>
+          <br>
           <div v-html="$t('home.column2')"/>
           <p>&nbsp;</p>
         </div>
         <div class="col-sm-3 column-style">
-          <b>{{ $t('home.title3') }}</b>
-          <br><br>
+          <h5>{{ $t('home.title3') }}</h5>
+          <br>
           <p>{{ $t('home.column3') }}</p>
         </div>
       </div>
-      <br>
+      
       <div class="row justify-content-md-center">
         <div class="col-sm-9 column-style">
-          <b>{{ $t('home.title4') }}</b>
-          <br><br>
-          <p>
-            FERREIRA, K. R.; FERLA, L. ; QUEIROZ, G. R. ; VIJAYKUMAR, N. L. ; NORONHA, C. A. ; MARIANO, R. M. ; TAVEIRA, D. ; SANSIGOLO, G. ; GUARNIERI, O. ; ROGERS, T. ; PAGE, M. ; ATIQUE, F. ; MUSA, D. ; SANTOS, J. Y. ; MORAIS, D. S. ; MIYASAKA, C. R. ; ALMEIDA, C. R. ; NASCIMENTO, L. G. M. ; DINIZ, J. A. ; SANTOS, M. C. . A Platform for Collaborative Historical Research based on Volunteered Geographical Information. Journal of Information and Data Management, Vol. 9, No. 3, December 2018, Pages 291–304.
-            <a href="https://periodicos.ufmg.br/index.php/jidm/article/view/426">link</a>
-          </p>
-        </div>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="col-sm-9 column-style">
-          <br>
-          <p>
-            FERREIRA, K. R.; FERLA, L.; QUEIROZ, G. R. de; VIJAYKUMAR, N. L.;NORONHA, C. A.; MARIANO, R. M.; WASSEF, Y.; TAVEIRA, D.; DARDI,I. B.; SANSIGOLO, G.; et al.. Pauliceia 2.0: A Computational Platform for Collaborative Historical Research. In: XVIII Brazilian Symposium on Geoinformatics (GeoInfo 2017), 2017, Salvador. XVIII Brazilian Symposium on Geoinformatics Proceedings, 2017. v. 1. p. 1.
-            <a href="http://mtc-m16c.sid.inpe.br/col/sid.inpe.br/mtc-m16c/2017/12.01.20.22/doc/4ferreira_etal.pdf">link</a>
-          </p>
+          <how-to-cite/>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
-  export default {
-    name: "home",
+import HowToCite from '@/views/components/HowToCite.vue'
+
+export default {
+  name: "home",
+  components: {
+    HowToCite
   }
+}
 </script>
 
 <style lang="sass" scoped>

@@ -61,29 +61,27 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 
-  import LogAvatar from '@/views/components/application/LogAvatar'
-  import dropLanguage from '@/views/components/application/DropLanguage'
+import LogAvatar from '@/views/components/application/LogAvatar'
+import dropLanguage from '@/views/components/application/DropLanguage'
 
-  import logo from '@/views/assets/images/logo_pauliceia.png'
+import logo from '@/views/assets/images/logo_pauliceia.png'
 
-  export default {
+export default {
     components: {
-      'p-logAvatar': LogAvatar,
-      'p-dropLanguage': dropLanguage
+        'p-logAvatar': LogAvatar,
+        'p-dropLanguage': dropLanguage
     },
-
     computed: {
-      ...mapState('auth', ['isUserLoggedIn', 'user'])
+        ...mapState('auth', ['isUserLoggedIn', 'user'])
     },
-
-    data () {
-      return {
-        logo
-      }
+    data() {
+        return {
+            logo
+        }
     }
-  }
+}
 </script>
 
 <style lang="sass" scoped>

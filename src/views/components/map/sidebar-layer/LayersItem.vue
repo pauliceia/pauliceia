@@ -24,7 +24,7 @@
             <el-tooltip effect="dark" :content="$t('map.sidebarLayer.options.infosLayer')" placement="top-end">
                 <i class="flaticon-edit edit" @click="infosLayer()"></i>
             </el-tooltip>
-            
+
             <el-tooltip effect="dark" :content="$t('map.sidebarLayer.options.infosVector')" placement="top-end">
                 <i class="flaticon-information info" :class="{ 'active' : getInfo }" @click="setStatusGetInfo()"></i>
             </el-tooltip>
@@ -39,7 +39,7 @@
         </div>
 
         <div id="popup" class="ol-popup"></div>
-    </div>           
+    </div>
 </template>
 
 <script>
@@ -64,7 +64,6 @@
       id: Number,
       group: Object
     },
-
     computed: {
       ...mapState('map', ['idInfoFeatureLayer'])
     },
@@ -82,7 +81,6 @@
         nameLayer: ''
       }
     },
-
     async mounted () {
       this.layerStatus = this.status
       this.title = this.titleInit
@@ -93,16 +91,26 @@
         this.title = layers.data.features[0].properties.f_table_name
       }
 
+
       this.getColor()
     },
-
     watch: {
+      // Silas' version
       //active and disable layer
       layerStatus () {
         this.group.getLayers().forEach(sublayer => {
-          if (sublayer.get('title') === this.title) sublayer.setVisible(this.layerStatus)
+          if (sublayer.get('title') === this.title)
+            sublayer.setVisible(this.layerStatus)
         })
       },
+      // Beto's version
+      // active and disable the layer
+      // layerStatus(val) {
+      //   this.group.getLayers().forEach(sublayer => {
+      //     if (sublayer.get('title') === this.title)
+      //       sublayer.setVisible(this.layerStatus)
+      //   })
+      // },
       //edit color of layer
       colorVector (val) {
         if (val == null)
@@ -145,7 +153,8 @@
               }
 
               sublayer.getSource().getFeatures().map(features => {
-                if (features.getStyle() !== emptyStyle) features.setStyle(newStyle)
+                if (features.getStyle() !== emptyStyle)
+                  features.setStyle(newStyle)
               });
               sublayer.setStyle(newStyle)
             }
@@ -162,34 +171,7 @@
         }
       }
     },
-
     methods: {
-      async getColor () {
-        let response = await Dashboard.getFeatureTable(this.title)
-
-        this.group.getLayers().forEach(sublayer => {
-          if (sublayer.get('title') === this.title) {
-            if (!response.data) {
-              return false;
-            }
-
-            this.type = response.data.features[0].geometry.type.toLowerCase()
-
-            if (this.type == 'multilinestring' || this.type == 'linestring') {
-              if (typeof (sublayer.getStyle()) == 'function') sublayer.setStyle(lineStyle)
-              this.colorVector = sublayer.getStyle().getStroke().getColor()
-
-            } else if (this.type == 'multipoint' || this.type == 'point') {
-              if (typeof (sublayer.getStyle()) == 'function') sublayer.setStyle(pointStyle)
-              this.colorVector = sublayer.getStyle().getImage().getFill().getColor()
-
-            } else if (this.type == 'multipolygon' || this.type == 'polygon') {
-              if (typeof (sublayer.getStyle()) == 'function') sublayer.setStyle(polygonStyle)
-              this.colorVector = sublayer.getStyle().getFill().getColor()
-            }
-          }
-        })
-      },
       change () {
         this.group.getLayers().forEach(sublayer => {
           if (sublayer.get('title') === this.title) {
@@ -210,7 +192,40 @@
           }
         })
       },
-      infosLayer () {
+      async getColor() {
+        let response = await Dashboard.getFeatureTable(this.title)
+
+        for (let layer of this.group.getLayers().getArray()) {
+
+          if (layer.get('title') === this.title) {
+            this.type = response.data.features[0].geometry.type.toLowerCase()
+            let styleType = typeof(layer.getStyle())
+
+            if (this.type === 'multilinestring' || this.type === 'linestring') {
+              if (styleType === 'function')
+                layer.setStyle(lineStyle)
+
+              this.colorVector = lineStyle.getStroke().getColor()
+
+            } else if (this.type === 'multipoint' || this.type === 'point') {
+              if (styleType === 'function')
+                layer.setStyle(pointStyle)
+
+              this.colorVector = pointStyle.getImage().getFill().getColor()
+
+            } else if (this.type === 'multipolygon' || this.type === 'polygon') {
+              if (styleType === 'function')
+                layer.setStyle(polygonStyle)
+
+              this.colorVector = polygonStyle.getFill().getColor()
+            }
+
+            break;
+          }
+
+        }
+      },
+      infosLayer(){
         if (this.id != null && this.id !== undefined) {
           this.$store.dispatch('map/setBoxInfoVector', false)
           this.$store.dispatch('map/setBoxGeocoding', false)
@@ -223,70 +238,81 @@
           this.$store.dispatch('map/setIdInfoLayer', null)
         }
       },
-      setStatusGetInfo () {
-        if (this.getInfo == true) {
-          this.$store.dispatch('map/setIdInfoFeatureLayer', null);
-        } else {
-          this.$store.dispatch('map/setIdInfoFeatureLayer', this.title);
-        }
+      setStatusGetInfo() {
+        if(this.getInfo == true)
+          this.$store.dispatch('map/setIdInfoFeatureLayer', null)
+        else
+          this.$store.dispatch('map/setIdInfoFeatureLayer', this.title)
       },
-      downloadSHP () {
-        let link = 'http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:' + this.title.toLowerCase() + '&outputFormat=SHAPE-ZIP'
-        window.open(link, '_blank')
+      downloadSHP() {
+        let link = process.env.urlGeoserver + '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+this.title.toLowerCase()+'&outputFormat=SHAPE-ZIP'
+          window.open(link, '_blank')
       },
-      _getInfosFeatures () {
+      _getInfosFeatures(){
         let vm = this
 
-        //CLEAN THE INTERACTIONS OF MAP
+        // clean the map interactions
         vm.$root.olmap.getOverlays().clear()
 
-        //CREATE POPUP
-        $("#popup").append(`<div id="popup-${vm.title}" title="information of vector">
+        // create popup
+        $("#popup").append(
+          `<div id="popup-${vm.title}" title="information of vector">
             <div id="popup-content-${vm.title}"></div>
-        </div>`)
+          </div>`
+        )
 
-        //SELECT POPUP
+        // select popup
         vm.containerPopup = document.getElementById(`popup-${vm.title}`)
         vm.contentPopup = document.getElementById(`popup-content-${vm.title}`)
+
         $(vm.containerPopup).css({
-          "display": "block",
-          "position": "absolute",
-          "background-color": "white",
-          "-webkit-filter": "drop-shadow(0 1px 4px rgba(0,0,0,0.2))",
-          "filter": "drop-shadow(0 1px 4px rgba(0,0,0,0.2))",
-          "padding": "15px",
-          "border-radius": "10px",
-          "border": "1px solid #cccccc",
-          "bottom": "12px",
-          "left": "-50px",
-          "min-width": "280px"
+            "display": "block",
+            "position": "absolute",
+            "background-color": "white",
+            "-webkit-filter": "drop-shadow(0 1px 4px rgba(0,0,0,0.2))",
+            "filter": "drop-shadow(0 1px 4px rgba(0,0,0,0.2))",
+            "padding": "15px",
+            "border-radius": "10px",
+            "border": "1px solid #cccccc",
+            "bottom": "12px",
+            "left": "-50px",
+            "min-width": "280px"
         })
         $(vm.containerPopup).addClass("ol-popup")
 
-        //CREATE INTERACTION AND OVERLAY
+        // create interaction and overlay
         vm.select = new ol.interaction.Select()
         vm.overlay = new ol.Overlay({
-          element: vm.containerPopup,
-          autoPan: true
+            element: vm.containerPopup,
+            autoPan: true
         })
         vm.$root.olmap.addInteraction(vm.select)
         vm.$root.olmap.addOverlay(vm.overlay)
 
-        //WHEN CLICK ON THE VECTOR
-        vm.select.on('select', function (event) {
+        // when the user clicks on the feature
+        vm.select.on('select', event => {
           vm.overlay.setPosition(undefined)
-          event.selected.filter(feature => ((feature.getId().split('.'))[0]) == vm.title.toLowerCase())
-            .forEach(feat => {
-              feat.setStyle()
-              let coordinate = feat.getGeometry().getFirstCoordinate();
 
-              vm.contentPopup.innerHTML = ''
-              vm.contentPopup.innerHTML = `<p style="margin:0; padding:0;"><strong>id:</strong> ${feat.getId().split('.')[1]} </p>`
-              $.each(feat.getProperties(), function (index, value) {
-                if (typeof (value) !== 'object') vm.contentPopup.innerHTML += `<p style="margin:0; padding:0;"><strong>${index}:</strong> ${value} </p>`
-              });
-              vm.overlay.setPosition(coordinate)
-            })
+          event.selected.filter(
+            feature => ((feature.getId().split('.'))[0]) == vm.title.toLowerCase()
+          ).forEach(feat => {
+            feat.setStyle()
+            let coordinate = feat.getGeometry().getFirstCoordinate();
+
+            vm.contentPopup.innerHTML = ''
+            vm.contentPopup.innerHTML = `<p style="margin:0; padding:0;"><strong>id:</strong> ${feat.getId().split('.')[1]} </p>`
+
+            for (const [key, value] of Object.entries(feat.getProperties())) {
+              // do not add to the info box the `changeset_id` and `version` properties
+              if (key === 'changeset_id' || key === 'version')
+                continue
+
+              if (typeof(value) !== 'object')
+                vm.contentPopup.innerHTML += `<p style="margin:0; padding:0;"><strong>${key}:</strong> ${value} </p>`
+            }
+
+            vm.overlay.setPosition(coordinate)
+          })
         });
       },
       _clearInteractions () {

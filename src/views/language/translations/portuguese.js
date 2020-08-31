@@ -43,20 +43,20 @@ export default {
             "zipFile": "Arquivo ZIP",
             "nameD": "Nome da camada. Ela é única no sistema.",
             "keywordsD": "Palavra-chave é uma etiqueta/rótulo relacionado a camada, que indica qual tipo ela pertence, como ruas, endereços, crimes e etc.",
-            "collaboratorsD": "Colaboradores são as pessoas que poderão adicionar, editar ou remover os vetores da camada. Vetores são as geometrias da camada, como um ponto, linha ou polígono.",
+            "collaboratorsD": "Colaboradores são as pessoas que poderão adicionar, editar ou remover os vetores da camada. Vetores são as geometrias da camada, como um ponto, linha ou polígono. Apenas o criador da camada pode editar este campo por segurança!",
             "descriptionD": "Descrição é uma descrição/informação sobre a camada.",
             "referenceD": "Referência é a fonte daquele dado, se ele é de um livro, artigo, dissertação ou etc. Ele deve estar no formato ABNT.",
             "epsgD": "É a projeção do Shapefile, um número inteiro, por exemplo 4326.",
             "fileInputD": "O arquivo que será inserido é um arquivo compactado ZIP que contém o Shapefile para ser enviado. Dentro deste arquivo ZIP deve conter todos os arquivos de um Shapefile, como o “.shp”, “.prj”, “.dbf” e etc.",
             "zipFileD": "Arquivo ZIP",
             "chooseFile": "Escolha o arquivo",
-            "temporalColumns": "Dados Temporias",
+            "temporalColumns": "Dados Temporais",
             "lblStartDate": "Data inicial",
             "lblEndDate": "Data final",
             "lblStartDateColumn": "Coluna da data inicial",
             "lblEndDateColumn": "Coluna da data final",
-            "lblStartDateMask": "Mascara da data inicial",
-            "lblEndDateMask": "Mascara da data finial",
+            "lblStartDateMask": "Máscara da data inicial",
+            "lblEndDateMask": "Máscara da data finial",
             "startDate": "Data inicial do bounding box temporal da camada. É a data inicial do período que abrange os dados da camada. Por exemplo: a camada tem o período de 01-01-1900 à 31-12-1930. Logo a data inicial é 01-01-1900.",
             "endDate": "Data final do bounding box temporal da camada. É a data final do período que abrange os dados da camada. Por exemplo: a camada tem o período de 01-01-1900 à 31-12-1930. Logo a data final é 31-12-1930.",
             "startDateColumn": "Indica qual coluna contém a data inicial da camada.",
@@ -145,8 +145,8 @@ export default {
       "title7": "Quem somos?",
       "text1": `O projeto é uma parceria entre a UNIFESP (campi de Guarulhos e São José dos Campos), o Arquivo do Estado de SP, o INPE (Instituto Nacional de Pesquisas Espaciais) e a Emory University (Estados Unidos). <br> Mas a concepção de “ciência aberta” que orienta o projeto faz dele uma iniciativa amigável à participação de todos os interessados em diversas etapas de sua execução.`,
       "text2": "O projeto foi um dos 4 contemplados pela chamada eScience 2016 da FAPESP (Fundação de Amparo a Pesquisa do Estado de São Paulo), que estimula a colaboração entre as ciências da computação e outras áreas de conhecimento.",
-      "text3": `A Pauliceia 2.0 é uma plataforma de código aberto, base web e orientada a serviços. Ela foi implementada usando a biblioteca GIS TerraLib e o geoportal TerraBrasilis desenvolvido pelo INPE. <br> 
-                A equipe também utiliza o software gvSIG, alternativa livre a aberta de SIG. <br> 
+      "text3": `A Pauliceia 2.0 é uma plataforma de código aberto, base web e orientada a serviços. Ela foi implementada usando a biblioteca GIS TerraLib e o geoportal TerraBrasilis desenvolvido pelo INPE. <br>
+                A equipe também utiliza o software gvSIG, alternativa livre a aberta de SIG. <br>
                 A plataforma foi implementada com base no conceito de Single Page Application (SPA) usando a estrutura Vue.js desenvolvido em linguagem JavaScript e as ferramentas jQuery e OpenLayers.`,
       "name1": "Luís Ferla - coordenador",
       "desc1": "Luis Ferla é professor de história contemporânea da UNIFESP. Nessa Universidade, coordena o grupo de pesquisas Hímaco (História, mapas e computadores) e o lab.hum (Laboratório de Humanidades Digitais). Juntamente com Karine Reis Ferreira, é um dos coordenadores do projeto.",
@@ -186,8 +186,8 @@ export default {
       "desc18": "N. L. Vijaykumar (Vijay) tem experiência em Engenharia de Software, testes baseados em modelos e avaliação de desempenho. É colaborador aposentado e voluntário do Laboratório de Computação e Matemática Aplicada (LAC) do Instituto Nacional de Pesquisas Espaciais (INPE).",
       "name19": "Orlando Guarnier Farias",
       "desc19": "Orlando Guarnier é estudante de história da EFLCH/UNIFESP e membro do grupo Hímaco.",
-      "name20": "Rodrigo Monteiro Mariano",
-      "desc20": "Rodrigo Mariano é Analista e Desenvolvedor de Sistemas, aluno de Mestrado do INPE na área de Geocomputação. Sua principal atividade no projeto é o gerenciamento dos dados da plataforma, desde o controle de usuários, camadas, manipulação dos dados espaço-temporais, até o controle das notificações e denúncias.",
+      "name20": "Rodrigo Mariano",
+      "desc20": "Rodrigo Mariano é Analista e Desenvolvedor de Sistemas, e mestre em Computação Aplicada pelo INPE na área de Geocomputação. Sua principal atividade no projeto é no desenvolvimento do serviço de gerenciamento dos dados da plataforma, desde o controle de usuários, camadas, manipulação dos dados espaço-temporais, até o controle das notificações e denúncias.",
       "name21": "Priscila Machado Meireles",
       "desc21": "Priscila Meireles é Arquiteta e Urbanista, Especialista em Design Gráfico. Como colaboradora do projeto desenvolveu os elementos de Identidade Visual, que contemplam a criação da marca “Pauliceia 2.0”, além do web design: site e plataforma.",
       "name22": "Thomas Rogers",
@@ -211,7 +211,8 @@ export default {
         "lbToLogin": "Você já está cadastrado?",
         "lbToLoginLink": "CLIQUE AQUI",
         "msg": {
-            "success": "seu cadastro está quase pronto. Basta acessar seu e-mail e seguir as instruções.",
+            "registerBtnHover": "Você deve aceitar os Termos de Uso para se registrar!",
+            "success": "O teu cadastro está quase pronto. Basta acessar o teu e-mail e seguir as instruções.",
             "emptyField": "ERRO: complete todos os campos!",
             "err500": "Erro no servidor interno - entre em contato com o administrador",
             "err409": "<strong>E-mail</strong> ou <strong>nome de usuário</strong> já existe em nosso sistema."
@@ -269,16 +270,16 @@ export default {
             "title": "Mapas"
         },
         "sidebarEdit": {
-            "title": "Editor"      
+            "title": "Editor"
         },
         "addLayer": {
             "title": "Adicionar e remover camadas",
             "input": "Pesquise por tema, camada ou autor:",
             "close": "Fechar",
             "box": {
-                "lbTitle": "TITULO",
+                "lbTitle": "TÍTULO",
                 "lbAuthors": "AUTORES",
-                "lbTags": "TAGS"
+                "lbKeywods": "PALAVRAS-CHAVE"
             },
             "btns": {
                 "active": "Ativar",
@@ -292,9 +293,10 @@ export default {
         "viewInfo": {
             "btnFollow": "Seguir Camada",
             "btnUnFollow": "Deixar de Seguir Camada",
+            "lbTitle": "TÍTULO",
             "lbDescription": "DESCRIÇÃO",
-            "lbTags": "TAGS",
-            "lbAuthors": "AUTORERS",
+            "lbKeywods": "PALAVRAS-CHAVE",
+            "lbAuthors": "AUTORES",
             "lbDate": "DATA DE CRIAÇÃO",
             "lbReferences": "REFERÊNCIAS",
             "lbNotifications": "Notificações"
@@ -306,7 +308,7 @@ export default {
             "btnClean": "Limpar"
         },
         "betaVersionModal": {
-            "welcome": "Bem-vindo(a) Plataforma 'Pauliceia 2.0'",
+            "welcome": "Bem-vindo a plataforma `Pauliceia 2.0`",
             "betaVersion": "VERSÃO BETA (fase de teste)",
             "body": `
                     <p style="text-align: justify">
@@ -316,8 +318,8 @@ export default {
                         nos reporte por e-mail que está na aba "Contatos", para que possamos juntos construir uma ferramenta melhor. <br>
                         Por favor, se acontecer algum problema na plataforma, reporte no e-mail e descreva-o detalhadamente, anexando o CSV, o Shapefile,
                         imagem, print-screen ou outro arquivo usado ou desejado, para facilitar o rastreio do problema por parte da equipe. Além de que, adicionar o dia, hora e minuto do ocorrido, se possível. <br>
-                        Informamos ainda que, por estarmos na fase de testes, pode ser que nós limpemos o banco, fazendo com que você perca o seu usuário e seus dados. 
-                        Isto é feito para melhor compatibilidade das novas funções que são criadas. 
+                        Informamos ainda que, por estarmos na fase de testes, pode ser que nós limpemos o banco, fazendo com que você perca o seu usuário e seus dados.
+                        Isto é feito para melhor compatibilidade das novas funções que são criadas.
                         Pedimos a sua compreensão em relação a isso, para que se registre novamente. <br>
                         Agradecemos sua compreensão e contribuição.
                     </p>`,
