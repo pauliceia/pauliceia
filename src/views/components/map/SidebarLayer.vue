@@ -5,7 +5,7 @@
         </p>
 
         <p class="btn_sidebar btn_sidebar_osm" v-bind:class="{ active: sidebarOsm === 'layer' }" @click="sidebarOsmToggle()">
-          <b>{{ $t('map.sidebarOsmLayer.title')}}</b>
+          <b>{{ $t('map.sidebarMap.title')}}</b>
         </p>
 
         <div class="sidebar-content">

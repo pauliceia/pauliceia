@@ -266,7 +266,7 @@ export default {
             },
             "msgEmpty": "Adicione as camadas para a visualização no mapa!"
         },
-        "sidebarOsmLayer": {
+        "sidebarMap": {
             "title": "Mapas"
         },
         "sidebarEdit": {

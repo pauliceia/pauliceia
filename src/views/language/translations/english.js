@@ -262,6 +262,9 @@ export default {
             },
             "msgEmpty": "Add layers to the view on the map!"
         },
+        "sidebarMap": {
+            "title": "Maps"
+        },
         "sidebarEdit": {
             "title": "Edit"
         },
