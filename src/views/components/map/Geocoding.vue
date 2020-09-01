@@ -53,10 +53,10 @@
         <!-- We can't use a normal button element here, as it would become the target of the label. -->
         <div class="select-button"></div>
         <!-- Now, the file input that we hide. -->
-        <input type="file" @change="handleFileChange" />
+        <input type="file" accept=".csv" @change="handleFileChange" />
       </label><br><br>
 
-      <form class="headers-form" v-show="headers.length > 0" @submit.prevent="visualizar()">
+      <form class="headers-form" v-show="headers.length > 0">
         <div class="inputs">
           <el-select v-model="street" placeholder="Coluna Rua">
             <el-option v-for="item in headers" :key="item" :label="item" :value="item" :required="true">
@@ -71,13 +71,13 @@
             </el-option>
           </el-select>
         </div>
-        <button class="btn btn-download" type="submit">Visualizar</button>
-        <button class="btn btn-download" type="button" @click="download()">Download</button>
 
-        <!-- Rodrigo's version -->
-        <!-- <button class="btn btn-download" type="button" v-if="showDownloadButton" @click="download()">
-              Download
-            </button> -->
+        <button class="btn btn-download" type="button" @click="visualizar()">
+          Visualizar
+        </button>
+        <button class="btn btn-download" type="button" v-if="showDownloadButton" @click="download()">
+          Download
+        </button>
       </form>
     </div>
   </section>
@@ -194,10 +194,6 @@ export default {
       reader.readAsText(event.target.files[0])
     },
     async visualizar() {
-      console.log('\n visualizar()')
-      console.log('this.headers: ', this.headers)
-      console.log('this.csvjson: ', this.csvjson)
-
       this._openFullScreen()
 
       let json = JSON.parse(this.csvjson)
@@ -209,7 +205,7 @@ export default {
       for (let i = 0; i < json.length; i++) {
         let address = json[i][this.street].toLowerCase()+", "+json[i][this.numberAddress]+", "+json[i][this.year];
 
-        console.log(address)
+        // console.log(address)
 
         try {
           let response = await ApiMap.geolocationOne(address);
@@ -223,7 +219,7 @@ export default {
             let y = parseFloat(geomPoint.split(' ')[1]);
             let geom = ('{'+'"geom":'+'['+x +','+y+'], "confidence":'+response.data[1][0].confidence+'}');
 
-            console.log(geom)
+            // console.log(geom)
 
             let jsonAddress = JSON.parse(geom);
             let jsonSlice = json[i];
@@ -326,18 +322,14 @@ export default {
 
           if (result.data[1][0].geom != undefined) {
             let myStyle = placeStyleSearch1
-            //console.log(result.data[1][0].confidence)
-            if (result.data[1][0].confidence == 1){
-                //console.log('1')
+
+            if (result.data[1][0].confidence == 1) {
                 myStyle = placeStyleSearch1
             } else {
-              if (result.data[1][0].confidence == 0){
-                //console.log('0')
+              if (result.data[1][0].confidence == 0) {
                 myStyle = placeStyleSearch0
               } else {
-                //console.log('0-1')
                 myStyle = placeStyleSearch3
-                //console.log(myStyle)
               }
             }
 
