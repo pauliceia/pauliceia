@@ -2,7 +2,7 @@
   <section>
     <div class="box-item" v-for="layer of layers" :key="layer.title">
       <span v-bind:class="{ active: layer.status }" @click="modifyLayer(layer)">
-        {{ layer.titleReal }}
+        {{ layer.label }}
       </span>
     </div>
   </section>
@@ -21,55 +21,55 @@ export default {
       layers: [
         {
           title: 'saraBrasil30',
-          titleReal: '1930',
+          label: '1930',
           status: true,
           range: [1930, 1940]
         },
         // {
         //     title: '1930_1_1000',
-        //     titleReal: '1930 1:1000',
+        //     label: '1930 1:1000',
         //     status: false,
         //     range: [1930, 1940]
         // },
         {
           title: '1930_1_5000',
-          titleReal: '1930 1:5000',
+          label: '1930 1:5000',
           status: false,
           range: [1930, 1940]
         },
         {
           title: '1924',
-          titleReal: '1924',
+          label: '1924',
           status: false,
           range: [1920, 1930]
         },
         {
           title: '1910',
-          titleReal: '1905',
+          label: '1905',
           status: false,
           range: [1910, 1920]
         },
         {
           title: '1890',
-          titleReal: '1890',
+          label: '1890',
           status: false,
           range: [1890, 1910]
         },
         {
           title: '1880',
-          titleReal: '1881',
+          label: '1881',
           status: false,
           range: [1880, 1890]
         },
         {
           title: '1870',
-          titleReal: '1877',
+          label: '1877',
           status: false,
           range: [1870, 1880]
         },
         {
           title: '1868',
-          titleReal: '1868',
+          label: '1868',
           status: false,
           range: [1868, 1870]
         }
@@ -98,40 +98,51 @@ export default {
     )
   },
   methods: {
-    modifyLayer(layerSelected) {
-      if(overlayGroupRasters.getLayers().getLength() > 0)
-          overlayGroupRasters.getLayers().pop()
+    showLayer(layer) {
+      this._openFullScreen()
 
-      if (layerSelected.status == true) {
-        for (var i in this.layers) {
-          if(this.layers[i].title != layerSelected.title)
-            this.layers[i].status = false
-        }
+      let tiled
+      if (layer.title === "saraBrasil30")
+        tiled = true
 
-        this._openFullScreen()
-
-        let tiled
-        if(layerSelected.title == "saraBrasil30")
-          tiled = true
-
-        overlayGroupRasters.getLayers().push(
-          new ol.layer.Tile({
-            title: layerSelected.title,
-            visible: true,
-            source: new ol.source.TileWMS({
-              url: process.env.urlGeoserver + '/wms',
-              params: {
-                'FORMAT': 'image/png',
-                'VERSION': '1.1.1',
-                tiled,
-                STYLES: '',
-                LAYERS: 'pauliceia:' + layerSelected.title,
-                tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
-              }
-            })
+      overlayGroupRasters.getLayers().push(
+        new ol.layer.Tile({
+          title: layer.title,
+          visible: true,
+          source: new ol.source.TileWMS({
+            url: process.env.urlGeoserver + '/wms',
+            params: {
+              'FORMAT': 'image/png',
+              'VERSION': '1.1.1',
+              tiled,
+              STYLES: '',
+              LAYERS: 'pauliceia:' + layer.title,
+              tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
+            }
           })
-        )
-        this.loading.close()
+        })
+      )
+
+      this.loading.close()
+    },
+    modifyLayer(selectedLayer) {
+      // clear the layers before show one
+      overlayGroupRasters.getLayers().clear()
+
+      for (let layer of this.layers) {
+        // just the selected layer is showed or not
+        // if the selected layer has been opended, then closed it,
+        // or, if it has been closed, then open it
+        if (layer.title === selectedLayer.title) {
+          layer.status = !layer.status
+
+          if (layer.status === true)
+            this.showLayer(layer)
+
+        // other layers are closed
+        } else {
+          layer.status = false
+        }
       }
     },
     _openFullScreen () {
@@ -140,7 +151,7 @@ export default {
         text: 'Construindo Mapa',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
-      });
+      })
     }
   }
 }
@@ -162,4 +173,7 @@ export default {
 
     &.active
       background: orangered
+
+    &:hover
+      cursor: pointer
 </style>
