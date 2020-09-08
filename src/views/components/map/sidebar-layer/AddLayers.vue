@@ -65,22 +65,27 @@ import {
 export default {
     watch: {
       filterText(val){
-        if (val==='') {
+        if (val === '') {
           this.listLayers = this.allLayers
         } else {
-          this.listLayers = this.allLayers.filter( infoLayer => {
-            infoLayer.properties.authorName = this.allAuthorsLayers.map(item => {
-              if(infoLayer.properties.layer_id == item.properties.layer_id)
-                return this.getAuthorName(item)[0].properties.name
-            })
-            infoLayer.properties.tagName = infoLayer.properties.keyword.map(id => {
-              return this.getTagName(id)[0].properties.name
-            })
+          this.listLayers = this.allLayers.filter(layer => {
 
-            if (infoLayer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                infoLayer.properties.authorName.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                infoLayer.properties.tagName.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
-                  return infoLayer
+            let authorsNames = this.allAuthorsLayers.filter(
+              // get all authors ids by layer_id
+              author => layer.properties.layer_id == author.properties.layer_id
+            ).map(
+              // for each author I've got I return his name instead of the id
+              author => this.getAuthorName(author)[0].properties.name
+            )
+
+            let keywordsNames = layer.properties.keyword.map(
+              id => this.getTagName(id)[0].properties.name
+            )
+
+            if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                authorsNames.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                keywordsNames.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
+                  return layer
           })
         }
       }
@@ -101,20 +106,22 @@ export default {
     },
     async mounted() {
       try {
-        let layers = await Map.getLayers(null)
-        this.allLayers = layers.data.features
+        let result = await Map.getLayers(null)
+        this.allLayers = result.data.features
 
-        let keywords = await Map.getKeywords()
-        this.allKeywords = keywords.data.features
+        result = await Map.getKeywords()
+        this.allKeywords = result.data.features
 
-        let authors = await Map.getAuthors()
-        this.allAuthors = authors.data.features
+        result = await Map.getAuthors()
+        this.allAuthors = result.data.features
 
-        let authors_layers = await Map.getAuthorsLayers(null)
-        this.allAuthorsLayers = authors_layers.data.features
+        result = await Map.getAuthorsLayers(null)
+        this.allAuthorsLayers = result.data.features
 
         this.listLayers = this.allLayers.map(layer => {
-          layer.properties.authors = this.allAuthorsLayers.filter(item => item.properties.layer_id == layer.properties.layer_id)
+          layer.properties.authors = this.allAuthorsLayers.filter(
+            item => item.properties.layer_id == layer.properties.layer_id
+          )
           return layer
         })
 
@@ -127,7 +134,7 @@ export default {
     },
     methods: {
       getTagName(id){
-        return this.allKeywords.filter( key => key.properties.keyword_id == id)
+        return this.allKeywords.filter(key => key.properties.keyword_id == id)
       },
       getAuthorName(item){
         return this.allAuthors.filter( author => author.properties.user_id == item.properties.user_id )
