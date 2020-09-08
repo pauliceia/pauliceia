@@ -26,8 +26,8 @@
                   </span>
                 </p>
                 <p><strong>{{ $t('map.addLayer.box.lbKeywods') }}:</strong>
-                  <el-tag v-for="id in layer.properties.keyword" :key="id" style="margin-left: 5px">
-                    {{ getTagName(id)[0].properties.name }}
+                  <el-tag v-for="name in layer.properties.keyword" :key="name" style="margin-left: 5px">
+                    {{ name }}
                   </el-tag>
                 </p>
               </div>
@@ -78,13 +78,9 @@ export default {
               author => this.getAuthorName(author)[0].properties.name
             )
 
-            let keywordsNames = layer.properties.keyword.map(
-              id => this.getTagName(id)[0].properties.name
-            )
-
             if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
                 authorsNames.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                keywordsNames.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
+                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
                   return layer
           })
         }
@@ -122,6 +118,12 @@ export default {
           layer.properties.authors = this.allAuthorsLayers.filter(
             item => item.properties.layer_id == layer.properties.layer_id
           )
+
+          // rewrite `keyword` property to have a list of keywords names, instead of a list of ids
+          layer.properties.keyword = layer.properties.keyword.map(
+            id => this.getKeywordById(id)[0].properties.name
+          )
+
           return layer
         })
 
@@ -133,11 +135,11 @@ export default {
       }
     },
     methods: {
-      getTagName(id){
+      getKeywordById(id){
         return this.allKeywords.filter(key => key.properties.keyword_id == id)
       },
       getAuthorName(item){
-        return this.allAuthors.filter( author => author.properties.user_id == item.properties.user_id )
+        return this.allAuthors.filter(author => author.properties.user_id == item.properties.user_id)
       },
       disabled(layer) {
         if(this.btnDisabled == false)
