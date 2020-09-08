@@ -21,8 +21,8 @@
               <div class="infos">
                 <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.properties.name }}</p>
                 <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
-                  <span v-for="author in layer.properties.authors" :key="author.properties.user_id">
-                    {{ getAuthorName(author)[0].properties.name }};
+                  <span v-for="name in layer.properties.authors" :key="name">
+                    {{ name }};
                   </span>
                 </p>
                 <p><strong>{{ $t('map.addLayer.box.lbKeywods') }}:</strong>
@@ -69,17 +69,8 @@ export default {
           this.listLayers = this.allLayers
         } else {
           this.listLayers = this.allLayers.filter(layer => {
-
-            let authorsNames = this.allAuthorsLayers.filter(
-              // get all authors ids by layer_id
-              author => layer.properties.layer_id == author.properties.layer_id
-            ).map(
-              // for each author I've got I return his name instead of the id
-              author => this.getAuthorName(author)[0].properties.name
-            )
-
             if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                authorsNames.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                layer.properties.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
                 layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
                   return layer
           })
@@ -114,18 +105,24 @@ export default {
         result = await Map.getAuthorsLayers(null)
         this.allAuthorsLayers = result.data.features
 
-        this.listLayers = this.allLayers.map(layer => {
+        // add a list of authors and keywords names inside each layer
+        this.allLayers.forEach(layer => {
           layer.properties.authors = this.allAuthorsLayers.filter(
-            item => item.properties.layer_id == layer.properties.layer_id
+            // get all authors ids by layer_id
+            author => layer.properties.layer_id == author.properties.layer_id
+          ).map(
+            // for each author I've got I return his name instead of the id
+            author => this.getAuthorById(author.properties.user_id)[0].properties.name
           )
 
           // rewrite `keyword` property to have a list of keywords names, instead of a list of ids
           layer.properties.keyword = layer.properties.keyword.map(
             id => this.getKeywordById(id)[0].properties.name
           )
-
-          return layer
         })
+
+        // initialize the list of layers with all available layers
+        this.listLayers = this.allLayers
 
       } catch (error) {
         this.$alert(this.$t('map.addLayer.msg.errMsg'), this.$t('map.addLayer.msg.errTitle'), {
@@ -136,10 +133,10 @@ export default {
     },
     methods: {
       getKeywordById(id){
-        return this.allKeywords.filter(key => key.properties.keyword_id == id)
+        return this.allKeywords.filter(key => key.properties.keyword_id === id)
       },
-      getAuthorName(item){
-        return this.allAuthors.filter(author => author.properties.user_id == item.properties.user_id)
+      getAuthorById(id){
+        return this.allAuthors.filter(author => author.properties.user_id === id)
       },
       disabled(layer) {
         if(this.btnDisabled == false)
