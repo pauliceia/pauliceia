@@ -121,6 +121,12 @@ export default {
           )
         })
 
+        // sort the layers by name
+        this.allLayers.sort(
+          (a, b) => (a.properties.name > b.properties.name) ? 1 :
+                    ((b.properties.name > a.properties.name) ? -1 : 0)
+        )
+
         // initialize the list of layers with all available layers
         this.listLayers = this.allLayers
 
