@@ -44,7 +44,7 @@ export default {
           range: [1920, 1930]
         },
         {
-          title: '1910',
+          title: '1905',
           label: '1905',
           status: false,
           range: [1910, 1920]
