@@ -16,7 +16,6 @@ export default {
     props: {
         color: String
     },
-
     data() {
         return {
             loading: '',
@@ -78,7 +77,6 @@ export default {
             ]
         }
     },
-
     created() {
         overlayGroupRasters.getLayers().clear()
 
@@ -100,7 +98,6 @@ export default {
             })
         )
     },
-
     methods: {
         modifyLayer(layerSelected) {
             if(overlayGroupRasters.getLayers().getLength() > 0)
@@ -148,7 +145,6 @@ export default {
         }
     }
 }
-
 </script>
 
 <style lang="sass" scoped>

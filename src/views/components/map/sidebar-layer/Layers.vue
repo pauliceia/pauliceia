@@ -22,9 +22,10 @@
 
         <hr class="divisor" />
         <p-sidebarLayer-item-rasters color="#13ce66"></p-sidebarLayer-item-rasters>
-                
+
     </section>
 </template>
+
 <script>
 import LayersItem from '@/views/components/map/sidebar-layer/LayersItem'
 import LayersItemStatic from '@/views/components/map/sidebar-layer/LayersItemStatic'
@@ -43,11 +44,9 @@ export default {
         'p-sidebarLayer-item-static': LayersItemStatic,
         'p-sidebarLayer-item-rasters': LayersItemRasters
     },
-
     computed: {
         ...mapState('map', ['layers'])
     },
-    
     data(){
         return {
             vectorLayer: overlayGroup,
@@ -55,11 +54,10 @@ export default {
             externalLayers: overlayGroupExternal
         }
     },
-
     methods: {
         reorder (event) {
             this.layers.splice(event.newIndex, 0, this.layers.splice(event.oldIndex, 1)[0])
-            
+
             this.vectorLayer.getLayers().forEach(sublayer => {
                 if(sublayer.values_.id) {
                     sublayer.setZIndex( this.layers.indexOf(sublayer.values_.id)+2 )
@@ -68,14 +66,14 @@ export default {
         }
     }
 }
-    
 </script>
-<style lang="sass" scoped>  
-    .box-layers
-        padding: 15px 10px 0 10px 
-        color: #FFF
 
-        .divisor
-            background: #CCC
-            margin-bottom: 25px       
+<style lang="sass" scoped>
+.box-layers
+    padding: 15px 10px 0 10px
+    color: #FFF
+
+    .divisor
+        background: #CCC
+        margin-bottom: 25px
 </style>
