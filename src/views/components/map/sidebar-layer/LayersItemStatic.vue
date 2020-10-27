@@ -4,15 +4,15 @@
             <el-switch v-model="layer.status" @click.native="modifyLayer(layer)" :active-color="color"></el-switch>
             <span><b>{{ layer.title }}</b></span>
         </div>
-    </section>     
+    </section>
 </template>
+
 <script>
 export default {
     props: {
         group: Object,
         color: String
     },
-
     data() {
         return {
             layers: [
@@ -23,16 +23,16 @@ export default {
             ]
         }
     },
-    
     methods: {
         modifyLayer(layerSelected) {
-            if(layerSelected.status == true) 
-                for(var i in this.layers){
-                    if(this.layers[i].title != layerSelected.title ) this.layers[i].status = false
+            if (layerSelected.status == true)
+                for (var i in this.layers) {
+                    if (this.layers[i].title != layerSelected.title )
+                        this.layers[i].status = false
                 }
-            
+
             this.group.getLayers().forEach(sublayer => {
-                if (sublayer.get('title') === layerSelected.title) 
+                if (sublayer.get('title') === layerSelected.title)
                     sublayer.setVisible(layerSelected.status)
                 else
                     sublayer.setVisible(false)
@@ -40,8 +40,8 @@ export default {
         }
     }
 }
-    
 </script>
+
 <style lang="sass" scoped>
 .box-item
     margin-top: 0px

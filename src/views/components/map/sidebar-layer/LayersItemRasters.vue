@@ -85,7 +85,7 @@ export default {
                 title: 'saraBrasil30',
                 visible: true,
                 source: new ol.source.TileWMS({
-                    url: process.env.urlGeoserver + '/wms',
+                    url: process.env.urlGeoserverPauliceia + '/wms',
                     params: {
                         'FORMAT': 'image/png',
                         'VERSION': '1.1.1',
@@ -120,7 +120,7 @@ export default {
                         title: layerSelected.title,
                         visible: true,
                         source: new ol.source.TileWMS({
-                            url: process.env.urlGeoserver + '/wms',
+                            url: process.env.urlGeoserverPauliceia + '/wms',
                             params: {
                                 'FORMAT': 'image/png',
                                 'VERSION': '1.1.1',

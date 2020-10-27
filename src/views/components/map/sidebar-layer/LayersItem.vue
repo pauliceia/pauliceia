@@ -231,7 +231,7 @@ export default {
               this.$store.dispatch('map/setIdInfoFeatureLayer', this.title)
         },
         downloadSHP() {
-            let link = process.env.urlGeoserver + '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+this.title.toLowerCase()+'&outputFormat=SHAPE-ZIP'
+            let link = process.env.urlGeoserverPauliceia + '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+this.title.toLowerCase()+'&outputFormat=SHAPE-ZIP'
             window.open(link, '_blank')
         },
         _getInfosFeatures(){
