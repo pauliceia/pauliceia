@@ -21,17 +21,11 @@ export default {
             loading: '',
             layers: [
                 {
-                    title: 'saraBrasil30',
+                    title: '1930_1_1000',
                     titleReal: '1930',
                     status: true,
                     range: [1930, 1940]
                 },
-                // {
-                //     title: '1930_1_1000',
-                //     titleReal: '1930 1:1000',
-                //     status: false,
-                //     range: [1930, 1940]
-                // },
                 {
                     title: '1930_1_5000',
                     titleReal: '1930 1:5000',
@@ -82,7 +76,7 @@ export default {
 
         overlayGroupRasters.getLayers().push(
             new ol.layer.Tile({
-                title: 'saraBrasil30',
+                title: '1930_1_1000',
                 visible: true,
                 source: new ol.source.TileWMS({
                     url: process.env.urlGeoserverPauliceia + '/wms',
@@ -91,7 +85,7 @@ export default {
                         'VERSION': '1.1.1',
                         tiled: true,
                         STYLES: '',
-                        LAYERS: 'pauliceia:saraBrasil30',
+                        LAYERS: 'pauliceia:1930_1_1000',
                         tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
                     }
                 })
@@ -112,7 +106,7 @@ export default {
                 this._openFullScreen()
 
                 let tiled
-                if(layerSelected.title == "saraBrasil30")
+                if(layerSelected.title == "1930_1_1000")
                     tiled = true
 
                 overlayGroupRasters.getLayers().push(
