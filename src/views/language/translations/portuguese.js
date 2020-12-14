@@ -273,8 +273,12 @@ export default {
             "close": "Fechar",
             "box": {
                 "lbTitle": "TÍTULO",
+                "lbDescription": "DESCRIÇÃO",
                 "lbAuthors": "AUTORES",
-                "lbKeywods": "PALAVRAS-CHAVE"
+                "lbCreated_at": "CRIADO EM",
+                "lbKeywords": "PALAVRAS-CHAVE",
+                "day": "Dia: ",
+                "hour": "Hora: "
             },
             "btns": {
                 "active": "Ativar",

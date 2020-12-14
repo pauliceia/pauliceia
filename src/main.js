@@ -2,11 +2,11 @@ import 'babel-polyfill'
 import 'es6-promise/auto'
 
 import Vue from 'vue'
-
+import Vuetify from 'vuetify'
 import ElementUI from 'element-ui'
 import VueMaterial from 'vue-material'
 import Sortable from 'sortablejs'
-
+import 'vuetify/dist/vuetify.min.css'
 import 'element-ui/lib/theme-chalk/index.css'
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -25,6 +25,14 @@ import App from '@/App'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueMaterial)
+Vue.use(Vuetify, {
+  theme: {
+    primary: '#212121',
+    secondary: '#ffd6cc',
+    accent: '#ffd6cc',
+    error: '#b71c1c'
+  }
+}),
 sync(store, router)
 
 Vue.directive('sortable', {
