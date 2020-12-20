@@ -66,7 +66,7 @@ import { mapState } from 'vuex'
 import LogAvatar from '@/views/components/application/LogAvatar'
 import dropLanguage from '@/views/components/application/DropLanguage'
 
-import logo from '@/views/assets/images/logo_pauliceia.png'
+import logo from '@/views/assets/images/logo_compacta.png'
 
 export default {
     components: {
@@ -89,34 +89,38 @@ export default {
     border-bottom: 5px solid #f15a29
 
     .navbar
-      padding-left: 10%
-      padding-right: 10%
+      padding-left: 5%
+      padding-right: 5%
       background: rgba(#FFF, 0.7) !important
 
       .navbar-brand
-        width: 120px
+        width: 60px
 
         .logo
-          width: 100%
-          margin-top: -5px
+          width: 48px
+          height: 60px
+          max-width: 100%
+          margin-top: 5px
+          margin-bottom: 5px
 
       .navbar-nav li a
         text-decoration: none
-        font-size: 30px
+        text-transform: uppercase
+        font-size: 16px
         color: rgb(77, 77, 77) !important
         margin: 0 25px !important
-        font-family: IrisUPC
+        font-family: Montserrat-Regular
 
       .navbar-nav li a:hover, .navbar-nav .active
         color: #f15a29 !important
 
     .btn-login
-      color: #FFF
-      background: #f15a29
-      font-family: IrisUPC
-      font-size: 30px
-      padding: 0 20px
-      border-radius: 7.5px
+      color: #f15a29
+      background: #FFF
+      border-color: #f15a29
+      font-size: 16px
+      text-transform: uppercase
+      padding: 10px
       line-height: 1
 
       a
@@ -124,6 +128,7 @@ export default {
 
     .btn-login:hover
       text-decoration: none
+      color: #FFF
       background: #f0470f
 
     .btn-active

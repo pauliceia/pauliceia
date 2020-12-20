@@ -283,7 +283,7 @@
           </div>
           <div class="col-sm ">
             <br>
-            <img class="picture2" src="@/views/assets/images/logos/labhum_2018-crop-u6539.jpg">
+            <img class="picture2" src="@/views/assets/images/logos/labhum_logo.png">
           </div>
 
           <div class="col-sm ">
