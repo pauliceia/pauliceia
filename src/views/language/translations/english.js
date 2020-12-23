@@ -268,8 +268,9 @@ export default {
         "addLayer": {
             "title": "Add or remove layers",
             "input": "Search by theme, layer or author:",
+            "search": "To perform searches with more than one keyword, use a comma (Pauliceia Admin, Cintia Almeida). You can also click on keywords to add or remove them from the search field.",
             "close": "Close",
-            "box": {
+            "table": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
                 "lbKeywods": "KEYWORDS",
@@ -277,7 +278,8 @@ export default {
                 "lbCreated_at": "CREATED AT",
                 "lbKeywords": "KEYWORDS",
                 "day": "Day: ",
-                "hour": "Hour: "
+                "hour": "Hour: ",
+                "noData": "No Data Available.",
             },
             "btns": {
                 "active": "Active",

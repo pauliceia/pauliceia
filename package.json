@@ -34,7 +34,7 @@
     "vue-router": "^3.0.1",
     "vue-select": "^2.4.0",
     "vue-switches": "^2.0.1",
-    "vuetify": "^0.17.7",
+    "vuetify": "^1.5.24",
     "vuex": "^3.0.1",
     "vuex-i18n": "^1.10.5",
     "vuex-persistedstate": "^2.4.2",

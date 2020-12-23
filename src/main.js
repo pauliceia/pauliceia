@@ -1,14 +1,13 @@
 import 'babel-polyfill'
 import 'es6-promise/auto'
-
+import 'vuetify/dist/vuetify.min.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import ElementUI from 'element-ui'
 import VueMaterial from 'vue-material'
 import Sortable from 'sortablejs'
-import 'vuetify/dist/vuetify.min.css'
-import 'element-ui/lib/theme-chalk/index.css'
 
+import 'element-ui/lib/theme-chalk/index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 
