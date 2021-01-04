@@ -146,7 +146,7 @@ export default {
                     The concept of "open science" that guides the project makes it a friendly initiative to involve all stakeholders in various stages of its implementation.`,
         "text2": "The project was one of the four contemplated by the eScience 2016 call of FAPESP (Foundation for Research Support of the State of São Paulo), which stimulates collaboration between areas of computer science and any other area of knowledge.",
         "text3": `Pauliceia 2.0 platform is open source, web-based and service-oriented. It is implemented using the GIS library TerraLib and the web geoportal framework TerraBrasilis developed by INPE. The team also uses the gvSIG software, a free alternative to open GIS.<br>
-                    The platform is implemented based on the Single Page Application (SPA) concept using the framework Vue.js developed in JavaScript language and the tools jQuery and OpenLayers.`,
+                    The platform is implemented based on the Single Page Application (SPA) concept using the framework Vue.js developed in JavaScript language and the OpenLayers tool.`,
         "name1": "Luís Ferla - coordinator",
         "desc1": "Luis Ferla is professor of contemporary history at Unifesp. In this University, he coordinates the research group Himaco (History, maps and computers) and lab.hum (Laboratory of Digital Humanities). Together with Karine Reis Ferreira, he is one of the coordinators of the project",
         "name2": "Karine Reis Ferreira - coordinator",

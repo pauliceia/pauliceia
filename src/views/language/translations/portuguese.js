@@ -108,11 +108,11 @@ export default {
         }
     },
     "home":{
-      "title1": "O que é a Pauliceia?",
-      "title2": "Como ela funciona?",
+      "title1": "O que é o portal Pauliceia?",
+      "title2": "Como funciona?",
       "title3": "Quando ficará pronta?",
-      "title4": "Como citar?  ",
-      "column1": "A Pauliceia 2.0 é uma plataforma que tem o objetivo de fazer o mapeamento colaborativo da história de São Paulo no período de 1870 a 1940. Ela é desenvolvida por uma equipe de pesquisadores multi-institucional e multidisciplinar, que aposta na convergência entre História e tecnologias digitais para a produção de uma ciência aberta e cidadã.",
+      "title4": "Como citar?",
+      "column1": "A plataforma Pauliceia 2.0 tem o objetivo de fazer o mapeamento colaborativo da história de São Paulo no período de 1870 a 1940. Ela é desenvolvida por uma equipe de pesquisadores multi-institucional e multidisciplinar, que aposta na convergência entre História e tecnologias digitais para a produção de uma ciência aberta e cidadã.",
       "column2": "Como uma base cartográfica histórica de São Paulo que pode ser enriquecida por seus próprios usuários. Pesquisadores e estudiosos da história da cidade podem alimentar a Pauliceia com dados espacialmente localizáveis e torná-los também disponíveis a todos. Através dessa colaboração, o usuário terá um mapa ou uma visualização de sua própria pesquisa.",
       "column3": "Uma versão beta está atualmente disponível para teste, você pode acessá-la clicando em 'Mapa', no menu de navegação. Encorajamos você a nos ajudar a aprimorar a plataforma, testando-a e reportando qualquer eventual problema. A versão final está prevista para o fim de 2021.",
       "learnmore": "SAIBA MAIS",
@@ -145,9 +145,9 @@ export default {
       "title7": "Quem somos?",
       "text1": `O projeto é uma parceria entre a UNIFESP (campi de Guarulhos e São José dos Campos), o Arquivo do Estado de SP, o INPE (Instituto Nacional de Pesquisas Espaciais) e a Emory University (Estados Unidos). <br> Mas a concepção de “ciência aberta” que orienta o projeto faz dele uma iniciativa amigável à participação de todos os interessados em diversas etapas de sua execução.`,
       "text2": "O projeto foi um dos 4 contemplados pela chamada eScience 2016 da FAPESP (Fundação de Amparo a Pesquisa do Estado de São Paulo), que estimula a colaboração entre as ciências da computação e outras áreas de conhecimento.",
-      "text3": `A Pauliceia 2.0 é uma plataforma de código aberto, base web e orientada a serviços. Ela foi implementada usando a biblioteca GIS TerraLib e o geoportal TerraBrasilis desenvolvido pelo INPE. <br>
+      "text3": `O sistema do projeto Pauliceia 2.0 é de código aberto, base web e orientado a serviços. Foi implementado usando a biblioteca GIS TerraLib e o geoportal TerraBrasilis desenvolvido pelo INPE. <br>
                 A equipe também utiliza o software gvSIG, alternativa livre a aberta de SIG. <br>
-                A plataforma foi implementada com base no conceito de Single Page Application (SPA) usando a estrutura Vue.js desenvolvido em linguagem JavaScript e as ferramentas jQuery e OpenLayers.`,
+                A plataforma foi implementada com base no conceito de Single Page Application (SPA) usando a estrutura Vue.js desenvolvido em linguagem JavaScript e a ferramenta OpenLayers.`,
       "name1": "Luís Ferla - coordenador",
       "desc1": "Luis Ferla é professor de história contemporânea da UNIFESP. Nessa Universidade, coordena o grupo de pesquisas Hímaco (História, mapas e computadores) e o lab.hum (Laboratório de Humanidades Digitais). Juntamente com Karine Reis Ferreira, é um dos coordenadores do projeto.",
       "name2": "Karine Reis Ferreira - coordenadora",
@@ -167,7 +167,7 @@ export default {
       "name9": "Ester Dantas Reis Nunes",
       "desc9": "Ester Reis, estudante de História na EFLCH/UNIFESP, bolsista FAPESP sobre o uso de Sistemas de Informações Geográficas (SIG) em investigações históricas.",
       "name10": "Denis Taveira de Lima",
-      "desc10": "Denis Taveira é estudante de Engenharia da Computação na UNIFESP e bolsista de Iniciação Cientifica no INPE pela FAPESP. É um dos responsáveis pelo desenvolvimento da plataforma web da Pauliceia 2.0.",
+      "desc10": "Denis Taveira é estudante de Engenharia da Computação na UNIFESP e bolsista de Iniciação Cientifica no INPE pela FAPESP. É um dos responsáveis pelo desenvolvimento da plataforma web Pauliceia 2.0.",
       "name11": "Fernando Atique",
       "desc11": "Fernando Atique é Arquiteto e Urbanista. Professor de História, Espaço e Patrimônio Edificado na EFLCH/UNIFESP. Colaborou com o levantamento de dados históricos e espaciais.",
       "name12": "Eduardo de Souza Goiabeira",
