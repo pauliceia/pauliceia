@@ -10,13 +10,13 @@ export default {
 }
 </script>
 
-<style lang="sass">  
+<style lang="sass">
 html, body, #app
   height: 100%
   width: 100%
   margin: 0
 
-*, *:before, *:after 
+*, *:before, *:after
   box-sizing: border-box
   margin: 0
   padding: 0
@@ -27,9 +27,9 @@ li
 .clear
   clear: both
 
-@font-face 
-  font-family: IrisUPC
-  src: url(views/assets/fonts/upcil.ttf)
+@font-face
+  font-family: Montserrat-Regular
+  src: url(views/assets/fonts/Montserrat-Regular.ttf)
 
 
 </style>

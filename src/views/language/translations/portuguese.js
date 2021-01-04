@@ -108,15 +108,15 @@ export default {
         }
     },
     "home":{
-      "title1": "O que é?",
-      "title2": "Como?",
+      "title1": "O que é a Pauliceia?",
+      "title2": "Como ela funciona?",
       "title3": "Quando ficará pronta?",
       "title4": "Como citar?  ",
-      "column1": "A Pauliceia 2.0 é uma plataforma que tem o objetivo de fazer o mapeamento colaborativo da história de São Paulo no período de 1870 a 1940.",
-      "column2": `Por meio da interface da plataforma, pesquisadores e estudiosos da cidade podem alimentar os seus dados, desde que sejam espacialmente localizáveis.<br>
-          Dessa forma, uma base cartográfica histórica da cidade será enriquecida a cada alimentação, tornando esses dados também disponíveis a todos.<br>
-          Por outro lado, o usuário que colaborar terá dessa forma um mapa ou uma visualização de sua própria pesquisa.`,
-      "column3": "Uma versão beta está atualmente disponível para teste. A versão final está prevista para janeiro de 2021.",
+      "column1": "A Pauliceia 2.0 é uma plataforma que tem o objetivo de fazer o mapeamento colaborativo da história de São Paulo no período de 1870 a 1940. Ela é desenvolvida por uma equipe de pesquisadores multi-institucional e multidisciplinar, que aposta na convergência entre História e tecnologias digitais para a produção de uma ciência aberta e cidadã.",
+      "column2": "Como uma base cartográfica histórica de São Paulo que pode ser enriquecida por seus próprios usuários. Pesquisadores e estudiosos da história da cidade podem alimentar a Pauliceia com dados espacialmente localizáveis e torná-los também disponíveis a todos. Através dessa colaboração, o usuário terá um mapa ou uma visualização de sua própria pesquisa.",
+      "column3": "Uma versão beta está atualmente disponível para teste, você pode acessá-la clicando em 'Mapa', no menu de navegação. Encorajamos você a nos ajudar a aprimorar a plataforma, testando-a e reportando qualquer eventual problema. A versão final está prevista para o fim de 2021.",
+      "learnmore": "SAIBA MAIS",
+      "siteinfo": "Esta plataforma é orgulhosamente construída com tecnologias abertas. Para contribuir com ela, acesse nosso Github."
 
     },
     "contact":{

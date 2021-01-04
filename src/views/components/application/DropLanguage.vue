@@ -1,7 +1,11 @@
 <template>
     <div v-show="true" class="box-language">
-        <md-icon :md-src="iconBrazil" @click.native="modifyLanguage('pt')"/>
-        <md-icon :md-src="iconUSA" @click.native="modifyLanguage('en')"/>
+        <div class="row">    
+            <md-icon :md-src="iconBrazil" @click.native="modifyLanguage('pt')"/>
+        </div>
+        <div class="row">
+            <md-icon :md-src="iconUSA" @click.native="modifyLanguage('en')"/>
+        </div>
     </div>
 </template>
 
@@ -30,7 +34,9 @@ export default {
 <style lang="sass" scoped>
 .box-language
     padding: 0 0 0 20px
+    .row
+        display: table-cell
+        padding: 5px
     .md-icon
         cursor: pointer
-
 </style>

@@ -107,15 +107,15 @@ export default {
         }
     },
     "home":{
-      "title1": "What is it?",
-      "title2": "How?",
+      "title1": "What is Pauliceia?",
+      "title2": "How does it work?",
       "title3": "When will it be ready?",
       "title4": "How to cite?",
-      "column1": "Pauliceia 2.0 is a platform to make the collaborative mapping of the history of the city of São Paulo for the period 1870 to 1940.",
-      "column2": `By means of an interface, researchers can share their spatial data sets in the platform. The data sets must be spatially localizable.<br>
-                    So, a historical cartographic base of the city will be enriched, also making this data available to all.<br>
-                    The user that collaborates will have a map or a view of his or her own research.`,
-      "column3": "A beta is currently available for testing. A new, improved, more comprehensive version will be available in the first half of this year.",
+      "column1": "Pauliceia 2.0 is a platform to make the collaborative mapping of the history of the city of São Paulo for the period 1870 to 1940. It is developed by a team of multi-institutional and multidisciplinary researchers, who are committed to the convergence between History and digital technologies for the production of an open and citizen science.",
+      "column2": "As a historical cartographic base of São Paulo that can be enriched by its own users. Researchers and scholars of the city's history can feed Pauliceia with spatially localizable data and make them available to everyone. Through this collaboration, the user will have a map or a visualization of his/her own research.",
+      "column3": "A beta version is currently available for testing, you can access it by clicking on 'Map' in the navigation menu. We encourage you to help us improve the platform by testing it and reporting any problems. The final version is scheduled for the end of 2021.",
+      "learnmore": "LEARN MORE",
+      "siteinfo": "This platform is proudly built with open technologies. To contribute with it, access our Github."
 
     },
     "contact":{
