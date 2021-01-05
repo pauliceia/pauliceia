@@ -20,7 +20,7 @@ export default {
       loading: '',
       layers: [
         {
-          title: 'saraBrasil30',
+          title: '1930_1_1000',
           label: '1930',
           status: true,
           range: [1930, 1940]
@@ -76,21 +76,21 @@ export default {
       ]
     }
   },
-  created () {
+  created() {
     overlayGroupRasters.getLayers().clear()
 
     overlayGroupRasters.getLayers().push(
       new ol.layer.Tile({
-        title: 'saraBrasil30',
+        title: '1930_1_1000',
         visible: true,
         source: new ol.source.TileWMS({
-          url: process.env.urlGeoserver + '/wms',
+          url: process.env.urlGeoserverPauliceia + '/wms',
           params: {
             'FORMAT': 'image/png',
             'VERSION': '1.1.1',
             tiled: true,
             STYLES: '',
-            LAYERS: 'pauliceia:saraBrasil30',
+            LAYERS: 'pauliceia:1930_1_1000',
             tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
           }
         })
@@ -102,7 +102,7 @@ export default {
       this._openFullScreen()
 
       let tiled
-      if (layer.title === "saraBrasil30")
+      if (layer.title === "1930_1_1000")
         tiled = true
 
       overlayGroupRasters.getLayers().push(
@@ -110,7 +110,7 @@ export default {
           title: layer.title,
           visible: true,
           source: new ol.source.TileWMS({
-            url: process.env.urlGeoserver + '/wms',
+            url: process.env.urlGeoserverPauliceia + '/wms',
             params: {
               'FORMAT': 'image/png',
               'VERSION': '1.1.1',
@@ -131,8 +131,8 @@ export default {
 
       for (let layer of this.layers) {
         // just the selected layer is showed or not
-        // if the selected layer has been opended, then closed it,
-        // or, if it has been closed, then open it
+        // if the selected layer has been opended, then close it,
+        // or, if it has already been closed, then open it
         if (layer.title === selectedLayer.title) {
           layer.status = !layer.status
 

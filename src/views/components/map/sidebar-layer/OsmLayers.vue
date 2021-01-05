@@ -2,12 +2,15 @@
     <section class="box-layers">
         <p-sidebarLayer-item-static :group="externalLayers" color="#13ce66"></p-sidebarLayer-item-static>
         <p-sidebarLayer-item-rasters color="#13ce66"></p-sidebarLayer-item-rasters>
+        <p-sidebarLayer-item-other color="#13ce66"></p-sidebarLayer-item-other>
     </section>
 </template>
+
 <script>
 // import LayersItem from '@/views/components/map/sidebar-layer/LayersItem'
 import LayersItemStatic from '@/views/components/map/sidebar-layer/LayersItemStatic'
 import LayersItemRasters from '@/views/components/map/sidebar-layer/LayersItemRasters'
+import LayersItemOther from '@/views/components/map/sidebar-layer/LayersItemOther'
 import { mapState } from 'vuex'
 
 import {
@@ -20,7 +23,8 @@ export default {
   components: {
     // 'p-sidebarLayer-item': LayersItem,
     'p-sidebarLayer-item-static': LayersItemStatic,
-    'p-sidebarLayer-item-rasters': LayersItemRasters
+    'p-sidebarLayer-item-rasters': LayersItemRasters,
+    'p-sidebarLayer-item-other': LayersItemOther
   },
 
   computed: {
@@ -48,6 +52,7 @@ export default {
   }
 }
 </script>
+
 <style lang="sass" scoped>
   .box-layers
     padding: 0

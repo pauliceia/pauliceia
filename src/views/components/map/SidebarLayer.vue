@@ -10,26 +10,6 @@
 
         <div class="sidebar-content">
             <section class="sidebar" v-show="sidebar == 'layer'">
-                <!--<md-toolbar md-elevation="1" style="background: #f36c3f; color: #FFF; ">-->
-                    <!--<span class="md-title nav-title"><strong>{{ $t('map.sidebarLayer.title') }}</strong></span>-->
-
-                    <!--<div class="md-toolbar-section-end">-->
-                        <!--<div class="box-options">-->
-                            <!--<el-tooltip effect="dark" -->
-                                    <!--:content="$t('map.sidebarLayer.btnAdd')"-->
-                                    <!--placement="bottom-end">-->
-                                        <!--<md-button class="md-icon-button md-dense" data-toggle="modal" data-target="#modalAddLayer">-->
-                                            <!--&lt;!&ndash;<md-icon style="color: #FFF;">settings</md-icon>&ndash;&gt;-->
-                                            <!--<img class="btn-ico" src="@/views/assets/images/icons/add-layer.png">-->
-                                        <!--</md-button>-->
-                            <!--</el-tooltip>-->
-                        <!--</div>-->
-
-                        <!--<md-button class="md-icon-button md-dense" @click="sidebarDisable()">-->
-                            <!--<md-icon style="color: #FFF;">keyboard_arrow_left</md-icon>-->
-                        <!--</md-button>-->
-                    <!--</div>-->
-                <!--</md-toolbar>-->
                 <button class="btn-layer-add" data-toggle="modal" data-target="#modalAddLayer">
                     Selecione as camadas
                     <img class="btn-ico" src="@/views/assets/images/icons/add-layer.png">
@@ -90,8 +70,8 @@ export default {
         }
     }
 }
-
 </script>
+
 <style lang="sass" scoped>
     //SIDEBAR BUTTON
     .btn_sidebar

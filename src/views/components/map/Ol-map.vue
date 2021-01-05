@@ -7,8 +7,9 @@
 <script>
   import {
     overlayGroupGeolocation,
-    overlayGroupRasters,
     overlayGroupExternal,
+    overlayGroupRasters,
+    overlayGroupOther,
     overlayGroup
   } from '@/views/assets/js/map/overlayGroup'
 
@@ -46,6 +47,7 @@
         layers: [
           overlayGroupExternal,
           overlayGroupRasters,
+          overlayGroupOther,
           overlayGroup,
           overlayGroupGeolocation
         ],
