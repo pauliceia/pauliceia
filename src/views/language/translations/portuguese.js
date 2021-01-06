@@ -117,7 +117,6 @@ export default {
       "column3": "Uma versão beta está atualmente disponível para teste, você pode acessá-la clicando em 'Mapa', no menu de navegação. Encorajamos você a nos ajudar a aprimorar a plataforma, testando-a e reportando qualquer eventual problema. A versão final está prevista para o fim de 2021.",
       "learnmore": "SAIBA MAIS",
       "siteinfo": "Esta plataforma é orgulhosamente construída com tecnologias abertas. Para contribuir com ela, acesse nosso Github."
-
     },
     "contact":{
       "title1": "Mapeamento colaborativo da história de São Paulo (1870 a 1940).",

@@ -107,16 +107,15 @@ export default {
         }
     },
     "home":{
-      "title1": "What is Pauliceia?",
+      "title1": "What is the Pauliceia portal?",
       "title2": "How does it work?",
       "title3": "When will it be ready?",
       "title4": "How to cite?",
-      "column1": "Pauliceia 2.0 is a platform to make the collaborative mapping of the history of the city of São Paulo for the period 1870 to 1940. It is developed by a team of multi-institutional and multidisciplinary researchers, who are committed to the convergence between History and digital technologies for the production of an open and citizen science.",
+      "column1": "The Pauliceia 2.0 platform aims to make the collaborative mapping of the history of the São Paulo city for the period 1870 to 1940. It is developed by a team of multi-institutional and multidisciplinary researchers, who are committed to the convergence between History and digital technologies for the production of an open and citizen science.",
       "column2": "As a historical cartographic base of São Paulo that can be enriched by its own users. Researchers and scholars of the city's history can feed Pauliceia with spatially localizable data and make them available to everyone. Through this collaboration, the user will have a map or a visualization of his/her own research.",
       "column3": "A beta version is currently available for testing, you can access it by clicking on 'Map' in the navigation menu. We encourage you to help us improve the platform by testing it and reporting any problems. The final version is scheduled for the end of 2021.",
       "learnmore": "LEARN MORE",
       "siteinfo": "This platform is proudly built with open technologies. To contribute with it, access our Github."
-
     },
     "contact":{
       "title1": "Collaborative mapping of the history of São Paulo (1870-1940).",
