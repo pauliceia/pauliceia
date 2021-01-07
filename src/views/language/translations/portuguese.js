@@ -116,7 +116,7 @@ export default {
       "column2": `Por meio da interface da plataforma, pesquisadores e estudiosos da cidade podem alimentar os seus dados, desde que sejam espacialmente localizáveis.<br>
           Dessa forma, uma base cartográfica histórica da cidade será enriquecida a cada alimentação, tornando esses dados também disponíveis a todos.<br>
           Por outro lado, o usuário que colaborar terá dessa forma um mapa ou uma visualização de sua própria pesquisa.`,
-      "column3": "Uma versão beta está atualmente disponível para teste. A versão final está prevista para janeiro de 2021.",
+      "column3": "Uma versão beta está atualmente disponível para teste. A versão final está prevista para janeiro de 2022.",
 
     },
     "contact":{
