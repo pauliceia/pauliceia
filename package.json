@@ -9,7 +9,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.0.0",
     "bootstrap-tree-view": "^1.8.0",
