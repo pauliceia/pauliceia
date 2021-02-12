@@ -33,7 +33,7 @@
       Pauliceia 2.0: A Computational Platform for Collaborative Historical Research.
       In: XVIII Brazilian Symposium on Geoinformatics (GeoInfo 2017), 2017, Salvador.
       XVIII Brazilian Symposium on Geoinformatics Proceedings, 2017. v. 1. p. 1.
-      <a href="http://mtc-m16c.sid.inpe.br/col/sid.inpe.br/mtc-m16c/2017/12.01.20.22/doc/4ferreira_etal.pdf">
+      <a href="http://urlib.net/rep/8JMKD3MGPDW34P/3Q5DRKH">
         link
       </a>
     </p>
