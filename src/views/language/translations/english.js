@@ -266,7 +266,7 @@ export default {
             "title": "Edit"
         },
         "addLayer": {
-            "title": "Add or remove layers",
+            "title": "Turn on or turn off layers",
             "input": "Search by theme, layer or author:",
             "search": "To perform searches with more than one keyword, use a comma (Pauliceia Admin, Cintia Almeida). You can also click on keywords to add or remove them from the search field.",
             "close": "Close",

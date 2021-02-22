@@ -32,7 +32,7 @@
                       <v-data-table
                         v-bind:headers="headers"
                         :items="listLayers"
-                        :rows-per-page-items= "[5, 10]"
+                        :rows-per-page-items= rowsPerPage
                         :custom-sort="customSort"
                         :no-data-text="$t('map.addLayer.table.noData')"
                         v-bind:pagination.sync="pagination"
@@ -167,7 +167,8 @@ export default {
       },
       allLayers: [],
       allKeywords: [],
-      allAuthorsLayers: []
+      allAuthorsLayers: [],
+      rowsPerPage: [3, 5, 10]
     }
   },
   async mounted() {
