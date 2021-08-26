@@ -116,7 +116,7 @@ export default {
       "column2": `Por meio da interface da plataforma, pesquisadores e estudiosos da cidade podem alimentar os seus dados, desde que sejam espacialmente localizáveis.<br>
           Dessa forma, uma base cartográfica histórica da cidade será enriquecida a cada alimentação, tornando esses dados também disponíveis a todos.<br>
           Por outro lado, o usuário que colaborar terá dessa forma um mapa ou uma visualização de sua própria pesquisa.`,
-      "column3": "Uma versão beta está atualmente disponível para teste. A versão final está prevista para janeiro de 2021.",
+      "column3": "Uma versão beta está atualmente disponível para teste. A versão final está prevista para janeiro de 2022.",
 
     },
     "contact":{
@@ -149,8 +149,8 @@ export default {
                 A equipe também utiliza o software gvSIG, alternativa livre a aberta de SIG. <br>
                 A plataforma foi implementada com base no conceito de Single Page Application (SPA) usando a estrutura Vue.js desenvolvido em linguagem JavaScript e as ferramentas jQuery e OpenLayers.`,
       "name1": "Luís Ferla - coordenador",
-      "desc1": "Luis Ferla é professor de história contemporânea da UNIFESP. Nessa Universidade, coordena o grupo de pesquisas Hímaco (História, mapas e computadores) e o lab.hum (Laboratório de Humanidades Digitais). Juntamente com Karine Reis Ferreira, é um dos coordenadores do projeto.",
-      "name2": "Karine Reis Ferreira - coordenadora",
+      "desc1": "Luis Ferla é professor de história contemporânea da UNIFESP. Nessa Universidade, coordena o grupo de pesquisas Hímaco (História, mapas e computadores) e o lab.hum (Laboratório de Humanidades Digitais). Juntamente com Karla Donato Fook, é um dos coordenadores do projeto. ",
+      "name2": "Karine Reis Ferreira",
       "desc2": "Karine Reis Ferreira é doutora em computação aplicada pelo INPE, onde trabalha desde 2003 com pesquisa em GeoInformática e desenvolvimento de sistemas de informações geográficas como TerraLib, TerraView e TerraBrasilis. É docente do curso de pós-graduação em Computação Aplicada (CAP) do INPE e sua principal linha de pesquisa é representação, processamento e análise de grandes volumes de dados espaço-temporais.",
       "name3": "Andrew Graham Britt",
       "desc3": "Andrew G. Britt é historiador da América Latina com foco na história do Brasil. Atualmente é um Postdoctoral Fellow na Northwestern University em Evanston, IL. É um dos integrantes do projeto.",
@@ -187,15 +187,23 @@ export default {
       "name19": "Orlando Guarnier Farias",
       "desc19": "Orlando Guarnier é estudante de história da EFLCH/UNIFESP e membro do grupo Hímaco.",
       "name20": "Rodrigo Mariano",
-      "desc20": "Rodrigo Mariano é Analista e Desenvolvedor de Sistemas, e mestre em Computação Aplicada pelo INPE na área de Geocomputação. Sua principal atividade no projeto é no desenvolvimento do serviço de gerenciamento dos dados da plataforma, desde o controle de usuários, camadas, manipulação dos dados espaço-temporais, até o controle das notificações e denúncias.",
+      "desc20": "Rodrigo Mariano é Analista e Desenvolvedor de Sistemas, e mestre em Computação Aplicada pelo INPE na área de Geocomputação. Sua principal atividade no projeto é no desenvolvimento do serviço de gerenciamento dos dados da plataforma, desde o controle de usuários, camadas, manipulação dos dados espaço-temporais, até o controle das notificações e denúncias. Ele é o atual responsável pela manutenção da plataforma.",
       "name21": "Priscila Machado Meireles",
       "desc21": "Priscila Meireles é Arquiteta e Urbanista, Especialista em Design Gráfico. Como colaboradora do projeto desenvolveu os elementos de Identidade Visual, que contemplam a criação da marca “Pauliceia 2.0”, além do web design: site e plataforma.",
       "name22": "Thomas Rogers",
       "desc22": "Thomas Rogers é historiador, professor de história na Universidade Emory. Ele co-coordenou a bolsa SPRINT, de FAPESP, para Emory e UNIFESP.",
       "name23": "Vitória Martins Fontes da Silva",
-      "desc23": "Vitoria Martins Fontes é aluna da graduação no curso de História na EFLCH/UNIFESP. Bolsista de iniciação científica (PIBIC), pelo grupo Hímaco. Participa da composição do banco de dados do Pauliceia 2.0.",
+      "desc23": "Vitória Martins Fontes é graduada em história pela UNIFESP. Participa das atividades do grupo Hímaco e desde 2018 compõe a equipe desenvolvedora do Pauliceia 2.0. No projeto, fez parte do grupo responsável pelo banco de dados da numeração da plataforma e atualmente produz material de apoio para utilização do Pauliceia e integra o grupo que implementa a região do Bom Retiro.",
       "name24": "Wania Mazzarello",
       "desc24": "Wania possui licenciatura em história. Atua como pesquisadora, consultora e professora. Possui interesse de pesquisa em história urbana, identidade, memória e tecnologia. No Projeto, atua na equipe que viabiliza a introdução da área do Pari no escopo da plataforma.",
+      "name25": "Gabriel dos Reis",
+      "desc25": "Gabriel dos Reis é graduando em Análise e Desenvolvimento de Sistemas pelo Instituto Federal da Bahia. Tendo ingressado no Projeto em uma experiência no ano 2020, busca auxiliar o Pauliceia nos aspectos que puder, sejam eles computacionais ou não.",
+      "name26": "Karla Donato Fook - coordenadora",
+      "desc26": "Karla Donato Fook é professora do Instituto Tecnológico de Aeronáutica (ITA). Suas áreas de interesse na Pesquisa incluem Geoinformação e Engenharia de Software. No Projeto Pauliceia 2.0 ela está envolvida com o gerenciamento da plataforma computacional.",
+      "name27": "Aracele Torres",
+      "desc27": "Aracele Torres é doutora em História pela USP, atuando na área de História da Ciência e da Tecnologia, com foco em ciências e tecnologias abertas. É membro do Hímaco (História, Mapas e Computadores) e do lab.hum (Laboratório de Humanidades Digitais) da UNIFESP/Guarulhos. Faz contribuições técnicas para o projeto, além de contribuir como pesquisadora.",
+      "name28": "Raphael Augusto de Oliveira Silva",
+      "desc28": "Raphael Augusto de Oliveira Silva é graduado em História pela UNIFESP. Atualmente é aluno de Engenharia da Computação da UNIVESP. Suas contribuições são tanto para a manutenção do Portal como também para o desenvolvimento das pesquisas.",
 
     },
     "register": {

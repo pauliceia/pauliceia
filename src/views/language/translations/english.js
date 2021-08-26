@@ -115,7 +115,7 @@ export default {
       "column2": `By means of an interface, researchers can share their spatial data sets in the platform. The data sets must be spatially localizable.<br>
                     So, a historical cartographic base of the city will be enriched, also making this data available to all.<br>
                     The user that collaborates will have a map or a view of his or her own research.`,
-      "column3": "A beta is currently available for testing. The final version is scheduled for January 2021.",
+      "column3": "A beta is currently available for testing. The final version is scheduled for January 2022.",
 
     },
     "contact":{
@@ -148,8 +148,8 @@ export default {
         "text3": `Pauliceia 2.0 platform is open source, web-based and service-oriented. It is implemented using the GIS library TerraLib and the web geoportal framework TerraBrasilis developed by INPE. The team also uses the gvSIG software, a free alternative to open GIS.<br>
                     The platform is implemented based on the Single Page Application (SPA) concept using the framework Vue.js developed in JavaScript language and the tools jQuery and OpenLayers.`,
         "name1": "Luís Ferla - coordinator",
-        "desc1": "Luis Ferla is professor of contemporary history at Unifesp. In this University, he coordinates the research group Himaco (History, maps and computers) and lab.hum (Laboratory of Digital Humanities). Together with Karine Reis Ferreira, he is one of the coordinators of the project",
-        "name2": "Karine Reis Ferreira - coordinator",
+        "desc1": "Luis Ferla is professor of contemporary history at Unifesp. In this University, he coordinates the research group Himaco (History, maps and computers) and lab.hum (Laboratory of Digital Humanities). Together with Karla Donato Fook, he is one of the coordinators of the project",
+        "name2": "Karine Reis Ferreira ",
         "desc2": "Karine Reis is PhD in Applied Computer by the National Institute For Space Research (INPE), she works since 2003 on researching in geoinformatics and on geographic information systems development such as TerraLib TerraView and TerraBrasilis. She is professor of the Applied Computer Graduate Course at INPE and her main research topic is representation, processing and analysis of big spatiotemporal data and temporal GIS development.",
         "name3": "Andrew Graham Britt",
         "desc3": "Andrew G. Britt is a historian of Latin America (Brazil) and a digital scholarship developer. He is currently a Postdoctoral Fellow at Northwestern University and a member of the project team.",
@@ -192,9 +192,18 @@ export default {
         "name22": "Thomas Rogers",
         "desc22": "Thomas Rogers is Associate Professor of History at Emory University. He was co-coordinator of the FAPESP SPRINT grant that connected Emory to UNIFESP for Pauliceia 2.0.",
         "name23": "Vitória Martins Fontes da Silva",
-        "desc23": "Vitoria Martins Fontes is a graduate student in History at EFLCH/UNIFESP. She is a scientific initiation scholarship student (PIBIC), by the group Hímaco. Participates in the composition of the Paulicea 2.0 database.",
+        "desc23": "Vitória Martins Fontes has a degree in history from UNIFESP. She participates in the activities of the Hímaco group and since 2018 she has been part of the Pauliceia 2.0 development team. In the project, she was part of the group responsible for the database of the platform numbering and currently produces support material for the use of Pauliceia and is part of the group that implements the Bom Retiro region.",
         "name24": "Wania Mazzarello",
         "desc24": "Wania has a degree in history. She acts as a researcher, consultant and teacher. Has a research interest in urban history, identity, memory and technology. In the Project, he acts in the team that makes possible the introduction of the Pari area in the scope of the platform.",
+        "name25": "Gabriel dos Reis",
+        "desc25": "Gabriel dos Reis is majoring in Analysis and Systems Development at the Federal Institute of Bahia. Having joined the Project in an experiment in the year 2020, he seeks to assist Pauliceia in the aspects he can, whether they are computational or not.",
+        "name26": "Karla Donato Fook - coordinator",
+        "desc26": "Karla Donato Fook is professor at Aeronautics Institute of Technology (ITA). Her research interests include Geoinformatics and Software Engineering. In the Pauliceia 2.0 project she is involved with the management of the computational platform.",
+        "name27": "Aracele Torres",
+        "desc27": "Aracele Torres holds a PhD in History from USP (University of Sao Paulo), working in the area of History of Science and Technology, focusing on open sciences and technologies. She is a member of Hímaco (History, Maps and Computers) and lab.hum (Laboratory of Digital Humanities) at UNIFESP/Guarulhos. She makes technical contributions to the project, in addition to contributing as a researcher.",
+        "name28": "Raphael Augusto de Oliveira Silva",
+        "desc28": "Raphael Augusto de Oliveira Silva has a degree in History from UNIFESP. He is currently a Computer Engineering student at UNIVESP. Your contributions are both for the maintenance of the Portal as well as for the development of research.",
+
     },
     "register": {
         "title": "Register",
