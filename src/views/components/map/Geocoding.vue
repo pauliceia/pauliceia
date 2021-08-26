@@ -1,6 +1,5 @@
 <template>
     <section class="box" v-show="boxGeocoding">
-
         <header class="header">
             <h1>{{ $t('map.geocoding.form.search') }}:
 
@@ -465,6 +464,7 @@ export default {
                 border: none
                 position: relative
                 border-radius: 30px
+                background: none !important
             .info:hover
                 background: #008ae6 !important
 
