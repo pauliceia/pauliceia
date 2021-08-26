@@ -29,7 +29,7 @@
         <br>
       </div>
 
-      <div class="nofitication">
+      <div class="notification">
         <div v-for="(n, index) in notifG" :key="index">
           <div class="notification-box2">
             <div style="display: flex; align-items: center;">
