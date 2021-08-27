@@ -105,29 +105,18 @@
 </template>
 
 <script>
-
 import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
 import GeoJSON from 'geojson'
 import shpwrite from 'shp-write'
 
-
 import {
-    overlayGroup
-} from '@/views/assets/js/map/overlayGroup'
-
-import {
-    placeStyle,
     placeStyleSearch1,
     placeStyleSearch0,
     placeStyleSearch3
 } from '@/views/assets/js/map/Styles'
 
-import {
-    CSV2JSON,
-    CSVToArray,
-    getUrl
-} from '@/views/assets/js/map/multiplegeocode'
+import { CSV2JSON } from '@/views/assets/js/map/multiplegeocode'
 
 import {
     overlayGroupGeolocation
@@ -329,8 +318,8 @@ export default {
     async search () {
       try {
         //this._openFullScreen()
-        let regex = new RegExp(/\s*,( )*\d{4}/);
-        let search = this.inputSearch.replace(/( )+/g, ' ');
+        let regex = new RegExp(/\s*,( )*\d{4}/)
+        let search = this.inputSearch.replace(/( )+/g, ' ')
 
         if (regex.test(search)) {
           const result = await ApiMap.geolocationOne(search)
