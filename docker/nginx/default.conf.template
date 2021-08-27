@@ -1,0 +1,24 @@
+server {
+    listen          ${NGINX_PORT};
+    listen          [::]:${NGINX_PORT};
+    server_name     ${NGINX_HOST};
+
+    # client_max_body_size 50M;
+    root /usr/share/nginx/html;
+    index index.html index.htm index.php doku.php;
+
+    charset         utf-8;
+    # access_log      /var/log/nginx/host.access.log  main;
+
+    location /portal {
+      try_files $uri @portal;
+    }
+
+    location @portal {
+      rewrite ^.*$ /portal/index.html last;
+    }
+
+    location / {
+      return 301 http://www.pauliceia.dpi.inpe.br/portal/home;
+  }
+}
