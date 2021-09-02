@@ -19,6 +19,11 @@ server {
     }
 
     location / {
-      return 301 http://www.pauliceia.dpi.inpe.br/portal/home;
-  }
+      absolute_redirect off;
+      return 301 /portal;
+    }
+
+    # location / {
+    #   return 301 http://www.pauliceia.dpi.inpe.br/portal/home;
+    # }
 }
