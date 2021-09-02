@@ -10,14 +10,6 @@ server {
     charset         utf-8;
     # access_log      /var/log/nginx/host.access.log  main;
 
-    location /portal {
-      try_files $uri @portal;
-    }
-
-    location @portal {
-      rewrite ^.*$ /portal/index.html last;
-    }
-
     location / {
       absolute_redirect off;
       return 301 /portal;
@@ -26,4 +18,12 @@ server {
     # location / {
     #   return 301 http://www.pauliceia.dpi.inpe.br/portal/home;
     # }
+
+    location /portal {
+      try_files $uri @portal;
+    }
+
+    location @portal {
+      rewrite ^.*$ /portal/index.html last;
+    }
 }
