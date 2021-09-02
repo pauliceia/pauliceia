@@ -444,7 +444,7 @@
             this.loading.close();
             this._msgError("Timeout! Caso o erro persista entre em contato com os administradores da plataforma!")
           }
-        }, 20000);
+        }, 30000);
       },
       Upload2(){  // cadastrar a segunda parte da camada - temporal columns
         this._openFullLoading()
@@ -531,14 +531,14 @@
             }
 
             Api().post('/api/layer/create', layer).then(response => {   //Cadastrando nova Layer
-              this.layer_id = response.data.layer_id
+              this.layer_id = response.data
 
               this.selectedCollaborators.forEach(u => {
                 let user_layer = {
                   'properties': {
                     'is_the_creator': 'false',
                     'user_id': u.user_id,
-                    'layer_id': response.data.layer_id
+                    'layer_id': this.layer_id
                   },
                   'type': 'UserLayer'
                 }
@@ -549,8 +549,8 @@
               let changeset = {
                 'properties': {
                   'changeset_id': -1,
-                  'layer_id': response.data.layer_id,
-                  'description': 'Creating layer ' + response.data.layer_id
+                  'layer_id': this.layer_id,
+                  'description': 'Creating layer ' + this.layer_id
                 },
                 'type': 'Changeset'
               }
@@ -667,13 +667,13 @@
 
               //ADD USER IN LAYER
               let responseCreateLayer = await Dashboard.createLayer(layer)
-              this.layer_id = responseCreateLayer.data.layer_id
+              this.layer_id = responseCreateLayer.data
               this.selectedCollaborators.forEach(async u => {
                 let user_layer = {
                   'properties': {
                     'is_the_creator': 'false',
                     'user_id': u.user_id,
-                    'layer_id': responseCreateLayer.data.layer_id
+                    'layer_id': this.layer_id
                   },
                   'type': 'UserLayer'
                 }
@@ -748,7 +748,7 @@
           Api().post('/api/reference/create', new_reference).then(response => {
             this.selectedReferences.push(
               {
-                reference_id: response.data.reference_id,
+                reference_id: response.data,
                 description: this.reference_description
               }
             )
