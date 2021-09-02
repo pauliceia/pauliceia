@@ -16,18 +16,20 @@
           </el-input>
           <br/>
 
-          <article v-for="layer in listLayers" :key="layer.id">
+          <article v-for="layer in listLayers" :key="layer.layer_id">
             <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
               <div class="infos">
-                <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.properties.name }}</p>
+                <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong>
+                  {{ layer.properties.name }}
+                </p>
                 <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
-                  <span v-for="name in layer.properties.authors" :key="name">
-                    {{ name }};
+                  <span v-for="author in layer.properties.authors" :key="author.id">
+                    {{ author.name }};
                   </span>
                 </p>
                 <p><strong>{{ $t('map.addLayer.box.lbKeywods') }}:</strong>
-                  <el-tag v-for="name in layer.properties.keyword" :key="name" style="margin-left: 5px">
-                    {{ name }}
+                  <el-tag v-for="keyword in layer.properties.keywords" :key="keyword.id" style="margin-left: 5px">
+                    {{ keyword.name }}
                   </el-tag>
                 </p>
               </div>
@@ -68,11 +70,28 @@ export default {
         if (val === '') {
           this.listLayers = this.allLayers
         } else {
+          let writtenValue = val.toLowerCase()
+
           this.listLayers = this.allLayers.filter(layer => {
-            if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
-                  return layer
+            // if layer name matches the written value, then return the layer
+            if (layer.properties.name.toLowerCase().indexOf(writtenValue) >= 0)
+              return layer
+
+            // if authors match the written value, then return the layer
+            let authors = layer.properties.authors.filter(
+              author => author.name != null && author.name.toLowerCase().indexOf(writtenValue) >= 0
+            )
+            if (authors.length > 0)
+              return layer
+
+            // if keywords match the written value, then return the layer
+            let keywords = layer.properties.keywords.filter(
+              keyword => keyword.name != null && keyword.name.toLowerCase().indexOf(writtenValue) >= 0
+            )
+            if (keywords.length > 0)
+              return layer
+
+            // otherwise, do not return the layer (i.e. default return null)
           })
         }
       }
@@ -86,40 +105,14 @@ export default {
         btnDisabled: false,
         filterText: '',
         listLayers: [],
-        allLayers: [],
-        allKeywords: [],
-        allAuthorsLayers: []
+        allLayers: []
       }
     },
     async mounted() {
       try {
         let result = await Map.getLayers(null)
+        // all available layers
         this.allLayers = result.data.features
-
-        result = await Map.getKeywords()
-        this.allKeywords = result.data.features
-
-        result = await Map.getAuthors()
-        this.allAuthors = result.data.features
-
-        result = await Map.getAuthorsLayers(null)
-        this.allAuthorsLayers = result.data.features
-
-        // add a list of authors and keywords names inside each layer
-        this.allLayers.forEach(layer => {
-          layer.properties.authors = this.allAuthorsLayers.filter(
-            // get all authors ids by layer_id
-            author => layer.properties.layer_id == author.properties.layer_id
-          ).map(
-            // for each author I've got I return his name instead of the id
-            author => this.getAuthorById(author.properties.user_id)[0].properties.name
-          )
-
-          // rewrite `keyword` property to have a list of keywords names, instead of a list of ids
-          layer.properties.keyword = layer.properties.keyword.map(
-            id => this.getKeywordById(id)[0].properties.name
-          )
-        })
 
         // sort the layers by name
         this.allLayers.sort(
@@ -128,6 +121,7 @@ export default {
         )
 
         // initialize the list of layers with all available layers
+        // this list can change depending on the filter
         this.listLayers = this.allLayers
 
       } catch (error) {
@@ -138,12 +132,6 @@ export default {
       }
     },
     methods: {
-      getKeywordById(id){
-        return this.allKeywords.filter(key => key.properties.keyword_id === id)
-      },
-      getAuthorById(id){
-        return this.allAuthors.filter(author => author.properties.user_id === id)
-      },
       disabled(layer) {
         if(this.btnDisabled == false)
           this.btnDisabled = true
