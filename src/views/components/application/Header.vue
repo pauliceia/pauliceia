@@ -48,7 +48,7 @@
                     <!--</li>-->
                 </ul>
 
-                <div v-if="isUserLoggedIn">
+                <div v-if="user !== null">
                     <p-logAvatar :photo="user.picture" :name="user.name"/>
                 </div>
                 <div v-else>
@@ -75,7 +75,7 @@ export default {
         'p-dropLanguage': dropLanguage
     },
     computed: {
-        ...mapState('auth', ['isUserLoggedIn', 'user'])
+        ...mapState('auth', ['user'])
     },
     data() {
         return {
