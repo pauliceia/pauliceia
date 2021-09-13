@@ -8,7 +8,7 @@ const mutations = {
   setToken (state, token) {
     state.token = token
     state.isUserLoggedIn = token ? true : false;
-  },  
+  },
   setUser (state, user) {
     state.user = user
   },

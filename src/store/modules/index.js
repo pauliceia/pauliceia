@@ -1,3 +1,5 @@
+// this file imports all states inside modules/ folder
+
 const files = require.context('.', false, /\.js$/)
 const modules = {}
 
