@@ -15,11 +15,6 @@ export default {
     else return ApiVGI().get(`/api/layer/`)
   },
 
-  getLayers(query) {
-    if(query != null) return ApiVGI().get(`/api/layer/?`+query)
-    else return ApiVGI().get(`/api/layer/`)
-  },
-
   getAttrLayer(query) {
     return ApiVGI().get(`/api/feature_table/?${query}`)
   },
