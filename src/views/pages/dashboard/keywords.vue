@@ -1,43 +1,55 @@
 <template>
   <p-dash-layout :title="$t('dashboard.keywords.keywords')">
     <div class="row" >
+
+      <!-- left column -->
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
             <h6 class="mb-0">{{ $t('dashboard.keywords.newKeyword') }}</h6>
-            <p class="card-text">
+            <p class="card-text"></p>
+
             <form>
               <div class="form-row">
                 <div class="form-group col-md-12">
                   <label for="inputName">{{ $t('dashboard.keywords.name') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.keywords.nameD')" />
-                  <button type="button" class="btn btn-outline-dark btn-sm add styleBtn" @click="back()" style="">
+                  <button type="button" class="btn btn-outline-dark btn-sm add styleBtn"
+                      @click="back()" style="">
                     <md-icon>arrow_back</md-icon>
                   </button>
-                  <input class="form-control" id="inputName">
+                  <input v-model="keyword.name" class="form-control" id="inputName">
                 </div>
 
                 <div class="form-group col-md-12">
-                  <a class="btn btn-dark styleBtn" @click="Upload()">Submit</a>
+                  <a class="btn btn-dark styleBtn" @click="addKeyword()">
+                    Submit
+                  </a>
                 </div>
               </div>
             </form>
-            </p>
+
           </div>
         </div>
       </div>
+
+      <!-- right column -->
       <div class="col-sm-6">
         <div class="card">
           <div class="card-body">
 
-            <h6 class="mb-0">{{ $t('dashboard.keywords.myKeywords') }}</h6><br><br>
+            <h6 class="mb-0">{{ $t('dashboard.keywords.myKeywords') }}</h6>
+            <br><br>
             <div class="card-text">
-              <div class="row" v-for="k in keywords">
-                <div class="col-sm-5" v-if="user.is_the_admin">{{ k.name }}</div>
-                <div class="col-sm-5" v-if="user.is_the_admin" style="color: #787878">{{ nameUsers[k.user_id_creator] }}</div>
-                <div class="col-sm-10" v-else>{{ k.name }}</div>
-                <div class="col-sm-2">
-                  <button type="button" class="btn btn-danger btn-sm add2 styleBtn2" @click="deleteKeyword(k)" >
+              <div class="row" v-for="keyword in keywords" :key="keyword.id">
+                <div class="col-sm-5">{{ keyword.name }}</div>
+                <!-- keyword author name -->
+                <div class="col-sm-5" style="color: #787878">
+                  {{ nameUsers[keyword.user_id_creator] }}
+                </div>
+                <div v-if="user !== null && user.is_the_admin" class="col-sm-2">
+                  <button type="button" @click="deleteKeyword(keyword)"
+                      class="btn btn-danger btn-sm add2 styleBtn2">
                     <md-icon>clear</md-icon>
                   </button>
                 </div>
@@ -47,6 +59,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </p-dash-layout>
 </template>
@@ -68,105 +81,112 @@
       "p-popover-labels": PopoverLabels
     },
     computed: {
-      ...mapState('auth', ['isUserLoggedIn', 'user'])
+      ...mapState('auth', ['user'])
     },
-    data: function () {
+    data() {
       return {
+        keyword: {
+          name: null
+        },
         keywords: [],
         name: this.$route.params.name,
         layer_id: this.$route.params.layer_id,
         nameUsers: []
       }
     },
+    mounted() {
+      this.updateListOfKeywords()
+    },
     methods: {
       back(){
-        const vm = this
-        if (vm.name === undefined) vm.name = 'Home'
+        if (this.name === undefined)
+          this.name = 'Home'
 
-        if(vm.name === 'EditLayer'){
+        if (this.name === 'EditLayer') {
           this.$router.push({
-            name: vm.name,
-            params: {'layer_id': vm.layer_id}
+            name: this.name,
+            params: {'layer_id': this.layer_id}
+          })
+        } else {
+          this.$router.push({
+            name: this.name
           })
         }
-        else{
-          this.$router.push({
-            name: vm.name
-          })
+      },
+      addKeyword() {
+        if (this.keyword.name === null || this.keyword.name === '') {
+          this.$message.error("Keyword name cannot be empty!")
+          return
+        } else if (this.keyword.name.length < 5) {
+          this.$message.error("Keyword name length cannot be less than 5!")
+          return
         }
 
+        let keyword = {'properties': this.keyword, 'type': 'Keyword'}
+
+        Api().post('/api/keyword/create', keyword).then(() => {
+          this.updateListOfKeywords()
+          this.$message.success("The keyword was created with success!")
+        }, (cause) => {
+          // default message
+          let message = cause.toString()
+
+          if (cause.response.status === 400)
+            message = "Keyword already exists!"
+
+          this.$message.error(message)
+        })
       },
       deleteKeyword(keyword){
-        const vm = this
-        Api().delete('/api/keyword/'+keyword.keyword_id).then(function (response) {
-          vm.updateKeyword()
-          vm.$message.success("The layer was deleted with success!")
-        }, function (cause) {
-          let msg = ''
-          if (cause.response.status === 403) msg = "The administrator is who can update/delete the keyword."
-          else msg = cause.toString()
-          console.log(cause.response)
-          vm.$message.error(msg)
-        })
-      },
-      Upload() {
-        const vm = this
-        let keyword = {
-          'type': 'Keyword',
-          'properties': {
-            'keyword_id': -1,
-            'name': document.getElementById("inputName").value,
-            'parent_id': 1001
-          }
+        if (this.user === null || !this.user.is_the_admin) {
+          this.$message.error("The administrator is who can update/delete the keyword.")
+          return
         }
 
-        Api().post('/api/keyword/create',
-          keyword
-        ).then(function (response) {
-          vm.updateKeyword()
-          vm.$message.success("The Keyword was created with success!")
-        }, function (cause) {
-          let msg = ''
-          if (cause.response.status === 400) msg = "Keyword already exists!"
-          else msg = cause.toString()
-          console.log(cause.response)
-          vm.$message.error(msg)
+        Api().delete('/api/keyword/' + keyword.id).then(() => {
+          this.updateListOfKeywords()
+          this.$message.success("The keyword was deleted with success!")
+        }, (cause) => {
+          // default message
+          let message = cause.toString()
+
+          if (cause.response.status === 403)
+            message = "The administrator is who can update/delete the keyword."
+
+          this.$message.error(message)
         })
-
-
       },
-      updateKeyword(){
-        const vm = this
-
-        Api().get('/api/user/').then(function (users) {
+      updateListOfKeywords(){
+        Api().get('/api/user/').then((users) => {
           users.data.features.forEach(user => {
-            vm.nameUsers = {...vm.nameUsers, [user.properties.user_id]: user.properties.name,}
+            this.nameUsers = {...this.nameUsers, [user.properties.user_id]: user.properties.name,}
           })
         })
 
-        vm.keywords = []
-        Api().get('/api/keyword').then(function (all) {
-          Api().get('/api/keyword/?user_id_creator=' + vm.user.user_id).then(function (response) {
-            if(vm.user.is_the_admin){
-              all.data.features.filter(e => {
-                vm.keywords.push(e.properties)
-              })
-            }
-            else {
-              response.data.features.filter(e => {
-                vm.keywords.push(e.properties)
-              })
-            }
+        this.keywords = []
+
+        if (this.user.is_the_admin) {
+          // if user is admin, then get all the available keywords
+          Api().get('/api/keyword').then(response => {
+            this.__extractKeywordsFromResponse(response)
           })
-        })
+        } else {
+          // if user is not admin, then get just his keywords
+          Api().get('/api/keyword/?user_id_creator=' + this.user.user_id).then((response) => {
+            this.__extractKeywordsFromResponse(response)
+          })
+        }
       },
-    },
-    mounted() {
-      this.updateKeyword()
+      __extractKeywordsFromResponse(response){
+        this.keywords = response.data.features.map(k => {
+          // rename the property from `keyword_id` to `id` before returning it
+          k.properties.id = k.properties.keyword_id
+          delete k.properties.keyword_id
+          return k.properties
+        })
+      }
     }
   }
-
-
 </script>
 
 <style lang="sass" scoped>
@@ -211,5 +231,4 @@
     border-color: #ff6107
     color: #ffffff !important
     position: relative
-
 </style>
