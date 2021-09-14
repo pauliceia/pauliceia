@@ -8,9 +8,9 @@
             width="200"
             trigger="click">
             <el-radio slot="reference" disabled class="radioDisabled" border>{{ name }}</el-radio>
-        </el-popover>   
-        
-        <el-radio v-else :label="id" class="radio" border>{{ name }} 
+        </el-popover>
+
+        <el-radio v-else :label="id" class="radio" border>{{ name }}
             <!-- <button style="background: green; color: #margin-left: 5px" round>FINALIZAR</button> -->
             <el-button v-if="layerId == id" type="success" size="mini" style="margin-top: -10px; margin-left: 1px" @click.native="finishEdit()">FINALIZAR</el-button>
         </el-radio>
@@ -25,32 +25,27 @@ export default {
     props: {
         id: Number
     },
-
     watch: {
         layers() {
             this._getStatus()
         }
     },
-
     computed: {
         ...mapState('map', ['layers']),
         ...mapState('edit', ['layerId'])
     },
-
     data() {
         return {
             status: false,
             name: ''
         }
     },
-
     async mounted(){
         this._getStatus()
 
-        let response = await Map.getLayers('layer_id='+this.id)
+        let response = await Map.getLayers('id=' + this.id)
         this.name = response.data.features[0].properties.name.toUpperCase()
     },
-
     methods: {
         _getStatus() {
             this.status = !this.layers.some( layer => layer == this.id )
@@ -61,8 +56,8 @@ export default {
         }
     }
 }
-    
 </script>
+
 <style lang="sass" scoped>
 .box-item
     padding: 0 10px

@@ -4,14 +4,13 @@
             <p-header/>
 
             <router-view/>
-            
+
             <p-aside-right v-if="this.$route.path == '/explore'" class="aside-right"/>
-        </div>        
+        </div>
     </section>
 </template>
-<script>
-import { mapState } from 'vuex'
 
+<script>
 import Header from '@/views/components/application/Header'
 import AsideRight from '@/views/components/aside-right/Main'
 
@@ -20,7 +19,6 @@ export default {
         'p-header': Header,
         'p-aside-right': AsideRight
     }
-    
 }
 </script>
 
@@ -29,7 +27,7 @@ body
     background: #fff
 
 .application
-    width: 100% !important 
+    width: 100% !important
     display: flex
     align-items: stretch
     height: 100%

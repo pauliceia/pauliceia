@@ -26,17 +26,15 @@ export default {
     computed: {
         ...mapState('edit', ['layerId', 'attr', 'funcSelected', 'featuresWKT', 'changesetId'])
     },
-
     data() {
         return {
             properties: null
         }
     },
-
     watch: {
         async attr(val) {
             if(val != null){
-                let layerInfo = await Map.getLayers('layer_id=' + this.layerId)
+                let layerInfo = await Map.getLayers('id=' + this.layerId)
                 let f_name = layerInfo.data.features[0].properties.f_table_name
 
                 let attrLayer = await Map.getAttrLayer('f_table_name=' + f_name)
@@ -51,7 +49,6 @@ export default {
             }
         }
     },
-
     methods: {
         async insertFeature() {
             if(this.featuresWKT != null) {
@@ -63,7 +60,7 @@ export default {
                         }
                     })
 
-                    let layerInfo = await Map.getLayers('layer_id='+this.layerId)
+                    let layerInfo = await Map.getLayers('id=' + this.layerId)
 
                     let coordinates = ((this.featuresWKT.split('(')[1]).split(')')[0]).split(' ')
                     let newFeature = {
@@ -72,7 +69,6 @@ export default {
                         'geometry': {'coordinates': [[parseFloat(coordinates[0]), parseFloat(coordinates[1])]], 'type': 'MultiPoint'},
                         'type': 'Feature'
                     }
-
                     console.log(newFeature)
 
                     let response = await Edit.addFeature(newFeature)

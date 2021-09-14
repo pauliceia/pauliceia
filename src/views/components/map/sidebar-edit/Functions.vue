@@ -36,13 +36,11 @@ export default {
     computed: {
         ...mapState('edit', ['layerId'])
     },
-
     components: {
         'p-sidebarEdit-func-point': Point,
         'p-sidebarEdit-func-line': Line,
         'p-sidebarEdit-func-polygon': Polygon
     },
-
     watch: {
         layerId(val){
             if(val != null) {
@@ -50,7 +48,6 @@ export default {
             }
         }
     },
-
     data(){
         return {
             layer: {
@@ -60,10 +57,9 @@ export default {
             }
         }
     },
-
     methods: {
         async _getLayer(id){
-            let response = await Map.getLayers('layer_id='+id)
+            let response = await Map.getLayers('id=' + id)
             let properties = response.data.features[0].properties
             this.layer.name = properties.name.toUpperCase()
 

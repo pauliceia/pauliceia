@@ -34,9 +34,7 @@ import {
 } from '@/views/assets/js/map/overlayGroup'
 import {
     emptyStyle,
-    pointSelectStyle,
-    lineSelectStyle,
-    polygonSelectStyle
+    // lineSelectStyle
 } from '@/views/assets/js/map/Styles'
 
 export default {

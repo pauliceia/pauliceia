@@ -49,7 +49,7 @@ export default {
 
             if(vm.source.getFeatureById('waiting') == null) {
                 let formatWKT = new ol.format.WKT()
-                this.draw = new ol.interaction.Draw({ 
+                this.draw = new ol.interaction.Draw({
                     source: vm.source,
                     type: 'Point'
                 })
@@ -64,12 +64,12 @@ export default {
                 })
             }
 
-            let layerInfo = await Map.getLayers('layer_id='+this.layerId)
+            let layerInfo = await Map.getLayers('id=' + this.layerId)
             let f_name = layerInfo.data.features[0].properties.f_table_name
             let attrLayer = await Map.getAttrLayer('f_table_name='+f_name)
             let properties = attrLayer.data.features[0].properties
 
-            await Object.keys(properties).map( (index, key) => {
+            await Object.keys(properties).map((index, key) => {
                 properties[index] = null
             })
             this.$store.dispatch('edit/setAttr', properties)
@@ -92,12 +92,12 @@ export default {
             this.selectEdit.on('select', event => {
                 let featureSelect = event.selected
                 if(featureSelect.length != 0)
-                    if(featureSelect[0].getId() == undefined || featureSelect[0].getId() == 'waiting') 
+                    if(featureSelect[0].getId() == undefined || featureSelect[0].getId() == 'waiting')
                         this.$store.dispatch('edit/setAttr', null)
                     else {
                         featureSelect[0].setStyle()
                         this.$store.dispatch('edit/setAttr', featureSelect[0].getProperties())
-                    }          
+                    }
             })
         },
         remove() {
@@ -112,7 +112,7 @@ export default {
             this.selectRemove.on('select', event => {
                 let featureSelect = event.selected
                 if(featureSelect.length != 0) {
-                    if(featureSelect[0].getId() == undefined || featureSelect[0].getId() == 'waiting') 
+                    if(featureSelect[0].getId() == undefined || featureSelect[0].getId() == 'waiting')
                         vm.source.removeFeature(featureSelect[0])
                     else {
                         featureSelect[0].setStyle()
@@ -125,7 +125,7 @@ export default {
                                 let layerName = featureSelect[0].getId().substr(0, (featureSelect[0].getId().lastIndexOf('.')))
                                 let featureId = featureSelect[0].getId().substr(featureSelect[0].getId().lastIndexOf('.')+1)
                                 let response = await Edit.deleteFeature(layerName, featureId, vm.changesetId)
-                                
+
                                 vm.source.removeFeature(featureSelect[0])
                                 vm.$message({
                                     message: 'Feature excluída com sucesso!',
@@ -136,10 +136,10 @@ export default {
                                     message: 'Erro na plataforma, não foi possível excluir o vetor!',
                                     type: 'error'
                                 });
-                            }                        
+                            }
                         }).catch(_ => {
                             return false
-                        })    
+                        })
                     }
                 }
             })

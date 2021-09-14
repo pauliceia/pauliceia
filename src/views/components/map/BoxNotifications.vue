@@ -11,9 +11,8 @@
 </template>
 
 <script>
-  import Api from '@/middleware/ApiVGI'
-  import { mapState } from 'vuex'
-  import Notifications from '@/views/components/dashboard/Notifications'
+import { mapState } from 'vuex'
+import Notifications from '@/views/components/dashboard/Notifications'
 
 export default {
     components: {
@@ -30,7 +29,7 @@ export default {
     methods: {
         closeBox() {
             this.$store.dispatch('map/setBoxNotifications', false)
-        },
+        }
     }
 }
 </script>

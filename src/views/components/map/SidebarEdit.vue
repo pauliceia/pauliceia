@@ -7,7 +7,9 @@
 
         <section class="sidebar" v-show="sidebar == 'edit'">
             <md-toolbar md-elevation="1" style="background: #f36c3f; color: #FFF;">
-                <span class="md-title nav-title"><strong>{{ $t('map.sidebarEdit.title') }}</strong></span>
+                <span class="md-title nav-title">
+                    <strong>{{ $t('map.sidebarEdit.title') }}</strong>
+                </span>
 
                 <div class="md-toolbar-section-end">
                     <md-button class="md-icon-button md-dense" @click="sidebarDisable()">
@@ -37,12 +39,10 @@ export default {
         'p-sidebarEdit-functions': Functions,
         'p-sidebarEdit-attributes': Attributes
     },
-
     computed: {
         ...mapState('auth', ['isUserLoggedIn']),
         ...mapState('map', ['sidebar'])
     },
-
     methods: {
         sidebarActive() {
             this.$store.dispatch('map/setSidebar', 'edit')
@@ -52,8 +52,8 @@ export default {
         }
     }
 }
-    
 </script>
+
 <style lang="sass" scoped>
     //SIDEBAR BUTTON
     .btn_sidebar
@@ -72,7 +72,7 @@ export default {
             text-shadow: 1px 2px 1px #58595b
     .btn_sidebar:hover
         background: #f15a29
-    
+
     //SIDEBAR BOX
     .sidebar
         overflow: auto
@@ -87,7 +87,7 @@ export default {
         background: rgba(#58595b, 0.75)
         z-index: 1
         box-shadow: 1px 1px 1px #CCC
-        
+
         .md-toolbar
             min-height: 50px !important
             .nav-title
@@ -95,7 +95,7 @@ export default {
                 letter-spacing: 0.8px
                 padding-left: 10px
                 text-shadow: 1px 2px 1px #58595b
-            
+
         .box-options
             margin-right: 20px
             border-radius: 50%
@@ -103,7 +103,7 @@ export default {
     //SCROLL
     .sidebar::-webkit-scrollbar
         width: 0.5em
- 
+
     .sidebar::-webkit-scrollbar-track
         margin-top: 4px
         margin-bottom: 4px
