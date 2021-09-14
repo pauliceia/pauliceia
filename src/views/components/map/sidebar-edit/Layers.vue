@@ -65,6 +65,7 @@ export default {
     async mounted() {
         if(this.user != null && this.user.user_id != undefined && this.user.user_id != null) {
             let response = await Map.getAuthorsLayers('user_id='+this.user.user_id)
+
             if(response.status == 200)
                 this.myLayersId = response.data.features.map( layer => layer.properties.layer_id )
         }

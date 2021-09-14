@@ -6,7 +6,7 @@
       <p-geocoding></p-geocoding>
       <p-sidebarLayer></p-sidebarLayer>
       <!--<p-sidebarEdit></p-sidebarEdit>-->
-      
+
       <p-boxinfolayer></p-boxinfolayer>
       <p-boxinfovector></p-boxinfovector>
       <p-boxnotifications></p-boxnotifications>
@@ -22,22 +22,15 @@
   import Timeline from '@/views/components/map/Timeline'
   import Geocoding from '@/views/components/map/Geocoding'
   import SidebarLayer from '@/views/components/map/SidebarLayer'
-  import SidebarEdit from '@/views/components/map/SidebarEdit'
+  // import SidebarEdit from '@/views/components/map/SidebarEdit'
   import BoxInfoLayer from '@/views/components/map/BoxInfoLayer'
   import BoxInfoVector from '@/views/components/map/BoxInfoVector'
   import BoxInfoNotifications from '@/views/components/map/BoxNotifications'
   import SubtitleMap from '@/views/components/map/SubtitleMap'
   import MapAlert from '@/views/components/map/mapAlert'
 
-  import {
-    pointStyle,
-    lineStyle
-  } from '@/views/assets/js/map/Styles'
+  import { overlayGroupExternal } from '@/views/assets/js/map/overlayGroup'
 
-  import {
-    overlayGroupExternal,
-    overlayGroup
-  } from '@/views/assets/js/map/overlayGroup'
 
   export default {
     components: {
@@ -45,7 +38,7 @@
       'p-timeline': Timeline,
       'p-geocoding': Geocoding,
       'p-sidebarLayer': SidebarLayer,
-      'p-sidebarEdit': SidebarEdit,
+      // 'p-sidebarEdit': SidebarEdit,
       'p-boxinfolayer': BoxInfoLayer,
       'p-boxinfovector': BoxInfoVector,
       'p-boxnotifications': BoxInfoNotifications,
@@ -63,7 +56,7 @@
       //   title: "GOOGLE MAPS",
       //   source:new olgm.layer.Google(),
       //   visible: false
-      // }); 
+      // })
 
       overlayGroupExternal.getLayers().clear()
       overlayGroupExternal.getLayers().push(osm)
@@ -80,7 +73,7 @@
     bottom: 0
     top: 84px
     background: #fff
-  
+
   .ol-zoom
     display: flex !important
     top: auto !important
