@@ -22,11 +22,17 @@
             <h6 class="mb-0">{{ $t('dashboard.home.myLayers') }}</h6>
             <br>
             <div class="card-text">
-              <div class="row" v-for="layer in myLayers" v-bind:key="layer.layer_id">
+              <div class="row" v-for="layer in myLayers" v-bind:key="layer.id">
                 <div class="col-sm-7">{{ layer.name }}</div>
                 <div class="col-sm-5">
-                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
-                  <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  <button type="button" class="btn btn-outline-danger btn-sm add2"
+                      @click="deleteLayer(layer.id)">
+                    <md-icon>clear</md-icon>
+                  </button>
+                  <button type="button" class="btn btn-outline-dark btn-sm add"
+                      @click="editLayer(layer.id)">
+                    <md-icon>create</md-icon>
+                  </button>
                 </div>
                 <hr>
               </div>
@@ -40,13 +46,16 @@
             <h6 class="mb-0">{{ $t('dashboard.home.sharedLayers') }}</h6>
             <br>
             <div class="card-text">
-              <div class="row" v-for="layer in sharedLayers" v-bind:key="layer.layer_id">
+              <div class="row" v-for="layer in sharedLayers" v-bind:key="layer.id">
                 <div class="col-sm-8">{{ layer.name }}</div>
                 <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  <button type="button" class="btn btn-outline-dark btn-sm add"
+                      @click="editLayer(layer.id)">
+                    <md-icon>create</md-icon>
+                  </button>
                 </div>
                 <div class="col-sm-2">
-                  <!--<button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>-->
+                  <!--<button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.id)"><md-icon>clear</md-icon></button>-->
                 </div>
                 <hr>
               </div>
@@ -78,49 +87,37 @@
       this.orderLayers(500)
     },
     computed: {
-      ...mapState('auth', ['isUserLoggedIn', 'user']),
+      ...mapState('auth', ['user']),
       ...mapState('map', ['boxNotifications']),
     },
     methods: {
       deleteLayer(id){
-        Api().delete('/api/layer/' + id).then((response) => {
+        Api().delete('/api/layer/' + id).then(() => {
           this.updateLayers()
         })
       },
       editLayer(id){
         this.$router.push({name: 'EditLayer', params: {layer_id: id}})
       },
-      // handleClick(tab, event) {
-      //   console.log('\n handleClick: ');
-      //   console.log(' tab: ', tab);
-      //   console.log(' event: ', event);
-      // },
       updateLayers(){
         this.sharedLayers = []
         this.myLayers = []
 
-        Api().get('/api/user_layer/?user_id='+this.user.user_id).then((response) => {
+        Api().get('/api/user_layer/?user_id=' + this.user.user_id).then((response) => {
           response.data.features.filter(e => {
 
-            Api().get('/api/layer/?layer_id=' + e.properties.layer_id).then((response2) => {
+            Api().get('/api/layer/?id=' + e.properties.layer_id).then((response2) => {
               if (e.properties.is_the_creator)
                 this.myLayers.push(response2.data.features[0].properties)
               else
                 this.sharedLayers.push(response2.data.features[0].properties)
 
               this.orderLayers(10)
-
-              // save the layers inside the state
-              this.$store.dispatch('dashboard/setMyLayers', this.myLayers)
-              this.$store.dispatch('dashboard/setSharedLayers', this.sharedLayers)
             })
-
           })
         })
-
       },
       orderLayers(x){
-        // const vm = this
         setTimeout(_ => {
           this.myLayers.sort((a, b) => {
             if (a.name.toLowerCase() > b.name.toLowerCase())
