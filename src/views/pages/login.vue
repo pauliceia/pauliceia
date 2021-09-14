@@ -166,7 +166,7 @@ section
 
 .register
     float: right
-    color: #666
+    color: #595959
 .register:hover
     color: #000
 

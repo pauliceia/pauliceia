@@ -198,7 +198,7 @@ section
 
     .title-to-login
         font-size: 1.3em
-        color: #666
+        color: #595959
         text-align: center
         padding: 25px 0
 
@@ -208,5 +208,4 @@ section
         a
             color: #ff6107
             cursor: pointer
-
 </style>
