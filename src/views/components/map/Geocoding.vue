@@ -205,9 +205,9 @@ export default {
       reader.readAsText(event.target.files[0]);
     },
     async visualizar() {
-      console.log('\n visualizar()')
-      console.log('this.headers: ', this.headers)
-      console.log('this.csvjson: ', this.csvjson)
+      // console.log('\n visualizar()')
+      // console.log('this.headers: ', this.headers)
+      // console.log('this.csvjson: ', this.csvjson)
 
       this._openFullScreen()
 
