@@ -3,28 +3,39 @@
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
       <div class="card styleCard">
-        <div class="card-body">
-          <h5 class="card-title" style="text-align: center"><h3>Profile</h3></h5>
+        <div class="card-body" v-if="user !== null">
+
+          <h5 class="card-title" style="text-align: center">
+            <h3>Profile</h3>
+          </h5>
+
           <div class="card-text">
             <form>
               <div class="form-row">
+
                 <div class="form-group col-md-4 text-center">
-                  <p class="text-left">Profile Picture
-                    <p-popover-labels text="Foto para o perfil" /></p>
+                  <p class="text-left">
+                    Profile Picture
+                    <p-popover-labels text="Foto para o perfil" />
+                  </p>
                   <md-avatar class="md-avatar-icon stylePicture">
                     <div class="logo">
-                      <img :src="imagePerson" />
+                      <img :src="user.picture" />
                     </div>
                   </md-avatar>
                   <br>
                   <br>
-                  <a class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="UploadPicture()">Upload new picture</a>
+                  <a class="btn btn-primary" @click="addProfilePicture()"
+                     style="color: #ffffff; background-color: #ff6107; border-color: #ff6107">
+                    Upload new picture
+                  </a>
                 </div>
+
                 <div class="form-group col-md-7">
                   <div class="form-group">
                   <label for="inputName">{{ $t('dashboard.keywords.name') }}</label>&nbsp;
                     <p-popover-labels text="Nome social" />
-                    <input class="form-control"  v-model="user.name" id="inputName">
+                    <input class="form-control" v-model="user.name" id="inputName">
                   </div>
                   <div class="form-group">
                     <label>{{ $t('register.lbEmail') }}</label>
@@ -38,18 +49,24 @@
                   </div>
 
                   <div class="box-check">
-                    <el-checkbox :label="$t('register.lbCheckNotification')" v-model="user.receive_notification_by_email"></el-checkbox>
+                    <el-checkbox :label="$t('register.lbCheckNotification')"
+                                 v-model="user.receive_notification_by_email"></el-checkbox>
                   </div>
-
                 </div>
+
                 <div class="form-group col-md-11">
                   <div class="text-right align-self-end"><br>
-                    <a  class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="submitInfo()">Submit</a>
+                    <a class="btn btn-primary" @click="updateUserData()"
+                       style="color: #ffffff; background-color: #ff6107; border-color: #ff6107">
+                      Submit
+                    </a>
                   </div>
                 </div>
+
               </div>
             </form>
           </div>
+
         </div>
       </div>
     </div>
@@ -57,62 +74,76 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-  import vSelect from 'vue-select'
-  import Api from '@/middleware/ApiVGI'
-  import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
-  import {mapState} from 'vuex'
-  import ImgPerson from '@/views/assets/images/icon_person.png'
+import { mapState } from 'vuex'
 
-  export default {
-        name: "profile",
-        components: {
-          "p-popover-labels": PopoverLabels
-        },
-        computed: {
-          ...mapState('auth', ['isUserLoggedIn', 'user'])
-        },
-        data: function () {
-          return {
-            keywords: [],
-            imagePerson: ''
-          }
-        },
-        methods: {
-          submitInfo(){
-            const vm = this
-            Api().put('/api/user',
-              {
-                'type': 'User',
-                'properties': {
-                  'user_id': vm.user.user_id,
-                  'email': vm.user.email,
-                  'username': vm.user.username,
-                  'name': vm.user.name,
-                  'terms_agreed': true,
-                  'receive_notification_by_email': vm.user.receive_notification_by_email
-                }
-              }
-            ).then(function (response) {
-              //console.log(response)
-              vm.$message.success("The profile was updated with success!")
-              vm.$router.push({
-                path: '/dashboard/home'
-              })
-            }, function (cause) {
-               msg = cause.toString()
-                vm._msgError(msg)
-            })
-          },
-          _msgError(msg){
-            this.$message.error(msg)
-          },
-        },
-        mounted() {
-          //console.log(this.user) //user.picture
-          this.imagePerson = this.user.picture !== '' ? this.user.picture : ImgPerson
-        }
+import Api from '@/middleware/ApiVGI'
+import IconPerson from '@/views/assets/images/icon_person.png'
+import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
+import User from '@/middleware/User'
+
+export default {
+  name: "profile",
+  components: {
+    "p-popover-labels": PopoverLabels
+  },
+  computed: {
+    ...mapState('auth', ['user'])
+  },
+  data () {
+    return {}
+  },
+  mounted() {
+    this.fixUserPicture()
+  },
+  methods: {
+    addProfilePicture() {
+      this.$message.error('Button is not working yet! :(')
+    },
+    updateUserData(){
+      if (this.user.name === null || this.user.name === '' ||
+          this.user.username === null || this.user.username === '') {
+        this.$message.error("User data cannot be empty!")
+        return
+      } else if (this.user.name.length < 5 || this.user.username.length < 5) {
+        this.$message.error("User data length cannot be less than 5!")
+        return
+      }
+
+      const user = {'properties': this.user, 'type': 'User'}
+
+      Api().put('/api/user', user).then(response => {
+        // get updated token
+        const token = response.headers.authorization
+
+        User.getUserByToken(token).then(response2 => {
+          // set updated token and user information in the state
+          this.$store.dispatch('auth/setToken', token)
+          this.$store.dispatch('auth/setUser', response2.data.properties)
+
+          this.fixUserPicture()
+
+          this.$message.success("The profile was updated successfully!")
+        }).catch(cause => {
+          this.$message.error(cause.response.data.toString())
+
+          // if an error occurs, then clean the state and redirect to login page
+          this.$store.dispatch('auth/setToken', null)
+          this.$store.dispatch('auth/setUser', null)
+          this.$router.push({
+            path: '/login'
+          })
+        })
+
+      }).catch(cause => {
+        this.$message.error(cause.response.data.toString())
+      })
+    },
+    fixUserPicture(){
+      // update user picture in order to show an icon when user does not have one
+      this.user.picture = this.user.picture !== '' ? this.user.picture : IconPerson
     }
+  }
+}
 </script>
 
 <style  lang="sass" scoped>
@@ -163,6 +194,4 @@
     margin: 0px
     position: relative
     border-radius: 30px
-
-
 </style>
