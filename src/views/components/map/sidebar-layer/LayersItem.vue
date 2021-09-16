@@ -4,7 +4,7 @@
         <el-switch v-model="layerStatus" :active-color="color"></el-switch>
 
         <span>
-            <b>{{ nameLayer != '' ? nameLayer.length > 18 ? nameLayer.slice(0, 18) + ' ...' : nameLayer : title }}</b>
+            <b>{{ layerName }}</b>
             <span v-show="layerStatus">
                 <button class="btn-view" @click="boxView =! boxView">
                     <md-icon>settings</md-icon>
@@ -71,28 +71,39 @@ export default {
         group: Object
     },
     computed: {
-        ...mapState('map', ['idInfoFeatureLayer'])
+        ...mapState('map', ['idInfoFeatureLayer', 'idInfoLayer']),
+        layerName () {
+            // create layer name based on `layer.name` or `layer.f_table_name`
+
+            if (this.layer === null)
+                return ''
+
+            if (this.layer.name !== '')
+                return this.layer.name.length > 18 ? this.layer.name.slice(0, 18) + '...' : this.layer.name
+
+            return this.layer.f_table_name
+        }
     },
     data() {
         return {
-            boxView: false,
+            layer: null,
             title: '',
+            boxView: false,
             type: '',
             layerStatus: true,
             colorVector: null,
             getInfo: false,
             select: null,
-            overlay: null,
-            nameLayer: ''
+            overlay: null
         }
     },
     async mounted() {
         this.layerStatus = this.status
         this.title = this.titleInit
 
-        if(this.id != undefined) {
-            let layers = await Map.getLayers('layer_id=' + this.id)
-            this.nameLayer = layers.data.features[0].properties.name
+        if (this.id !== undefined) {
+            let layers = await Map.getLayers('id=' + this.id)
+            this.layer = layers.data.features[0].properties
             this.title = layers.data.features[0].properties.f_table_name
         }
 
@@ -197,7 +208,6 @@ export default {
 
               break;
             }
-
           }
         },
         extend(){
@@ -212,15 +222,21 @@ export default {
             })
         },
         infosLayer(){
-            if(this.id != null && this.id !== undefined) {
+            if (this.id !== null && this.id !== undefined) {
+                // close other modals before showing the one related to this layer
                 this.$store.dispatch('map/setBoxInfoVector', false)
                 this.$store.dispatch('map/setBoxGeocoding', false)
                 this.$store.dispatch('map/setBoxNotifications', false)
 
-                this.$store.dispatch('map/setBoxInfoLayer', true)
+                // if the modal to this layer is already showed, then hidden it
+                if (this.id === this.idInfoLayer) {
+                    this.$store.dispatch('map/setIdInfoLayer', null)
+                    return
+                }
+
+                // if the modal to this layer is not showed, then show it
                 this.$store.dispatch('map/setIdInfoLayer', this.id)
             } else {
-                this.$store.dispatch('map/setBoxInfoLayer', false)
                 this.$store.dispatch('map/setIdInfoLayer', null)
             }
         },
@@ -231,27 +247,25 @@ export default {
               this.$store.dispatch('map/setIdInfoFeatureLayer', this.title)
         },
         downloadSHP() {
-            let link = process.env.urlGeoserverPauliceia + '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+this.title.toLowerCase()+'&outputFormat=SHAPE-ZIP'
+            let link = process.env.urlGeoserverPauliceia + '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:' + this.title.toLowerCase() + '&outputFormat=SHAPE-ZIP'
             window.open(link, '_blank')
         },
         _getInfosFeatures(){
-          let vm = this
-
           // clean the map interactions
-          vm.$root.olmap.getOverlays().clear()
+          this.$root.olmap.getOverlays().clear()
 
           // create popup
           $("#popup").append(
-            `<div id="popup-${vm.title}" title="information of vector">
-              <div id="popup-content-${vm.title}"></div>
+            `<div id="popup-${this.title}" title="information of vector">
+              <div id="popup-content-${this.title}"></div>
             </div>`
           )
 
           // select popup
-          vm.containerPopup = document.getElementById(`popup-${vm.title}`)
-          vm.contentPopup = document.getElementById(`popup-content-${vm.title}`)
+          this.containerPopup = document.getElementById(`popup-${this.title}`)
+          this.contentPopup = document.getElementById(`popup-content-${this.title}`)
 
-          $(vm.containerPopup).css({
+          $(this.containerPopup).css({
               "display": "block",
               "position": "absolute",
               "background-color": "white",
@@ -264,29 +278,29 @@ export default {
               "left": "-50px",
               "min-width": "280px"
           })
-          $(vm.containerPopup).addClass("ol-popup")
+          $(this.containerPopup).addClass("ol-popup")
 
           // create interaction and overlay
-          vm.select = new ol.interaction.Select()
-          vm.overlay = new ol.Overlay({
-              element: vm.containerPopup,
+          this.select = new ol.interaction.Select()
+          this.overlay = new ol.Overlay({
+              element: this.containerPopup,
               autoPan: true
           })
-          vm.$root.olmap.addInteraction(vm.select)
-          vm.$root.olmap.addOverlay(vm.overlay)
+          this.$root.olmap.addInteraction(this.select)
+          this.$root.olmap.addOverlay(this.overlay)
 
           // when the user clicks on the feature
-          vm.select.on('select', event => {
-            vm.overlay.setPosition(undefined)
+          this.select.on('select', event => {
+            this.overlay.setPosition(undefined)
 
             event.selected.filter(
-              feature => ((feature.getId().split('.'))[0]) == vm.title.toLowerCase()
+              feature => ((feature.getId().split('.'))[0]) == this.title.toLowerCase()
             ).forEach(feat => {
               feat.setStyle()
               let coordinate = feat.getGeometry().getFirstCoordinate();
 
-              vm.contentPopup.innerHTML = ''
-              vm.contentPopup.innerHTML = `<p style="margin:0; padding:0;"><strong>id:</strong> ${feat.getId().split('.')[1]} </p>`
+              this.contentPopup.innerHTML = ''
+              this.contentPopup.innerHTML = `<p style="margin:0; padding:0;"><strong>id:</strong> ${feat.getId().split('.')[1]} </p>`
 
               for (const [key, value] of Object.entries(feat.getProperties())) {
                 // do not add to the info box the `changeset_id` and `version` properties
@@ -294,12 +308,12 @@ export default {
                   continue
 
                 if (typeof(value) !== 'object')
-                  vm.contentPopup.innerHTML += `<p style="margin:0; padding:0;"><strong>${key}:</strong> ${value} </p>`
+                  this.contentPopup.innerHTML += `<p style="margin:0; padding:0;"><strong>${key}:</strong> ${value} </p>`
               }
 
-              vm.overlay.setPosition(coordinate)
+              this.overlay.setPosition(coordinate)
             })
-          });
+          })
         },
         _clearInteractions(){
             this.$root.olmap.removeInteraction(this.select)
