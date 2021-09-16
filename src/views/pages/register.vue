@@ -100,13 +100,12 @@ export default {
         async registerSubmit () {
             this._openFullScreen()
             try {
-                if(this.user.email == '' || this.user.username == '' || this.user.password == '') {
+                if (this.user.email == '' || this.user.username == '' || this.user.password == '') {
                     this._msgBox(
                         'ERROR',
                         this.$t('register.msg.emptyField'),
                         'error'
                     )
-
                 } else {
                     let password = new jsSHA("SHA-512", "TEXT")
                     password.update(this.user.password)

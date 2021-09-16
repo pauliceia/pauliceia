@@ -8,7 +8,7 @@
                 </div>
             </md-avatar>
         </md-button>
-        
+
         <md-menu-content>
             <md-menu-item to="/dashboard/profile">
                 <md-icon>person</md-icon>
@@ -26,28 +26,24 @@
     </md-menu>
 
 </template>
+
 <script>
-import User from '@/middleware/User'
 import ImgPerson from '@/views/assets/images/icon_person.png'
 import 'vue-material/dist/vue-material.min.css'
 
 export default {
     name: 'p-logAvatar',
-
     props: [
         'name', 'photo'
     ],
-
     data(){
         return {
             imagePerson: ''
         }
     },
-
     mounted() {
         this.imagePerson = this.photo != '' ? this.photo : ImgPerson
     },
-
     methods: {
         logout() {
             this.$store.dispatch('auth/setUser', null)
@@ -65,8 +61,9 @@ export default {
     }
 }
 </script>
+
 <style lang="sass" scoped>
-    $color-nav: rgb(77,77,77)    
+    $color-nav: rgb(77,77,77)
     .md-menu
         float: right
         margin: 0 !important
@@ -76,7 +73,7 @@ export default {
         background: #f15a29
         min-width: 0 !important
         height: 50px
-    
+
     .md-menu-content
         background: none
         box-shadow: none !important
@@ -97,11 +94,11 @@ export default {
                     color: #FFF
                 .md-icon
                     color: #FFF
-                
+
             .md-list-item-content
                 padding: 5px 10px !important
                 min-height: 0 !important
-                    
+
             .md-icon
                 color: $color-nav
                 font-size: 1.3em !important
