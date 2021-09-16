@@ -16,15 +16,15 @@
           </el-input>
           <br/>
 
-          <article v-for="layer in listLayers" :key="layer.layer_id">
-            <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
+          <article v-for="layer in listLayers" :key="layer.id">
+            <div :class="layers.some(id => id == layer.properties.id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
               <div class="infos">
                 <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong>
                   {{ layer.properties.name }}
                 </p>
                 <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
-                  <span v-for="author in layer.properties.authors" :key="author.id">
-                    {{ author.name }};
+                  <span v-for="collaborator in layer.properties.collaborators" :key="collaborator.id">
+                    {{ collaborator.name }};
                   </span>
                 </p>
                 <p><strong>{{ $t('map.addLayer.box.lbKeywods') }}:</strong>
@@ -35,10 +35,10 @@
               </div>
 
               <div class="btns">
-                <el-button :type="layers.some(id => id == layer.properties.layer_id) ? 'danger' : 'success'"
-                              round @click="layers.some(id => id == layer.properties.layer_id) ? disabled(layer) : active(layer)"
+                <el-button :type="layers.some(id => id == layer.properties.id) ? 'danger' : 'success'"
+                              round @click="layers.some(id => id == layer.properties.id) ? disabled(layer) : active(layer)"
                               :disabled="btnDisabled" >
-                  {{ layers.some(id => id == layer.properties.layer_id) ? $t('map.addLayer.btns.disable') : $t('map.addLayer.btns.active') }}
+                  {{ layers.some(id => id == layer.properties.id) ? $t('map.addLayer.btns.disable') : $t('map.addLayer.btns.active') }}
                 </el-button>
               </div>
             </div>
@@ -77,16 +77,18 @@ export default {
             if (layer.properties.name.toLowerCase().indexOf(writtenValue) >= 0)
               return layer
 
-            // if authors match the written value, then return the layer
-            let authors = layer.properties.authors.filter(
-              author => author.name != null && author.name.toLowerCase().indexOf(writtenValue) >= 0
+            // if collaborators match the written value, then return the layer
+            let collaborators = layer.properties.collaborators.filter(
+              // c - collaborator
+              c => c.name !== null && c.name.toLowerCase().indexOf(writtenValue) >= 0
             )
-            if (authors.length > 0)
+            if (collaborators.length > 0)
               return layer
 
             // if keywords match the written value, then return the layer
             let keywords = layer.properties.keywords.filter(
-              keyword => keyword.name != null && keyword.name.toLowerCase().indexOf(writtenValue) >= 0
+              // k - keyword
+              k => k.name !== null && k.name.toLowerCase().indexOf(writtenValue) >= 0
             )
             if (keywords.length > 0)
               return layer
@@ -137,9 +139,9 @@ export default {
           this.btnDisabled = true
 
         overlayGroup.getLayers().forEach(sublayer => {
-          if(sublayer != undefined && sublayer.get('id') != undefined && sublayer.get('id') == layer.properties.layer_id) {
+          if (sublayer != undefined && sublayer.get('id') != undefined && sublayer.get('id') == layer.properties.id) {
             overlayGroup.getLayers().remove(sublayer)
-            this.$store.dispatch('map/setRemoveLayers', layer.properties.layer_id)
+            this.$store.dispatch('map/setRemoveLayers', layer.properties.id)
             this.btnDisabled = false
             return true
           }
@@ -150,14 +152,15 @@ export default {
           this.btnDisabled = true
 
         this._openFullScreen()
-        const vm = this
 
         try {
-          let url = process.env.urlGeoserverPauliceia+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson';
+          let url = process.env.urlGeoserverPauliceia +
+                      '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:' +
+                      layer.properties.f_table_name + '&outputFormat=application%2Fjson';
 
           let response = await axios.get(url)
 
-          if(response.data.type != undefined) {
+          if (response.data.type != undefined) {
             let vectorLayer = new ol.layer.Vector({
               title: layer.properties.f_table_name,
               source: new ol.source.Vector({
@@ -165,20 +168,20 @@ export default {
                 format: new ol.format.GeoJSON(),
                 crossOrigin: 'anonymous',
               }),
-              zIndex: vm.layers.length+2,
-              id: layer.properties.layer_id
+              zIndex: this.layers.length+2,
+              id: layer.properties.id
             })
 
             overlayGroup.getLayers().push(vectorLayer)
 
             setTimeout( _ => {
-              this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
+              this.$store.dispatch('map/setNewLayers', layer.properties.id)
               this.loading.close()
               this.btnDisabled = false
             }, 500)
           } else throw {}
 
-        } catch(error) {
+        } catch (error) {
           this.loading.close()
           this.btnDisabled = false
           this.$alert("Por favor, confira se a camada foi importada corretamente em nosso sistema ou entre em contato com nosso suporte!", "Erro ao importar a camada", {
