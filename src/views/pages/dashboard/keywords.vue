@@ -126,7 +126,7 @@
 
         Api().post('/api/keyword/create', keyword).then(() => {
           this.updateListOfKeywords()
-          this.$message.success("The keyword was created with success!")
+          this.$message.success("The keyword was created successfully!")
         }, (cause) => {
           // default message
           let message = cause.toString()
@@ -145,7 +145,7 @@
 
         Api().delete('/api/keyword/' + keyword.id).then(() => {
           this.updateListOfKeywords()
-          this.$message.success("The keyword was deleted with success!")
+          this.$message.success("The keyword was deleted successfully!")
         }, (cause) => {
           // default message
           let message = cause.toString()
@@ -178,12 +178,7 @@
         }
       },
       __extractKeywordsFromResponse(response){
-        this.keywords = response.data.features.map(k => {
-          // rename the property from `keyword_id` to `id` before returning it
-          k.properties.id = k.properties.keyword_id
-          delete k.properties.keyword_id
-          return k.properties
-        })
+        this.keywords = response.data.features.map(k => k.properties)
       }
     }
   }
