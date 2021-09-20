@@ -2,7 +2,7 @@
     <section class="box-edit">
 
         <div class="box-layers">
-            <div v-if="user != null && user.user_id !== undefined && user.user_id != null">
+            <div v-if="user !== null && user.id !== null">
                 <p class="title">
                     <i class="el-icon-edit-outline"></i>
                     Selecione uma camada para editar:
@@ -13,7 +13,7 @@
                     </div>
                 </el-radio-group>
 
-                <div v-if="myLayersId.length == 0">
+                <div v-if="myLayersId.length === 0">
                     <el-alert
                         title="Você não possui camadas associadas ao seu usuário, adicione para poder editar!"
                         type="info"
@@ -63,8 +63,8 @@ export default {
         }
     },
     async mounted() {
-        if(this.user != null && this.user.user_id != undefined && this.user.user_id != null) {
-            let response = await Map.getAuthorsLayers('user_id='+this.user.user_id)
+        if(this.user !== null && this.user.id !== null) {
+            let response = await Map.getAuthorsLayers('user_id='+this.user.id)
 
             if(response.status == 200)
                 this.myLayersId = response.data.features.map( layer => layer.properties.layer_id )

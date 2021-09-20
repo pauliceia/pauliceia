@@ -335,6 +335,7 @@ export default {
       this.notifP = []
       this.notifF = []
 
+      // get general notifications
       Api().get(
         '/api/notification/?layer_id=NULL&keyword_id=NULL&notification_id_parent=NULL'
       ).then(response => {
@@ -350,7 +351,7 @@ export default {
       })
 
       // get personal notifications related to current user
-      Api().get('/api/notification/?user_id_creator=' + this.user.user_id).then(userNotifications => {
+      Api().get('/api/notification/?user_id_creator=' + this.user.id).then(userNotifications => {
         userNotifications.data.features.forEach(userNotification => {
 
           Api().get(
@@ -374,7 +375,7 @@ export default {
       })
 
       // get personal notifications related to current user layers
-      Api().get('/api/user_layer/?user_id=' + this.user.user_id).then(userLayers => {
+      Api().get('/api/user_layer/?user_id=' + this.user.id).then(userLayers => {
         userLayers.data.features.forEach(userLayer => {
 
           Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(notifications => {
@@ -395,7 +396,7 @@ export default {
       })
 
       // get following notifications
-      Api().get('/api/layer_follower/?user_id=' + this.user.user_id).then(userLayers => {
+      Api().get('/api/layer_follower/?user_id=' + this.user.id).then(userLayers => {
         userLayers.data.features.forEach(userLayer => {
 
           Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(notifications => {
@@ -417,7 +418,7 @@ export default {
     },
     canUserRemoveIt(notification) {
       return this.user !== null &&
-              (this.user.user_id === notification.user_id_creator || this.user.is_the_admin)
+              (this.user.id === notification.user_id_creator || this.user.is_the_admin)
     },
     removeNotification(notification) {
       this.__openFullLoading()

@@ -182,7 +182,7 @@ export default {
     },
     canUserRemoveIt(comment) {
       return this.user !== null &&
-              (this.user.user_id === comment.user_id_creator || this.user.is_the_admin)
+              (this.user.id === comment.user_id_creator || this.user.is_the_admin)
     },
     removeComment(comment) {
       this.__openFullLoading()

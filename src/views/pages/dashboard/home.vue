@@ -70,9 +70,10 @@
 </template>
 
 <script>
-  import DashLayout from '@/views/layouts/dashboard'
-  import Api from '@/middleware/ApiVGI'
   import { mapState } from 'vuex'
+
+  import Api from '@/middleware/ApiVGI'
+  import DashLayout from '@/views/layouts/dashboard'
   import Notifications from '@/views/components/dashboard/Notifications'
 
   export default {
@@ -103,7 +104,7 @@
         this.sharedLayers = []
         this.myLayers = []
 
-        Api().get('/api/user_layer/?user_id=' + this.user.user_id).then((response) => {
+        Api().get('/api/user_layer/?user_id=' + this.user.id).then((response) => {
           response.data.features.filter(e => {
 
             Api().get('/api/layer/?id=' + e.properties.layer_id).then((response2) => {
