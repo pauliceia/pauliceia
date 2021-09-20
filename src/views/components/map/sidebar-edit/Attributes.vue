@@ -33,7 +33,7 @@ export default {
     },
     watch: {
         async attr(val) {
-            if(val != null){
+            if (val != null) {
                 let layerInfo = await Map.getLayers('id=' + this.layerId)
                 let f_name = layerInfo.data.features[0].properties.f_table_name
 
@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         async insertFeature() {
-            if(this.featuresWKT != null) {
+            if (this.featuresWKT != null) {
                 try {
                     let propsObj = {}
                     await this.properties.forEach( props => {

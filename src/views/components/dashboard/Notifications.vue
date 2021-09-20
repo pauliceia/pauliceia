@@ -1,119 +1,128 @@
 <template>
   <div class="body">
 
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activated_tab">
+
       <el-tab-pane label="GENERAL" name="first" class="">
+
         <div class="notification-box-main" v-if="showInput">
-          <textarea class="form-control" v-model="txtNotif" id="inputReference" rows="3"></textarea>
+          <textarea class="form-control" v-model="description" id="inputReference" rows="3"></textarea>
           <br>
           <div style="float: right">
-            <a class="btn btn-dark" @click="addNotif()"
-               style="color: white; background-color: #ff6107; border-color: #ff6107">Submit</a>
+            <a class="btn btn-dark" @click="addNotification()"
+               style="color: white; background-color: #ff6107; border-color: #ff6107">
+              Submit
+            </a>
           </div>
-          <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
-                    v-if="txtReply !== null">
+          <p style="left: 0px; display: flex">
+            {{ txtReply }}
+            &nbsp;&nbsp;&nbsp;
+            <button type="button" v-if="txtReply !== null" @click="cleanMessage()"
+                    class="btn btn-outline-danger btn-sm add">
               <md-icon>clear</md-icon>
             </button>
           </p>
           <br>
         </div>
+
         <div class="nofitication">
-          <div v-for="notification in notifG" v-bind:key="notification.notification_id">
+          <div v-for="notification in notifG" v-bind:key="notification.id">
             <div class="row notification-box">
-              <div class="col-3 col-md-3 col-lg-1 col-sm-3">
+              <div class="col-4 col-sm-4 col-md-3 col-lg-1">
                 <div style="display: flex; align-items: center;">
                   <div class="photo">
                     <md-avatar class="md-avatar-icon stylePicture">
-                      <div class="logo">
-                        <img :src="notification.photo"/>
-                      </div>
+                      <img :src="notification.user_picture"/>
                     </md-avatar>
                   </div>
                 </div>
               </div>
-              <div class="col-9 col-md-9  col-lg-11 col-sm-9">
+              <div class="col-8 col-sm-8 col-md-9 col-lg-11">
+                <!-- buttons -->
                 <div class="comments">
-                  <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(notification)"
-                          v-if="showInput" title="Responder">
+                  <button type="button" v-if="showInput" @click="replyNotification(notification)"
+                          title="Responder" class="btn btn-outline-primary btn-sm add">
                     <md-icon>replay</md-icon>
                   </button>
-                  <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(notification)"
-                          v-if="showInput" title="Denunciar">
+                  <button type="button" v-if="showInput" @click="reportNotification(notification)"
+                          title="Denunciar" class="btn btn-outline-warning btn-sm add">
                     <md-icon>report</md-icon>
                   </button>
-                  <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(notification)"
-                          v-if="canUserRemoveIt(notification)" title="Excluir">
+                  <button type="button" v-if="canUserRemoveIt(notification)" @click="removeNotification(notification)"
+                          title="Excluir" class="btn btn-outline-danger btn-sm add">
                     <md-icon>clear</md-icon>
                   </button>
                 </div>
                 <div class="credentials">
-                  <div class="author">{{notification.name}}</div>
-                  <div class="date">{{notification.date}}</div>
+                  <div class="author">{{ notification.user_name }}</div>
+                  <div class="date">{{ notification.created_at }}</div>
                 </div>
-                <p class="content">{{notification.description}}</p>
+                <p class="content">{{ notification.description }}</p>
               </div>
-              <p-modal-notification :notification_id="notification.notification_id"></p-modal-notification>
+              <p-modal-notification :master_notification="notification"></p-modal-notification>
             </div>
           </div>
         </div>
+
       </el-tab-pane>
 
       <el-tab-pane label="PERSONAL" name="second">
         <div class="notification-box-main" v-if="showInput && showInput2">
-          <textarea class="form-control" v-model="txtNotif" id="inputReference2" rows="3"></textarea>
+          <textarea class="form-control" v-model="description" id="inputReference2" rows="3"></textarea>
           <br>
           <div style="right: 30px; position: absolute">
-            <a style="color: white" class="btn btn-primary" @click="addNotif()">Submit</a>
+            <a style="color: white" class="btn btn-primary" @click="addNotification()">
+              Submit
+            </a>
           </div>
-          <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
-                    v-if="txtReply !== null">
+          <p style="left: 0px; display: flex">
+            {{txtReply}} &nbsp;&nbsp;&nbsp;
+            <button type="button" v-if="txtReply !== null" @click="cleanMessage()"
+                    class="btn btn-outline-danger btn-sm add">
               <md-icon>clear</md-icon>
             </button>
           </p>
           <br>
         </div>
         <div class="nofitication">
-          <div v-for="notification in notifP" v-bind:key="notification.notification_id">
+          <div v-for="notification in notifP" v-bind:key="notification.id">
             <div class="notification-box">
               <div class="row">
-                <div class="col-3 col-md-3 col-lg-1 col-sm-3">
+                <div class="col-4 col-sm-4 col-md-3 col-lg-1">
                   <div style="display: flex; align-items: center;">
                     <div class="photo">
                       <md-avatar class="md-avatar-icon stylePicture">
-                        <div class="logo">
-                          <img :src="notification.photo"/>
-                        </div>
+                        <img :src="notification.user_picture"/>
                       </md-avatar>
                     </div>
                   </div>
                 </div>
-                <div class="col-9 col-md-9  col-lg-11 col-sm-9">
+                <div class="col-8 col-sm-8 col-md-9 col-lg-11">
                   <div class="comments">
-                    <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(notification)"
-                            v-if="showInput" title="Responder">
+                    <button type="button" v-if="showInput" @click="replyNotification(notification)"
+                            title="Responder" class="btn btn-outline-primary btn-sm add">
                       <md-icon>replay</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(notification)"
-                            v-if="showInput" title="Denunciar">
+                    <button type="button" v-if="showInput" @click="reportNotification(notification)"
+                            title="Denunciar" class="btn btn-outline-warning btn-sm add">
                       <md-icon>report</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(notification)"
-                            v-if="canUserRemoveIt(notification)">
+                    <button v-if="canUserRemoveIt(notification)" @click="removeNotification(notification)"
+                            type="button" class="btn btn-outline-danger btn-sm add">
                       <md-icon>clear</md-icon>
                     </button>
                   </div>
 
                   <div class="credentials">
-                    <div class="author">{{notification.name}}</div>
-                    <div class="date">{{notification.date}}</div>
+                    <div class="author">{{ notification.user_name }}</div>
+                    <div class="date">{{ notification.created_at }}</div>
                   </div>
-                  <p class="content">{{notification.description}}</p>
+                  <p class="content">{{ notification.description }}</p>
                 </div>
               </div>
               <div class="msgType">
-                <div class="msgType" v-if="notification.is_denunciation !== false">Denunciation&nbsp;
+                <div class="msgType" v-if="notification.is_denunciation !== false">
+                  Denunciation&nbsp;
                   <div v-if="notification.notification_id_parent !== null">of your message on layer {{notification.layer_name}}</div>
                   <div v-else-if="notification.layer_id !== null">of your layer {{notification.layer_name}}</div>
                   <div v-else>of your message on your global notification</div>
@@ -140,13 +149,15 @@
 
       <el-tab-pane label="FOLLOWING" name="thrid">
         <div class="notification-box-main" v-if="showInput && showInput2">
-          <textarea class="form-control" v-model="txtNotif" id="inputReference3" rows="3"></textarea>
+          <textarea class="form-control" v-model="description" id="inputReference3" rows="3"></textarea>
           <br>
           <div style="right: 30px; position: absolute">
-            <a style="color: white" class="btn btn-primary" @click="addNotif()">Submit</a>
+            <a style="color: white" class="btn btn-primary" @click="addNotification()">
+              Submit
+            </a>
           </div>
           <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
+            <button type="button" class="btn btn-outline-danger btn-sm add" @click="cleanMessage()"
                     v-if="txtReply !== null">
               <md-icon>clear</md-icon>
             </button>
@@ -154,41 +165,37 @@
           <br>
         </div>
         <div class="nofitication">
-          <div v-for="notification in notifF" v-bind:key="notification.notification_id">
+          <div v-for="notification in notifF" v-bind:key="notification.id">
             <div class="notification-box">
-
               <div class="row">
-                <div class="col-3 col-md-3 col-lg-1 col-sm-3">
+                <div class="col-4 col-sm-4 col-md-3 col-lg-1">
                   <div style="display: flex; align-items: center;">
                     <div class="photo">
                       <md-avatar class="md-avatar-icon stylePicture">
-                        <div class="logo">
-                          <img :src="notification.photo"/>
-                        </div>
+                        <img :src="notification.user_picture"/>
                       </md-avatar>
                     </div>
                   </div>
                 </div>
-
-                <div class="col-9 col-md-9  col-lg-11 col-sm-9">
+                <div class="col-8 col-sm-8 col-md-9 col-lg-11">
                   <p class="comments">
-                    <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(notification)"
-                            v-if="showInput" title="Responder">
+                    <button type="button" v-if="showInput" @click="replyNotification(notification)"
+                            title="Responder" class="btn btn-outline-primary btn-sm add">
                       <md-icon>replay</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(notification)"
-                            v-if="showInput" title="Denunciar">
+                    <button type="button" v-if="showInput" @click="reportNotification(notification)"
+                            title="Denunciar" class="btn btn-outline-warning btn-sm add">
                       <md-icon>report</md-icon>
                     </button>
-                    <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(notification)"
-                            v-if="canUserRemoveIt(notification)" title="Excluir">
+                    <button type="button" v-if="canUserRemoveIt(notification)" @click="removeNotification(notification)"
+                            title="Excluir" class="btn btn-outline-danger btn-sm add">
                       <md-icon>clear</md-icon>
                     </button>
                   </p>
 
                   <div class="credentials">
-                    <div class="author">{{notification.name}}</div>
-                    <div class="date">{{notification.date}}</div>
+                    <div class="author">{{notification.user_name}}</div>
+                    <div class="date">{{notification.created_at}}</div>
                   </div>
                   <p class="content">{{notification.description}}</p>
                 </div>
@@ -224,275 +231,225 @@
           </div>
         </div>
       </el-tab-pane>
+
     </el-tabs>
   </div>
 </template>
 
 <script>
-  import DashLayout from '@/views/layouts/dashboard'
-  import Api from '@/middleware/ApiVGI'
-  import { mapState } from 'vuex'
-  import ModalNotification from '@/views/components/dashboard/ModalNotification'
-  import ImgPerson from '@/views/assets/images/icon_person.png'
-  import "element-ui/lib/theme-chalk/tabs.css"
+import { mapState } from 'vuex'
+import "element-ui/lib/theme-chalk/tabs.css"
 
-  export default {
-    name: "Notifications",
-    computed: {
-      ...mapState('auth', ['isUserLoggedIn', 'user']),
-      ...mapState('map', ['boxNotifications'])
+import Api from '@/middleware/ApiVGI'
+import DashLayout from '@/views/layouts/dashboard'
+import iconPerson from '@/views/assets/images/icon_person.png'
+import ModalNotification from '@/views/components/dashboard/ModalNotification'
+
+export default {
+  name: "Notifications",
+  components: {
+    "p-dash-layout": DashLayout,
+    "p-modal-notification": ModalNotification
+  },
+  computed: {
+    ...mapState('auth', ['user']),
+    ...mapState('map', ['boxNotifications'])
+  },
+  props: ['showInput'],
+  data () {
+    return {
+      // default `first` tab is activated
+      activated_tab: 'first',
+      notifG: [],            // General
+      notifP: [],            // Personal
+      notifF: [],            // Following
+      description: null,
+      notification_id_parent: null,
+      is_denunciation: false,
+      layer_id: null,
+      txtReply: null,
+      showInput2: false
+    }
+  },
+  mounted() {
+    this.updateNotification()
+  },
+  methods: {
+    cleanMessage() {
+      this.txtReply = null
+      this.notification_id_parent = null
+      this.layer_id = null
+      this.is_denunciation = false
+      this.showInput2 = false
     },
-    props: ['showInput'],
-    data () {
-      return {
-        activeName: 'first',
-        notifications: [],
-        notifG: [],               //Geral
-        notifP: [],               //Personal
-        notifF: [],               //Following
-        txtNotif: null,
-        keyword_id: null,
-        notification_id_parent: null,
-        is_denunciation: false,
-        layer_id: null,
-        notificationsP: [],
-        userId: null,
-        txtReply: null,
-        showInput2: false
+    replyNotification(notification) {
+      this.showInput2 = true
+      this.txtReply = 'Reply to ' + notification.user_name
+      this.notification_id_parent = notification.id
+      this.layer_id = notification.layer_id
+    },
+    reportNotification(notification) {
+      this.showInput2 = true
+      this.is_denunciation = true
+      this.txtReply = 'Denunciation to ' + notification.user_name
+      this.notification_id_parent = notification.id
+      this.layer_id = notification.layer_id
+    },
+    addNotification() {
+      if (this.description === null || this.description === '') {
+        this.$message.error("Notification description cannot be empty!")
+        return
       }
-    },
-    mounted() {
-      if (this.user !== null)
-        this.userId = this.user.user_id
 
-      this.updateNotif()
-    },
-    methods: {
-      canUserRemoveIt(notification) {
-        return this.userId !== null && (this.userId === notification.user_id_creator || this.user.is_the_admin)
-      },
-      replyNot(notification) {
-        this.showInput2 = true
-        this.txtReply = 'Reply to ' + notification.name
-        this.notification_id_parent = notification.notification_id
-        this.layer_id = notification.layer_id
-      },
-      clearNot(notification) {
-        const vm = this
-        Api().delete('/api/notification/?notification_id=' + notification.notification_id,
-        ).then(function (response) {
-          //console.log(response)
-          vm.updateNotif()
-        })
-      },
-      reportNot(notification) {
-        this.showInput2 = true
-        this.txtReply = 'Denunciation to ' + notification.name
-        this.is_denunciation = true
-        this.notification_id_parent = notification.notification_id
-        this.layer_id = notification.layer_id
-      },
-      clearMsg() {
-        this.txtReply = null
-        this.notification_id_parent = null
-        this.layer_id = null
-        this.keyword_id = null
-        this.is_denunciation = false
-        this.showInput2 = false
-      },
-      handleClick(tab, event) {
-        // console.log(tab, event);
-      },
-      addNotif() {
-        const vm = this
-        let msg = ''
-        if (vm.txtNotif !== null) {
-          let notification = {
-            'properties': {
-              'notification_id': -1,
-              'is_denunciation': this.is_denunciation,
-              'keyword_id': this.keyword_id,
-              'notification_id_parent': this.notification_id_parent,
-              'layer_id': this.layer_id,
-              'description': this.txtNotif,
-            },
-            'type': 'Notification'
-          }
+      this.__openFullLoading()
 
-          Api().post('/api/notification/create', notification).then(function (response) {
-            vm.$message.success("The notification was added with success!")
-            vm.clearMsg()
-            vm.txtNotif = null
-            vm.updateNotif()
-          }, function (cause) {
-            msg = cause.toString()
-            console.log(cause.response)
-            vm.$message.error(msg)
-          })
-        } else {
-          msg = "it is necessary to have some text."
-          vm.$message.error(msg)
-        }
-      },
-      orderNotification(x) {
-        const vm = this
-        setTimeout(_ => {
-          vm.notifP.sort(function (a, b) {
-            return new Date(b.date) - new Date(a.date)
-          })
-          vm.notifF.sort(function (a, b) {
-            return new Date(b.date) - new Date(a.date)
-          })
-        }, x);
-      },
-      async updateNotif() {
-        const vm = this
-        this.notifP = []
-        this.notifF = []
-        try {
-          let notifications = await Api().get('/api/notification/?layer_id=NULL&keyword_id=NULL&notification_id_parent=NULL')
-          let notifG = await notifications.data.features.map(async notification => {
-
-            let userInfo = await Api().get('/api/user/?user_id=' + notification.properties.user_id_creator)
-            return {
-              'description': notification.properties.description,
-              'name': userInfo.data.features[0].properties.name,
-              'photo': userInfo.data.features[0].properties.picture === '' ? ImgPerson : userInfo.data.features[0].properties.picture,
-              'date': notification.properties.created_at,
-              'type': 'general',
-              'notification_id': notification.properties.notification_id,
-              'user_id_creator': notification.properties.user_id_creator,
-              'is_denunciation': notification.properties.is_denunciation,
-              'keyword_id': notification.properties.keyword_id,
-              'layer_id': notification.properties.layer_id,
-              'notification_id_parent': notification.properties.notification_id_parent
-            }
-
-          })
-
-          Promise.all(notifG).then(notifUpdated => {
-            vm.notifG = notifUpdated.reverse().sort(function (a, b) {
-              //return b.notification_id - a.notification_id
-              return new Date(b.date) - new Date(a.date)
-            });
-          })
-        } catch (error) {
-          //console.log(error)
-        }
-
-        Api().get('/api/notification/?user_id_creator=' + vm.user.user_id).then(function (userNotifications) {
-          userNotifications.data.features.forEach(userNotification => {
-            Api().get('/api/notification/?notification_id_parent=' + userNotification.properties.notification_id).then(function (notifications) {
-              notifications.data.features.forEach(notification => {
-                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  if (notification.properties.layer_id === null) {
-                    vm.notifP.push(
-                      {
-                        'description': notification.properties.description,
-                        'name': user.data.features[0].properties.name,
-                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                        'date': notification.properties.created_at,
-                        'type': 'message',
-                        'notification_id': notification.properties.notification_id,
-                        'user_id_creator': notification.properties.user_id_creator,
-                        'is_denunciation': notification.properties.is_denunciation,
-                        'keyword_id': notification.properties.keyword_id,
-                        'layer_id': notification.properties.layer_id,
-                        'notification_id_parent': notification.properties.notification_id_parent,
-                        'layer_name': null
-                      })
-                    vm.orderNotification(50)
-                  } else {
-                    Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
-                      vm.notifP.push(
-                        {
-                          'description': notification.properties.description,
-                          'name': user.data.features[0].properties.name,
-                          'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                          'date': notification.properties.created_at,
-                          'type': 'message',
-                          'notification_id': notification.properties.notification_id,
-                          'user_id_creator': notification.properties.user_id_creator,
-                          'is_denunciation': notification.properties.is_denunciation,
-                          'keyword_id': notification.properties.keyword_id,
-                          'layer_id': notification.properties.layer_id,
-                          'notification_id_parent': notification.properties.notification_id_parent,
-                          'layer_name': layer.data.features[0].properties.name
-                        })
-                      vm.orderNotification(50)
-                    })
-                  }
-                })
-              })
-            })
-          })
-        })
-
-        Api().get('/api/user_layer/?user_id=' + vm.user.user_id).then(function (userLayers) {
-          userLayers.data.features.forEach(userLayer => {
-            Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
-              notifications.data.features.forEach(notification => {
-                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
-                    vm.notifP.push(
-                      {
-                        'description': notification.properties.description,
-                        'name': user.data.features[0].properties.name,
-                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                        'date': notification.properties.created_at,
-                        'type': 'myLayer',
-                        'notification_id': notification.properties.notification_id,
-                        'user_id_creator': notification.properties.user_id_creator,
-                        'is_denunciation': notification.properties.is_denunciation,
-                        'keyword_id': notification.properties.keyword_id,
-                        'layer_id': notification.properties.layer_id,
-                        'notification_id_parent': notification.properties.notification_id_parent,
-                        'layer_name': layer.data.features[0].properties.name
-                      })
-                    vm.orderNotification(50)
-                  })
-                })
-              })
-            })
-          })
-        })
-
-        Api().get('/api/layer_follower/?user_id=' + vm.user.user_id).then(function (userLayers) {
-          userLayers.data.features.forEach(userLayer => {
-            Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
-              notifications.data.features.forEach(notification => {
-                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
-                    vm.notifF.push(
-                      {
-                        'description': notification.properties.description,
-                        'name': user.data.features[0].properties.name,
-                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                        'date': notification.properties.created_at,
-                        'type': 'general',
-                        'notification_id': notification.properties.notification_id,
-                        'user_id_creator': notification.properties.user_id_creator,
-                        'is_denunciation': notification.properties.is_denunciation,
-                        'keyword_id': notification.properties.keyword_id,
-                        'layer_id': notification.properties.layer_id,
-                        'notification_id_parent': notification.properties.notification_id_parent,
-                        'layer_name': layer.data.features[0].properties.name
-                      })
-                    vm.orderNotification(50)
-                  })
-                })
-              })
-            })
-          })
-        })
-
+      let notification = {
+        'properties': {
+          'id': -1,
+          'is_denunciation': this.is_denunciation,
+          'keyword_id': null,
+          'notification_id_parent': this.notification_id_parent,
+          'layer_id': this.layer_id,
+          'description': this.description,
+        },
+        'type': 'Notification'
       }
+
+      Api().post('/api/notification/create', notification).then(() => {
+        this.description = null
+        this.cleanMessage()
+        this.$message.success("The notification was added successfully!")
+      }).catch(cause => {
+        this.__errorMessage(cause)
+      }).finally(() => {
+        this.updateNotification()
+        this.__closeFullLoading()
+      })
     },
-    components: {
-      "p-dash-layout": DashLayout,
-      "p-modal-notification": ModalNotification
+    updateNotification() {
+      // if a user is not logged in the portal, then do not update the notifications
+      if (this.user === null)
+        return
+
+      this.notifG = []
+      this.notifP = []
+      this.notifF = []
+
+      Api().get(
+        '/api/notification/?layer_id=NULL&keyword_id=NULL&notification_id_parent=NULL'
+      ).then(response => {
+        this.notifG = response.data.features.map(n => {
+          // n - notification
+          n.properties.user_picture = n.properties.user_picture === '' ?
+                                        iconPerson : n.properties.user_picture
+          n.properties['type'] = 'general'
+          return n.properties
+        })
+      }).catch(cause => {
+        this.__errorMessage(cause)
+      })
+
+      // get personal notifications related to current user
+      Api().get('/api/notification/?user_id_creator=' + this.user.user_id).then(userNotifications => {
+        userNotifications.data.features.forEach(userNotification => {
+
+          Api().get(
+            '/api/notification/?notification_id_parent=' + userNotification.properties.id
+          ).then(notifications => {
+            notifications.data.features.forEach(n => {
+              // n - notification
+              n.properties.user_picture = n.properties.user_picture === '' ?
+                                            iconPerson : n.properties.user_picture
+
+              n.properties['type'] = 'message'
+              this.notifP.push(n.properties)
+            })
+          }).catch(cause => {
+            this.__errorMessage(cause)
+          })
+
+        })
+      }).catch(cause => {
+        this.__errorMessage(cause)
+      })
+
+      // get personal notifications related to current user layers
+      Api().get('/api/user_layer/?user_id=' + this.user.user_id).then(userLayers => {
+        userLayers.data.features.forEach(userLayer => {
+
+          Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(notifications => {
+            notifications.data.features.forEach(n => {
+              n.properties.user_picture = n.properties.user_picture === '' ?
+                                            iconPerson : n.properties.user_picture
+
+              n.properties['type'] = 'myLayer'
+              this.notifP.push(n.properties)
+            })
+          }).catch(cause => {
+            this.__errorMessage(cause)
+          })
+
+        })
+      }).catch(cause => {
+        this.__errorMessage(cause)
+      })
+
+      // get following notifications
+      Api().get('/api/layer_follower/?user_id=' + this.user.user_id).then(userLayers => {
+        userLayers.data.features.forEach(userLayer => {
+
+          Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(notifications => {
+            this.notifF = notifications.data.features.map(n => {
+              n.properties.user_picture = n.properties.user_picture === '' ?
+                                            iconPerson : n.properties.user_picture
+
+              n.properties['type'] = 'general'
+              return n.properties
+            })
+          }).catch(cause => {
+            this.__errorMessage(cause)
+          })
+
+        })
+      }).catch(cause => {
+        this.__errorMessage(cause)
+      })
     },
+    canUserRemoveIt(notification) {
+      return this.user !== null &&
+              (this.user.user_id === notification.user_id_creator || this.user.is_the_admin)
+    },
+    removeNotification(notification) {
+      this.__openFullLoading()
+
+      Api().delete(
+        '/api/notification/?notification_id=' + notification.id,
+      ).then(() => {
+        this.$message.success("The notification was removed successfully!")
+      }).catch(cause => {
+        this.__errorMessage(cause)
+      }).finally(() => {
+        this.updateNotification()
+        this.__closeFullLoading()
+      })
+    },
+    __openFullLoading(){
+      this.loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+    },
+    __closeFullLoading(){
+      if (this.loading !== null)
+        this.loading.close()
+    },
+    __errorMessage(cause){
+      this.$message.error(cause.response.data.toString())
+    }
   }
+}
 </script>
 
 <style lang="sass" scoped>
@@ -500,7 +457,6 @@
     margin: 10px
     background: #ffffff
     border-radius: 20px
-
 
   .notification-box
     margin: 10px
@@ -524,7 +480,7 @@
         font-size: 1.1em
 
       .date
-        color: #666
+        color: #595959
         font-size: 0.9em
 
       p
@@ -556,11 +512,9 @@
     display: flex
     color: #4D4D4D
 
-
   .stylePicture
     width: 50px
     height: 50px
-
 
   .el-tabs__item.is-active
     color: #ff6107
