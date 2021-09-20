@@ -65,12 +65,13 @@
 </template>
 
 <script>
-  import DashLayout from '@/views/layouts/dashboard'
-  import Vue from 'vue'
+  import { mapState } from 'vuex'
   import vSelect from 'vue-select'
+  import Vue from 'vue'
+
   import Api from '@/middleware/ApiVGI'
+  import DashLayout from '@/views/layouts/dashboard'
   import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
-  import {mapState} from 'vuex'
 
   Vue.component('v-select', vSelect)
 
@@ -122,12 +123,13 @@
           return
         }
 
+        this.__openFullLoading()
+
         let keyword = {'properties': this.keyword, 'type': 'Keyword'}
 
         Api().post('/api/keyword/create', keyword).then(() => {
-          this.updateListOfKeywords()
           this.$message.success("The keyword was created successfully!")
-        }, (cause) => {
+        }).catch(cause => {
           // default message
           let message = cause.toString()
 
@@ -135,6 +137,9 @@
             message = "Keyword already exists!"
 
           this.$message.error(message)
+        }).finally(() => {
+          this.updateListOfKeywords()
+          this.__closeFullLoading()
         })
       },
       deleteKeyword(keyword){
@@ -143,10 +148,11 @@
           return
         }
 
+        this.__openFullLoading()
+
         Api().delete('/api/keyword/' + keyword.id).then(() => {
-          this.updateListOfKeywords()
           this.$message.success("The keyword was deleted successfully!")
-        }, (cause) => {
+        }).catch(cause => {
           // default message
           let message = cause.toString()
 
@@ -154,12 +160,15 @@
             message = "The administrator is who can update/delete the keyword."
 
           this.$message.error(message)
+        }).finally(() => {
+          this.updateListOfKeywords()
+          this.__closeFullLoading()
         })
       },
       updateListOfKeywords(){
         Api().get('/api/user/').then((users) => {
           users.data.features.forEach(user => {
-            this.nameUsers = {...this.nameUsers, [user.properties.user_id]: user.properties.name,}
+            this.nameUsers = {...this.nameUsers, [user.properties.id]: user.properties.name,}
           })
         })
 
@@ -172,10 +181,22 @@
           })
         } else {
           // if user is not admin, then get just his keywords
-          Api().get('/api/keyword/?user_id_creator=' + this.user.user_id).then((response) => {
+          Api().get('/api/keyword/?user_id_creator=' + this.user.id).then((response) => {
             this.__extractKeywordsFromResponse(response)
           })
         }
+      },
+      __openFullLoading(){
+        this.loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+      },
+      __closeFullLoading(){
+        if (this.loading !== null)
+          this.loading.close()
       },
       __extractKeywordsFromResponse(response){
         this.keywords = response.data.features.map(k => k.properties)
