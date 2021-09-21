@@ -39,6 +39,7 @@ export default {
             "addedReferences": "Referências Adicionadas",
             "add": "Adicionar Referência",
             "submit": "Enviar",
+            "cleanForm": "Limpar formulário",
             "fileInput": "Arquivo de Entrada",
             "zipFile": "Arquivo ZIP",
             "nameD": "Nome da camada. Ela é única no sistema.",

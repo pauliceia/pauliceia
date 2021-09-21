@@ -39,6 +39,7 @@ export default {
             "addedReferences": "Addes References",
             "add": "Add Reference",
             "submit": "Submit",
+            "cleanForm": "Clean form",
             "fileInput": "Input File",
             "zipFile": "ZIP File",
             "nameD": "Layer name. It is unique in the system.",
