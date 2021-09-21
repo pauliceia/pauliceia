@@ -2,8 +2,8 @@
   <p-dash-layout :title="$t('dashboard.nav.layer')">
     <div class="row">
 
-      <!-- new layer -->
-      <div class="col-sm-12" v-if="shapeCorrect === false">
+      <!-- layer -->
+      <div class="col-sm-12" v-if="page === LAYER_PAGE">
         <div class="card">
           <div class="card-body">
             <h6 class="mb-0">{{ $t('dashboard.nav.newLayer') }}</h6><br>
@@ -15,21 +15,25 @@
                 <div class="form-row">
                   <!-- name -->
                   <div class="form-group col-md-6">
-                    <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>&nbsp;
+                    <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>
+                    &nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.nameD')" />
-                    <input v-model="name" @blur="saveName()" class="form-control" id="inputName"><!--placeholder="Name">-->
+                    <input v-model="layer.name" @blur="saveLayerInTheStore()"
+                           id="inputName" class="form-control">
                   </div>
 
                   <!-- keywords -->
                   <div class="form-group col-md-6">
-                    <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
+                    <label class="mr-sm-2" for="keywordsSelect">
+                      {{ $t('dashboard.newLayer.keywords') }}
+                    </label>
                     <p-popover-labels :text="$t('dashboard.newLayer.keywordsD')" />
-                    <button @click="newKeyword()" class="btn btn-outline-warning btn-sm add" type="button">
+                    <button type="button" @click="goToNewKeywordPage()"
+                            class="btn btn-outline-warning btn-sm add">
                       <md-icon>add_circle_outline</md-icon>
                     </button>
-                    <v-select :options="allKeywords" @blur="saveKeywords()" id="keywordsSelect" label="name" multiple
-                      track-by="name" v-model="selectedKeywords">
-                    </v-select>
+                    <v-select v-model="layer.keywords" :options="allKeywords" @blur="saveLayerInTheStore()"
+                              label="name" track-by="name" id="keywordsSelect" multiple></v-select>
                   </div>
                 </div>
 
@@ -37,16 +41,16 @@
                 <div class="form-group">
                   <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.collaboratorsD')" />
-                  <v-select v-model="selectedCollaborators" :options="users" @blur="saveCollaborators()" id="userSelect"
-                      label="username" track-by="username" multiple
-                  ></v-select>
+                  <v-select v-model="layer.collaborators" :options="allUsers" @blur="saveLayerInTheStore()"
+                            label="username" track-by="username" id="userSelect" multiple></v-select>
                 </div>
 
                 <!-- description -->
                 <div class="form-group">
                   <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>&nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.descriptionD')" />
-                  <textarea v-model="description" @blur="saveDescription()" class="form-control" id="inputDescription" rows="3"> </textarea>
+                  <textarea v-model="layer.description" @blur="saveLayerInTheStore()"
+                            class="form-control" id="inputDescription" rows="3"> </textarea>
                 </div>
 
                 <!-- reference -->
@@ -55,24 +59,27 @@
                   <p-popover-labels :text="$t('dashboard.newLayer.referenceD')" />
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <textarea class="form-control" id="inputReference" rows="3"
-                                v-model="reference_description"
-                      ></textarea>
+                      <textarea v-model="reference_description" class="form-control"
+                                id="inputReference" rows="3"></textarea>
                     </div>
                     <div class="form-group  col-md-12">
-                      <a @click="addReference()" class="btn styleBtn" style="position: relative; float: right">{{ $t('dashboard.newLayer.add') }}</a>
+                      <a @click="addReference()" class="btn styleBtn"
+                         style="position: relative; float: right">
+                        {{ $t('dashboard.newLayer.add') }}
+                      </a>
                     </div>
                   </div>
                 </div>
 
                 <!-- added references -->
-                <div class="form-group" v-show="selectedReferences.length !== 0">
+                <div class="form-group" v-if="layer.references.length > 0">
                   <label for="inputReference">{{ $t('dashboard.newLayer.addedReferences') }}</label>
                   <ol>
-                    <li v-for="reference in selectedReferences" :key="reference.reference_id">
+                    <li v-for="reference in layer.references" :key="reference.id">
                       {{ reference.description }}
                       &nbsp;&nbsp;&nbsp;&nbsp;
-                      <button @click="removeReference(reference.reference_id)" class="btn btn-outline-danger btn-sm del" type="button">
+                      <button type="button" @click="removeReference(reference.id)"
+                          class="btn btn-outline-danger btn-sm del">
                         <md-icon>clear</md-icon>
                       </button>
                     </li>
@@ -82,7 +89,8 @@
 
               <!-- right form -->
               <div class="card-right col-sm-6">
-                <div class="btn styleBtn" style="padding-left: 50px; padding-right: 50px; margin-bottom: 30px">
+                <div class="btn styleBtn"
+                     style="padding-left: 50px; padding-right: 50px; margin-bottom: 30px">
                   {{ $t('dashboard.newLayer.mountLayer.btnRadio.import') }}
                 </div>
                 <!--<div class="box-radio">-->
@@ -92,22 +100,28 @@
                   <!--</el-radio-group>-->
                 <!--</div>-->
 
-                <div class="box-layer-file" v-if="typeSubmit == 'file'">
-                  <label for="Upload">{{ $t('dashboard.newLayer.fileInput') }}</label>&nbsp;
+                <div class="box-layer-file" v-if="typeSubmit === 'file'">
+                  <label for="Upload">
+                    {{ $t('dashboard.newLayer.fileInput') }}
+                  </label>
+                  &nbsp;
                   <p-popover-labels :text="$t('dashboard.newLayer.fileInputD')" />
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text">{{ $t('dashboard.newLayer.zipFile') }}</span>
                     </div>
                     <div class="custom-file">
-                      <label class="custom-file-label" for="Upload">{{ file.name }}</label>
-                      <input @change="processFile($event)" accept=".zip" class="custom-file-input" id="Upload" type="file">
+                      <label for="Upload" class="custom-file-label">
+                        {{ file.name }}
+                      </label>
+                      <input type="file" accept=".zip" @change="processFile($event)"
+                             id="Upload" class="custom-file-input">
                     </div>
                   </div>
-                </div> <!--end box-file-->
+                </div>
 
-                <!--<div class="box-layer-input" v-if="typeSubmit == 'input'">-->
-                <div class="box-layer-input" v-if="false">
+                <!--<div class="box-layer-input" v-if="typeSubmit === 'input'">-->
+                <!-- <div class="box-layer-input" v-if="false">
                   <label>{{ $t('dashboard.newLayer.mountLayer.lblAttr') }}:</label>
                   <p-popover-labels :text="$t('dashboard.newLayer.mountLayer.lblAttrD')" />
                   <div class="box-attr">
@@ -168,11 +182,15 @@
                       </div>
                       <button @click="addAttr()" class="btn btn-info btn-sm" type="button">+ ADD</button>
                   </div>
-                </div><!--end box-input-->
+                </div> -->
 
-                <button @click="Upload()" class="btn styleBtn" type="button"
+                <button type="button" @click="uploadLayer()" class="btn styleBtn"
                         style="color: #FFF; margin-right: 15px; float: right">
                   {{ $t('dashboard.newLayer.submit') }}
+                </button>
+                <button type="button" @click="cleanForm()" class="btn btn-warning"
+                        style="color: #FFF; margin-right: 15px; float: right">
+                  {{ $t('dashboard.newLayer.cleanForm') }}
                 </button>
               </div>
 
@@ -182,61 +200,64 @@
         </div>
       </div>
 
-      <!-- temporal bounding box -->
+      <!-- temporal columns -->
       <div class="col-sm-6">
-        <div class="card" v-if="shapeCorrect">
+        <div class="card" v-if="page === TEMPORAL_COLUMNS_PAGE">
           <div class="card-body">
             <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
             <div class="card-text">
               <form>
+                <!-- first row -->
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label for="start_date">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
-                    <input class="form-control" id="start_date" type="date" v-model="startDate">
+                    <input type="date" v-model="temporal_columns.start_date"
+                           id="start_date" class="form-control">
                   </div>
-
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateColumn') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDateColumn')" />
-                    <v-select :options="columnsName" id="start_date_column_name" label="" track-by=""
-                              v-model="startColumnsName"></v-select>
+                    <v-select v-model="temporal_columns.start_date_column_name" :options="feature_table_columns"
+                              track-by="" label="" id="start_date_column_name"></v-select>
                   </div>
-
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
-                    <v-select :options="allMasks" id="start_date_mask" label="mask" track-by="mask"
-                              v-model="startDateMask"></v-select>
+                    <v-select v-model="temporal_columns.start_date_mask" :options="allMasks"
+                              track-by="id" label="mask" id="start_date_mask"></v-select>
                   </div>
                 </div>
 
+                <!-- second row -->
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label for="end_date">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
-                    <input class="form-control" id="end_date" type="date" v-model="endDate">
+                    <input type="date" v-model="temporal_columns.end_date" id="end_date" class="form-control">
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateColumn') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDateColumn')" />
-                    <v-select :options="columnsName" id="end_date_column_name" label="" track-by=""
-                              v-model="endColumnsName"></v-select>
+                    <v-select v-model="temporal_columns.end_date_column_name" :options="feature_table_columns"
+                              track-by="" label="" id="end_date_column_name"></v-select>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
-                    <v-select :options="allMasks" id="end_date_mask" label="mask" track-by="mask"
-                              v-model="endDateMask"></v-select>
+                    <v-select v-model="temporal_columns.end_date_mask" :options="allMasks"
+                              track-by="id" label="mask" id="end_date_mask"></v-select>
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="col align-self-end">
                     <br>
-                    <a @click="Upload2()" class="btn btn-primary" href="#">{{ $t('dashboard.newLayer.submit') }}</a>
+                    <button type="button" @click="uploadTemporalColumns()" class="btn btn-primary">
+                      {{ $t('dashboard.newLayer.submit') }}
+                    </button>
                   </div>
                 </div>
               </form>
@@ -251,570 +272,517 @@
 </template>
 
 <script>
-  import DashLayout from '@/views/layouts/dashboard'
-  import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
-  import Vue from 'vue'
-  import vSelect from 'vue-select'
-  import Api from '@/middleware/ApiVGI'
-  import { mapState } from 'vuex'
-  import lang from 'element-ui/lib/locale/lang/en'
-  import locale from 'element-ui/lib/locale'
+import lang from 'element-ui/lib/locale/lang/en'
+import locale from 'element-ui/lib/locale'
+import { mapState } from 'vuex'
+import vSelect from 'vue-select'
+import Vue from 'vue'
 
-  import Dashboard from '@/middleware/Dashboard'
+import Api from '@/middleware/ApiVGI'
+import Dashboard from '@/middleware/Dashboard'
+import DashLayout from '@/views/layouts/dashboard'
+import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
 
-  Vue.component('v-select', vSelect)
-  // configure language
-  locale.use(lang)
+Vue.component('v-select', vSelect)
+// configure language
+locale.use(lang)
 
-  function doesTheStringHaveSpecialChars(string) {
-    /*
-    To be a valid string, it must:
-    - start with a character without number (i.e. '^[a-zA-Z_]')
-    - end with a character that can have numbers (i.e. '[a-zA-Z0-9_]+$')
-    - have one or more occurrences of that letter (i.e. '+')
-    - not have special characters (i.e. '^[a-zA-Z_]+[a-zA-Z0-9_]+$')
+function doesTheStringHaveSpecialChars(string) {
+  /*
+  To be a valid string, it must:
+  - start with a character without number (i.e. '^[a-zA-Z_]')
+  - end with a character that can have numbers (i.e. '[a-zA-Z0-9_]+$')
+  - have one or more occurrences of that letter (i.e. '+')
+  - not have special characters (i.e. '^[a-zA-Z_]+[a-zA-Z0-9_]+$')
 
-    Return: `True` if the string has some special character, else it returns `False`
-    */
+  Return: `True` if the string has some special character, else it returns `False`
+  */
 
-    let english_checker = /^[a-zA-Z_]+[a-zA-Z0-9_]+$/
+  let english_checker = /^[a-zA-Z_]+[a-zA-Z0-9_]+$/
 
-    return !(english_checker.test(string))
-  }
+  return !(english_checker.test(string))
+}
 
-  export default {
-    name: "newLayer",
-    computed: {
-      ...mapState('auth', ['isUserLoggedIn', 'user']),
+export default {
+  name: "newLayer",
+  components: {
+    "p-dash-layout": DashLayout,
+    "p-popover-labels": PopoverLabels
+  },
+  computed: {
+    ...mapState('auth', ['user']),
 
-      // rename the default name
-      ...mapState({
-        storedName: state => state.dashboardNewLayer.name,
-        storedSelectedKeywords: state => state.dashboardNewLayer.selectedKeywords,
-        storedSelectedCollaborators: state => state.dashboardNewLayer.selectedCollaborators,
-        storedDescription: state => state.dashboardNewLayer.description,
-        storedSelectedReferences: state => state.dashboardNewLayer.selectedReferences,
-        // storedFile: state => state.dashboardNewLayer.file
-      }),
+    // rename the default name of stored data
+    ...mapState({
+      storedLayer: state => state.dashboardNewLayer.layer,
+    }),
 
-      fTableName(){
-        let tTableName = this.name.trim().replace(/ /g, '_').toLocaleLowerCase()
+    fTableName(){
+      let tableName = this.layer.name.trim().replace(/ /g, '_').toLocaleLowerCase()
 
-        // Replace accent letters by simple ones.
-        // Source: https://stackoverflow.com/a/37511463
-        return tTableName.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      }
-    },
-    data() {
-      return {
-        // layer form
-        name: '',
-        allKeywords: [],
-        selectedKeywords: [],
-        users: [],
-        selectedCollaborators: [],
-        description: '',
-        reference_description: null,
-        selectedReferences: [],
-        file: {
-          name: this.$t('dashboard.newLayer.chooseFile')
-        },
+      // Replace accent letters by simple ones.
+      // Source: https://stackoverflow.com/a/37511463
+      return tableName.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    }
+  },
+  data() {
+    return {
+      // layer form
+      layer: {
+        id: null,
+        name: null,
+        description: null,
+        collaborators: [],
+        keywords: [],
+        references: []
+      },
+      reference_description: null,
+      file: {
+        name: this.$t('dashboard.newLayer.chooseFile')
+      },
+      allKeywords: [],
+      allUsers: [],
 
-        // temporal columns form
-        columns: null,
-        columnsName: [],
-        startColumnsName: null,
-        endColumnsName: null,
-        allMasks: [],
-        startDateMask: null,
-        endDateMask: null,
-        startDate: null,
-        endDate: null,
-        shapeCorrect: false,
-        fullscreenLoading: false,
-        typeSubmit: 'file',
-        layer_id: null,
-        loading: '',
-        finished: 1,
+      // temporal columns form
+      temporal_columns: {
+        start_date: null,
+        end_date: null,
+        start_date_column_name: null,
+        end_date_column_name: null,
+        start_date_mask: null,
+        end_date_mask: null
+      },
+      feature_table_columns: [],
+      allMasks: [],
+
+      // input form
+      optTpGeom: 'MULTIPOINT',
+      optionsAttr: [{
+        column_name: '',
+        column_type: 'TEXT',
         visibleRemove: false,
-        optionsTypeGeom: [{
-            value: 'MULTIPOINT',
-            label: 'MultiPoint'
-          }, {
-            value: 'MULTILINESTRING',
-            label: 'MultiLineString'
-          }, {
-            value: 'MULTIPOLYGON',
-            label: 'MultiPolygon'
-        }],
-        optTpGeom: 'MULTIPOINT',
-        optionsTypeColumn: [{
-            value: 'text',
-            label: 'TEXT'
-          }, {
-            value: 'numeric',
-            label: 'NUMBER'
-          }, {
-            value: 'timestamp',
-            label: 'DATE'
-        }],
-        optionsAttr: [{
-          column_name: '',
-          column_type: 'TEXT',
-          visibleRemove: false,
-          id: 0
-        }]
+        id: 0
+      }],
+      // optionsTypeGeom: [{
+      //     value: 'MULTIPOINT',
+      //     label: 'MultiPoint'
+      //   }, {
+      //     value: 'MULTILINESTRING',
+      //     label: 'MultiLineString'
+      //   }, {
+      //     value: 'MULTIPOLYGON',
+      //     label: 'MultiPolygon'
+      // }],
+      // optionsTypeColumn: [{
+      //     value: 'text',
+      //     label: 'TEXT'
+      //   }, {
+      //     value: 'numeric',
+      //     label: 'NUMBER'
+      //   }, {
+      //     value: 'timestamp',
+      //     label: 'DATE'
+      // }],
+
+      // pages control
+      LAYER_PAGE: 1,
+      TEMPORAL_COLUMNS_PAGE: 2,
+      page: null,
+
+      // other
+      typeSubmit: 'file',
+      loading: null
+      // finished: 1,
+    }
+  },
+  mounted() {
+    // open layer page
+    this.page = this.LAYER_PAGE
+
+    // get stored properties
+    if (this.storedLayer !== null)
+      this.layer = this.storedLayer
+
+    // get all users from database, except the current one
+    Api().get('/api/user').then(response => {
+      // save the information of all users, except the current one
+      response.data.features.forEach(u => {
+        if (u.properties.id !== this.user.id)
+          this.allUsers.push(u.properties)
+      })
+    })
+
+    // get all available keywords
+    Api().get('/api/keyword').then(response => {
+      this.allKeywords = response.data.features.map(k => k.properties)
+    })
+
+    // get all available masks
+    Api().get('/api/mask').then(response => {
+      this.allMasks = response.data.features.map(m => m.properties)
+    })
+  },
+  methods: {
+    goToNewKeywordPage() {
+      // all form information is stored in the state by the
+      // "@blur"s in the template (i.e. `@blur="saveLayerInTheStore()"`)
+
+      this.$router.push({name: 'Keyword', params: {name: 'NewLayer'}})
+    },
+    saveLayerInTheStore(){
+      // saves layer data in the store when elements lose their focus by @blur
+      this.$store.dispatch('dashboardNewLayer/setLayer', this.layer)
+    },
+    cleanDataInTheStore(){
+      // cleans the store data
+      this.$store.dispatch('dashboardNewLayer/setLayer',  null)
+    },
+    processFile(event){
+      // I get the only one chose file
+      this.file = event.target.files[0]
+    },
+    cleanForm(){
+      // remove all references from database before clean the form
+      this.layer.references.forEach(reference => {
+        this.removeReference(reference.id)
+      })
+
+      this.layer.name = null
+      this.layer.description = null
+      this.layer.collaborators = []
+      this.layer.keywords = []
+      this.layer.references = []
+      this.reference_description = null
+
+      this.saveLayerInTheStore()
+    },
+    uploadLayer() {  //Cadastrar a primeira parte da Camada
+      this.__openFullLoading()
+
+      if (this.layer.name === null || this.layer.name === '') {
+        this.__errorMessage("O nome da camada é obrigatório!")
+
+      } else if (this.layer.name.length < 5 || this.layer.name.length > 63) {
+        this.__errorMessage("O nome da camada deve ter entre 5 e 63 caracteres!")
+
+      } else if (doesTheStringHaveSpecialChars(this.layer.name)) {
+        this.__errorMessage("O nome da camada NÃO pode começar com `número` e nem conter `caracteres especiais`!")
+
+      } else if (this.layer.keywords.length === 0) {
+        this.__errorMessage("É obrigatório adicionar pelo menos uma palavra-chave!")
+
+      } else if (this.layer.description === null || this.layer.description === '') {
+        this.__errorMessage("Descrição da camada não pode estar vazia!")
+
+      } else if (this.layer.description.length < 5) {
+        this.__errorMessage("Descrição da camada não pode ter menos do que 5 caracteres!")
+
+      } else {
+        if (this.typeSubmit === 'file') {   //Importando o arquivo
+          this.uploadLayerFromFile()
+        } else {                         //Criando a camada em branco
+          this.uploadLayerFromInput()
+        }
       }
     },
-    mounted() {
-      this.shapeCorrect = false
+    uploadLayerFromFile() {
+      if (!('size' in this.file)) {
+        this.__errorMessage("Um arquivo é necessário!")
+        return
+      } else if (this.file.size > 104857600) {  // 104857600 === 50mb
+        this.__errorMessage("O arquivo não pode ter um tamanho maior do que 50MB!")
+        return
+      }
 
-      // get the information of all users, except the current one
-      Api().get('/api/user').then(response => {
-        response.data.features.forEach(u => {
-          if (u.properties.user_id !== this.user.user_id)
-            this.users.push(u.properties)
-        })
-      })
+      // this.timeout_upload()
 
-      // get all the available keywords
-      Api().get('/api/keyword').then(response => {
-        this.allKeywords = response.data.features.map(k => k.properties)
-      })
+      let layer = {
+        'properties': {
+          ...this.layer,
+          'f_table_name': this.fTableName,
+          'source_description': this.layer.description,
+        },
+        'type': 'Layer'
+      }
 
-      // get all the available masks
-      Api().get('/api/mask').then(response => {
-        this.allMasks = response.data.features.map(m => m.properties)
-      })
+      // add new layer in the database
+      Api().post('/api/layer/create', layer).then(response => {
+        this.layer.id = response.data
 
-      // get the stored properties
-      this.name = this.storedName
-      this.selectedKeywords =  this.storedSelectedKeywords
-      this.selectedReferences = this.storedSelectedReferences
-      this.selectedCollaborators = this.storedSelectedCollaborators
-      this.description = this.storedDescription
-      // this.file = this.storedFile
-    },
-    methods: {
-      newKeyword() {
-        // all form information is stored in the state by the "@blur"s in the template (e.g. `@blur="saveName()"`)
-
-        this.$router.push({
-          name: 'Keyword',
-          params: {name: 'NewLayer'}
-        })
-      },
-      clearData(){
-        // this method cleans the store data
-
-        this.$store.dispatch('dashboardNewLayer/setName',  '')
-        this.$store.dispatch('dashboardNewLayer/setKeywords',  [])
-        this.$store.dispatch('dashboardNewLayer/setCollaborators',  [])
-        this.$store.dispatch('dashboardNewLayer/setDescription',  '')
-        this.$store.dispatch('dashboardNewLayer/setReferences',  [])
-      },
-      saveName(){ //Salvar os dados no Store
-        this.$store.dispatch('dashboardNewLayer/setName', this.name)
-      },
-      saveKeywords(){ //Salvar os dados no Store
-        this.$store.dispatch('dashboardNewLayer/setKeywords', this.selectedKeywords)
-      },
-      saveCollaborators(){  //Salvar os dados no Store
-        this.$store.dispatch('dashboardNewLayer/setCollaborators',  this.selectedCollaborators)
-      },
-      saveDescription(){  //Salvar os dados no Store
-        this.$store.dispatch('dashboardNewLayer/setDescription',  this.description)
-      },
-      saveReferences(){ //Salvar os dados no Store
-        this.$store.dispatch('dashboardNewLayer/setReferences', this.selectedReferences)
-      },
-      // saveFile(){ //Salvar os dados no Store
-      //   this.$store.dispatch('dashboardNewLayer/setFile', this.file)
-      // },
-      processFile(event){
-        // I get the only one chose file
-        this.file = event.target.files[0]
-      },
-      timeout_upload(){ //Erro de estouro de tempo ao criar a nova camada
-        this.finished = 0
-
-        setTimeout(_=>{
-          if(this.finished === 0){
-            Api().delete('/api/layer/' + this.layer_id)
-            this.loading.close();
-            this._msgError("Timeout! Caso o erro persista entre em contato com os administradores da plataforma!")
-          }
-        }, 30000);
-      },
-      Upload2(){  // cadastrar a segunda parte da camada - temporal columns
-        this._openFullLoading()
-
-        if ((this.startDate === null || this.endDate === null) || (this.startDate === "" || this.endDate === "")) {
-          this._msgError("O preenchimento das datas é obrigatório!")
-          return;
-        }
-
-        this.timeout_upload()
-
-        let temporalColumns = {
+        let changeset = {
           'properties': {
-            'f_table_name': this.fTableName,
-            'start_date': this.startDate,
-            'end_date': this.endDate,
-            'start_date_column_name': this.startColumnsName,
-            'end_date_column_name': this.endColumnsName,
-            'start_date_mask_id': (this.startDateMask != null && 'mask_id' in this.startDateMask) ? this.startDateMask.mask_id : null,
-            'end_date_mask_id': (this.endDateMask != null && 'mask_id' in this.endDateMask) ? this.endDateMask.mask_id : null,
+            'layer_id': this.layer.id,
+            'description': 'Creating layer ' + this.layer.id
           },
-          'type': 'TemporalColumns'
+          'type': 'Changeset'
         }
 
-        Api().post('/api/temporal_columns/create', temporalColumns).then(response => {
-          this.loading.close()
-          this.$message.success("A camada foi adicionada com sucesso!")
-          this.finished = 1
-          this.$router.push({path: '/dashboard/home'})
-        }, cause => {
-          Api().delete('/api/layer/' + this.layer_id)
+        Api().post('/api/changeset/create', changeset).then(response => {
+          Api().post(
+            'api/import/shp/?f_table_name=' + this.fTableName +
+                '&file_name=' + this.file.name + '&changeset_id=' + response.data,
+            this.file
+          ).then(() => {
 
-          this.loading.close()
-          this.finished = 1
+            // get the Shapefile columns names
+            Api().get('/api/feature_table/?f_table_name=' + this.fTableName).then(response => {
+              // this returns an object where the key is the column name
+              // and the value is its type (e.g. `id: integer`)
+              this.feature_table_columns = response.data.features[0].properties
 
-          this._showErrorMessages(cause)
-        })
+              // get just the column names, without their types
+              this.feature_table_columns = Object.getOwnPropertyNames(this.feature_table_columns).filter(
+                // these column names are reserved, then ignore them
+                key => key !== 'geom' && key !== '__ob__' && key !== 'changeset_id'
+              )
 
-      },
-      Upload() {  //Cadastrar a primeira parte da Camada
-        this._openFullLoading()
-
-        if (this.name === '') {
-          this._msgError("O nome da camada é necessário!")
-
-        } else if (this.fTableName.length < 5 ||  this.fTableName.length > 63) {
-          this._msgError("O nome da camada deve ter entre 5 e 63 caracteres!")
-
-        } else if (doesTheStringHaveSpecialChars(this.fTableName)) {
-          this._msgError("O nome da camada NÃO pode começar com `número` e nem conter `caracteres especiais`!")
-
-        } else if (this.selectedKeywords.length === 0) {
-          this._msgError("É necessário adicionar pelo menos uma palavra-chave!")
-
-        } else {
-          if (this.typeSubmit === 'file') {   //Importando o arquivo
-            this.upload_from_file()
-          } else {                         //Criando a camada em branco
-            this.upload_from_input()
-          }
-        }
-      },
-      async upload_from_file() {
-
-        if (!('size' in this.file)) {
-          this._msgError("Um arquivo é necessário!")
-        } else if (this.file.size > 104857600) {  // 104857600 == 50mb
-          this._msgError("O arquivo não pode ter um tamanho maior do que 50MB!")
-        } else {
-          this.timeout_upload()
-
-          try {
-            let layer = {
-              'type': 'Layer',
-              'properties': {
-                'layer_id': -1,
-                'f_table_name': this.fTableName,
-                'name': this.name,
-                'description': this.description,
-                'source_description': this.description,
-                'reference': this.selectedReferences.map(r => r.reference_id),
-                'keyword': this.selectedKeywords.map(k => k.keyword_id),
-              }
-            }
-
-            Api().post('/api/layer/create', layer).then(response => {   //Cadastrando nova Layer
-              this.layer_id = response.data
-
-              this.selectedCollaborators.forEach(u => {
-                let user_layer = {
-                  'properties': {
-                    'is_the_creator': 'false',
-                    'user_id': u.user_id,
-                    'layer_id': this.layer_id
-                  },
-                  'type': 'UserLayer'
-                }
-
-                Api().post('/api/user_layer/create', user_layer)
-              })
-
-              let changeset = {
-                'properties': {
-                  'changeset_id': -1,
-                  'layer_id': this.layer_id,
-                  'description': 'Creating layer ' + this.layer_id
-                },
-                'type': 'Changeset'
-              }
-
-              Api().post('/api/changeset/create', changeset).then(response => {
-                Api().post(
-                  'api/import/shp/?f_table_name=' + this.fTableName + '&file_name=' + this.file.name + '&changeset_id=' + response.data,
-                  this.file
-                ).then(response => {
-                  Api().get('/api/feature_table/?f_table_name=' + this.fTableName).then(response => {    //Pega as colunas do shapefile enviado
-                    response.data.features.filter(e => {
-                      this.columns = e.properties
-
-                      Object.getOwnPropertyNames(this.columns).forEach(column => {
-                        // add the shapefile file columns inside the property
-                        if (column !== 'geom' && column !== '__ob__' && column !== 'changeset_id')
-                          this.columnsName.push(column)
-                      })
-
-                      this.shapeCorrect = true;
-                      this.loading.close();
-                      this.clearData()
-                      this.finished = 1
-                    })
-                  }, cause => {
-                    // error in get('/api/feature_table')
-
-                    Api().delete('/api/layer/' + this.layer_id)
-
-                    this.loading.close()
-                    this.finished = 1
-
-                    this._showErrorMessages(cause)
-                  })
-                }, cause => {
-                  // error `post('api/import/shp')`
-
-                  Api().delete('/api/layer/' + this.layer_id)
-
-                  this.loading.close()
-                  this.finished = 1
-
-                  this._showErrorMessages(cause)
-                })
-              }, cause => {
-                // error `post('/api/changeset/create')`
-
-                Api().delete('/api/layer/' + this.layer_id)
-
-                this.loading.close()
-                this.finished = 1
-
-                this._showErrorMessages(cause)
-              })
-            }, cause => {
-              // error `.post('/api/layer/create'`
-
-              this.finished = 1
-              this.loading.close();
-
-              this._showErrorMessages(cause)
+               // go to temporal columns page
+              this.page = this.TEMPORAL_COLUMNS_PAGE
+              this.__closeFullLoading()
+              this.cleanDataInTheStore()
+              // this.finished = 1
+            }).catch(cause => {
+              // error in get('/api/feature_table')
+              this.removeLayerAfterError(cause)
             })
 
-          } catch (error) {
-            this.$alert(
-              "Erro ao criar a camada, confira as informações inseridas. Caso o erro persista entre em contato com os administradores da plataforma!",
-              "Erro ao cadastrar",
-              {
-                dangerouslyUseHTMLString: true,
-                confirmButtonText: 'OK',
-                type: 'error'
-              }
-            );
-            this.finished = 1
-            this.loading.close()
-          }
-        }
-      },
-      async upload_from_input(){
-        const vm = this
+          }).catch(cause => {
+            // error `post('api/import/shp')`
+            this.removeLayerAfterError(cause)
+          })
+        }).catch(cause => {
+          // error `post('/api/changeset/create')`
+          this.removeLayerAfterError(cause)
+        })
+      }).catch(cause => {
+        // error `.post('/api/layer/create'`
+        this.__closeFullLoading()
+        this.__showErrorMessages(cause)
+        // this.finished = 1
+      })
+    },
+    async uploadLayerFromInput(){
+      try {
+        if (this.optTpGeom == null) {
+          this.__errorMessage('Tipo da geometria é necessário!')
+        } else {
+          let getNullAcenOrNumber = await this.optionsAttr.filter(
+            attr => attr.column_name === '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name)) || (/[^a-zA-Z0-9_]/.test(attr.column_name))
+          )
 
-        try {
-          if (this.optTpGeom == null) {
-            this._msgError('Tipo da geometria é necessário!')
+          let getWordNative = await this.optionsAttr.filter(
+            attr => ['id', 'changeset_id', 'version'].some(attrName => attrName === attr.column_name)
+          )
+
+          if (getNullAcenOrNumber.length > 0) {
+            this.__errorMessage('Atributos Inválidos. Lembrando que cada atributo NÃO pode começar com "números" e possuir "acentuação"!')
+          } else if (getWordNative.length > 0) {
+            this.__errorMessage('Atributos Inválidos. O nome do do atributo precisa ser diferente: id, changeset_id e version!')
           } else {
-            let getNullAcenOrNumber = await this.optionsAttr.filter(
-              attr => attr.column_name === '' || attr.column_type == null || !(/^[A-Za-z]{1}\w/.test(attr.column_name)) || (/[^a-zA-Z0-9_]/.test(attr.column_name))
-            )
+            // this.timeout_upload()
 
-            let getWordNative = await this.optionsAttr.filter(
-              attr => ['id', 'changeset_id', 'version'].some(attrName => attrName === attr.column_name)
-            )
-
-            if (getNullAcenOrNumber.length > 0) {
-              this._msgError('Atributos Inválidos. Lembrando que cada atributo NÃO pode começar com "números" e possuir "acentuação"!')
-            } else if (getWordNative.length > 0) {
-              this._msgError('Atributos Inválidos. O nome do do atributo precisa ser diferente: id, changeset_id e version!')
-            } else {
-              this.timeout_upload()
-
-              //CREATE LAYER
-              let layer = {
-                'type': 'Layer',
-                'properties': {
-                  'layer_id': -1,
-                  'f_table_name': this.fTableName,
-                  'name': this.name,
-                  'description': this.description,
-                  'source_description': this.description,
-                  'reference': this.selectedReferences.map(r => r.reference_id),
-                  'keyword': this.selectedKeywords.map(k => k.keyword_id),
-                }
-              }
-
-              //ADD USER IN LAYER
-              let responseCreateLayer = await Dashboard.createLayer(layer)
-              this.layer_id = responseCreateLayer.data
-              this.selectedCollaborators.forEach(async u => {
-                let user_layer = {
-                  'properties': {
-                    'is_the_creator': 'false',
-                    'user_id': u.user_id,
-                    'layer_id': this.layer_id
-                  },
-                  'type': 'UserLayer'
-                }
-
-                let responseUserLayer = await Dashboard.createUserLayer(user_layer)
-              })
-
-              //CREATE FEATUTE TABLE
-              let properties = {}
-              this.optionsAttr.map( async attr => {
-                let attrName = attr.column_name.replace(/\s+/g, '_').toLowerCase()
-                properties[attrName] = attr.column_type
-              })
-
-              let featureTableInfo = {
-                'type': 'FeatureTable',
+            //CREATE LAYER
+            let layer = {
+              'properties': {
+                ...this.layer,
                 'f_table_name': this.fTableName,
-                'properties': properties,
-                'geometry': {
-                    'crs': {'type': 'name', 'properties': {'name': 'EPSG:4326'}},
-                    'type': this.optTpGeom
-                }
-              }
-
-              let responseCreateFeatureTable = await Dashboard.createFeatureTable(featureTableInfo)
-
-              let responseGetFeatureTable = await Dashboard.getFeatureTable(this.fTableName)
-
-              let vm = this
-              responseGetFeatureTable.data.features.filter(e => {
-                vm.columns = e.properties
-                Object.getOwnPropertyNames(e.properties).forEach(c => {
-                  if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
-                    vm.columnsName.push(c)
-                  }
-                })
-                vm.shapeCorrect = true
-                vm.loading.close()
-              })
+                'source_description': this.layer.description,
+              },
+              'type': 'Layer'
             }
+
+            //ADD USER IN LAYER
+            let responseCreateLayer = await Dashboard.createLayer(layer)
+            this.layer.id = responseCreateLayer.data
+
+            //CREATE FEATUTE TABLE
+            let properties = {}
+            this.optionsAttr.map( async attr => {
+              let attrName = attr.column_name.replace(/\s+/g, '_').toLowerCase()
+              properties[attrName] = attr.column_type
+            })
+
+            let featureTableInfo = {
+              'type': 'FeatureTable',
+              'f_table_name': this.fTableName,
+              'properties': properties,
+              'geometry': {
+                  'crs': {'type': 'name', 'properties': {'name': 'EPSG:4326'}},
+                  'type': this.optTpGeom
+              }
+            }
+
+            // let responseCreateFeatureTable = await Dashboard.createFeatureTable(featureTableInfo)
+            await Dashboard.createFeatureTable(featureTableInfo)
+
+            let responseGetFeatureTable = await Dashboard.getFeatureTable(this.fTableName)
+
+            responseGetFeatureTable.data.features.filter(e => {
+              Object.getOwnPropertyNames(e.properties).forEach(c => {
+                if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
+                  this.feature_table_columns.push(c)
+                }
+              })
+              // go to temporal columns page
+              this.page = this.TEMPORAL_COLUMNS_PAGE
+              this.__closeFullLoading()
+            })
           }
-
-          vm.clearData()
         }
-        catch(error) {
-          console.log(error)
-          if(this.layer_id != null && this.layer_id !== undefined)
-            await Dashboard.deleteLayer(this.layer_id)
 
-          if(error.response.status === 409)
-            this.$alert("Já existe uma camada com esse nome, por favor, escolha outro!", "Nome da camada", {
+        this.cleanDataInTheStore()
+      } catch(error) {
+        if(this.layer.id != null && this.layer.id !== undefined)
+          await Dashboard.deleteLayer(this.layer.id)
+
+        if(error.response.status === 409)
+          this.$alert("Já existe uma camada com esse nome, por favor, escolha outro!", "Nome da camada", {
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: 'OK',
+            type: 'error'
+          });
+        else
+          this.$alert("Erro ao criar a camada, confira as informações inseridas. Caso o erro persista entre em contato com os administradores da plataforma!", "Erro ao cadastrar", {
               dangerouslyUseHTMLString: true,
               confirmButtonText: 'OK',
               type: 'error'
-            });
-          else
-            this.$alert("Erro ao criar a camada, confira as informações inseridas. Caso o erro persista entre em contato com os administradores da plataforma!", "Erro ao cadastrar", {
-                dangerouslyUseHTMLString: true,
-                confirmButtonText: 'OK',
-                type: 'error'
-            });
-          this.loading.close()
-        }
-      },
-      addReference() {
-        if (this.reference_description != null) {
-          let new_reference = {
-            'type': 'Reference',
-            'properties': { 'reference_id': -1, 'description': this.reference_description }
-          }
-
-          Api().post('/api/reference/create', new_reference).then(response => {
-            this.selectedReferences.push(
-              {
-                reference_id: response.data,
-                description: this.reference_description
-              }
-            )
-            this.reference_description = null
-            this.saveReferences()
-          }, cause => {
-            if (cause.response.status === 400)
-              this.$message.error("O texto de referência já existe!")
-            else
-              this.$message.error(cause.toString())
-          })
-        }
-      },
-      removeReference(reference_id) {
-        Api().delete('/api/reference/' + reference_id)
-
-        // remove the `reference_id` from the references lists
-        this.selectedReferences = this.selectedReferences.filter(r => r.reference_id !== reference_id)
-        // save the references in the state
-        this.saveReferences()
-      },
-      addAttr() {
-        this.optionsAttr.push({
-          column_name: '',
-          column_type: 'TEXT',
-          visibleRemove: false,
-          id: this.optionsAttr.length
-        })
-      },
-      async removeAttr(id) {
-        this.optionsAttr = await this.optionsAttr.filter( attr => attr.id != id )
-      },
-      _msgError(msg){
-        if(this.loading != '' && this.loading != null)
-          this.loading.close()
-
-        this.$message.error({
-          message: msg,
-          center: true,
-          duration: 10000,
-          showClose: true,
-        })
-      },
-      _showErrorMessages(cause) {
-        if ('data' in cause.response)
-          this._msgError(cause.response.data)
-        else
-          this._msgError(cause.toString())
-
-        if (cause.response.status >= 500)
-          this._msgError("Problem when creating a resource. Please, contact the administrator.")
-      },
-      _openFullLoading(){
-        this.loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        })
+          });
+        this.__closeFullLoading()
       }
     },
-    components: {
-      "p-dash-layout": DashLayout,
-      "p-popover-labels": PopoverLabels
+    removeLayerAfterError(cause){
+      Api().delete('/api/layer/' + this.layer.id)
+
+      this.__closeFullLoading()
+      this.__showErrorMessages(cause)
+      // this.finished = 1
+    },
+    uploadTemporalColumns(){  // cadastrar a segunda parte da camada - temporal columns
+      this.__openFullLoading()
+
+      if ((this.temporal_columns.start_date === null || this.temporal_columns.end_date === null) ||
+          (this.temporal_columns.start_date === "" || this.temporal_columns.end_date === "")) {
+        this.__errorMessage("O preenchimento das datas é obrigatório!")
+        return
+      }
+
+      // this.timeout_upload()
+
+      let temporal_columns = {
+        'properties': {...this.temporal_columns, 'f_table_name': this.fTableName},
+        'type': 'TemporalColumns'
+      }
+
+      Api().post('/api/temporal_columns/create', temporal_columns).then(() => {
+        this.$message.success("A camada foi adicionada com sucesso!")
+        this.$router.push({path: '/dashboard/home'})
+      }).catch(cause => {
+        Api().delete('/api/layer/' + this.layer.id)
+        this.__showErrorMessages(cause)
+      }).finally(() => {
+        // this.finished = 1
+        this.__closeFullLoading()
+      })
+    },
+    addReference() {
+      if (this.reference_description === null || this.reference_description === '') {
+        this.$message.error("Descrição da referência não pode ser vazia!")
+        return
+      } else if (this.reference_description.length < 5) {
+        this.$message.error("A referência precisa ter pelo menos 5 caracteres!")
+        return
+      }
+
+      this.__openFullLoading()
+
+      let reference = {
+        'properties': {'description': this.reference_description},
+        'type': 'Reference'
+      }
+
+      Api().post('/api/reference/create', reference).then(response => {
+        this.layer.references.push({
+          id: response.data,
+          description: this.reference_description
+        })
+        this.reference_description = null
+        this.saveLayerInTheStore()
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      }).finally(() => {
+        this.__closeFullLoading()
+      })
+    },
+    removeReference(reference_id) {
+      this.__openFullLoading()
+
+      // remove reference from the database
+      Api().delete('/api/reference/' + reference_id).then(() => {
+        // remove the reference from the local list of references
+        this.layer.references = this.layer.references.filter(r => r.id !== reference_id)
+        // save the references in the state
+        this.saveLayerInTheStore()
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      }).finally(() => {
+        this.__closeFullLoading()
+      })
+    },
+    __errorMessage(msg){
+      this.__closeFullLoading()
+
+      this.$message.error({
+        message: msg,
+        center: true,
+        duration: 10000,
+        showClose: true,
+      })
+    },
+    __showErrorMessages(cause) {
+      if ('data' in cause.response)
+        this.__errorMessage(cause.response.data.toString())
+      else
+        this.__errorMessage(cause.toString())
+
+      if (cause.response.status >= 500)
+        this.__errorMessage("Problem when creating a resource. Please, contact the administrator.")
+    },
+    __openFullLoading(){
+      this.loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+    },
+    __closeFullLoading(){
+      if (this.loading !== null)
+        this.loading.close()
     }
+    // async removeAttr(id) {
+    //   this.optionsAttr = await this.optionsAttr.filter( attr => attr.id != id )
+    // },
+    // addAttr() {
+    //   this.optionsAttr.push({
+    //     column_name: '',
+    //     column_type: 'TEXT',
+    //     visibleRemove: false,
+    //     id: this.optionsAttr.length
+    //   })
+    // },
+    // timeout_upload(){ //Erro de estouro de tempo ao criar a nova camada
+    //   this.finished = 0
+
+    //   setTimeout(_=>{
+    //     if(this.finished === 0){
+    //       Api().delete('/api/layer/' + this.layer.id)
+    //       this.__closeFullLoading()
+    //       this.__errorMessage("Timeout! Caso o erro persista entre em contato com os administradores da plataforma!")
+    //     }
+    //   }, 30000);
+    // },
   }
+}
 </script>
 
 <style lang="sass" scoped>
@@ -867,6 +835,4 @@
     background-color: #ff6107
     border-color: #ff6107
     color: #ffffff !important
-
-
 </style>
