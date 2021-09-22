@@ -1,140 +1,139 @@
 <template>
-  <p-dash-layout :title="$t('dashboard.nav.layer')">
+  <p-dash-layout :title="$t('dashboard.nav.layer')" v-if="layer !== null">
     <div class="row">
-      <!-- edit layer -->
-      <div class="col-sm-6"  v-if="shapeCorrect === false">
+
+      <!-- layer -->
+      <div class="col-sm-6" v-if="page === LAYER_PAGE">
         <div class="card">
           <div class="card-body">
 
-            <!-- page title -->
+            <!-- title -->
             <h5 class="card-title">{{ $t('dashboard.editLayer.layer') }}</h5>
+            <p class="card-text"></p>
 
             <!-- <p class="card-text">Creator? {{ isTheCurrentUserTheLayerCreator }}</p>
             <p class="card-text">Collaborator? {{ isTheCurrentUserALayerCollaborator }}</p> -->
 
-            <p class="card-text">
-              <form>
-                <!-- layer name and select keywords -->
-                <div class="form-row">
-                  <!-- layer name -->
-                  <div class="form-group col-md-6">
-                    <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                :content= " $t('dashboard.newLayer.nameD')"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
-                    <input class="form-control" id="inputName" disabled>
-                  </div>
-                  <!-- select keywords -->
-                  <div class="form-group col-md-6">
-                    <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                :content="$t('dashboard.newLayer.keywordsD')"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
-                    <!-- button to go to the new keyword page -->
-                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
-                      <md-icon>add_circle_outline</md-icon>
-                    </button>
-                    <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
-                              value="description"
-                              id="keywordsSelect"></v-select>
-                  </div>
-                </div>
-
-                <div class="form-group"></div>
-
-                <!-- collaborators -->
-                <div class="form-group">
-                  <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content="$t('dashboard.newLayer.collaboratorsD')"
-                              type="primary">
+            <form>
+              <!-- layer name and select keywords -->
+              <div class="form-row">
+                <!-- layer name -->
+                <div class="form-group col-md-6">
+                  <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>
+                  <el-popover class="info" placement="top-start" width="200" trigger="hover"
+                              :content="$t('dashboard.newLayer.nameD')" type="primary">
                     <button type="button" slot="reference" class="btn btn-outline-primary info">
                       <md-icon class="icon">error_outline</md-icon>
                     </button>
                   </el-popover>
+                  <input v-model="layer.name" class="form-control" id="inputName"
+                         :disabled="!user.is_the_admin && !isTheCurrentUserTheLayerCreator">
+                </div>
+
+                <!-- select keywords -->
+                <div class="form-group col-md-6">
+                  <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
+                  <el-popover class="info" placement="top-start" width="200" trigger="hover"
+                              :content="$t('dashboard.newLayer.keywordsD')" type="primary">
+                    <button type="button" slot="reference" class="btn btn-outline-primary info">
+                      <md-icon class="icon">error_outline</md-icon>
+                    </button>
+                  </el-popover>
+                  <!-- button to go to the new keyword page -->
+                  <button type="button" @click="goToNewKeywordPage()"
+                          class="btn btn-outline-warning btn-sm add">
+                    <md-icon>add_circle_outline</md-icon>
+                  </button>
                   <v-select
-                    multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
-                    id="userSelect" :disabled="!isTheCurrentUserTheLayerCreator"
+                    multiple v-model="layer.keywords" :options="allKeywords" track-by="name"
+                    label="name" value="description" id="keywordsSelect"
                   ></v-select>
                 </div>
+              </div>
 
-                <!-- description -->
-                <div class="form-group">
-                  <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content="$t('dashboard.newLayer.descriptionD')"
-                              type="primary">
-                    <button type="button" slot="reference" class="btn btn-outline-primary info">
-                      <md-icon class="icon">error_outline</md-icon>
-                    </button>
-                  </el-popover>
-                  <textarea class="form-control" id="inputDescription" rows="3"></textarea>
-                </div>
+              <div class="form-group"></div>
 
-                <!-- reference -->
-                <div class="form-group">
-                  <label for="inputReference">{{ $t('dashboard.newLayer.reference') }}</label>
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content="$t('dashboard.newLayer.referenceD')"
-                              type="primary">
-                    <button type="button" slot="reference" class="btn btn-outline-primary info">
-                      <md-icon class="icon">error_outline</md-icon>
+              <!-- collaborators -->
+              <div class="form-group">
+                <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>
+                <el-popover class="info" placement="top-start" width="200" trigger="hover"
+                            :content="$t('dashboard.newLayer.collaboratorsD')" type="primary">
+                  <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                  </button>
+                </el-popover>
+                <v-select multiple v-model="layer.collaborators" :options="allUsers"
+                          :disabled="!user.is_the_admin && !isTheCurrentUserTheLayerCreator"
+                          track-by="username" label="username" id="userSelect"></v-select>
+              </div>
+
+              <!-- description -->
+              <div class="form-group">
+                <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>
+                <el-popover class="info" placement="top-start" width="200" trigger="hover"
+                            :content="$t('dashboard.newLayer.descriptionD')" type="primary">
+                  <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                  </button>
+                </el-popover>
+                <textarea v-model="layer.description" class="form-control"
+                          id="inputDescription" rows="3"></textarea>
+              </div>
+
+              <!-- reference -->
+              <div class="form-group">
+                <label for="inputReference">{{ $t('dashboard.newLayer.reference') }}</label>
+                <el-popover class="info" placement="top-start" width="200" trigger="hover"
+                            :content="$t('dashboard.newLayer.referenceD')" type="primary">
+                  <button type="button" slot="reference" class="btn btn-outline-primary info">
+                    <md-icon class="icon">error_outline</md-icon>
+                  </button>
+                </el-popover>
+                <div class="form-row">
+                  <!-- text area to add a new reference -->
+                  <div class="form-group col-md-12">
+                    <textarea class="form-control" v-model="reference_description"
+                              id="inputReference" rows="3"></textarea>
+                  </div>
+                  <!-- button to add a new references -->
+                  <div class="form-group col-md-4">
+                    <button type="button" class="btn btn-primary" @click="addReference()">
+                      {{ $t('dashboard.newLayer.add') }}
                     </button>
-                  </el-popover>
-                  <div class="form-row">
-                    <!-- text area to add a new reference -->
-                    <div class="form-group col-md-12">
-                      <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
-                      <!--<input type="text" class="form-control" id="inputReference" placeholder="">
-                      <select class="form-control">
-                        <option v-for="r in references" :value="r.reference_id">{{r.description}}</option>
-                      </select>-->
-                    </div>
-                    <!-- button to add a new references -->
-                    <div class="form-group col-md-4">
-                      <a href="#" class="btn btn-primary" @click="addRef()">{{ $t('dashboard.newLayer.add') }}</a>
-                    </div>
                   </div>
                 </div>
+              </div>
 
-                <!-- added references -->
-                <div class="form-group" v-show="chosenRef.length !== 0">
-                  <label for="inputReference" >{{ $t('dashboard.newLayer.addedReferences') }}</label>
+              <!-- added references -->
+              <div class="form-group" v-if="layer.references.length > 0">
+                <label for="inputReference" >{{ $t('dashboard.newLayer.addedReferences') }}</label>
+                <ol>
+                  <li v-for="reference in layer.references" v-bind:key="reference.id">
+                    {{ reference.description }}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" @click="removeReference(reference.id)"
+                            class="btn btn-outline-danger btn-sm del">
+                      <md-icon>clear</md-icon>
+                    </button>
+                  </li>
+                </ol>
+              </div>
 
-                  <ol>
-                    <li v-for="(reference, index) in chosenRef" v-bind:key="reference.reference_id">
-                      {{ reference.description }}
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
-                        <md-icon>clear</md-icon>
-                      </button>
-                    </li>
-                  </ol>
-                </div>
+              <div class="form-group"></div>
+            </form>
 
-                <div class="form-group"></div>
-              </form>
-            </p>
+            <br>
 
             <!-- submit and delete buttons -->
             <div class="row">
               <div class="col align-self-end">
-                <br>
-                <a href="#" class="btn btn-primary" @click="Upload()">{{ $t('dashboard.newLayer.submit') }}</a>
-                <a href="#" class="btn btn-danger" @click="Delete()">{{ $t('dashboard.editLayer.delete') }}</a>
+                <button type="button" class="btn btn-primary" @click="uploadLayer()">
+                  {{ $t('dashboard.newLayer.submit') }}
+                </button>
+                <button type="button" @click="deleteLayer()" class="btn btn-danger"
+                        v-if="user.is_the_admin || isTheCurrentUserTheLayerCreator">
+                  {{ $t('dashboard.editLayer.delete') }}
+                </button>
               </div>
             </div>
 
@@ -142,61 +141,70 @@
         </div>
       </div>
 
-      <!-- edit temporal columns -->
+      <!-- temporal columns -->
       <div class="col-sm-6 tam">
-        <div class="card" v-if="shapeCorrect">
+        <div class="card" v-if="page === TEMPORAL_COLUMNS_PAGE">
           <div class="card-body">
-            <!-- page title -->
+            <!-- title -->
             <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
+            <p class="card-text"></p>
 
-            <div class="card-text">
-              <form>
-                <div class="form-row">
-                  <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
-                      <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
-                    <input class="form-control" v-model="startDate" type="date" id="start_date">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateColumn') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.startDateColumn')" />
-                    <v-select v-model="startColumnsName" :options="columnsName" track-by="" label=""
-                              id="start_date_column_name"></v-select>
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
-                    <v-select v-model="startDateMask" :options="dateMask" track-by="mask" label="mask"
-                              id="start_date_mask"></v-select>
-                  </div>
+            <form>
+              <!-- first row -->
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
+                    <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
+                  <input type="date" v-model="temporal_columns.start_date"
+                          id="start_date" class="form-control">
                 </div>
-                <div class="form-row">
-                  <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
-                    <input class="form-control" type="date" v-model="endDate" id="end_date">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateColumn') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.endDateColumn')" />
-                    <v-select v-model="endColumnsName" :options="columnsName" track-by="" label=""
-                              id="end_date_column_name"></v-select>
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
-                    <v-select v-model="endDateMask" :options="dateMask" track-by="mask" label="mask"
-                              id="end_date_mask"></v-select>
-                  </div>
+                <div class="form-group col-md-4">
+                  <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateColumn') }}</label>&nbsp;
+                  <p-popover-labels :text="$t('dashboard.newLayer.startDateColumn')" />
+                  <v-select v-model="temporal_columns.start_date_column_name" :options="feature_table_columns"
+                            track-by="" label="" id="start_date_column_name"></v-select>
                 </div>
-                <div class="form-row">
-                  <div class="col align-self-end">
-                    <br>
-                    <a href="#" class="btn btn-primary" @click="Upload2()">{{ $t('dashboard.newLayer.submit') }}</a>
-                  </div>
+                <div class="form-group col-md-4">
+                  <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
+                  <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
+                  <v-select v-model="temporal_columns.start_date_mask" :options="allMasks"
+                            track-by="id" label="mask" id="start_date_mask"></v-select>
                 </div>
-              </form>
-            </div>
+              </div>
+
+              <!-- second row -->
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
+                  <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
+                  <input type="date" v-model="temporal_columns.end_date"
+                          class="form-control" id="end_date">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateColumn') }}</label>&nbsp;
+                  <p-popover-labels :text="$t('dashboard.newLayer.endDateColumn')" />
+                  <v-select v-model="temporal_columns.end_date_column_name" :options="feature_table_columns"
+                            track-by="" label="" id="end_date_column_name"></v-select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
+                  <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
+                  <v-select v-model="temporal_columns.end_date_mask" :options="allMasks"
+                            track-by="id" label="mask" id="end_date_mask"></v-select>
+                </div>
+              </div>
+
+              <!-- submit button -->
+              <div class="form-row">
+                <div class="col align-self-end">
+                  <br>
+                  <button type="button" @click="uploadTemporalColumns()" class="btn btn-primary">
+                    {{ $t('dashboard.newLayer.submit') }}
+                  </button>
+                </div>
+              </div>
+
+            </form>
           </div>
         </div>
       </div>
@@ -206,373 +214,337 @@
 </template>
 
 <script>
-  import DashLayout from '@/views/layouts/dashboard'
-  import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
-  import Vue from 'vue'
-  import vSelect from 'vue-select'
-  import Api from '@/middleware/ApiVGI'
-  import {mapState} from 'vuex'
+import { mapState } from 'vuex'
+import vSelect from 'vue-select'
+import Vue from 'vue'
 
-  Vue.component('v-select', vSelect)
+import Api from '@/middleware/ApiVGI'
+import DashLayout from '@/views/layouts/dashboard'
+import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
 
-  export default {
-    name: "editLayer",
-    components: {
-      "p-dash-layout": DashLayout,
-      "p-popover-labels": PopoverLabels
+Vue.component('v-select', vSelect)
+
+export default {
+  name: "editLayer",
+  components: {
+    "p-dash-layout": DashLayout,
+    "p-popover-labels": PopoverLabels
+  },
+  computed: {
+    ...mapState('auth', ['user']),
+    isTheCurrentUserTheLayerCreator () {
+      // this method checks if the current user is the layer creator or not
+
+      // check if the current user that is editing the layer is the creator one, then return True.
+      // if the current user is just a collaborator one, then return False
+      return this.user.id === this.layer_creator.id
     },
-    computed: {
-      ...mapState('auth', ['isUserLoggedIn', 'user']),
-      ...mapState('dashboard', ['myLayers', 'sharedLayers']),
+    isTheCurrentUserALayerCollaborator () {
+      // this method checks if the current user is a layer collaborator or not
 
-      isTheCurrentUserTheLayerCreator () {
-        // this method checks if the current user is the layer creator or not of the current layer
+      // try to find the current user inside the list of collaborators
+      let collaborator = this.layer.collaborators.filter(c => c.id === this.user.id)
 
-        // if the current user is editing his own layer, then the method returns True...
-        for (const myLayer of this.myLayers) {
-          if (myLayer.layer_id === this.layer_id)
-            return true;
-        }
+      // if the current user that is editing the layer is a collaborator, then return True.
+      // if the current user is the creator one, then return False
+      if (collaborator.length > 0)
+        return collaborator[0].is_the_creator === false
 
-        // ... else, it returns False
-        return false;
-      },
+      // if the current user is the layer creator, then he is not a collaborator
+      if (this.isTheCurrentUserTheLayerCreator)
+        return false
 
-      isTheCurrentUserALayerCollaborator () {
-        // this method checks if the current user is the layer collaborator or not of the current layer
+      throw 'Current user is not inside the list of collaborators of the layer'
+    }
+  },
+  data () {
+    return {
+      // layer form
+      layer: null,
+      layer_creator: null,
+      reference_description: null,
+      allKeywords: [],
+      allUsers: [],
 
-        // if the current user is editing a shared layer that he is a collaborator, then the method returns True...
-        for (const myLayer of this.sharedLayers) {
-          if (myLayer.layer_id === this.layer_id)
-            return true;
-        }
+      // temporal columns form
+      temporal_columns: null,
+      feature_table_columns: null,
+      allMasks: [],
 
-        // ... else, it returns False
-        return false;
+      // pages control
+      LAYER_PAGE: 1,
+      TEMPORAL_COLUMNS_PAGE: 2,
+      page: null,
+
+      // loading
+      loading: null
+    }
+  },
+  mounted() {
+    // open layer page
+    this.page = this.LAYER_PAGE
+
+    let layer_id = this.$route.params.layer_id
+
+    if (layer_id === null || layer_id === undefined) {
+      this.$router.push({path: '/dashboard/home'})
+      return
+    }
+
+    // get all the available keywords
+    Api().get('/api/keyword').then(response => {
+      this.allKeywords = response.data.features.map(k => k.properties)
+    }).catch(cause => {
+      this.__showErrorMessages(cause)
+    })
+
+    // get all the available masks
+    Api().get('/api/mask').then(response => {
+      this.allMasks = response.data.features.map(m => m.properties)
+    }).catch(cause => {
+      this.__showErrorMessages(cause)
+    })
+
+    // get the layer information from the database
+    Api().get('/api/layer/?id=' + layer_id).then(response => {
+      this.layer = response.data.features[0].properties
+
+      // get the layer creator from the list of collaborators
+      this.layer_creator = this.layer.collaborators.filter(c => c.is_the_creator)[0]
+
+      // remove the creator user from the local list of collaborators
+      this.layer.collaborators = this.layer.collaborators.filter(c => c.id !== this.layer_creator.id)
+
+      // get all users from database, except the layer creator one
+      Api().get('/api/user').then(response => {
+        // save the information of all users, except the creator one
+        response.data.features.forEach(u => {
+          if (u.properties.id !== this.layer_creator.id)
+            this.allUsers.push(u.properties)
+        })
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      })
+
+      // get the Shapefile columns names
+      Api().get(
+        '/api/feature_table/?f_table_name=' + this.layer.f_table_name
+      ).then(response => {
+        // this returns an object where the key is the column name
+        // and the value is its type (e.g. `id: integer`)
+        this.feature_table_columns = response.data.features[0].properties
+
+        // get just the column names, without their types
+        this.feature_table_columns = Object.getOwnPropertyNames(this.feature_table_columns).filter(
+          // these column names are reserved, then ignore them
+          key => key !== 'geom' && key !== '__ob__' && key !== 'changeset_id'
+        )
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      })
+
+      // get the temporal columns information
+      Api().get('/api/temporal_columns/?f_table_name=' + this.layer.f_table_name).then(response => {
+        this.temporal_columns = response.data.features[0].properties
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      })
+    }).catch(cause => {
+      this.__showErrorMessages(cause)
+    })
+  },
+  methods: {
+    goToNewKeywordPage() {
+      this.$router.push({
+        name: 'Keyword',
+        params: {name: "EditLayer", layer_id: this.layer.id}
+      })
+    },
+    uploadLayer() {
+      // this method edits a layer in the server
+
+      if (this.layer.name === null || this.layer.name === '') {
+        this.$message.error("O nome da camada é obrigatório!")
+        return
+      } else if (this.layer.name.length < 5 || this.layer.name.length > 63) {
+        this.$message.error("O nome da camada deve ter entre 5 e 63 caracteres!")
+        return
+      } else if (this.layer.keywords.length === 0) {
+        this.$message.error("É obrigatório adicionar pelo menos uma palavra-chave!")
+        return
+      } else if (this.layer.description === null || this.layer.description === '') {
+        this.$message.error("Descrição da camada não pode estar vazia!")
+        return
+      } else if (this.layer.description.length < 5) {
+        this.$message.error("Descrição da camada não pode ter menos do que 5 caracteres!")
+        return
       }
+
+      this.__openFullLoading()
+
+      // add the creator user to the list of collaborators again before editing the layer
+      this.layer.collaborators.push(this.layer_creator)
+
+      let layer = {'properties': this.layer, 'type': 'Layer'}
+
+      Api().put('/api/layer', layer).then(() => {
+        // go to temporal columns page
+        this.page = this.TEMPORAL_COLUMNS_PAGE
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      }).finally(() => {
+        // remove the creator user from the local list of collaborators again
+        this.layer.collaborators = this.layer.collaborators.filter(c => c.id !== this.layer_creator.id)
+        this.__closeFullLoading()
+      })
     },
-    data () {
-      return {
-        tableName: null,
-        chosenUsers: [],
-        references: [],
-        chosenRef: [],
-        chosenRefID: [],
-        auxRef: null,
-        users: [],
-        usersAux: [],
-        keywords: [],
-        chosenKeywords: [],
-        chosenKeywordsID: [],
-        fname: 'Choose file',
-        columns: null,
-        columnsName: [],
-        startColumnsName: null,
-        endColumnsName: null,
-        dateMask: [],
-        startDateMask: null,
-        endDateMask: null,
-        startDate: null,
-        endDate: null,
-        shapeCorrect: false,
-        fullscreenLoading: false,
-        layer_id: this.$route.params.layer_id
+    uploadTemporalColumns(){
+      // this method sends the temporal columns to VGIMWS
+
+      if ((this.temporal_columns.start_date === "" || this.temporal_columns.end_date === "") ||
+          (this.temporal_columns.start_date === null || this.temporal_columns.end_date === null)) {
+        this.__errorMessage("O preenchimento das datas é obrigatório!")
+        return
       }
-    },
-    methods: {
-      newKeyword() {
-        this.$router.push({
-          name: 'Keyword',
-          params: {name: "EditLayer", layer_id: this.layer_id}
-        })
-      },
-      Upload2(){
-        // this method sends the temporal columns to VGIMWS
 
-        if ((this.startDate === "" || this.endDate === "") || (this.startDate === null || this.endDate === null)) {
-          this._msgError("O preenchimento das datas é obrigatório!")
-          return;
-        }
+      this.__openFullLoading()
 
-        let temporalColumns = {
-          'properties': {
-            'f_table_name': this.tableName,
-            'start_date': this.startDate,
-            'end_date': this.endDate,
-            'start_date_column_name': this.startColumnsName,
-            'end_date_column_name': this.endColumnsName,
-            'start_date_mask_id': (this.startDateMask != null && 'mask_id' in this.startDateMask) ? this.startDateMask.mask_id : null,
-            'end_date_mask_id': (this.endDateMask != null && 'mask_id' in this.endDateMask) ? this.endDateMask.mask_id : null,
-          },
-          'type': 'TemporalColumns'
-        }
+      let temporal_columns = {
+        'properties': {
+          ...this.temporal_columns, 'f_table_name': this.layer.f_table_name
+        },
+        'type': 'TemporalColumns'
+      }
 
-        Api().put('/api/temporal_columns', temporalColumns).then(response => {
-          this.$message.success("A camada foi atualizada com sucesso!")
-          this.$router.push({path: '/dashboard/home'})
-        }, cause => {
-          this._showErrorMessages(cause)
-        })
-
-      },
-      Upload() {
-        // this method sends a layer to VGIMWS
-
-        this.chosenKeywordsID = []
-
-        this.chosenKeywords.forEach(e => {
-          this.chosenKeywordsID.push(e.keyword_id)
-        })
-
-        //if(this.chosenRefID == null) this.chosenRefID = []
-
-        if (this.chosenKeywordsID.length === 0) {
-          this.$message.error("Having at least one keyword is mandatory!")
-        } else {
-          const loading = this.$loading({
-            lock: true,
-            text: 'Loading',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-          })
-
-          let layer = {
-            'type': 'Layer',
-            'properties': {
-              'layer_id': this.layer_id,
-              'f_table_name': this.tableName,
-              'name': document.getElementById("inputName").value,
-              'description': document.getElementById("inputDescription").value,
-              'source_description': document.getElementById("inputDescription").value,
-              'reference': this.chosenRefID,
-              'keyword': this.chosenKeywordsID,
-            }
-          }
-          //this.tableName = document.getElementById("inputName").value
-
-          // only the layer creator can remove layer collaborators
-          if (this.isTheCurrentUserTheLayerCreator) {
-            this.usersAux.forEach(user => {
-              Api().delete('/api/user_layer/?layer_id=' + this.layer_id + '&user_id=' + user.user_id)
-            })
-          }
-
-          Api().put('/api/layer', layer).then(response => {
-            // only the layer creator can add layer collaborators
-            if (this.isTheCurrentUserTheLayerCreator) {
-              this.chosenUsers.forEach(u => {          // PUT cada usuario colaborar da layer
-                let user_layer = {
-                  'properties': {
-                    'is_the_creator': 'false',
-                    'user_id': u.user_id,
-                    'layer_id': this.layer_id
-                  },
-                  'type': 'UserLayer'
-                }
-
-                Api().post('/api/user_layer/create', user_layer)
-                //.then((response) => {})
-              })
-            }
-
-            Api().get('/api/feature_table/?f_table_name=' + this.tableName).then(response => {    //Pega as colunas do shapefile enviado
-              response.data.features.filter(e => {
-                //console.log(this.columns)
-                this.columns = e.properties
-                Object.getOwnPropertyNames(e.properties).forEach(c => {
-                  if (c !== 'geom' && c !== '__ob__' && c !== 'changeset_id') {
-                    this.columnsName.push(c)
-                  }
-                })
-                this.shapeCorrect = true;
-                loading.close();
-                //console.log(this.columnsName)
-              }, cause => {
-                loading.close()
-                this._showErrorMessages(cause)
-              })
-            }, cause => {
-              loading.close()
-              this._showErrorMessages(cause)
-            })
-          }, cause => {
-            loading.close()
-            this._showErrorMessages(cause)
-          })
-
-          // this.$router.push({
-          //   path: '/dashboard/home'
-          // })
-        }
-      },
-      Delete() {
-        Api().delete('/api/layer/' + this.layer_id)
-
-        this.$router.push({ path: '/dashboard/home' })
-      },
-      removeRef(index) {
-        //console.log(this.chosenRef[index].reference_id)
-
-        Api().delete('/api/reference/' + this.chosenRef[index].reference_id)
-
-        this.chosenRef.splice(index, 1)
-        this.chosenRefID.splice(index, 1)
-      },
-      addRef() {
-        if (this.auxRef != null) {
-          let reference = {
-            'type': 'Reference',
-            'properties': { 'reference_id': -1, 'description': this.auxRef }
-          }
-
-          Api().post('/api/reference/create', reference).then(response => {
-            let ref_id = response.data.reference_id
-            this.chosenRef.push({description: this.auxRef, reference_id: ref_id})
-            //console.log(this.chosenRef)
-            this.chosenRefID.push(ref_id)
-            this.auxRef = null
-          }, cause => {
-            this,_showErrorMessages(cause)
-          })
-        }
-      },
-      _msgError(msg){
-        if(this.loading != '' && this.loading != null)
-          this.loading.close()
-
-        this.$message.error({
-          message: msg,
-          center: true,
-          duration: 10000,
-          showClose: true,
-        })
-      },
-      _showErrorMessages(cause) {
-        if ('data' in cause.response)
-          this._msgError(cause.response.data)
-        else
-          this._msgError(cause.toString())
-
-        if (cause.response.status >= 500)
-          this._msgError("Problem when creating a resource. Please, contact the administrator.")
-      },
-    },
-    mounted() {
-      let id = this.$route.params.layer_id
-
-      if (id === undefined) {
+      Api().put('/api/temporal_columns', temporal_columns).then(() => {
+        this.$message.success("A camada foi atualizada com sucesso!")
         this.$router.push({path: '/dashboard/home'})
-      } else {
-
-        // if array is empty, then I'm going to search them
-        if (Array.isArray(this.users) && this.users.length === 0) {
-          Api().get('/api/user').then(response => {
-            this.users = response.data.features.map(e => e.properties)
-          })
-        }
-
-        // if array is empty, then I'm going to search them
-        if (Array.isArray(this.keywords) && this.keywords.length === 0) {
-          Api().get('/api/keyword').then(response => {
-            this.keywords = response.data.features.map(e => e.properties)
-          })
-        }
-
-        Api().get('/api/layer/?layer_id=' + id).then(response => {
-          this.layer = response.data.features[0].properties
-
-          document.getElementById("inputName").value = this.layer.name
-          document.getElementById("inputDescription").value = this.layer.description
-
-          this.chosenKeywordsID = this.layer.keyword
-
-          if (this.layer.reference !== null)
-            this.chosenRefID = this.layer.reference
-          else
-            this.chosenRefID = []
-
-          this.tableName = this.layer.f_table_name
-
-          this.chosenKeywordsID.forEach(key => {
-            Api().get('/api/keyword/?keyword_id=' + key).then(response => {
-              response.data.features.filter(e => {
-                this.chosenKeywords.push(e.properties)
-              })
-            })
-          })
-          this.chosenRefID.forEach(id => {
-            Api().get('/api/reference/?reference_id=' + id).then(response => {
-              response.data.features.filter(e => {
-                this.chosenRef.push({description: e.properties.description, reference_id: e.properties.reference_id})
-              })
-            })
-          })
-
-          Api().get('/api/user_layer/?layer_id=' + id).then(response => {
-            response.data.features.forEach(u => {
-              Api().get('/api/user/?user_id=' + u.properties.user_id).then(response => {
-                let properties = response.data.features[0].properties
-
-                if (properties.user_id !== this.user.user_id)
-                  this.chosenUsers.push(properties)
-              })
-              if (u.properties.user_id !== this.user.user_id)
-                this.usersAux.push(u.properties)
-            })
-          })
-
-          Api().get('/api/mask').then(response => {
-            this.dateMask = response.data.features.map(e => e.properties)
-
-            Api().get('/api/temporal_columns/?f_table_name=' + this.layer.f_table_name).then(response => {
-              let p = response.data.features[0].properties
-
-              this.startDate = p.start_date
-              this.endDate = p.end_date
-              this.endColumnsName = p.end_date_column_name === 'None' || p.end_date_column_name === '' ? null : p.end_date_column_name
-              this.startColumnsName = p.start_date_column_name === 'None' || p.start_date_column_name === '' ? null : p.start_date_column_name
-
-              // if `mask_id` is null, then it returns null
-              // if `mask_id` is not null, then I get the mask object from the `this.dateMask` array by the `mask_id` property
-              this.startDateMask = p.start_date_mask_id === null ? null : this.dateMask.filter(m => m.mask_id === p.start_date_mask_id)[0]
-              this.endDateMask = p.end_date_mask_id === null ? null : this.dateMask.filter(m => m.mask_id === p.end_date_mask_id)[0]
-            })
-
-          })
-
-        })
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      }).finally(() => {
+        this.__closeFullLoading()
+      })
+    },
+    deleteLayer() {
+      if (!this.isTheCurrentUserTheLayerCreator && !this.user.is_the_admin) {
+        this.$message.error("Apenas o criador ou um administrador pode excluir a camada!")
+        return
       }
+
+      this.__openFullLoading()
+
+      Api().delete('/api/layer/' + this.layer.id).then(() => {
+        this.$message.success("A camada foi excluída com sucesso!")
+        this.$router.push({ path: '/dashboard/home' })
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      }).finally(() => {
+        this.__closeFullLoading()
+      })
+    },
+    addReference() {
+      if (this.reference_description === null || this.reference_description === '') {
+        this.$message.error("Descrição da referência não pode ser vazia!")
+        return
+      } else if (this.reference_description.length < 5) {
+        this.$message.error("A referência precisa ter pelo menos 5 caracteres!")
+        return
+      }
+
+      this.__openFullLoading()
+
+      let reference = {
+        'properties': {'description': this.reference_description},
+        'type': 'Reference'
+      }
+
+      Api().post('/api/reference/create', reference).then(response => {
+        this.layer.references.push({
+          id: response.data,
+          description: this.reference_description
+        })
+        this.reference_description = null
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      }).finally(() => {
+        this.__closeFullLoading()
+      })
+    },
+    removeReference(reference_id) {
+      this.__openFullLoading()
+
+      // remove reference from the database
+      Api().delete('/api/reference/' + reference_id).then(() => {
+        // remove the reference from the local list of references
+        this.layer.references = this.layer.references.filter(r => r.id !== reference_id)
+      }).catch(cause => {
+        this.__showErrorMessages(cause)
+      }).finally(() => {
+        this.__closeFullLoading()
+      })
+    },
+    __errorMessage(msg){
+      this.__closeFullLoading()
+
+      this.$message.error({
+        message: msg,
+        center: true,
+        duration: 10000,
+        showClose: true,
+      })
+    },
+    __showErrorMessages(cause) {
+      if (cause.response !== undefined && 'data' in cause.response)
+        this.__errorMessage(cause.response.data.toString())
+      else
+        this.__errorMessage(cause.toString())
+
+      if (cause.response.status >= 500)
+        this.__errorMessage("Problem when creating a resource. Please, contact the administrator.")
+    },
+    __openFullLoading(){
+      this.loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+    },
+    __closeFullLoading(){
+      if (this.loading !== null)
+        this.loading.close()
     }
   }
+}
 </script>
 
 <style lang="sass" scoped>
-  .add
-    top: -1px
-    left: 0px
-    display: inline-block
-    border: none
-    padding: 0px
-    margin: 0px
-    position: relative
-    border-radius: 30px
+.add
+  top: -1px
+  left: 0px
+  display: inline-block
+  border: none
+  padding: 0px
+  margin: 0px
+  position: relative
+  border-radius: 30px
 
-  .del
-    top: 0px
-    display: inline-block
-    border: none
-    padding: 0px
-    margin: 0px
-    position: relative
+.del
+  top: 0px
+  display: inline-block
+  border: none
+  padding: 0px
+  margin: 0px
+  position: relative
 
-  .info
-    top: -1px
-    border: none
-    padding: 0px
-    margin: 0px
-    position: relative
-    border-radius: 30px
+.info
+  top: -1px
+  border: none
+  padding: 0px
+  margin: 0px
+  position: relative
+  border-radius: 30px
 
-  .tam
-    min-width: 800px;
+.tam
+  min-width: 800px;
 </style>

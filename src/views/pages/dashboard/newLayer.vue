@@ -739,7 +739,7 @@ export default {
       })
     },
     __showErrorMessages(cause) {
-      if ('data' in cause.response)
+      if (cause.response !== undefined && 'data' in cause.response)
         this.__errorMessage(cause.response.data.toString())
       else
         this.__errorMessage(cause.toString())
