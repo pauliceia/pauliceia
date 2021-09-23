@@ -252,8 +252,7 @@ export default {
     "p-modal-notification": ModalNotification
   },
   computed: {
-    ...mapState('auth', ['user']),
-    ...mapState('map', ['boxNotifications'])
+    ...mapState('auth', ['user'])
   },
   props: ['showInput'],
   data () {
@@ -341,6 +340,7 @@ export default {
       ).then(response => {
         this.notifG = response.data.features.map(n => {
           // n - notification
+          // add default user icon if user does not have picture
           n.properties.user_picture = n.properties.user_picture === '' ?
                                         iconPerson : n.properties.user_picture
           n.properties['type'] = 'general'

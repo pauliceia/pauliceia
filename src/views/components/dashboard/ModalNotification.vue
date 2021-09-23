@@ -106,8 +106,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('auth', ['user']),
-    ...mapState('map', ['boxNotifications'])
+    ...mapState('auth', ['user'])
   },
   data () {
     return {
