@@ -499,8 +499,8 @@ export default {
       else
         this.__errorMessage(cause.toString())
 
-      if (cause.response.status >= 500)
-        this.__errorMessage("Problem when creating a resource. Please, contact the administrator.")
+      if (cause.response !== undefined && cause.response.status >= 500)
+        this.__errorMessage("Internal error. Please, contact the administrator.")
     },
     __openFullLoading(){
       this.loading = this.$loading({

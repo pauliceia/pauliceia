@@ -320,7 +320,7 @@ export default {
         this.cleanMessage()
         this.$message.success("The notification was added successfully!")
       }).catch(cause => {
-        this.__errorMessage(cause)
+        this.__showErrorMessages(cause)
       }).finally(() => {
         this.updateNotification()
         this.__closeFullLoading()
@@ -347,7 +347,7 @@ export default {
           return n.properties
         })
       }).catch(cause => {
-        this.__errorMessage(cause)
+        this.__showErrorMessages(cause)
       })
 
       // get personal notifications related to current user
@@ -366,12 +366,12 @@ export default {
               this.notifP.push(n.properties)
             })
           }).catch(cause => {
-            this.__errorMessage(cause)
+            this.__showErrorMessages(cause)
           })
 
         })
       }).catch(cause => {
-        this.__errorMessage(cause)
+        this.__showErrorMessages(cause)
       })
 
       // get personal notifications related to current user layers
@@ -387,12 +387,12 @@ export default {
               this.notifP.push(n.properties)
             })
           }).catch(cause => {
-            this.__errorMessage(cause)
+            this.__showErrorMessages(cause)
           })
 
         })
       }).catch(cause => {
-        this.__errorMessage(cause)
+        this.__showErrorMessages(cause)
       })
 
       // get following notifications
@@ -408,12 +408,12 @@ export default {
               return n.properties
             })
           }).catch(cause => {
-            this.__errorMessage(cause)
+            this.__showErrorMessages(cause)
           })
 
         })
       }).catch(cause => {
-        this.__errorMessage(cause)
+        this.__showErrorMessages(cause)
       })
     },
     canUserRemoveIt(notification) {
@@ -428,11 +428,28 @@ export default {
       ).then(() => {
         this.$message.success("The notification was removed successfully!")
       }).catch(cause => {
-        this.__errorMessage(cause)
+        this.__showErrorMessages(cause)
       }).finally(() => {
         this.updateNotification()
         this.__closeFullLoading()
       })
+    },
+    __errorMessage(msg){
+      this.$message.error({
+        message: msg,
+        center: true,
+        duration: 10000,
+        showClose: true
+      })
+    },
+    __showErrorMessages(cause) {
+      if (cause.response !== undefined && 'data' in cause.response)
+        this.__errorMessage(cause.response.data.toString())
+      else
+        this.__errorMessage(cause.toString())
+
+      if (cause.response !== undefined && cause.response.status >= 500)
+        this.__errorMessage("Internal error. Please, contact the administrator.")
     },
     __openFullLoading(){
       this.loading = this.$loading({
@@ -445,9 +462,6 @@ export default {
     __closeFullLoading(){
       if (this.loading !== null)
         this.loading.close()
-    },
-    __errorMessage(cause){
-      this.$message.error(cause.response.data.toString())
     }
   }
 }
