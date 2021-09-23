@@ -10,35 +10,31 @@
         </div>
 
         <div class="modal-body">
-          <el-input
-            :placeholder="$t('map.addLayer.input')"
-            v-model="filterText">
-          </el-input>
-          <br/>
+          <el-input v-model="filterText" :placeholder="$t('map.addLayer.input')"></el-input>
+          <br>
 
-          <article v-for="layer in listLayers" :key="layer.id">
-            <div :class="layers.some(id => id == layer.properties.id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
+          <article v-for="layer in filteredLayers" :key="layer.id">
+            <div :class="layer._is_activated ? 'box-layer-info activated' : 'box-layer-info disabled'">
               <div class="infos">
-                <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong>
-                  {{ layer.properties.name }}
-                </p>
-                <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
-                  <span v-for="collaborator in layer.properties.collaborators" :key="collaborator.id">
-                    {{ collaborator.name }};
+                <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.name }}</p>
+                <p>
+                  <strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
+                  <span v-for="collaborator in layer.collaborators" :key="collaborator.id">
+                    {{ collaborator.name !== null ? collaborator.name : collaborator.username }};
                   </span>
                 </p>
-                <p><strong>{{ $t('map.addLayer.box.lbKeywods') }}:</strong>
-                  <el-tag v-for="keyword in layer.properties.keywords" :key="keyword.id" style="margin-left: 5px">
+                <p>
+                  <strong>{{ $t('map.addLayer.box.lbKeywods') }}:</strong>
+                  <el-tag v-for="keyword in layer.keywords" :key="keyword.id" style="margin-left: 5px">
                     {{ keyword.name }}
                   </el-tag>
                 </p>
               </div>
 
               <div class="btns">
-                <el-button :type="layers.some(id => id == layer.properties.id) ? 'danger' : 'success'"
-                              round @click="layers.some(id => id == layer.properties.id) ? disabled(layer) : active(layer)"
-                              :disabled="btnDisabled" >
-                  {{ layers.some(id => id == layer.properties.id) ? $t('map.addLayer.btns.disable') : $t('map.addLayer.btns.active') }}
+                <el-button :type="layer._is_activated ? 'danger' : 'success'" round
+                           @click="layer._is_activated ? disabled(layer) : active(layer)">
+                  {{ layer._is_activated ? $t('map.addLayer.btns.disable') : $t('map.addLayer.btns.active') }}
                 </el-button>
               </div>
             </div>
@@ -65,141 +61,151 @@ import {
 } from '@/views/assets/js/map/overlayGroup'
 
 export default {
-    watch: {
-      filterText(val){
-        if (val === '') {
-          this.listLayers = this.allLayers
-        } else {
-          let writtenValue = val.toLowerCase()
+  watch: {
+    filterText(val){
+      if (val === '') {
+        this.filteredLayers = this.allLayers
+      } else {
+        let writtenValue = val.toLowerCase()
 
-          this.listLayers = this.allLayers.filter(layer => {
-            // if layer name matches the written value, then return the layer
-            if (layer.properties.name.toLowerCase().indexOf(writtenValue) >= 0)
-              return layer
+        this.filteredLayers = this.allLayers.filter(layer => {
+          // if layer name matches the written value, then return the layer
+          if (layer.name.toLowerCase().indexOf(writtenValue) >= 0)
+            return layer
 
-            // if collaborators match the written value, then return the layer
-            let collaborators = layer.properties.collaborators.filter(
-              // c - collaborator
-              c => c.name !== null && c.name.toLowerCase().indexOf(writtenValue) >= 0
-            )
-            if (collaborators.length > 0)
-              return layer
+          // if collaborators match the written value, then return the layer
+          let collaborators = layer.collaborators.filter(
+            // c - collaborator
+            c => c.name !== null && c.name.toLowerCase().indexOf(writtenValue) >= 0
+          )
+          if (collaborators.length > 0)
+            return layer
 
-            // if keywords match the written value, then return the layer
-            let keywords = layer.properties.keywords.filter(
-              // k - keyword
-              k => k.name !== null && k.name.toLowerCase().indexOf(writtenValue) >= 0
-            )
-            if (keywords.length > 0)
-              return layer
+          // if keywords match the written value, then return the layer
+          let keywords = layer.keywords.filter(
+            // k - keyword
+            k => k.name !== null && k.name.toLowerCase().indexOf(writtenValue) >= 0
+          )
+          if (keywords.length > 0)
+            return layer
 
-            // otherwise, do not return the layer (i.e. default return null)
-          })
-        }
-      }
-    },
-    computed: {
-      ...mapState('map', ['layers'])
-    },
-    data() {
-      return {
-        loading: '',
-        btnDisabled: false,
-        filterText: '',
-        listLayers: [],
-        allLayers: []
-      }
-    },
-    async mounted() {
-      try {
-        let result = await Map.getLayers(null)
-        // all available layers
-        this.allLayers = result.data.features
-
-        // sort the layers by name
-        this.allLayers.sort(
-          (a, b) => (a.properties.name > b.properties.name) ? 1 :
-                    ((b.properties.name > a.properties.name) ? -1 : 0)
-        )
-
-        // initialize the list of layers with all available layers
-        // this list can change depending on the filter
-        this.listLayers = this.allLayers
-
-      } catch (error) {
-        this.$alert(this.$t('map.addLayer.msg.errMsg'), this.$t('map.addLayer.msg.errTitle'), {
-          confirmButtonText: 'OK',
-          type: 'error'
-        })
-      }
-    },
-    methods: {
-      disabled(layer) {
-        if(this.btnDisabled == false)
-          this.btnDisabled = true
-
-        overlayGroup.getLayers().forEach(sublayer => {
-          if (sublayer != undefined && sublayer.get('id') != undefined && sublayer.get('id') == layer.properties.id) {
-            overlayGroup.getLayers().remove(sublayer)
-            this.$store.dispatch('map/setRemoveLayers', layer.properties.id)
-            this.btnDisabled = false
-            return true
-          }
-        })
-      },
-      async active(layer) {
-        if(this.btnDisabled == false)
-          this.btnDisabled = true
-
-        this._openFullScreen()
-
-        try {
-          let url = process.env.urlGeoserverPauliceia +
-                      '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:' +
-                      layer.properties.f_table_name + '&outputFormat=application%2Fjson';
-
-          let response = await axios.get(url)
-
-          if (response.data.type != undefined) {
-            let vectorLayer = new ol.layer.Vector({
-              title: layer.properties.f_table_name,
-              source: new ol.source.Vector({
-                url: url,
-                format: new ol.format.GeoJSON(),
-                crossOrigin: 'anonymous',
-              }),
-              zIndex: this.layers.length+2,
-              id: layer.properties.id
-            })
-
-            overlayGroup.getLayers().push(vectorLayer)
-
-            setTimeout( _ => {
-              this.$store.dispatch('map/setNewLayers', layer.properties.id)
-              this.loading.close()
-              this.btnDisabled = false
-            }, 500)
-          } else throw {}
-
-        } catch (error) {
-          this.loading.close()
-          this.btnDisabled = false
-          this.$alert("Por favor, confira se a camada foi importada corretamente em nosso sistema ou entre em contato com nosso suporte!", "Erro ao importar a camada", {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: 'OK',
-            type: "error"
-          })
-        }
-      },
-      _openFullScreen() {
-        this.loading = this.$loading({
-          lock: true,
-          text: 'Construindo Mapa',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
+          // otherwise, do not return the layer (i.e. default return null)
         })
       }
     }
+  },
+  computed: {
+    ...mapState('map', ['layers'])
+  },
+  data() {
+    return {
+      allLayers: [],
+      filterText: '',
+      filteredLayers: [],
+      loading: null
+    }
+  },
+  async mounted() {
+    this.__openFullLoading()
+
+    try {
+      let result = await Map.getLayers(null)
+
+      // all available layers
+      this.allLayers = result.data.features.map(layer => {
+        // create a flag to change component colors based on it
+        layer.properties._is_activated = false
+        return layer.properties
+      })
+
+      // sort the layers by name
+      this.allLayers.sort(
+        (a, b) => (a.name > b.name) ? 1 :
+                  ((b.name > a.name) ? -1 : 0)
+      )
+
+      // initialize the list of layers with all available layers
+      // this list can change depending on the filter
+      this.filteredLayers = this.allLayers
+
+    } catch (error) {
+      this.$alert(this.$t('map.addLayer.msg.errMsg'), this.$t('map.addLayer.msg.errTitle'), {
+        confirmButtonText: 'OK',
+        type: 'error'
+      })
+    }
+
+    this.__closeFullLoading()
+  },
+  methods: {
+    disabled(layer) {
+      let vectorLayers = overlayGroup.getLayers().getArray()
+
+      for (let vectorLayer of vectorLayers) {
+        if (vectorLayer !== undefined && vectorLayer.get('id') !== undefined &&
+              vectorLayer.get('id') === layer.id) {
+          // remove the layer from the lists
+          overlayGroup.getLayers().remove(vectorLayer)
+          this.$store.dispatch('map/setRemoveLayers', layer.id)
+          layer._is_activated = false
+          break
+        }
+      }
+    },
+    async active(layer) {
+      this.__openFullLoading()
+
+      try {
+        let url = process.env.urlGeoserverPauliceia +
+                    '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:' +
+                    layer.f_table_name + '&outputFormat=application%2Fjson';
+
+        let response = await axios.get(url)
+
+        if (response.data.type !== undefined) {
+          let vectorLayer = new ol.layer.Vector({
+            title: layer.f_table_name,
+            source: new ol.source.Vector({
+              url: url,
+              format: new ol.format.GeoJSON(),
+              crossOrigin: 'anonymous',
+            }),
+            zIndex: this.layers.length+2,
+            id: layer.id
+          })
+
+          // add the layer in the lists
+          overlayGroup.getLayers().push(vectorLayer)
+          this.$store.dispatch('map/setNewLayers', layer.id)
+          layer._is_activated = true
+
+          this.__closeFullLoading()
+        } else throw {}
+
+      } catch (error) {
+        this.__closeFullLoading()
+        layer._is_activated = false
+
+        this.$alert("Por favor, confira se a camada foi importada corretamente em nosso sistema ou entre em contato com nosso suporte!", "Erro ao importar a camada", {
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: 'OK',
+          type: "error"
+        })
+      }
+    },
+    __openFullLoading(){
+      this.loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+    },
+    __closeFullLoading(){
+      if (this.loading !== null)
+        this.loading.close()
+    }
+  }
 }
 </script>
 
