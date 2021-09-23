@@ -5,14 +5,13 @@ const state = {
   },
   layers: [],
   boxGeocoding: true,
-  boxInfoLayer: false,
   boxNotifications: false,
   boxInfoVector: false,
   boxSubtitle: false,
   boxAlert: true,
-  //informação do layer
+  // layer id
   idInfoLayer: null,
-  //id da layer que está ativa a funaçã INFO FEATURE
+  // id da layer que está ativa a função INFO FEATURE
   idInfoFeatureLayer: null,
   sidebar: null
 }
@@ -30,9 +29,6 @@ const mutations = {
   },
   setBoxAlert (state, value) {
     state.boxAlert = value
-  },
-  setBoxInfoLayer (state, value) {
-    state.boxInfoLayer = value
   },
   setBoxNotifications (state, value) {
     state.boxNotifications = value
@@ -69,9 +65,6 @@ const actions = {
   },
   setBoxAlert({commit}, value) {
     commit('setBoxAlert', value)
-  },
-  setBoxInfoLayer({commit}, value) {
-    commit('setBoxInfoLayer', value)
   },
   setBoxInfoVector({commit}, value) {
     commit('setBoxInfoVector', value)

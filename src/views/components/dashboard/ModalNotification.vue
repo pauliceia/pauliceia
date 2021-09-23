@@ -43,9 +43,9 @@
 
       <div class="nofitication">
         <div v-for="comment in comments" :key="comment.id">
+          <!-- if comment is a denunciation, then change the box color -->
           <div class="notification-box2"
-               :style="[comment.is_denunciation ? {'background': 'rgba(255, 255, 0, 0.70)'} : {'background': 'rgba(183, 200, 255, 0.70)'}]"
-          >
+               :style="[comment.is_denunciation ? {'background': 'rgba(255, 255, 0, 0.70)'} : {}]">
             <div style="display: flex; align-items: center;">
               <div class="photo">
                 <md-avatar class="md-avatar-icon">
