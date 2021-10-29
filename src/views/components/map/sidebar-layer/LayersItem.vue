@@ -254,7 +254,7 @@ export default {
           // clean the map interactions
           this.$root.olmap.getOverlays().clear()
 
-          // create popup
+          // create popup via jquery
           $("#popup").append(
             `<div id="popup-${this.title}" title="information of vector">
               <div id="popup-content-${this.title}"></div>

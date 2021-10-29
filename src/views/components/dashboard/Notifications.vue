@@ -309,7 +309,7 @@ export default {
           'keyword_id': null,
           'notification_id_parent': this.notification_id_parent,
           'layer_id': this.layer_id,
-          'description': this.description,
+          'description': this.description
         },
         'type': 'Notification'
       }
