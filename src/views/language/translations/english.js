@@ -276,13 +276,20 @@ export default {
             "title": "Edit"
         },
         "addLayer": {
-            "title": "Add or remove layers",
+            "title": "Turn on/off layers",
             "input": "Search by theme, layer or author:",
+            "search": "Perform your search using some text or click on contributors or keywords to add them in the search field.",
             "close": "Close",
-            "box": {
+            "table": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
-                "lbKeywods": "KEYWORDS"
+                "lbKeywods": "KEYWORDS",
+                "lbDescription": "DESCRIPTION",
+                "lbCreated_at": "CREATED AT",
+                "lbKeywords": "KEYWORDS",
+                "day": "Day: ",
+                "hour": "Hour: ",
+                "noData": "No Data Available.",
             },
             "btns": {
                 "active": "Active",
