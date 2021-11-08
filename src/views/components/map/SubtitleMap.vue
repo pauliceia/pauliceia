@@ -7,21 +7,21 @@
       </button>
     </header>
     <br>
-    <p>
+    <p style = "margin-bottom: 1.1rem">
       <img src='@/views/assets/images/iconGeolocation.png'
             name="Image1" align="left" width="24" height="36" 
             border="0" class="img-style"/>
       &ensp; {{ $t('map.geocoding.label.found') }}
     </p>
 
-    <p style="page-break-before: always">
+    <p style="page-break-before: always; margin-bottom: 1.1rem">
       <img src= '@/views/assets/images/iconGeocoding.png'
             name="Image2" align="left" width="24" height="36"
             border="0" class="img-style"/>
       &ensp; {{ $t('map.geocoding.label.geocoded') }}
     </p>
 
-    <p style="page-break-before: always">
+    <p style="page-break-before: always; margin-bottom: 1.1rem">
       <img src= '@/views/assets/images/iconExtrapolate.png'
             name="Image3" align="left" width="24" height="36" 
             border="0" class="img-style"/>
@@ -67,7 +67,6 @@
     background: rgba(255, 255, 255, 0.8)
     z-index: 99
 
-
     .header
       width: 100%
       border-bottom: 1px solid #f15a29
@@ -94,5 +93,5 @@
   .img-style
     position: relative
     top: -10px
-
+    
 </style>
