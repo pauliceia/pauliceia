@@ -13,8 +13,11 @@
           <el-input v-model="filterText" :placeholder="$t('map.addLayer.input')"></el-input>
           <br>
 
-          <article v-for="layer in filteredLayers" :key="layer.id">
-            <div :class="layer._is_activated ? 'box-layer-info activated' : 'box-layer-info disabled'">
+          <!-- `:set` is just a placeholder to create a local variable -->
+          <!-- isLayerActivated - check if this layer is inside the cache -->
+          <article v-for="layer in filteredLayers" :key="layer.id"
+                  :set="isLayerActivated = layers.includes(layer.id)">
+            <div :class="isLayerActivated ? 'box-layer-info activated' : 'box-layer-info disabled'">
               <div class="infos">
                 <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.name }}</p>
                 <p>
@@ -32,9 +35,11 @@
               </div>
 
               <div class="btns">
-                <el-button :type="layer._is_activated ? 'danger' : 'success'" round
-                           @click="layer._is_activated ? disabled(layer) : active(layer)">
-                  {{ layer._is_activated ? $t('map.addLayer.btns.disable') : $t('map.addLayer.btns.active') }}
+                <el-button v-if="isLayerActivated" type='danger' @click="disabled(layer)" round>
+                  {{ $t('map.addLayer.btns.disable') }}
+                </el-button>
+                <el-button v-else type='success' @click="active(layer)" round>
+                  {{ $t('map.addLayer.btns.active') }}
                 </el-button>
               </div>
             </div>
@@ -113,8 +118,6 @@ export default {
 
       // all available layers
       this.allLayers = result.data.features.map(layer => {
-        // create a flag to change component colors based on it
-        layer.properties._is_activated = false
         return layer.properties
       })
 
@@ -147,7 +150,6 @@ export default {
           // remove the layer from the lists
           overlayGroup.getLayers().remove(vectorLayer)
           this.$store.dispatch('map/setRemoveLayers', layer.id)
-          layer._is_activated = false
           break
         }
       }
@@ -177,14 +179,12 @@ export default {
           // add the layer in the lists
           overlayGroup.getLayers().push(vectorLayer)
           this.$store.dispatch('map/setNewLayers', layer.id)
-          layer._is_activated = true
 
           this.__closeFullLoading()
         } else throw {}
 
       } catch (error) {
         this.__closeFullLoading()
-        layer._is_activated = false
 
         this.$alert("Por favor, confira se a camada foi importada corretamente em nosso sistema ou entre em contato com nosso suporte!", "Erro ao importar a camada", {
           dangerouslyUseHTMLString: true,
