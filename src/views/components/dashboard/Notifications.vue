@@ -424,7 +424,7 @@ export default {
       this.__openFullLoading()
 
       Api().delete(
-        '/api/notification/?notification_id=' + notification.id,
+        '/api/notification/?id=' + notification.id,
       ).then(() => {
         this.$message.success("The notification was removed successfully!")
       }).catch(cause => {

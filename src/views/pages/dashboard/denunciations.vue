@@ -216,7 +216,7 @@ export default {
     deleteComment(comment){
       this.__openFullLoading()
 
-      Api().delete('/api/notification/?notification_id=' + comment.id).then(() => {
+      Api().delete('/api/notification/?id=' + comment.id).then(() => {
         this.cleanProperties()
       }).catch(cause => {
         this.__showErrorMessages(cause)
@@ -290,7 +290,7 @@ export default {
     removeDenunciation(denunciation){
       this.__openFullLoading()
 
-      Api().delete('/api/notification/?notification_id=' + denunciation.id).then(() => {
+      Api().delete('/api/notification/?id=' + denunciation.id).then(() => {
         // remove item from the list manually, because component does not render automatically
         this.denunciations = this.denunciations.filter(d => d.id !== denunciation.id)
       }).catch(cause => {

@@ -187,7 +187,7 @@ export default {
       this.__openFullLoading()
 
       Api().delete(
-        '/api/notification/?notification_id=' + comment.id,
+        '/api/notification/?id=' + comment.id,
       ).then(() => {
         this.$message.success("The comment was removed successfully!")
       }).catch(cause => {
