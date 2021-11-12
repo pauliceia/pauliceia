@@ -1,52 +1,49 @@
 <template>
     <section class="box" v-show="boxGeocoding">
-
         <header class="header">
-            <h1>{{ $t('map.geocoding.form.search') }}:
+          <h1>{{ $t('map.geocoding.form.search') }}:
 
-            <el-popover class="info" placement="top-start" width="450"
-                        trigger="hover"
-                        type="primary">
-                <div v-html="$t('map.geocoding.popupInfo.search')"/>
-                <button type="button" slot="reference" class="btn btn-outline-primary info">
-                    <md-icon class="icon">error_outline</md-icon>
-                </button>
-            </el-popover></h1>
-
-            <button class="btn" @click="closeBox()">
-                <md-icon>close</md-icon>
+          <el-popover class="info" placement="top-start" width="450"
+                      trigger="hover" type="primary">
+            <div v-html="$t('map.geocoding.popupInfo.search')"/>
+            <button type="button" slot="reference" class="btn btn-outline-primary info">
+              <md-icon class="icon">error_outline</md-icon>
             </button>
+          </el-popover></h1>
+
+          <button class="btn" @click="closeBox()">
+            <md-icon>close</md-icon>
+          </button>
         </header>
 
         <form @submit.prevent="search">
-            <div class="input-group">
-              <el-autocomplete
-                class="inline-input"
-                style="flex: 1 1 auto"
-                v-model="inputSearch"
-                ref="geocoding_search"
-                :fetch-suggestions="querySearch"
-                :placeholder="$t('map.geocoding.placeholder')"
-                :trigger-on-focus="false"
-                @select="handleSelect"
-                >
-                <template slot-scope="{ item }">
-                  <div class="value">{{ item }}</div>
-                </template>
-              </el-autocomplete>
+          <div class="input-group">
+            <el-autocomplete
+              class="inline-input"
+              style="flex: 1 1 auto"
+              v-model="inputSearch"
+              ref="geocoding_search"
+              :fetch-suggestions="querySearch"
+              :placeholder="$t('map.geocoding.placeholder')"
+              :trigger-on-focus="false"
+              @select="handleSelect"
+              >
+              <template slot-scope="{ item }">
+                <div class="value">{{ item }}</div>
+              </template>
+            </el-autocomplete>
 
-              <div class="input-group-append">
-                <button class="btn btn-search">
-                  {{ $t('map.geocoding.btnText') }}
-                </button>
-              </div>
-              <div class="input-group-append">
-                <button type="button" class="btn" @click="setting()">
-                  <md-icon>settings</md-icon>
-                </button>
-              </div>
-
+            <div class="input-group-append">
+              <button class="btn btn-search">
+                {{ $t('map.geocoding.btnText') }}
+              </button>
             </div>
+            <div class="input-group-append">
+              <button type="button" class="btn" @click="setting()">
+                <md-icon>settings</md-icon>
+              </button>
+            </div>
+          </div>
         </form>
 
         <div class="box-multigeocoding" v-show="multigeocoding">
@@ -105,22 +102,18 @@
 </template>
 
 <script>
-import ApiMap from '@/middleware/Map'
-import { mapState } from 'vuex'
 import GeoJSON from 'geojson'
+import { mapState } from 'vuex'
 import shpwrite from 'shp-write'
 
-import {
-    placeStyleSearch1,
-    placeStyleSearch0,
-    placeStyleSearch3
-} from '@/views/assets/js/map/Styles'
-
+import ApiMap from '@/middleware/Map'
 import { CSV2JSON } from '@/views/assets/js/map/multiplegeocode'
-
 import {
-    overlayGroupGeolocation
-} from '@/views/assets/js/map/overlayGroup'
+  placeStyleSearch1,
+  placeStyleSearch0,
+  placeStyleSearch3
+} from '@/views/assets/js/map/Styles'
+import { overlayGroupGeolocation } from '@/views/assets/js/map/overlayGroup'
 
 export default {
   data() {
@@ -162,15 +155,15 @@ export default {
   },
   methods: {
     setting(){
-        this.multigeocoding = !this.multigeocoding
+      this.multigeocoding = !this.multigeocoding
     },
     querySearch(queryString, cb) {
-        let links = this.placesList
-        let results = queryString ? links.filter( link => link.toLowerCase().indexOf(queryString.toLowerCase()) >= 0 ) : links
-        cb(results)
+      let links = this.placesList
+      let results = queryString ? links.filter( link => link.toLowerCase().indexOf(queryString.toLowerCase()) >= 0 ) : links
+      cb(results)
     },
     handleSelect(item) {
-        this.inputSearch = item
+      this.inputSearch = item
     },
     handleFileChange(event) {
       this._openFullScreen()
@@ -186,7 +179,7 @@ export default {
 
       reader.onload = async file => {
         let text = reader.result;
-        let node = document.getElementById('output');
+        // let node = document.getElementById('output');
         let csv = text.replace('\r','');
         let headers = csv.split('\n')[0].split(',')
 
@@ -205,10 +198,6 @@ export default {
       reader.readAsText(event.target.files[0]);
     },
     async visualizar() {
-      // console.log('\n visualizar()')
-      // console.log('this.headers: ', this.headers)
-      // console.log('this.csvjson: ', this.csvjson)
-
       this._openFullScreen()
 
       let json = JSON.parse(this.csvjson);
@@ -220,13 +209,13 @@ export default {
       for (let i = 0; i < json.length; i++) {
         let address = json[i][this.street].toLowerCase()+", "+json[i][this.numberAddress]+", "+json[i][this.year];
 
-        console.log(address)
+        // console.log(address)
 
         try {
           let response = await ApiMap.geolocationOne(address);
 
           if(response.data[1][0].name != "Point not found"){
-            let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'"'+"}]");
+            // let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'"'+"}]");
             let geomPoint = response.data[1][0].geom.substr(response.data[1][0].geom.indexOf("(")+1);
             geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
 
@@ -234,7 +223,7 @@ export default {
             let y = parseFloat(geomPoint.split(' ')[1]);
             let geom = ('{'+'"geom":'+'['+x +','+y+'], "confidence":'+response.data[1][0].confidence+'}');
 
-            console.log(geom)
+            // console.log(geom)
 
             let jsonAddress = JSON.parse(geom);
             let jsonSlice = json[i];
@@ -324,7 +313,7 @@ export default {
         if (regex.test(search)) {
           const result = await ApiMap.geolocationOne(search)
 
-          if(result.data[1][0].geom == undefined) {
+          if (result.data[1][0].geom == undefined) {
             let text = "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" + search + ")"
 
             this.$alert(text, 'Erro', {
@@ -335,7 +324,7 @@ export default {
             this.loading.close()
           }
 
-          if(result.data[1][0].geom != undefined) {
+          if (result.data[1][0].geom != undefined) {
             let myStyle = placeStyleSearch1
             //console.log(result.data[1][0].confidence)
             if (result.data[1][0].confidence == 1){
@@ -427,96 +416,95 @@ export default {
 </script>
 
 <style lang="sass">
-    .box
-        position: absolute
-        top: 20px
-        right: 60px
-        border-radius: 10px
-        overflow: auto
-        padding: 10px
-        background: rgba(#FFF, 0.7)
-        z-index: 1
-        max-width: 40%
-        min-width: 40%
+.box
+    position: absolute
+    top: 20px
+    right: 60px
+    border-radius: 10px
+    overflow: auto
+    padding: 10px
+    background: rgba(#FFF, 0.7)
+    z-index: 1
+    max-width: 40%
+    min-width: 40%
 
-        .header
-            width: 100%
-            h1
-                padding: 5px 5px 1px 5px
-                font-size: 1.3em
-                font-weight: 400
-                font-family: 'Roboto' !important
-                display: inline-block
-                margin: 0 !important
+    .header
+        width: 100%
+        h1
+            padding: 5px 5px 1px 5px
+            font-size: 1.3em
+            font-weight: 400
+            font-family: 'Roboto' !important
+            display: inline-block
+            margin: 0 !important
 
-            .info
-                top: -7px !important
-                border: none
-                position: relative
-                border-radius: 30px
-            .info:hover
-                background: #008ae6 !important
+        .info
+            top: -7px !important
+            border: none
+            position: relative
+            border-radius: 30px
+        .info:hover
+            background: #008ae6 !important
 
-            .btn
-                margin: 3px !important
-                padding: 2px !important
-                background: none
-                border: none
-                float: right
-                display: inline-block
-            .btn:hover
-                background: rgba(#000, 0.1)
+        .btn
+            margin: 3px !important
+            padding: 2px !important
+            background: none
+            border: none
+            float: right
+            display: inline-block
+        .btn:hover
+            background: rgba(#000, 0.1)
 
-        .btn-search
-            background: #f15a29
-            border-bottom: 1px solid #f15a29
-            color: #FFF
+    .btn-search
+        background: #f15a29
+        border-bottom: 1px solid #f15a29
+        color: #FFF
 
-        .btn-search:hover
-            background: rgba(#f15a29, 0.7)
+    .btn-search:hover
+        background: rgba(#f15a29, 0.7)
 
-        .btn-download
-            background: #f15a29
-            border-bottom: 1px solid #f15a29
-            color: #FFF
-        .btn-download:hover
-            background: rgba(#f15a29, 0.7)
+    .btn-download
+        background: #f15a29
+        border-bottom: 1px solid #f15a29
+        color: #FFF
+    .btn-download:hover
+        background: rgba(#f15a29, 0.7)
 
+    .box-multigeocoding
+        width: 100%
+        background: #FFF
+        padding: 25px
+        border: 1px solid #CCC
+        border-top: none
+        .file-select
+            padding: 10px 0px 0px 0px
+        h1
+            padding: 5px 5px 1px 0px
+            font-size: 1.3em
+            font-weight: 400
+            font-family: 'Roboto' !important
+            display: inline-block
+            margin: 0 !important
 
-        .box-multigeocoding
-            width: 100%
-            background: #FFF
-            padding: 25px
-            border: 1px solid #CCC
-            border-top: none
-            .file-select
-                padding: 10px 0px 0px 0px
-            h1
-                padding: 5px 5px 1px 0px
-                font-size: 1.3em
-                font-weight: 400
-                font-family: 'Roboto' !important
-                display: inline-block
-                margin: 0 !important
+        .info
+            top: -7px !important
+            border: none
+            margin: 0
+            padding: 0
+            border-radius: 30px
+        .info:hover
+            background: #008ae6
 
-            .info
-                top: -7px !important
-                border: none
-                margin: 0
-                padding: 0
-                border-radius: 30px
-            .info:hover
-                background: #008ae6
+        .btn
+        .btn:hover
 
-            .btn
-            .btn:hover
+        .headers-form
+            .inputs
+                display: flex
+                margin-bottom: 20px
 
-            .headers-form
-                .inputs
-                    display: flex
-                    margin-bottom: 20px
-
-    input:focus
-        border-color: rgba(#58595b, 0.2) !important
-        box-shadow: 0px 0px 10px rgba(#58595b, 0.2) !important
+input:focus
+    border-color: rgba(#58595b, 0.2) !important
+    box-shadow: 0px 0px 10px rgba(#58595b, 0.2) !important
 </style>
