@@ -111,7 +111,7 @@ export default {
       "title1": "O que é?",
       "title2": "Como?",
       "title3": "Quando ficará pronta?",
-      "title4": "Como citar?  ",
+      "title4": "Como citar uma camada?",
       "column1": "A Pauliceia 2.0 é uma plataforma que tem o objetivo de fazer o mapeamento colaborativo da história de São Paulo no período de 1870 a 1940.",
       "column2": `Por meio da interface da plataforma, pesquisadores e estudiosos da cidade podem alimentar os seus dados, desde que sejam espacialmente localizáveis.<br>
           Dessa forma, uma base cartográfica histórica da cidade será enriquecida a cada alimentação, tornando esses dados também disponíveis a todos.<br>

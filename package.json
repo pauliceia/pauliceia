@@ -9,14 +9,14 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.27.2",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.0.0",
     "bootstrap-tree-view": "^1.8.0",
     "element-ui": "^2.3.9",
     "es6-promise": "^4.2.4",
     "geojson": "^0.5.0",
-    "jquery": "^3.2.1",
+    "jquery": "^3.6.0",
     "jssha": "^2.3.1",
     "nouislider": "^11.0.3",
     "openlayers": "^4.4.2",
@@ -65,7 +65,7 @@
     "rimraf": "^2.6.0",
     "sass-loader": "^7.0.1",
     "semver": "^5.3.0",
-    "shelljs": "^0.7.6",
+    "shelljs": "^0.8.5",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^1.1.1",
     "vue-loader": "^13.3.0",
@@ -73,6 +73,7 @@
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^2.11.5",
     "webpack-merge": "^4.1.0"
   },
