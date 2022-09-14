@@ -29,10 +29,9 @@
         <br>
       </div>
 
-      <div class="nofitication">
-        <div v-for="n in notifG">
+      <div class="notification">
+        <div v-for="(n, index) in notifG" :key="index">
           <div class="notification-box2">
-
             <div style="display: flex; align-items: center;">
               <div class="photo">B</div>
               <div class="credentials">
@@ -49,7 +48,7 @@
               <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)" title="Denunciar" v-if=false>
                 <md-icon>report</md-icon>
               </button>
-              <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="user.user_id === n.user_id_creator || user.is_the_admin" title="Excluir">
+              <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="(user !== null) && (user.user_id === n.user_id_creator || user.is_the_admin)" title="Excluir">
                 <md-icon>clear</md-icon>
               </button>
             </p>

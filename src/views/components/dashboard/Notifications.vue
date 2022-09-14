@@ -264,7 +264,6 @@
     mounted() {
       if (this.user !== null)
         this.userId = this.user.user_id
-
       this.updateNotif()
     },
     methods: {
@@ -380,30 +379,13 @@
           //console.log(error)
         }
 
-        Api().get('/api/notification/?user_id_creator=' + vm.user.user_id).then(function (userNotifications) {
-          userNotifications.data.features.forEach(userNotification => {
-            Api().get('/api/notification/?notification_id_parent=' + userNotification.properties.notification_id).then(function (notifications) {
-              notifications.data.features.forEach(notification => {
-                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  if (notification.properties.layer_id === null) {
-                    vm.notifP.push(
-                      {
-                        'description': notification.properties.description,
-                        'name': user.data.features[0].properties.name,
-                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                        'date': notification.properties.created_at,
-                        'type': 'message',
-                        'notification_id': notification.properties.notification_id,
-                        'user_id_creator': notification.properties.user_id_creator,
-                        'is_denunciation': notification.properties.is_denunciation,
-                        'keyword_id': notification.properties.keyword_id,
-                        'layer_id': notification.properties.layer_id,
-                        'notification_id_parent': notification.properties.notification_id_parent,
-                        'layer_name': null
-                      })
-                    vm.orderNotification(50)
-                  } else {
-                    Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
+        if(vm.user !== null){
+          Api().get('/api/notification/?user_id_creator=' + vm.user.user_id).then(function (userNotifications) {
+            userNotifications.data.features.forEach(userNotification => {
+              Api().get('/api/notification/?notification_id_parent=' + userNotification.properties.notification_id).then(function (notifications) {
+                notifications.data.features.forEach(notification => {
+                  Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
+                    if (notification.properties.layer_id === null) {
                       vm.notifP.push(
                         {
                           'description': notification.properties.description,
@@ -417,75 +399,93 @@
                           'keyword_id': notification.properties.keyword_id,
                           'layer_id': notification.properties.layer_id,
                           'notification_id_parent': notification.properties.notification_id_parent,
+                          'layer_name': null
+                        })
+                      vm.orderNotification(50)
+                    } else {
+                      Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
+                        vm.notifP.push(
+                          {
+                            'description': notification.properties.description,
+                            'name': user.data.features[0].properties.name,
+                            'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
+                            'date': notification.properties.created_at,
+                            'type': 'message',
+                            'notification_id': notification.properties.notification_id,
+                            'user_id_creator': notification.properties.user_id_creator,
+                            'is_denunciation': notification.properties.is_denunciation,
+                            'keyword_id': notification.properties.keyword_id,
+                            'layer_id': notification.properties.layer_id,
+                            'notification_id_parent': notification.properties.notification_id_parent,
+                            'layer_name': layer.data.features[0].properties.name
+                          })
+                        vm.orderNotification(50)
+                      })
+                    }
+                  })
+                })
+              })
+            })
+          })
+
+          Api().get('/api/user_layer/?user_id=' + vm.user.user_id).then(function (userLayers) {
+            userLayers.data.features.forEach(userLayer => {
+              Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
+                notifications.data.features.forEach(notification => {
+                  Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
+                    Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
+                      vm.notifP.push(
+                        {
+                          'description': notification.properties.description,
+                          'name': user.data.features[0].properties.name,
+                          'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
+                          'date': notification.properties.created_at,
+                          'type': 'myLayer',
+                          'notification_id': notification.properties.notification_id,
+                          'user_id_creator': notification.properties.user_id_creator,
+                          'is_denunciation': notification.properties.is_denunciation,
+                          'keyword_id': notification.properties.keyword_id,
+                          'layer_id': notification.properties.layer_id,
+                          'notification_id_parent': notification.properties.notification_id_parent,
                           'layer_name': layer.data.features[0].properties.name
                         })
                       vm.orderNotification(50)
                     })
-                  }
-                })
-              })
-            })
-          })
-        })
-
-        Api().get('/api/user_layer/?user_id=' + vm.user.user_id).then(function (userLayers) {
-          userLayers.data.features.forEach(userLayer => {
-            Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
-              notifications.data.features.forEach(notification => {
-                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
-                    vm.notifP.push(
-                      {
-                        'description': notification.properties.description,
-                        'name': user.data.features[0].properties.name,
-                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                        'date': notification.properties.created_at,
-                        'type': 'myLayer',
-                        'notification_id': notification.properties.notification_id,
-                        'user_id_creator': notification.properties.user_id_creator,
-                        'is_denunciation': notification.properties.is_denunciation,
-                        'keyword_id': notification.properties.keyword_id,
-                        'layer_id': notification.properties.layer_id,
-                        'notification_id_parent': notification.properties.notification_id_parent,
-                        'layer_name': layer.data.features[0].properties.name
-                      })
-                    vm.orderNotification(50)
                   })
                 })
               })
             })
           })
-        })
 
-        Api().get('/api/layer_follower/?user_id=' + vm.user.user_id).then(function (userLayers) {
-          userLayers.data.features.forEach(userLayer => {
-            Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
-              notifications.data.features.forEach(notification => {
-                Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
-                  Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
-                    vm.notifF.push(
-                      {
-                        'description': notification.properties.description,
-                        'name': user.data.features[0].properties.name,
-                        'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
-                        'date': notification.properties.created_at,
-                        'type': 'general',
-                        'notification_id': notification.properties.notification_id,
-                        'user_id_creator': notification.properties.user_id_creator,
-                        'is_denunciation': notification.properties.is_denunciation,
-                        'keyword_id': notification.properties.keyword_id,
-                        'layer_id': notification.properties.layer_id,
-                        'notification_id_parent': notification.properties.notification_id_parent,
-                        'layer_name': layer.data.features[0].properties.name
-                      })
-                    vm.orderNotification(50)
+          Api().get('/api/layer_follower/?user_id=' + vm.user.user_id).then(function (userLayers) {
+            userLayers.data.features.forEach(userLayer => {
+              Api().get('/api/notification/?layer_id=' + userLayer.properties.layer_id).then(function (notifications) {
+                notifications.data.features.forEach(notification => {
+                  Api().get('/api/user/?user_id=' + notification.properties.user_id_creator).then(function (user) {
+                    Api().get('/api/layer/?layer_id=' + notification.properties.layer_id).then(function (layer) {
+                      vm.notifF.push(
+                        {
+                          'description': notification.properties.description,
+                          'name': user.data.features[0].properties.name,
+                          'photo': user.data.features[0].properties.picture === '' ? ImgPerson : user.data.features[0].properties.picture,
+                          'date': notification.properties.created_at,
+                          'type': 'general',
+                          'notification_id': notification.properties.notification_id,
+                          'user_id_creator': notification.properties.user_id_creator,
+                          'is_denunciation': notification.properties.is_denunciation,
+                          'keyword_id': notification.properties.keyword_id,
+                          'layer_id': notification.properties.layer_id,
+                          'notification_id_parent': notification.properties.notification_id_parent,
+                          'layer_name': layer.data.features[0].properties.name
+                        })
+                      vm.orderNotification(50)
+                    })
                   })
                 })
               })
             })
           })
-        })
-
+        }
       }
     },
     components: {

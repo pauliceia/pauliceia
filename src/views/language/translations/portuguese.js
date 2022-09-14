@@ -277,13 +277,19 @@ export default {
             "title": "Editor"
         },
         "addLayer": {
-            "title": "Adicionar e remover camadas",
+            "title": "Ativar e desativar camadas",
             "input": "Pesquise por tema, camada ou autor:",
+            "search": "Para realizar pesquisas com mais de uma palavra-chave, utilize a vírgula (Pauliceia Admin, Cintia Almeida). Você também pode clicar nas palavras-chave para adicioná-las ou removê-las do campo de pesquisa.",
             "close": "Fechar",
-            "box": {
+            "table": {
                 "lbTitle": "TÍTULO",
+                "lbDescription": "DESCRIÇÃO",
                 "lbAuthors": "AUTORES",
-                "lbKeywods": "PALAVRAS-CHAVE"
+                "lbCreated_at": "CRIADO EM",
+                "lbKeywords": "PALAVRAS-CHAVE",
+                "day": "Dia: ",
+                "hour": "Hora: ",
+                "noData": "Sem Dados Disponíveis."
             },
             "btns": {
                 "active": "Ativar",
