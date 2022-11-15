@@ -162,7 +162,7 @@ export default {
   },
   async mounted(){
       try {
-          let response = await ApiMap.getPlacesList()
+          let response = await ApiMap.getAddresses()
           this.placesList = response.data
       } catch(_) {
           this.$alert('Serviço de GEOCODING indisponível, tente mais tarde ou comunique nosso suporte!', 'Erro Interno', {
@@ -234,16 +234,21 @@ export default {
         console.log(address)
 
         try {
-          let response = await ApiMap.geolocationOne(address);
+          const addressComponents = this.inputSearch.trim().split(',')
+          const street = addressComponents[0],
+                number = addressComponents[1],
+                year = addressComponents[2]
 
-          if(response.data[1][0].name != "Point not found"){
+          const response = await ApiMap.geolocationOne(street, number, year)
+
+          if(response.data.name != "Point not found"){
             let textAddress = ("[{"+'"address":'+'"'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'"'+"}]");
-            let geomPoint = response.data[1][0].geom.substr(response.data[1][0].geom.indexOf("(")+1);
+            let geomPoint = response.data.geom.substr(response.data.geom.indexOf("(")+1);
             geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
 
             let x = parseFloat(geomPoint.split(' ')[0]);
             let y = parseFloat(geomPoint.split(' ')[1]);
-            let geom = ('{'+'"geom":'+'['+x +','+y+'], "confidence":'+response.data[1][0].confidence+'}');
+            let geom = ('{'+'"geom":'+'['+x +','+y+'], "confidence":'+response.data.confidence+'}');
 
             console.log(geom)
 
@@ -253,11 +258,11 @@ export default {
 
             jsonResults.push(JSON.stringify(results));
 
-            if (response.data[1][0].confidence == 1){
+            if (response.data.confidence == 1){
               let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" foi Encontrado. \n'
               CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
 
-            } else if (response.data[1][0].confidence == 0){
+            } else if (response.data.confidence == 0){
               let currentStatus = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" foi Extrapolado espacialmente. \n'
               CsvTotalStatus = CsvTotalStatus.concat(currentStatus);
 
@@ -327,91 +332,74 @@ export default {
       this.$store.dispatch('map/setBoxGeocoding', false)
     },
     async search () {
-      try {
-        //this._openFullScreen()
-        let regex = new RegExp(/\s*,( )*\d{4}/);
-        let search = this.inputSearch.replace(/( )+/g, ' ');
+      let regex = new RegExp(/\s*,( )*\d{4}/);
 
-        if (regex.test(search)) {
-          const result = await ApiMap.geolocationOne(search)
+      if (regex.test(this.inputSearch)) {
+        const addressComponents = this.inputSearch.trim().split(',')
+        const street = addressComponents[0],
+              number = addressComponents[1],
+              year = addressComponents[2]
 
-          if(result.data[1][0].geom == undefined) {
-            let text = "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" + search + ")"
+        ApiMap.geolocationOne(street, number, year)
+          .then( result => {
+            if(result.data.geom != undefined) {
+              let myStyle = placeStyleSearch1
+
+              if (result.data.confidence == 1){
+                  myStyle = placeStyleSearch1
+              } else {
+                if (result.data.confidence == 0){
+                  myStyle = placeStyleSearch0
+                } else {
+                  myStyle = placeStyleSearch3
+                }
+              }
+
+              this.$store.dispatch('map/setBoxSubtitle', true)
+
+              let coordPoint = result.data.geom.substring(6).replace(")", "").split(" ")
+              let feature = new ol.Feature(new ol.geom.Point(coordPoint))
+              let layerSearch = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [feature]
+                }),
+                name: 'placesSearch',
+                style: myStyle,
+                zIndex: 999
+              });
+              overlayGroupGeolocation.getLayers().clear()
+              overlayGroupGeolocation.getLayers().push(
+                  layerSearch
+              )
+              let extent = ol.extent.createEmpty();
+              ol.extent.extend(extent, feature.getGeometry().getExtent());
+              this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
+            }
+          })
+          .catch( error => {
+            let text
+
+            if(error.response.status === 404) {
+              text = "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" + this.inputSearch + ")"
+            } else {
+              text = "Erro interno. Tente novamente mais tarde."
+            }
 
             this.$alert(text, 'Erro', {
               dangerouslyUseHTMLString: true,
               confirmButtonText: 'OK',
               type: 'error'
             });
-            this.loading.close()
-          }
 
-          if(result.data[1][0].geom != undefined) {
-            let myStyle = placeStyleSearch1
-            //console.log(result.data[1][0].confidence)
-            if (result.data[1][0].confidence == 1){
-                //console.log('1')
-                myStyle = placeStyleSearch1
-            } else {
-              if (result.data[1][0].confidence == 0){
-                //console.log('0')
-                myStyle = placeStyleSearch0
-              } else {
-                //console.log('0-1')
-                myStyle = placeStyleSearch3
-                //console.log(myStyle)
-              }
-            }
-
-            this.$store.dispatch('map/setBoxSubtitle', true)
-
-            let coordPoint = result.data[1][0].geom.substring(6).replace(")", "").split(" ")
-            let feature = new ol.Feature(new ol.geom.Point(coordPoint))
-            let layerSearch = new ol.layer.Vector({
-              source: new ol.source.Vector({
-                  features: [feature]
-              }),
-              name: 'placesSearch',
-              style: myStyle,
-              zIndex: 999
-            });
-            overlayGroupGeolocation.getLayers().clear()
-            overlayGroupGeolocation.getLayers().push(
-                layerSearch
-            )
-            let extent = ol.extent.createEmpty();
-            ol.extent.extend(extent, feature.getGeometry().getExtent());
-            this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
-            //this.loading.close()
-          }
-        } else {
-          this.$alert('<strong>Pesquise por:</strong> rua, número, ano (0000)', 'Formato inválido', {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: 'OK',
-            type: 'warning'
-          });
-          this.loading.close()
-        }
-      } catch (error) {
-        if(error.response != undefined && error.response.data != undefined && error.response.data[1][0].alertMsg != undefined) {
-
-          this.$alert(error.response.data[1][0].alertMsg, 'Erro', {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: 'OK',
-            type: 'error'
-          });
-          this.loading.close()
-
-        } else {
-          let text = "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" + search + ")"
-
-          this.$alert(text, 'Erro', {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: 'OK',
-            type: 'error'
-          });
-          this.loading.close()
-        }
+            if(this.loading) this.loading.close();
+          })
+      } else {
+        this.$alert('<strong>Pesquise por:</strong> rua, número, ano (0000)', 'Formato inválido', {
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: 'OK',
+          type: 'warning'
+        });
+        if(this.loading) this.loading.close()
       }
     },
     _openFullScreen() {

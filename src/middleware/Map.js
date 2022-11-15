@@ -2,8 +2,10 @@ import ApiGeocoding from '@/middleware/ApiGeocoding'
 import ApiVGI from '@/middleware/ApiVGI'
 
 export default {
-  geolocationOne (address) {
-    return ApiGeocoding().get(`/geolocation/${address}/json`)
+  geolocationOne (street, number, year) {
+    return ApiGeocoding().get(`/geolocation`,{
+      params: {street, number, year}
+    })
   },
 
   geolocationMultiple (address) {
@@ -41,7 +43,7 @@ export default {
     else return ApiVGI().get('/api/user_layer/')
   },
 
-  getPlacesList() {
-    return ApiGeocoding().get('/placeslist')
+  getAddresses() {
+    return ApiGeocoding().get('/addresses')
   }
 }
