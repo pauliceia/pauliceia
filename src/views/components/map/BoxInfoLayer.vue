@@ -392,7 +392,7 @@ export default {
         },
         async _getInfos() {
             let layers = await Map.getLayers('layer_id='+this.id)
-            this.layer = layers.data.features[0].properties
+            this.layer = layers.data[0]
 
             this.infos.name = this.layer.name
             this.infos.description = this.layer.description

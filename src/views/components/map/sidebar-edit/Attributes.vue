@@ -37,7 +37,7 @@ export default {
         async attr(val) {
             if(val != null){
                 let layerInfo = await Map.getLayers('layer_id=' + this.layerId)
-                let f_name = layerInfo.data.features[0].properties.f_table_name
+                let f_name = layerInfo.data[0].f_table_name
 
                 let attrLayer = await Map.getAttrLayer('f_table_name=' + f_name)
                 let attr = attrLayer.data.features[0].properties
@@ -67,7 +67,7 @@ export default {
 
                     let coordinates = ((this.featuresWKT.split('(')[1]).split(')')[0]).split(' ')
                     let newFeature = {
-                        'f_table_name': layerInfo.data.features[0].properties.f_table_name,
+                        'f_table_name': layerInfo.data[0].f_table_name,
                         'properties': { ...propsObj, id: -1, changeset_id: this.changesetId, version: 1 },
                         'geometry': {'coordinates': [[parseFloat(coordinates[0]), parseFloat(coordinates[1])]], 'type': 'MultiPoint'},
                         'type': 'Feature'

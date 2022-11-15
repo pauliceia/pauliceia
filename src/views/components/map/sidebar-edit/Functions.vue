@@ -64,7 +64,7 @@ export default {
     methods: {
         async _getLayer(id){
             let response = await Map.getLayers('layer_id='+id)
-            let properties = response.data.features[0].properties
+            let properties = response.data[0]
             this.layer.name = properties.name.toUpperCase()
 
             let infoFeatureTable = await Dashboard.getFeatureTable(properties.f_table_name)

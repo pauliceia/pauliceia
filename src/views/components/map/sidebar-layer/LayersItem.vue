@@ -92,8 +92,8 @@ export default {
 
         if(this.id != undefined) {
             let layers = await Map.getLayers('layer_id=' + this.id)
-            this.nameLayer = layers.data.features[0].properties.name
-            this.title = layers.data.features[0].properties.f_table_name
+            this.nameLayer = layers.data[0].name
+            this.title = layers.data[0].f_table_name
         }
 
         this.getColor()

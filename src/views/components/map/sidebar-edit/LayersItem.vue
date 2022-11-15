@@ -8,9 +8,9 @@
             width="200"
             trigger="click">
             <el-radio slot="reference" disabled class="radioDisabled" border>{{ name }}</el-radio>
-        </el-popover>   
-        
-        <el-radio v-else :label="id" class="radio" border>{{ name }} 
+        </el-popover>
+
+        <el-radio v-else :label="id" class="radio" border>{{ name }}
             <!-- <button style="background: green; color: #margin-left: 5px" round>FINALIZAR</button> -->
             <el-button v-if="layerId == id" type="success" size="mini" style="margin-top: -10px; margin-left: 1px" @click.native="finishEdit()">FINALIZAR</el-button>
         </el-radio>
@@ -48,7 +48,7 @@ export default {
         this._getStatus()
 
         let response = await Map.getLayers('layer_id='+this.id)
-        this.name = response.data.features[0].properties.name.toUpperCase()
+        this.name = response.data[0].name.toUpperCase()
     },
 
     methods: {
@@ -61,7 +61,7 @@ export default {
         }
     }
 }
-    
+
 </script>
 <style lang="sass" scoped>
 .box-item

@@ -17,26 +17,26 @@
           <br/>
 
           <article v-for="layer in listLayers" :key="layer.id">
-            <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
+            <div :class="layers.some(id => id == layer.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
               <div class="infos">
-                <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.properties.name }}</p>
+                <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.name }}</p>
                 <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
-                  <span v-for="name in layer.properties.authors" :key="name">
+                  <span v-for="name in layer.authors" :key="name">
                     {{ name }};
                   </span>
                 </p>
                 <p><strong>{{ $t('map.addLayer.box.lbKeywods') }}:</strong>
-                  <el-tag v-for="name in layer.properties.keyword" :key="name" style="margin-left: 5px">
+                  <el-tag v-for="name in layer.keyword" :key="name" style="margin-left: 5px">
                     {{ name }}
                   </el-tag>
                 </p>
               </div>
 
               <div class="btns">
-                <el-button :type="layers.some(id => id == layer.properties.layer_id) ? 'danger' : 'success'"
-                              round @click="layers.some(id => id == layer.properties.layer_id) ? disabled(layer) : active(layer)"
+                <el-button :type="layers.some(id => id == layer.layer_id) ? 'danger' : 'success'"
+                              round @click="layers.some(id => id == layer.layer_id) ? disabled(layer) : active(layer)"
                               :disabled="btnDisabled" >
-                  {{ layers.some(id => id == layer.properties.layer_id) ? $t('map.addLayer.btns.disable') : $t('map.addLayer.btns.active') }}
+                  {{ layers.some(id => id == layer.layer_id) ? $t('map.addLayer.btns.disable') : $t('map.addLayer.btns.active') }}
                 </el-button>
               </div>
             </div>
@@ -69,9 +69,9 @@ export default {
           this.listLayers = this.allLayers
         } else {
           this.listLayers = this.allLayers.filter(layer => {
-            if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
+            if (layer.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                layer.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                layer.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
                   return layer
           })
         }
@@ -94,7 +94,7 @@ export default {
     async mounted() {
       try {
         let result = await Map.getLayers(null)
-        this.allLayers = result.data.features
+        this.allLayers = result.data
 
         result = await Map.getKeywords()
         this.allKeywords = result.data.features
@@ -107,24 +107,24 @@ export default {
 
         // add a list of authors and keywords names inside each layer
         this.allLayers.forEach(layer => {
-          layer.properties.authors = this.allAuthorsLayers.filter(
+          layer.authors = this.allAuthorsLayers.filter(
             // get all authors ids by layer_id
-            author => layer.properties.layer_id == author.properties.layer_id
+            author => layer.layer_id == author.properties.layer_id
           ).map(
             // for each author I've got I return his name instead of the id
             author => this.getAuthorById(author.properties.user_id)[0].properties.name
           )
 
           // rewrite `keyword` property to have a list of keywords names, instead of a list of ids
-          layer.properties.keyword = layer.properties.keyword.map(
+          layer.keyword = layer.keyword.map(
             id => this.getKeywordById(id)[0].properties.name
           )
         })
 
         // sort the layers by name
         this.allLayers.sort(
-          (a, b) => (a.properties.name > b.properties.name) ? 1 :
-                    ((b.properties.name > a.properties.name) ? -1 : 0)
+          (a, b) => (a.name > b.name) ? 1 :
+                    ((b.name > a.name) ? -1 : 0)
         )
 
         // initialize the list of layers with all available layers
@@ -149,9 +149,9 @@ export default {
           this.btnDisabled = true
 
         overlayGroup.getLayers().forEach(sublayer => {
-          if(sublayer != undefined && sublayer.get('id') != undefined && sublayer.get('id') == layer.properties.layer_id) {
+          if(sublayer != undefined && sublayer.get('id') != undefined && sublayer.get('id') == layer.layer_id) {
             overlayGroup.getLayers().remove(sublayer)
-            this.$store.dispatch('map/setRemoveLayers', layer.properties.layer_id)
+            this.$store.dispatch('map/setRemoveLayers', layer.layer_id)
             this.btnDisabled = false
             return true
           }
@@ -165,26 +165,26 @@ export default {
         const vm = this
 
         try {
-          let url = process.env.urlGeoserverPauliceia+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.properties.f_table_name+'&outputFormat=application%2Fjson';
+          let url = process.env.urlGeoserverPauliceia+'/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=pauliceia:'+layer.f_table_name+'&outputFormat=application%2Fjson';
 
           let response = await axios.get(url)
 
           if(response.data.type != undefined) {
             let vectorLayer = new ol.layer.Vector({
-              title: layer.properties.f_table_name,
+              title: layer.f_table_name,
               source: new ol.source.Vector({
                 url: url,
                 format: new ol.format.GeoJSON(),
                 crossOrigin: 'anonymous',
               }),
               zIndex: vm.layers.length+2,
-              id: layer.properties.layer_id
+              id: layer.layer_id
             })
 
             overlayGroup.getLayers().push(vectorLayer)
 
             setTimeout( _ => {
-              this.$store.dispatch('map/setNewLayers', layer.properties.layer_id)
+              this.$store.dispatch('map/setNewLayers', layer.layer_id)
               this.loading.close()
               this.btnDisabled = false
             }, 500)
