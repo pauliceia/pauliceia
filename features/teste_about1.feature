@@ -1,6 +1,6 @@
 # features/javascript_about_message.feature
 
-Feature: Testing JavaScript Message in the "About" Section
+Feature: Testing First Card Message in the "About" Section
 
   Scenario: Verify a message is shown in the "About" section
     Given I am on the JavaScript site home page
