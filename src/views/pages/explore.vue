@@ -10,6 +10,7 @@
       <p-boxinfolayer></p-boxinfolayer>
       <p-boxinfovector></p-boxinfovector>
       <p-boxnotifications></p-boxnotifications>
+      <p-download></p-download>
       <p-subtitle :subShow="true"></p-subtitle>
       <p-alert></p-alert>
     </ol-map>
@@ -28,6 +29,7 @@
   import BoxInfoNotifications from '@/views/components/map/BoxNotifications'
   import SubtitleMap from '@/views/components/map/SubtitleMap'
   import MapAlert from '@/views/components/map/mapAlert'
+  import BoxDownload from '@/views/components/map/BoxDownload.vue'
 
   import {
     pointStyle,
@@ -49,8 +51,9 @@
       'p-boxinfolayer': BoxInfoLayer,
       'p-boxinfovector': BoxInfoVector,
       'p-boxnotifications': BoxInfoNotifications,
-      "p-subtitle": SubtitleMap,
-      "p-alert": MapAlert
+      'p-subtitle': SubtitleMap,
+      'p-alert': MapAlert,
+      'p-download': BoxDownload,
     },
 
     created () {

@@ -7,6 +7,7 @@ const state = {
   boxGeocoding: true,
   boxInfoLayer: false,
   boxNotifications: false,
+  boxDownload: false,
   boxInfoVector: false,
   boxSubtitle: false,
   boxAlert: true,
@@ -21,6 +22,9 @@ const mutations = {
   setYears (state, years) {
     state.years.first = years.first
     state.years.last = years.last
+  },
+  setBoxDownload (state, value) {
+    state.boxDownload = value
   },
   setBoxGeocoding (state, value) {
     state.boxGeocoding = value
@@ -75,6 +79,9 @@ const actions = {
   },
   setBoxInfoVector({commit}, value) {
     commit('setBoxInfoVector', value)
+  },
+  setBoxDownload({commit}, value) {
+    commit('setBoxDownload', value)
   },
   setBoxNotifications({commit}, value) {
     commit('setBoxNotifications', value)

@@ -1,6 +1,5 @@
 <template>
     <section class="box" v-show="boxGeocoding">
-
         <header class="header">
             <h1>{{ $t('map.geocoding.form.search') }}:
 

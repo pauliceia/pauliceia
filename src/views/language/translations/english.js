@@ -310,6 +310,9 @@ export default {
             "btnBox": "By region",
             "btnClean": "Clean"
         },
+        "download": {
+            "action": "Download current map"
+        },
         "betaVersionModal": {
             "welcome": "Welcome to the `Pauliceia 2.0` platform",
             "betaVersion": "BETA VERSION (test phase)",
