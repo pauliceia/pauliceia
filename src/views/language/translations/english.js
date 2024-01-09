@@ -304,6 +304,8 @@ export default {
             "lbAuthors": "AUTHORS",
             "lbDate": "CREATION DATE",
             "lbReferences": "REFERENCES",
+            "lbTemporalData": "TEMPORAL DATA",
+            "lbUntil": "to",
             "lbNotifications": "Notifications"
         },
         "viewInfoVector": {
