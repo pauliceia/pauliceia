@@ -41,6 +41,10 @@ export default {
     else return ApiVGI().get('/api/user_layer/')
   },
 
+  getTemporalData() {
+    return ApiVGI().get('/api/temporal_columns/')
+  },
+
   getPlacesList() {
     return ApiGeocoding().get('/placeslist')
   }
