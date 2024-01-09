@@ -72,7 +72,10 @@ export default {
           this.listLayers = this.allLayers.filter(layer => {
             if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
                 layer.properties.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
+                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                layer.properties.start_date.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                layer.properties.end_date.toLowerCase().indexOf(val.toLowerCase()) >= 0
+                )
                   return layer
           })
         }
