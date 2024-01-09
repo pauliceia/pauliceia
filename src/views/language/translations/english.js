@@ -282,7 +282,9 @@ export default {
             "box": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
-                "lbKeywods": "KEYWORDS"
+                "lbKeywods": "KEYWORDS",
+                "lbTemporalData": "TEMPORAL DATA",
+                "lbUntil": "to",
             },
             "btns": {
                 "active": "Active",
