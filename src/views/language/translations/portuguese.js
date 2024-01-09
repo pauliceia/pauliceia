@@ -278,12 +278,14 @@ export default {
         },
         "addLayer": {
             "title": "Adicionar e remover camadas",
-            "input": "Pesquise por tema, camada ou autor:",
+            "input": "Pesquise por tema, camada, autor ou dados temporais:",
             "close": "Fechar",
             "box": {
                 "lbTitle": "TÍTULO",
                 "lbAuthors": "AUTORES",
-                "lbKeywods": "PALAVRAS-CHAVE"
+                "lbKeywods": "PALAVRAS-CHAVE",
+                "lbTemporalData": "DADOS TEMPORAIS",
+                "lbUntil": "até",
             },
             "btns": {
                 "active": "Ativar",
@@ -303,6 +305,8 @@ export default {
             "lbAuthors": "AUTORES",
             "lbDate": "DATA DE CRIAÇÃO",
             "lbReferences": "REFERÊNCIAS",
+            "lbTemporalData": "DADOS TEMPORAIS",
+            "lbUntil": "até",
             "lbNotifications": "Notificações"
         },
         "viewInfoVector": {

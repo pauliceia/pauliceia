@@ -20,6 +20,7 @@
             <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
               <div class="infos">
                 <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.properties.name }}</p>
+                <p><strong>{{ $t('map.addLayer.box.lbTemporalData') }}:</strong> {{ layer.properties.start_date }} {{ $t('map.addLayer.box.lbUntil') }} {{ layer.properties.end_date }}</p>
                 <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
                   <span v-for="name in layer.properties.authors" :key="name">
                     {{ name }};
@@ -71,7 +72,10 @@ export default {
           this.listLayers = this.allLayers.filter(layer => {
             if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
                 layer.properties.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
+                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                layer.properties.start_date.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                layer.properties.end_date.toLowerCase().indexOf(val.toLowerCase()) >= 0
+                )
                   return layer
           })
         }
@@ -88,7 +92,8 @@ export default {
         listLayers: [],
         allLayers: [],
         allKeywords: [],
-        allAuthorsLayers: []
+        allAuthorsLayers: [],
+        allTemporalData: [],
       }
     },
     async mounted() {
@@ -105,6 +110,9 @@ export default {
         result = await Map.getAuthorsLayers(null)
         this.allAuthorsLayers = result.data.features
 
+        result = await Map.getTemporalData();
+        this.allTemporalData = result.data.features;
+
         // add a list of authors and keywords names inside each layer
         this.allLayers.forEach(layer => {
           layer.properties.authors = this.allAuthorsLayers.filter(
@@ -119,6 +127,10 @@ export default {
           layer.properties.keyword = layer.properties.keyword.map(
             id => this.getKeywordById(id)[0].properties.name
           )
+
+          const temporalData = this.getTemporalDataByFTableName(layer.properties.f_table_name)[0].properties;
+          layer.properties.start_date = this._getDate(temporalData.start_date);
+          layer.properties.end_date = this._getDate(temporalData.end_date);
         })
 
         // sort the layers by name
@@ -143,6 +155,9 @@ export default {
       },
       getAuthorById(id){
         return this.allAuthors.filter(author => author.properties.user_id === id)
+      },
+      getTemporalDataByFTableName(f_table_name) {
+        return this.allTemporalData.filter(temporalData => temporalData.properties.f_table_name === f_table_name);
       },
       disabled(layer) {
         if(this.btnDisabled == false)
@@ -207,6 +222,26 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         })
+      },
+      _getDate(date) {
+        let dateParsed = date.split("-");
+        if (this.$i18n.locale() == "pt") {
+          return (
+            dateParsed[2].split(" ")[0] +
+            "/" +
+            dateParsed[1] +
+            "/" +
+            dateParsed[0]
+          );
+        } else {
+          return (
+            dateParsed[1] +
+            "/" +
+            dateParsed[2].split(" ")[0] +
+            "/" +
+            dateParsed[0]
+          );
+        }
       }
     }
 }

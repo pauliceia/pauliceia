@@ -277,12 +277,14 @@ export default {
         },
         "addLayer": {
             "title": "Add or remove layers",
-            "input": "Search by theme, layer or author:",
+            "input": "Search by theme, layer, author or temporal data:",
             "close": "Close",
             "box": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
-                "lbKeywods": "KEYWORDS"
+                "lbKeywods": "KEYWORDS",
+                "lbTemporalData": "TEMPORAL DATA",
+                "lbUntil": "to",
             },
             "btns": {
                 "active": "Active",
@@ -302,6 +304,8 @@ export default {
             "lbAuthors": "AUTHORS",
             "lbDate": "CREATION DATE",
             "lbReferences": "REFERENCES",
+            "lbTemporalData": "TEMPORAL DATA",
+            "lbUntil": "to",
             "lbNotifications": "Notifications"
         },
         "viewInfoVector": {
