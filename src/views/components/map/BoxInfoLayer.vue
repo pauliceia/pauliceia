@@ -31,6 +31,7 @@
                     </el-tag>
                 </li>
                 <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b> {{ infos.description }} </li>
+                <li><b>{{ $t('map.viewInfo.lbTemporalData') }}:</b> {{ infos.startDate }} {{ $t('map.viewInfo.lbUntil') }} {{ infos.endDate }} </li>
                 <li><b>{{ $t('map.viewInfo.lbDate') }}:</b> {{ infos.date }}</li>
                 <li><b>{{ $t('map.viewInfo.lbAuthors') }}:</b>
                     <span v-show="layer != null" v-for="author in infos.authors" :key="author.properties.user_id">
@@ -394,11 +395,17 @@ export default {
             let layers = await Map.getLayers('layer_id='+this.id)
             this.layer = layers.data.features[0].properties
 
+            let temporalData = await Map.getTemporalData("f_table_name=" + this.layer.f_table_name)
+            let startDate = temporalData.data.features[0].properties.start_date;
+            let endDate = temporalData.data.features[0].properties.end_date;
+
             this.infos.name = this.layer.name
             this.infos.description = this.layer.description
             this.infos.keywords = this.layer.keyword
             this.infos.references = this.layer.reference
             this.infos.authors = this.allAuthorsLayers.filter( item => item.properties.layer_id == this.layer.layer_id )
+            this.infos.startDate = this._getDate(startDate);
+            this.infos.endDate = this._getDate(endDate);
 
             this.infos.date = this._getDate(this.layer.created_at)
         },
