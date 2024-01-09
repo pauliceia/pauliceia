@@ -8,7 +8,7 @@
           <br>
           <p>{{ $t('contact.contact') }}</p>
           <p class="picture2 orange-style"><md-icon>mail</md-icon></p>
-          <p class="orange-style" itemprop="email">pauliceia_support[at]googlegroups.com</p>
+          <p class="orange-style" itemprop="email"><a :href="'mailto:' + $t('pauliceia_support@googlegroups.com')" target="_blank">{{ $t('pauliceia_support@googlegroups.com') }}</a></p>
           <p><a :href="$t('https://facebook.com/grupohimaco')" target="_blank"><img class="picture2" style="width: 25px;" src="@/views/assets/images/facebook.png">/grupohimaco</a></p>
           <p><a :href="$t('https://github.com/pauliceia')" target="_blank"><img class="picture2" style="width: 25px;" src="@/views/assets/images/github.png">/pauliceia</a></p>
         </div>
