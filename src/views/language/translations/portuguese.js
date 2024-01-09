@@ -278,7 +278,7 @@ export default {
         },
         "addLayer": {
             "title": "Adicionar e remover camadas",
-            "input": "Pesquise por tema, camada ou autor:",
+            "input": "Pesquise por tema, camada, autor ou dados temporais:",
             "close": "Fechar",
             "box": {
                 "lbTitle": "TÍTULO",

@@ -277,7 +277,7 @@ export default {
         },
         "addLayer": {
             "title": "Add or remove layers",
-            "input": "Search by theme, layer or author:",
+            "input": "Search by theme, layer, author or temporal data:",
             "close": "Close",
             "box": {
                 "lbTitle": "TITLE",
