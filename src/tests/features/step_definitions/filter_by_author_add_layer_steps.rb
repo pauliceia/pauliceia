@@ -1,3 +1,7 @@
+Quando('eu abro o menu de filtros') do
+  find('.btn.btn-secondary', text: 'filter_alt').click
+end
+
 Quando('eu filtro pelo autor {string}') do |author|
   input_element = find('input[aria-label="Search for option"]')
   input_element.set(author)
