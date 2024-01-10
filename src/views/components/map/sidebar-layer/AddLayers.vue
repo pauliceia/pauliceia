@@ -10,16 +10,50 @@
         </div>
 
         <div class="modal-body">
-          <el-input
-            :placeholder="$t('map.addLayer.input')"
-            v-model="filterText">
-          </el-input>
-          <br/>
+          <div class="actions">
+            <div class="search filter" style="display: flex; flex-direction: row; gap: 8px; margin-bottom: 20px;">
+              <el-input
+                :placeholder="$t('map.addLayer.input')"
+                v-model="filterText"
+                >
+              </el-input>
+              <br/>
 
-          <v-select v-model="filterAuthors" :placeholder="$t('Filtro por autor')" :options="this.getAllAuthors()" id="authorSelect"
-            label="name" track-by="name" multiple
-          ></v-select>
-          <br/>
+              <button type="button" class="btn btn-secondary" @click="toggleFilters" style="margin: 0; height: 100%;">
+                <i v-if="showFilters" class="md-icon md-icon-font md-theme-default">filter_alt_off</i>
+                <i v-if="!showFilters" class="md-icon md-icon-font md-theme-default">filter_alt</i>
+              </button>
+            </div>
+
+            <div v-if="showFilters">
+              <v-select v-model="filterAuthors" :placeholder="$t('map.addLayer.author')" :options="this.getAllAuthors()" id="authorSelect"
+                label="name" track-by="name" multiple
+              ></v-select>
+              <br/>
+
+              <el-date-picker
+                id="startDateFilter"
+                v-model="startDateFilter"
+                type="date"
+                :placeholder="$t('map.addLayer.initialDate')"
+                format="dd/MM/yyyy"
+                style="width: 100%; margin-bottom: 10px"
+              ></el-date-picker>
+              <br/>
+
+              <el-date-picker
+                id="endDateFilter"
+                v-model="endDateFilter"
+                type="date"
+                :placeholder="$t('map.addLayer.finalDate')"
+                format="dd/MM/yyyy"
+                style="width: 100%"
+                :picker-options="endDateOptions"
+              ></el-date-picker>
+              <br/>
+            </div>
+          </div>
+
 
           <article v-for="layer in listLayers" :key="layer.id">
             <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
@@ -76,9 +110,20 @@ export default {
       filterAuthors(val){
         this.applyFilters()
       },
+      startDateFilter(val){
+        this.applyFilters()
+      },
+      endDateFilter(val){
+        this.applyFilters()
+      }
     },
     computed: {
-      ...mapState('map', ['layers'])
+      ...mapState('map', ['layers']),
+      endDateOptions() {
+        return {
+          disabledDate: this.disableEndDate,
+        };
+      },
     },
     data() {
       return {
@@ -86,12 +131,15 @@ export default {
         btnDisabled: false,
         filterText: '',
         filterAuthors: [],
+        endDateFilter: '',
+        startDateFilter: '',
         listLayers: [],
         allLayers: [],
         allKeywords: [],
         allAuthorsLayers: [],
         allTemporalData: [],
-        allAuthors: []
+        allAuthors: [],
+        showFilters: false,
       }
     },
     async mounted() {
@@ -220,6 +268,28 @@ export default {
           })
         }
       },
+      disableEndDate(time) {
+        // Desabilita datas anteriores à data inicial selecionada
+        if (this.startDateFilter) {
+          const startDate = new Date(this.startDateFilter);
+          startDate.setHours(0, 0, 0, 0); // Configura para o início do dia
+
+          return time.getTime() < startDate.getTime();
+        }
+        return false;
+      },
+      toggleFilters() {
+        if (this.showFilters) {
+          this.clearFilters();
+        }
+        this.showFilters = !this.showFilters;
+      },
+      clearFilters() {
+        this.filterAuthors = [];
+        this.startDateFilter = '';
+        this.endDateFilter = '';
+        this.applyFilters();
+      },
       applyFilters() {
         let filteredLayers = this.allLayers.slice();
 
@@ -248,6 +318,55 @@ export default {
           })
         }
 
+        // filter by date range
+        console.log(this.startDateFilter, this.endDateFilter);
+        if (this.startDateFilter && this.endDateFilter) {
+          const startTimestamp = this.startDateFilter.getTime();
+          const endTimestamp =  this.endDateFilter.getTime();
+
+          filteredLayers = filteredLayers.filter(layer => {
+            const layerStartParts = layer.properties.start_date.split('/');
+            const layerEndParts = layer.properties.end_date.split('/');
+
+            const layerStartDate = new Date(`${layerStartParts[1]}/${layerStartParts[0]}/${layerStartParts[2]}`).getTime();
+            const layerEndDate = new Date(`${layerEndParts[1]}/${layerEndParts[0]}/${layerEndParts[2]}`).getTime();
+
+            if ((layerStartDate <= endTimestamp && layerStartDate >= startTimestamp) || (layerEndDate >= startTimestamp && layerEndDate <= endTimestamp)) {
+              return true;
+            }
+            return false;
+          });
+        } else if (this.startDateFilter) {
+          const startTimestamp = this.startDateFilter.getTime();
+
+          filteredLayers = filteredLayers.filter(layer => {
+            const layerStartParts = layer.properties.start_date.split('/');
+            const layerEndParts = layer.properties.end_date.split('/');
+
+            const layerStartDate = new Date(`${layerStartParts[1]}/${layerStartParts[0]}/${layerStartParts[2]}`).getTime();
+            const layerEndDate = new Date(`${layerEndParts[1]}/${layerEndParts[0]}/${layerEndParts[2]}`).getTime();
+
+            if (layerStartDate >= startTimestamp || layerEndDate >= startTimestamp) {
+              return true;
+            }
+            return false;
+          });
+        } else if (this.endDateFilter) {
+          const endTimestamp =  this.endDateFilter.getTime();
+
+          filteredLayers = filteredLayers.filter(layer => {
+            const layerStartParts = layer.properties.start_date.split('/');
+            const layerEndParts = layer.properties.end_date.split('/');
+
+            const layerStartDate = new Date(`${layerStartParts[1]}/${layerStartParts[0]}/${layerStartParts[2]}`).getTime();
+            const layerEndDate = new Date(`${layerEndParts[1]}/${layerEndParts[0]}/${layerEndParts[2]}`).getTime();
+
+            if (layerStartDate <= endTimestamp || layerEndDate <= endTimestamp) {
+              return true;
+            }
+            return false;
+          });
+        }
         this.listLayers = filteredLayers;
       },
       _openFullScreen() {
