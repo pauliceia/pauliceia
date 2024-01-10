@@ -16,6 +16,11 @@
           </el-input>
           <br/>
 
+          <v-select v-model="filterAuthors" :placeholder="$t('Filtro por autor')" :options="this.getAllAuthors()" id="authorSelect"
+            label="name" track-by="name" multiple
+          ></v-select>
+          <br/>
+
           <article v-for="layer in listLayers" :key="layer.id">
             <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
               <div class="infos">
@@ -66,20 +71,11 @@ import {
 export default {
     watch: {
       filterText(val){
-        if (val === '') {
-          this.listLayers = this.allLayers
-        } else {
-          this.listLayers = this.allLayers.filter(layer => {
-            if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.start_date.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.end_date.toLowerCase().indexOf(val.toLowerCase()) >= 0
-                )
-                  return layer
-          })
-        }
-      }
+        this.applyFilters()
+      },
+      filterAuthors(val){
+        this.applyFilters()
+      },
     },
     computed: {
       ...mapState('map', ['layers'])
@@ -89,11 +85,13 @@ export default {
         loading: '',
         btnDisabled: false,
         filterText: '',
+        filterAuthors: [],
         listLayers: [],
         allLayers: [],
         allKeywords: [],
         allAuthorsLayers: [],
         allTemporalData: [],
+        allAuthors: []
       }
     },
     async mounted() {
@@ -156,6 +154,13 @@ export default {
       getAuthorById(id){
         return this.allAuthors.filter(author => author.properties.user_id === id)
       },
+      getAllAuthors() {
+        let authorsProperties = this.allAuthors.map(author => author.properties)
+        authorsProperties = authorsProperties.filter(author => {
+          return author.name !== null
+        })
+        return authorsProperties;
+      },
       getTemporalDataByFTableName(f_table_name) {
         return this.allTemporalData.filter(temporalData => temporalData.properties.f_table_name === f_table_name);
       },
@@ -214,6 +219,36 @@ export default {
             type: "error"
           })
         }
+      },
+      applyFilters() {
+        let filteredLayers = this.allLayers.slice();
+
+        filteredLayers = filteredLayers.filter(layer => {
+          // filterText
+          if (
+            layer.properties.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
+            layer.properties.authors.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
+            layer.properties.keyword.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
+            layer.properties.start_date.toLowerCase().includes(this.filterText.toLowerCase()) ||
+            layer.properties.end_date.toLowerCase().includes(this.filterText.toLowerCase())
+          ) {
+            return true;
+          }
+          return false;
+        });
+
+        // filterAuthors
+        if (this.filterAuthors.length > 0) {
+          const authorNames = this.filterAuthors.map(author => author.name)
+
+          filteredLayers = filteredLayers.filter(layer => {
+            if (layer.properties.authors.some(author => authorNames.includes(author))) {
+              return true;
+            }
+          })
+        }
+
+        this.listLayers = filteredLayers;
       },
       _openFullScreen() {
         this.loading = this.$loading({
