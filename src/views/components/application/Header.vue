@@ -105,7 +105,8 @@ export default {
                 text-decoration: none
                 font-size: 30px
                 color: rgb(77,77,77) !important
-                margin: 0 25px !important
+                /* margin: 0 25px !important linha quebrando responsividade: substituir para 10px */
+                margin: 0 10px !important
                 font-family: IrisUPC
             .navbar-nav li a:hover,.navbar-nav .active
                 color: #f15a29 !important
