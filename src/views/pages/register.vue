@@ -20,16 +20,20 @@
                             <label>{{ $t('register.lbEmail') }}</label>
                             <input type="email" v-model="user.email" class="form-control form-control-lg" :placeholder="$t('register.lbEmail')" required>
                         </div>
+                        <div class="form-group col-md-12">
+                            <label>{{ $t('register.lbUsername') }}</label>
+                            <input type="text" v-model="user.username" class="form-control form-control-lg" :placeholder="$t('register.lbUsername')" required>
+                        </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>{{ $t('register.lbUsername') }}</label>
-                            <input type="text" v-model="user.username" class="form-control form-control-lg" :placeholder="$t('register.lbUsername')" required>
-                        </div>
-                        <div class="form-group col-md-6">
                             <label>{{ $t('register.lbPassword') }}</label>
                             <input type="password" v-model="user.password" class="form-control form-control-lg" :placeholder="$t('register.lbPassword')" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>{{ $t('register.lbConfirmPassword') }}</label>
+                            <input type="password" v-model="user.confirmpassword" class="form-control form-control-lg" :placeholder="$t('register.lbConfirmPassword')" required>
                         </div>
                     </div>
 

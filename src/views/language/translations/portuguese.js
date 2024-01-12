@@ -213,6 +213,7 @@ export default {
         "lbEmail": "E-mail",
         "lbUsername": "Nome de usuário",
         "lbPassword": "Senha",
+        "lbConfirmPassword": "Confirme a senha",
         "lbCheckNotification": "Receber notificações por e-mail",
         "lbCheckAgree": "Eu concordo com os termos de uso.",
         "lbReadme": "leia os termos aqui",
