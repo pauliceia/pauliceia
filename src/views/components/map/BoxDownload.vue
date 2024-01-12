@@ -31,11 +31,16 @@ export default {
         },
         downloadCanvas() {
             var canvas = document.querySelector("canvas");
-            var imgUrl = canvas.toDataURL()
-
+            var imgUrl = canvas.toDataURL();
+            
             let anchorElement = document.createElement('a');
             anchorElement.href = imgUrl;
-            anchorElement.download = "speto.png";
+
+            let now = new Date().toISOString();
+
+            let date = now.substring(0, 10);
+            let hours = now.split("T")[1].split(":")
+            anchorElement.download = `pauliceia-map-${date}-${hours[0]}-${hours[1]}.png`;
 
             document.body.appendChild(anchorElement);
             anchorElement.click();

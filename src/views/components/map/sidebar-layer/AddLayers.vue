@@ -14,7 +14,15 @@
             :placeholder="$t('map.addLayer.input')"
             v-model="filterText">
           </el-input>
-          <br/>
+          <br /> <br />
+
+          <el-select v-model="filterSelect" :placeholder="$t('map.addLayer.select')">
+            <el-option label="Alfabética ↑" value="alfaasc" />
+            <el-option label="Alfabética ↓" value="alfadesc" />
+            <el-option label="Data Inserção ↑" value="dateasc" />
+            <el-option label="Data Inserção ↓" value="datedesc" />
+          </el-select>
+          <br />
 
           <article v-for="layer in listLayers" :key="layer.id">
             <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
@@ -75,6 +83,30 @@ export default {
                   return layer
           })
         }
+      },
+      filterSelect(val){
+        switch(val){
+          case "alfadesc":
+            this.listLayers = this.allLayers.sort((a, b) => {
+              return b.properties.name >= a.properties.name ? 1 : -1;
+            })
+            break;
+          case "alfaasc":
+            this.listLayers = this.allLayers.sort((a, b) => {
+              return b.properties.name >= a.properties.name ? -1 : 1;
+            })
+            break;
+          case "datedesc":
+            this.listLayers = this.allLayers.sort((a, b) => {
+              return b.properties.created_at >= a.properties.created_at ? 1 : -1;
+            })
+            break;
+          case "dateasc":
+            this.listLayers = this.allLayers.sort((a, b) => {
+              return b.properties.created_at >= a.properties.created_at ? -1 : 1;
+            })
+            break;
+        }
       }
     },
     computed: {
@@ -85,6 +117,7 @@ export default {
         loading: '',
         btnDisabled: false,
         filterText: '',
+        filterSelect: '',
         listLayers: [],
         allLayers: [],
         allKeywords: [],
