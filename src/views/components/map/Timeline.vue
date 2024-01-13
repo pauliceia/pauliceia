@@ -1,6 +1,7 @@
 <template>
   <div id="contentSlider">
     <div class="sliders" id="slider"></div>
+    <div class="slider1year" id="slider1year"></div>
   </div>
 </template>
 
@@ -95,6 +96,44 @@
         this.$store.dispatch('map/setYears', {
           first: values[0],
           last: values[1]
+        })
+
+        this.filterUpdate()
+      })
+
+      // Second slider
+      let slider1year = document.getElementById('slider1year')
+
+      noUiSlider.create(slider1year, {
+        start: [this.sliderStartYear],
+        connect: 'lower',
+        orientation: 'horizontal',
+        step: 1,
+        tooltips: true,
+        direction: 'ltr',
+        range: {
+          'min': this.sliderStartYear,
+          'max': this.sliderEndYear
+        },
+        pips: {
+          mode: 'count',
+          values: 5,
+          density: 4
+        },
+        format: {
+          to: value => {
+            return value + ''
+          },
+          from: value => {
+            return value.replace(',-', '')
+          }
+        }
+      })
+
+      slider1year.noUiSlider.on('update', (values, handle) => {
+        this.$store.dispatch('map/setYears', {
+          first: values[0],
+          last: values[0]
         })
 
         this.filterUpdate()
@@ -200,5 +239,18 @@
 
   #contentSlider .sliders .noUi-connect{
     background: #58595b !important;
+  }
+
+  #contentSlider .slider1year{
+    position: relative;
+    width: 84%;
+    height: 10px;
+    margin-left: 8%;
+    margin-right: 5%;
+    bottom: -10px;
+  }
+
+  #contentSlider .slider1year .noUi-connect{
+    background: #79ca4a !important;
   }
 </style>
