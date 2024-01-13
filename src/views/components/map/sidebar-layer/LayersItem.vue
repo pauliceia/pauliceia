@@ -216,6 +216,7 @@ export default {
                 this.$store.dispatch('map/setBoxInfoVector', false)
                 this.$store.dispatch('map/setBoxGeocoding', false)
                 this.$store.dispatch('map/setBoxNotifications', false)
+                this.$store.dispatch('map/setBoxDownloadMap', false)
 
                 this.$store.dispatch('map/setBoxInfoLayer', true)
                 this.$store.dispatch('map/setIdInfoLayer', this.id)

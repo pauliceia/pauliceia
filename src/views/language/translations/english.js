@@ -307,7 +307,7 @@ export default {
             "lbAuthors": "AUTHORS",
             "lbDate": "CREATION DATE",
             "lbReferences": "REFERENCES",
-            "lbTemporalData": "TEMPORAL DATA",
+"lbTemporalData": "TEMPORAL DATA",
             "lbUntil": "to",
             "lbNotifications": "Notifications"
         },
@@ -316,6 +316,20 @@ export default {
             "btnFeature": "By location",
             "btnBox": "By region",
             "btnClean": "Clean"
+        },
+        "viewDownloadMap": {
+            "title": "Download map",
+            "btnFeature": "Actual view",
+            "btnBox": "Background map",
+            "modalText": `Due the map high resolution, it is not possible to download it, but you can view it using OpenLayers. 
+                            It will open a new tab, do you want to continue?`,
+            "modalTitle": "Download map",
+            "modalBtnConfirm": "Yes",
+            "modalBtnCancel": "Go back",
+            "msg": {
+                "errTitle": "None map layer selected",
+                "errMsg": "Select a map layer before trying to download it"
+            }
         },
         "betaVersionModal": {
             "welcome": "Welcome to the `Pauliceia 2.0` platform",
