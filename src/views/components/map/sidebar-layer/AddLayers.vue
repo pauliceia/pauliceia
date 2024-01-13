@@ -79,51 +79,52 @@ export default {
           this.listLayers = this.allLayers.filter(layer => {
             if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
                 layer.properties.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
+                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                layer.properties.description.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0)
                   return layer
           })
         }
       },
-      filterSelect(val){
-        switch(val){
-          case "alfadesc":
-            this.listLayers = this.allLayers.sort((a, b) => {
-              return b.properties.name >= a.properties.name ? 1 : -1;
-            })
-            break;
-          case "alfaasc":
-            this.listLayers = this.allLayers.sort((a, b) => {
-              return b.properties.name >= a.properties.name ? -1 : 1;
-            })
-            break;
-          case "datedesc":
-            this.listLayers = this.allLayers.sort((a, b) => {
-              return b.properties.created_at >= a.properties.created_at ? 1 : -1;
-            })
-            break;
-          case "dateasc":
-            this.listLayers = this.allLayers.sort((a, b) => {
-              return b.properties.created_at >= a.properties.created_at ? -1 : 1;
-            })
-            break;
-        }
+    filterSelect(val){
+      switch(val){
+        case "alfadesc":
+          this.listLayers = this.allLayers.sort((a, b) => {
+            return b.properties.name >= a.properties.name ? 1 : -1;
+          })
+          break;
+        case "alfaasc":
+          this.listLayers = this.allLayers.sort((a, b) => {
+            return b.properties.name >= a.properties.name ? -1 : 1;
+          })
+          break;
+        case "datedesc":
+          this.listLayers = this.allLayers.sort((a, b) => {
+            return b.properties.created_at >= a.properties.created_at ? 1 : -1;
+          })
+          break;
+        case "dateasc":
+          this.listLayers = this.allLayers.sort((a, b) => {
+            return b.properties.created_at >= a.properties.created_at ? -1 : 1;
+          })
+          break;
       }
-    },
-    computed: {
-      ...mapState('map', ['layers'])
-    },
-    data() {
-      return {
-        loading: '',
-        btnDisabled: false,
-        filterText: '',
-        filterSelect: '',
-        listLayers: [],
-        allLayers: [],
-        allKeywords: [],
-        allAuthorsLayers: []
-      }
-    },
+    }
+  },
+  computed: {
+    ...mapState('map', ['layers'])
+  },
+  data() {
+    return {
+      loading: '',
+      btnDisabled: false,
+      filterText: '',
+      filterSelect: '',
+      listLayers: [],
+      allLayers: [],
+      allKeywords: [],
+      allAuthorsLayers: []
+    }
+  },
     async mounted() {
       try {
         let result = await Map.getLayers(null)
@@ -178,18 +179,28 @@ export default {
         return this.allAuthors.filter(author => author.properties.user_id === id)
       },
       disabled(layer) {
-        if(this.btnDisabled == false)
-          this.btnDisabled = true
+      this.$confirm(this.$t("map.addLayer.remove.msg"), 'Warning', {
+        confirmButtonText: this.$t("map.addLayer.remove.yes"),
+        cancelButtonText: this.$t("map.addLayer.remove.no"),
+        type: 'warning'
+      })
+        .then(_ => {
+          if (this.btnDisabled == false)
+            this.btnDisabled = true
 
-        overlayGroup.getLayers().forEach(sublayer => {
-          if(sublayer != undefined && sublayer.get('id') != undefined && sublayer.get('id') == layer.properties.layer_id) {
-            overlayGroup.getLayers().remove(sublayer)
-            this.$store.dispatch('map/setRemoveLayers', layer.properties.layer_id)
-            this.btnDisabled = false
-            return true
-          }
+          overlayGroup.getLayers().forEach(sublayer => {
+            if (sublayer != undefined && sublayer.get('id') != undefined && sublayer.get('id') == layer.properties.layer_id) {
+              overlayGroup.getLayers().remove(sublayer)
+              this.$store.dispatch('map/setRemoveLayers', layer.properties.layer_id)
+              this.btnDisabled = false
+              return true
+            }
+          })
         })
-      },
+        .catch(_ => {
+          return false
+        })
+    },
       async active(layer) {
         if(this.btnDisabled == false)
           this.btnDisabled = true

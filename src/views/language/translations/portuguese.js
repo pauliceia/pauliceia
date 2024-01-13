@@ -293,6 +293,11 @@ export default {
             "msg": {
                 "errTitle": "Erro Interno",
                 "errMsg": "Serviço indisponível, tente mais tarde ou comunique nosso suporte!"
+            }, 
+            "remove": {
+                "msg": "Você irá remover a camada selecionada. Deseja continuar?",
+                "yes": "Sim",
+                "no": "Não"
             }
         },
         "viewInfo": {

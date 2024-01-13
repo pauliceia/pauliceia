@@ -292,6 +292,11 @@ export default {
             "msg": {
                 "errTitle": "Internal Error",
                 "errMsg": "Service not available, try again later or report our support!"
+            },
+            "remove": {
+                "msg": "You are removing the selected layer. Continue?",
+                "yes": "Yes",
+                "no": "No"
             }
         },
         "viewInfo": {

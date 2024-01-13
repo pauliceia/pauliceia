@@ -25,8 +25,10 @@
               <div class="row" v-for="layer in myLayers" v-bind:key="layer.layer_id">
                 <div class="col-sm-7">{{ layer.name }}</div>
                 <div class="col-sm-5">
-                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
-                  <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  <button type="button" class="btn btn-outline-danger btn-sm add2"
+                    @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
+                  <button type="button" class="btn btn-outline-dark btn-sm add"
+                    @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
                 </div>
                 <hr>
               </div>
@@ -43,7 +45,8 @@
               <div class="row" v-for="layer in sharedLayers" v-bind:key="layer.layer_id">
                 <div class="col-sm-8">{{ layer.name }}</div>
                 <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  <button type="button" class="btn btn-outline-dark btn-sm add"
+                    @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
                 </div>
                 <div class="col-sm-2">
                   <!--<button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>-->
@@ -61,95 +64,105 @@
 </template>
 
 <script>
-  import DashLayout from '@/views/layouts/dashboard'
-  import Api from '@/middleware/ApiVGI'
-  import { mapState } from 'vuex'
-  import Notifications from '@/views/components/dashboard/Notifications'
+import DashLayout from '@/views/layouts/dashboard'
+import Api from '@/middleware/ApiVGI'
+import { mapState } from 'vuex'
+import Notifications from '@/views/components/dashboard/Notifications'
 
-  export default {
-    data () {
-      return {
-        myLayers: [],
-        sharedLayers: []
-      }
-    },
-    mounted() {
-      this.updateLayers()
-      this.orderLayers(500)
-    },
-    computed: {
-      ...mapState('auth', ['isUserLoggedIn', 'user']),
-      ...mapState('map', ['boxNotifications']),
-    },
-    methods: {
-      deleteLayer(id){
+export default {
+  data() {
+    return {
+      myLayers: [],
+      sharedLayers: []
+    }
+  },
+  mounted() {
+    this.updateLayers()
+    this.orderLayers(500)
+  },
+  computed: {
+    ...mapState('auth', ['isUserLoggedIn', 'user']),
+    ...mapState('map', ['boxNotifications']),
+  },
+  methods: {
+    deleteLayer(id) {
+      this.$confirm(this.$t('dashboard.home.delete.msg'), 'Warning', {
+        confirmButtonText: this.$t('dashboard.home.delete.yes'),
+        cancelButtonText: this.$t('dashboard.home.delete.no'),
+        type: 'warning'
+      })
+      .then(async _ => {
         Api().delete('/api/layer/' + id).then((response) => {
           this.updateLayers()
         })
-      },
-      editLayer(id){
-        this.$router.push({name: 'EditLayer', params: {layer_id: id}})
-      },
-      // handleClick(tab, event) {
-      //   console.log('\n handleClick: ');
-      //   console.log(' tab: ', tab);
-      //   console.log(' event: ', event);
-      // },
-      updateLayers(){
-        this.sharedLayers = []
-        this.myLayers = []
-
-        Api().get('/api/user_layer/?user_id='+this.user.user_id).then((response) => {
-          response.data.features.filter(e => {
-
-            Api().get('/api/layer/?layer_id=' + e.properties.layer_id).then((response2) => {
-              if (e.properties.is_the_creator)
-                this.myLayers.push(response2.data.features[0].properties)
-              else
-                this.sharedLayers.push(response2.data.features[0].properties)
-
-              this.orderLayers(10)
-
-              // save the layers inside the state
-              this.$store.dispatch('dashboard/setMyLayers', this.myLayers)
-              this.$store.dispatch('dashboard/setSharedLayers', this.sharedLayers)
-            })
-
-          })
-        })
-
-      },
-      orderLayers(x){
-        // const vm = this
-        setTimeout(_ => {
-          this.myLayers.sort((a, b) => {
-            if (a.name.toLowerCase() > b.name.toLowerCase())
-              return 1;
-
-            if (a.name.toLowerCase() < b.name.toLowerCase())
-              return -1;
-
-            // a must be equal to b
-            return 0;
-          })
-          this.sharedLayers.sort((a, b) => {
-            if (a.name.toLowerCase() > b.name.toLowerCase())
-              return 1;
-
-            if (a.name.toLowerCase() < b.name.toLowerCase())
-              return -1;
-
-            // a must be equal to b
-            return 0;
-          })
-        }, x);
-      }
+      })
+      .catch(_ => {
+        return false
+      })
     },
-    components: {
-      "p-dash-layout": DashLayout,
-      'p-notifications': Notifications
+    editLayer(id) {
+      this.$router.push({ name: 'EditLayer', params: { layer_id: id } })
+    },
+    // handleClick(tab, event) {
+    //   console.log('\n handleClick: ');
+    //   console.log(' tab: ', tab);
+    //   console.log(' event: ', event);
+    // },
+    updateLayers() {
+      this.sharedLayers = []
+      this.myLayers = []
+
+      Api().get('/api/user_layer/?user_id=' + this.user.user_id).then((response) => {
+        response.data.features.filter(e => {
+
+          Api().get('/api/layer/?layer_id=' + e.properties.layer_id).then((response2) => {
+            if (e.properties.is_the_creator)
+              this.myLayers.push(response2.data.features[0].properties)
+            else
+              this.sharedLayers.push(response2.data.features[0].properties)
+
+            this.orderLayers(10)
+
+            // save the layers inside the state
+            this.$store.dispatch('dashboard/setMyLayers', this.myLayers)
+            this.$store.dispatch('dashboard/setSharedLayers', this.sharedLayers)
+          })
+
+        })
+      })
+
+    },
+    orderLayers(x) {
+      // const vm = this
+      setTimeout(_ => {
+        this.myLayers.sort((a, b) => {
+          if (a.name.toLowerCase() > b.name.toLowerCase())
+            return 1;
+
+          if (a.name.toLowerCase() < b.name.toLowerCase())
+            return -1;
+
+          // a must be equal to b
+          return 0;
+        })
+        this.sharedLayers.sort((a, b) => {
+          if (a.name.toLowerCase() > b.name.toLowerCase())
+            return 1;
+
+          if (a.name.toLowerCase() < b.name.toLowerCase())
+            return -1;
+
+          // a must be equal to b
+          return 0;
+        })
+      }, x);
     }
+  },
+  components: {
+    "p-dash-layout": DashLayout,
+    'p-notifications': Notifications
   }
+}
 </script>
 
 <style lang="sass" scoped>
