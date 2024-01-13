@@ -116,21 +116,30 @@
         let updateStartValue = firstValue;
         let updateEndValue = lastValue;
 
+        // Checa se valores cabem ou nao dentro da regua e atualiza os valores de acordo
         if (updateStartValue >= this.sliderStartYear && updateEndValue <= this.sliderEndYear){
+          // Valores fora da regua
           if (updateStartValue > this.sliderEndYear)
             updateStartValue = null
           if (updateEndValue < this.sliderStartYear)
             updateEndValue = null
+          // Valor ainda dentro da regua
+          if (updateStartValue < this.sliderStartYear)
+            updateStartValue = this.sliderStartYear
+          if (updateEndValue > this.sliderEndYear)
+            updateEndValue = this.sliderEndYear
 
-          
-
+          // Valor invalido
           if (updateStartValue > updateEndValue){
             alert("Intervalo de anos inválido! Ano de ínicio é menor que ano final, insira novamente ou use a régua para selecionar os anos.")
             return
           }
 
-          slider.noUiSlider.set([updateStartValue, updateEndValue])
         }
+        // Atualiza o slider primeiro e depois os inputs
+        slider.noUiSlider.set([updateStartValue, updateEndValue])
+        input_slider_start.value = firstValue;
+        input_slider_end.value = lastValue;
 
         this.$store.dispatch('map/setYears', {
           first: firstValue,
