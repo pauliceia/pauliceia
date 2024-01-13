@@ -135,9 +135,10 @@
             return
           }
 
+          // Atualiza o slider primeiro e depois os inputs
+          if (slider.noUiSlider.get()[0] != this.sliderStartYear && slider.noUiSlider.get()[1] != this.sliderEndYear)
+            slider.noUiSlider.set([updateStartValue, updateEndValue])
         }
-        // Atualiza o slider primeiro e depois os inputs
-        slider.noUiSlider.set([updateStartValue, updateEndValue])
         input_slider_start.value = firstValue;
         input_slider_end.value = lastValue;
 
