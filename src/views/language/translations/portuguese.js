@@ -279,7 +279,7 @@ export default {
         "addLayer": {
             "title": "Adicionar e remover camadas",
             "input": "Pesquise por tema, camada, autor ou dados temporais:",
-            "initialDate": "Data inicial",
+"initialDate": "Data inicial",
             "finalDate": "Data final",
             "author": "Autor",
             "close": "Fechar",
@@ -308,7 +308,7 @@ export default {
             "lbAuthors": "AUTORES",
             "lbDate": "DATA DE CRIAÇÃO",
             "lbReferences": "REFERÊNCIAS",
-            "lbTemporalData": "DADOS TEMPORAIS",
+"lbTemporalData": "DADOS TEMPORAIS",
             "lbUntil": "até",
             "lbNotifications": "Notificações"
         },
@@ -317,6 +317,20 @@ export default {
             "btnFeature": "Por localização",
             "btnBox": "Por região",
             "btnClean": "Limpar"
+        },
+        "viewDownloadMap": {
+            "title": "Baixar mapa",
+            "btnFeature": "Visualização atual",
+            "btnBox": "Mapa de fundo",
+            "modalText": `Devido a alta resolução do mapa, não é possível realizar o download, porém é possível visulizá-lo utilizando o OpenLayers. 
+                            Será aberto uma nova aba, deseja continuar?`,
+            "modalTitle": "Baixar mapa",
+            "modalBtnConfirm": "Sim",
+            "modalBtnCancel": "Voltar",
+            "msg": {
+                "errTitle": "Nenhuma camada de mapa selecionada",
+                "errMsg": "Selecione uma camada de mapa antes de tentar o download"
+            }
         },
         "betaVersionModal": {
             "welcome": "Bem-vindo a plataforma `Pauliceia 2.0`",
