@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>{{ $t('register.lbPassword') }}</label>
-                            <input type="password" v-model="user.password" class="form-control form-control-lg" :placeholder="$t('register.lbPassword')" required>
+                            <input type="password" v-model="user.password" class="form-control form-control-lg" :placeholder="$t('register.lbPassword')" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&]{8,}$" title="Deve conter pelo menos um número, uma letra maiúscula e minúscula, um caracter especial (!, @, #, $, %, &, *, ?) e pelo menos 8 ou mais carateres" required>
                         </div>
                     </div>
 
