@@ -12,7 +12,7 @@
 }
 
 @font-face {
-  font-family: '__Gill Sans MT_5';
+  font-family: '__Gill Sans MT_5', sans-serif;
   src: url('../fonts/gillsansmt.eot');
   src: local('☺'), url('../fonts/gillsansmt.woff') format('woff'), url('../fonts/gillsansmt.svg') format('svg');
   font-weight: 400;
@@ -20,7 +20,7 @@
 }
 
 @font-face {
-  font-family: '__Gill Sans MT_5';
+  font-family: '__Gill Sans MT_5', sans-serif;
   src: url('../fonts/gillsansmt-bold.eot');
   src: local('☺'), url('../fonts/gillsansmt-bold.woff') format('woff'), url('../fonts/gillsansmt-bold.svg') format('svg');
   font-weight: 700;
@@ -28,7 +28,7 @@
 }
 
 @font-face {
-  font-family: '__IrisUPC_5';
+  font-family: '__IrisUPC_5', sans-serif;
   src: url('../fonts/irisupc.eot');
   src: local('☺'), url('../fonts/irisupc.woff') format('woff'), url('../fonts/irisupc.svg') format('svg');
   font-weight: 400;
@@ -386,7 +386,7 @@
   min-height: 34px;
   font-size: 20px;
   position: relative;
-  font-family: '__Gill Sans MT_5';
+  font-family: '__Gill Sans MT_5', sans-serif;
   color: #FFFFFF;
   z-index: 2;
   margin-right: -10000px;
@@ -402,7 +402,7 @@
   background-color: transparent;
   min-height: 34px;
   font-size: 20px;
-  font-family: '__Gill Sans MT_5';
+  font-family: '__Gill Sans MT_5', sans-serif;
   font-weight: 700;
 }
 
@@ -415,7 +415,7 @@
   background-color: transparent;
   min-height: 34px;
   font-size: 20px;
-  font-family: '__Gill Sans MT_5';
+  font-family: '__Gill Sans MT_5', sans-serif;
   font-weight: 700;
 }
 
@@ -429,7 +429,7 @@
   min-height: 131px;
   font-size: 18px;
   position: relative;
-  font-family: '__Gill Sans MT_5';
+  font-family: '__Gill Sans MT_5', sans-serif;
   color: #FFFFFF;
   z-index: 14;
   margin-right: -10000px;
@@ -445,7 +445,7 @@
   background-color: transparent;
   min-height: 252px;
   font-size: 18px;
-  font-family: '__Gill Sans MT_5';
+  font-family: '__Gill Sans MT_5', sans-serif;
   font-weight: 400;
 }
 
@@ -458,7 +458,7 @@
   background-color: transparent;
   min-height: 252px;
   font-size: 18px;
-  font-family: '__Gill Sans MT_5';
+  font-family: '__Gill Sans MT_5', sans-serif;
   font-weight: 400;
 }
 

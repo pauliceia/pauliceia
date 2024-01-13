@@ -4,7 +4,7 @@
         <md-button md-menu-trigger>
             <md-avatar class="md-avatar-icon">
                 <div class="logo">
-                    <img :src="imagePerson" />
+                    <img alt="imagem do usuario" :src="imagePerson" />
                 </div>
             </md-avatar>
         </md-button>

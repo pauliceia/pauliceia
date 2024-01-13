@@ -6,7 +6,7 @@ import { switchMap, tap } from 'rxjs/operators';
 const cacheFeatureTables = {};
 
 
-//Abaixo, explicação do refact para o uso de observables (rjxs), que pode melhorar a reatividade da página.
+//Abaixo, explicação do refact para o uso de observables (rjxs), que pode melhorar a reatividade da página, necessita de um teste de performance para avaliar se de fato melhora a velocidade da página
 //Importação de from e of: Estes operadores são usados para criar Observables a partir de valores existentes.
 // Uso de from: No método getFeatureTable, usamos from(cacheFeatureTables[fTableName]) para criar um Observable a partir do valor em cache.
 // Uso de switchMap: Este operador permite alterar o Observable a ser emitido, dependendo da condição. No caso de haver um valor em cache, emitimos esse valor diretamente. Caso contrário, fazemos a requisição HTTP.

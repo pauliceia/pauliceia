@@ -432,7 +432,7 @@
             this.chosenRefID.push(ref_id)
             this.auxRef = null
           }, cause => {
-            this,_showErrorMessages(cause)
+            this._showErrorMessages(cause)
           })
         }
       },

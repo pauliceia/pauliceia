@@ -13,7 +13,7 @@
                     <p-popover-labels text="Foto para o perfil" /></p>
                   <md-avatar class="md-avatar-icon stylePicture">
                     <div class="logo">
-                      <img :src="imagePerson" />
+                      <img alt="imagem do usuario" :src="imagePerson" />
                     </div>
                   </md-avatar>
                   <br>
