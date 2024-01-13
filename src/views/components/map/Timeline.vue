@@ -1,7 +1,15 @@
 <template>
   <div id="contentSlider">
-    <div class="sliders" id="slider"></div>
-    <div class="slider1year" id="slider1year"></div>
+    <div class="slider-container">
+      <div class="slider-title">Seleção de um espaço de tempo</div>
+      <div class="sliders" id="slider"></div>
+    </div>
+
+    <div class="slider-container">
+      <div class="slider-title">Seleção de um único ano</div>
+      <div class="slider1year" id="slider1year"></div>
+    </div>
+    
   </div>
 </template>
 
@@ -222,11 +230,28 @@
     display: flex;
     z-index: 2;
     bottom: 35px;
-    height: 65px;
+    height: 120px;
     width: 40%;
     background-color: rgba(255, 255, 255, 0.7);
     right: 30%;
     border-radius: 10px;
+  }
+
+  .slider-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slider-title {
+    font-size: 12px;
+    color: #0c0c0c;
+    height: 10px;
+    margin-left: 8%;
+    bottom: -10px;
+  
   }
 
   #contentSlider .sliders{
@@ -251,6 +276,11 @@
   }
 
   #contentSlider .slider1year .noUi-connect{
-    background: #79ca4a !important;
+    background: #ffffff !important;
   }
+
+
+
+
+  
 </style>
