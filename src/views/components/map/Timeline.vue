@@ -1,6 +1,12 @@
 <template>
   <div id="contentSlider">
+    <div class="slider_selector slider_selector_start">
+      <input type="number" inputmode="numeric" class="slider_selector_input" id="slider_start"/>
+    </div>
     <div class="sliders" id="slider"></div>
+    <div class="slider_selector slider_selector_end">
+      <input type="number" inputmode="numeric" class="slider_selector_input" id="slider_end"/>
+    </div>
   </div>
 </template>
 
@@ -63,6 +69,8 @@
     },
     mounted () {
       let slider = document.getElementById('slider')
+      let input_slider_start = document.getElementById('slider_start')
+      let input_slider_end = document.getElementById('slider_end')
 
       //this.filterUpdate()
       noUiSlider.create(slider, {
@@ -70,7 +78,7 @@
         connect: true,
         orientation: 'horizontal',
         step: 1,
-        tooltips: true,
+        //tooltips: true,
         direction: 'ltr',
         range: {
           'min': this.sliderStartYear,
@@ -91,7 +99,62 @@
         }
       })
 
+      let slide_input_event_listener = () => {
+        let firstValue = input_slider_start.value;
+        let lastValue = input_slider_end.value;
+
+        if (isNaN(firstValue))
+          firstValue = slider.noUiSlider.get()[0];
+        if (isNaN(lastValue))
+          lastValue = slider.noUiSlider.get()[1];
+
+        if (firstValue > lastValue){
+          firstValue = slider.noUiSlider.get()[0];
+          lastValue = slider.noUiSlider.get()[1];
+        }
+
+        let updateStartValue = firstValue;
+        let updateEndValue = lastValue;
+
+        if (updateStartValue >= this.sliderStartYear && updateEndValue <= this.sliderEndYear){
+          if (updateStartValue > this.sliderEndYear)
+            updateStartValue = null
+          if (updateEndValue < this.sliderStartYear)
+            updateEndValue = null
+
+          
+
+          if (updateStartValue > updateEndValue){
+            alert("Intervalo de anos inválido! Ano de ínicio é menor que ano final, insira novamente ou use a régua para selecionar os anos.")
+            return
+          }
+
+          slider.noUiSlider.set([updateStartValue, updateEndValue])
+        }
+
+        this.$store.dispatch('map/setYears', {
+          first: firstValue,
+          last: lastValue
+        })
+
+        this.filterUpdate()
+      }
+
+      input_slider_start.addEventListener('change', slide_input_event_listener)
+      input_slider_end.addEventListener('change', slide_input_event_listener)
+
       slider.noUiSlider.on('update', (values, handle) => {
+
+        let value = values[handle]
+
+        if (handle){
+          // handle == 1 --> direita (data final)
+          input_slider_end.value = value;
+        } else {
+          // handle == 0 --> esquerda (data inicial)
+          input_slider_start.value = value;
+        }
+
         this.$store.dispatch('map/setYears', {
           first: values[0],
           last: values[1]
@@ -178,6 +241,40 @@
 </script>
 
 <style>
+  .slider_selector{
+    display: block;
+    height: 100%;
+    position: relative;
+  }
+
+  .slider_selector_input {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    height: 35px;
+    max-width: 80px;
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+    background: #fff;
+    color: #000;
+    padding: 5px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .slider_selector_start .slider_selector_input {
+    right: 100%;
+    margin-right: 2px;
+  }
+
+  .slider_selector_end .slider_selector_input {
+    left: 100%;
+    margin-left: 2px;
+  }
+
+
   #contentSlider {
     position: absolute;
     display: flex;
@@ -185,16 +282,18 @@
     bottom: 35px;
     height: 65px;
     width: 40%;
-    background-color: rgba(255, 255, 255, 0.7);
-    right: 30%;
+    background-color: rgba(255, 255, 255, 0.85);
+    right: 0;
+    left: 0;
     border-radius: 10px;
+    margin: auto;
   }
 
   #contentSlider .sliders{
     position: relative;
-    width: 84%;
+    width: 100%;
     height: 10px;
-    margin-left: 8%;
+    margin: 0 25px;
     bottom: -10px;
   }
 
