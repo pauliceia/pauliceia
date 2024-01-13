@@ -24,15 +24,7 @@
                     <router-link to="/register" class="register">{{ $t('login.register') }}</router-link><br>
                     <div><button type="submit" class="btn style-btn btn-lg btn-block">{{ $t('login.btnText') }}</button>
                     </div>
-                    <div class="row">
-                        <div class="col-6 link-social">
-                          <md-list-item class="btn btn-danger style-google" @click="loginSocial('google')">
-                            <md-icon>add_box</md-icon>
-                            <span class="md-list-item-text"> Acesso com o Google+</span>
-                          </md-list-item>
-                        </div>
-                    </div>
-
+                    
                     <br>
                     <div class="col-12 terms">
                       {{ $t('login.terms') }}
@@ -165,7 +157,7 @@ section
         color: #FFF !important
 
 .register
-    float: right
+    float: left
     color: #666
 .register:hover
     color: #000
@@ -179,16 +171,10 @@ section
     position: relative
     width: 200px
     height: 40px
-    float: right
+    float: left
     font-size: 15px
     padding: 0px
     background-color: rgb(255, 97, 7)
     color: rgb(255, 255, 255)
 
-.style-google
-    position: relative
-    padding: 0px
-    width: 235px
-    height: 40px
-    border: 0px
 </style>
