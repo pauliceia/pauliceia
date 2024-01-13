@@ -24,7 +24,7 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-    <div class="logo" style="z-index: 1000;">
+    <div class="logo" style="z-index: 1;">
       <img v-if="$t('home.title2')==='Como?'" src="@/views/assets/images/home_slider_pt_br.png">
       <img v-else src="@/views/assets/images/home_slider_en.png">
     </div>
@@ -47,7 +47,7 @@
           <p>{{ $t('home.column3') }}</p>
         </div>
       </div>
-      
+
       <div class="row justify-content-md-center">
         <div class="col-sm-9 column-style">
           <how-to-cite/>
@@ -72,12 +72,13 @@ export default {
 <style lang="sass" scoped>
   .background
     background-color: #333333
+    position: relative
 
     .logo
       position: absolute
       display: flex
       right: 300px
-      top: 100px
+      top: 14px
 
     .text-style
       padding: 100px
