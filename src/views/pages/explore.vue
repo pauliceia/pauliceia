@@ -10,6 +10,7 @@
       <p-boxinfolayer></p-boxinfolayer>
       <p-boxinfovector></p-boxinfovector>
       <p-boxnotifications></p-boxnotifications>
+      <p-boxdownloadmap></p-boxdownloadmap>
       <p-subtitle :subShow="true"></p-subtitle>
       <p-alert></p-alert>
     </ol-map>
@@ -26,6 +27,7 @@
   import BoxInfoLayer from '@/views/components/map/BoxInfoLayer'
   import BoxInfoVector from '@/views/components/map/BoxInfoVector'
   import BoxInfoNotifications from '@/views/components/map/BoxNotifications'
+  import BoxDownloadMap from '@/views/components/map/BoxDownloadMap'
   import SubtitleMap from '@/views/components/map/SubtitleMap'
   import MapAlert from '@/views/components/map/mapAlert'
 
@@ -49,6 +51,7 @@
       'p-boxinfolayer': BoxInfoLayer,
       'p-boxinfovector': BoxInfoVector,
       'p-boxnotifications': BoxInfoNotifications,
+      'p-boxdownloadmap': BoxDownloadMap,
       "p-subtitle": SubtitleMap,
       "p-alert": MapAlert
     },
