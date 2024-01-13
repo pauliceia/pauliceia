@@ -39,8 +39,20 @@ function CSVToArray(strData, strDelimiter) {
       return (arrData);
 } 
 
+function jsonToCSV(json) {
+    const replacer = (key, value) => value === null ? '' : value
+    const header = Object.keys(json[0])
+    const csv = [
+    header.join(','),
+    ...json.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+    ].join('\r\n')
+
+    return csv;
+}
+
 export {
     CSV2JSON,
     CSVToArray,
+    jsonToCSV,
     getUrl
 }

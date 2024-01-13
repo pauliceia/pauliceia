@@ -2,7 +2,7 @@
   <section class="boxS" v-show="boxAlert">
     <header class="header">
       <img src="@/views/assets/images/logo.png" class="img">
-      <button class="btn" @click="closeBox()">
+      <button class="btn" id="close-alert" @click="closeBox()">
         <md-icon>close</md-icon>
       </button>
       <br>

@@ -258,6 +258,12 @@ export default {
                 "found": "Found",
                 "geocoded": "Geocoded",
                 "extrapolated": "Extrapolated"
+            },
+            "downloadCSVModal": {
+                "modalText": `One or more addresses weren't found. Do you want to download the logs file?`,
+                "modalTitle": "Not found",
+                "modalBtnConfirm": "Yes",
+                "modalBtnCancel": "No",
             }
         },
         "sidebarLayer": {
