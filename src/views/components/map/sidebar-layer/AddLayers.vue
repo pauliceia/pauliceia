@@ -291,83 +291,66 @@ export default {
         this.applyFilters();
       },
       applyFilters() {
-        let filteredLayers = this.allLayers.slice();
+          let filteredLayers = this.filterByText(this.allLayers.slice());
+          filteredLayers = this.filterByAuthors(filteredLayers);
+          filteredLayers = this.filterByDateRange(filteredLayers);
 
-        filteredLayers = filteredLayers.filter(layer => {
-          // filterText
-          if (
-            layer.properties.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
-            layer.properties.authors.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
-            layer.properties.keyword.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
-            layer.properties.start_date.toLowerCase().includes(this.filterText.toLowerCase()) ||
-            layer.properties.end_date.toLowerCase().includes(this.filterText.toLowerCase())
-          ) {
-            return true;
+          this.listLayers = filteredLayers;
+      },
+
+      filterByText(layers) {
+          return layers.filter(layer => {
+              return (
+                  layer.properties.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
+                  layer.properties.authors.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
+                  layer.properties.keyword.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
+                  layer.properties.start_date.toLowerCase().includes(this.filterText.toLowerCase()) ||
+                  layer.properties.end_date.toLowerCase().includes(this.filterText.toLowerCase())
+              );
+          });
+      },
+
+      filterByAuthors(layers) {
+          if (this.filterAuthors.length > 0) {
+              const authorNames = this.filterAuthors.map(author => author.name);
+              return layers.filter(layer => layer.properties.authors.some(author => authorNames.includes(author)));
           }
-          return false;
-        });
+          return layers;
+      },
 
-        // filterAuthors
-        if (this.filterAuthors.length > 0) {
-          const authorNames = this.filterAuthors.map(author => author.name)
+      filterByDateRange(layers) {
+          if (this.startDateFilter && this.endDateFilter) {
+              const startTimestamp = this.startDateFilter.getTime();
+              const endTimestamp = this.endDateFilter.getTime();
 
-          filteredLayers = filteredLayers.filter(layer => {
-            if (layer.properties.authors.some(author => authorNames.includes(author))) {
-              return true;
-            }
-          })
-        }
+              return layers.filter(layer => {
+                  const { start, end } = this.getLayerDateRange(layer);
+                  return (start <= endTimestamp && start >= startTimestamp) || (end >= startTimestamp && end <= endTimestamp);
+              });
+          } else if (this.startDateFilter) {
+              const startTimestamp = this.startDateFilter.getTime();
+              return layers.filter(layer => {
+                  const { start, end } = this.getLayerDateRange(layer);
+                  return start >= startTimestamp || end >= startTimestamp;
+              });
+          } else if (this.endDateFilter) {
+              const endTimestamp = this.endDateFilter.getTime();
+              return layers.filter(layer => {
+                  const { start, end } = this.getLayerDateRange(layer);
+                  return start <= endTimestamp || end <= endTimestamp;
+              });
+          }
+          return layers;
+      },
 
-        // filter by date range
-        console.log(this.startDateFilter, this.endDateFilter);
-        if (this.startDateFilter && this.endDateFilter) {
-          const startTimestamp = this.startDateFilter.getTime();
-          const endTimestamp =  this.endDateFilter.getTime();
+      getLayerDateRange(layer) {
+          const layerStartParts = layer.properties.start_date.split('/');
+          const layerEndParts = layer.properties.end_date.split('/');
 
-          filteredLayers = filteredLayers.filter(layer => {
-            const layerStartParts = layer.properties.start_date.split('/');
-            const layerEndParts = layer.properties.end_date.split('/');
+          const start = new Date(`${layerStartParts[1]}/${layerStartParts[0]}/${layerStartParts[2]}`).getTime();
+          const end = new Date(`${layerEndParts[1]}/${layerEndParts[0]}/${layerEndParts[2]}`).getTime();
 
-            const layerStartDate = new Date(`${layerStartParts[1]}/${layerStartParts[0]}/${layerStartParts[2]}`).getTime();
-            const layerEndDate = new Date(`${layerEndParts[1]}/${layerEndParts[0]}/${layerEndParts[2]}`).getTime();
-
-            if ((layerStartDate <= endTimestamp && layerStartDate >= startTimestamp) || (layerEndDate >= startTimestamp && layerEndDate <= endTimestamp)) {
-              return true;
-            }
-            return false;
-          });
-        } else if (this.startDateFilter) {
-          const startTimestamp = this.startDateFilter.getTime();
-
-          filteredLayers = filteredLayers.filter(layer => {
-            const layerStartParts = layer.properties.start_date.split('/');
-            const layerEndParts = layer.properties.end_date.split('/');
-
-            const layerStartDate = new Date(`${layerStartParts[1]}/${layerStartParts[0]}/${layerStartParts[2]}`).getTime();
-            const layerEndDate = new Date(`${layerEndParts[1]}/${layerEndParts[0]}/${layerEndParts[2]}`).getTime();
-
-            if (layerStartDate >= startTimestamp || layerEndDate >= startTimestamp) {
-              return true;
-            }
-            return false;
-          });
-        } else if (this.endDateFilter) {
-          const endTimestamp =  this.endDateFilter.getTime();
-
-          filteredLayers = filteredLayers.filter(layer => {
-            const layerStartParts = layer.properties.start_date.split('/');
-            const layerEndParts = layer.properties.end_date.split('/');
-
-            const layerStartDate = new Date(`${layerStartParts[1]}/${layerStartParts[0]}/${layerStartParts[2]}`).getTime();
-            const layerEndDate = new Date(`${layerEndParts[1]}/${layerEndParts[0]}/${layerEndParts[2]}`).getTime();
-
-            if (layerStartDate <= endTimestamp || layerEndDate <= endTimestamp) {
-              return true;
-            }
-            return false;
-          });
-        }
-        this.listLayers = filteredLayers;
+          return { start, end };
       },
       _openFullScreen() {
         this.loading = this.$loading({
