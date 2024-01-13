@@ -58,7 +58,7 @@
         return this.years.first
       },
       selectedEndYear(){
-        return this.years.last
+        return this.years.first
       }
     },
     mounted () {
@@ -66,7 +66,7 @@
 
       //this.filterUpdate()
       noUiSlider.create(slider, {
-        start: [this.sliderStartYear, this.sliderEndYear],
+        start: [this.sliderStartYear],
         connect: true,
         orientation: 'horizontal',
         step: 1,
@@ -94,7 +94,7 @@
       slider.noUiSlider.on('update', (values, handle) => {
         this.$store.dispatch('map/setYears', {
           first: values[0],
-          last: values[1]
+          last: values[0]
         })
 
         this.filterUpdate()
