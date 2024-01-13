@@ -165,8 +165,8 @@
         }
 
         this.$store.dispatch('map/setYears', {
-          first: values[0],
-          last: values[1]
+          first: input_slider_start.value,
+          last: input_slider_end.value
         })
 
         this.filterUpdate()
