@@ -259,6 +259,12 @@ export default {
                 "found": "Encontrado",
                 "geocoded": "Geocodificado",
                 "extrapolated": "Extrapolado"
+            },
+            "downloadCSVModal": {
+                "modalText": `Um ou mais endereços não foram encontrados. Deseja fazer o download dos logs?`,
+                "modalTitle": "Não encontrado",
+                "modalBtnConfirm": "Sim",
+                "modalBtnCancel": "Não",
             }
         },
         "sidebarLayer": {
