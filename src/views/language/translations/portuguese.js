@@ -289,7 +289,9 @@ export default {
             "box": {
                 "lbTitle": "TÍTULO",
                 "lbAuthors": "AUTORES",
-                "lbKeywods": "PALAVRAS-CHAVE"
+                "lbKeywods": "PALAVRAS-CHAVE",
+                "lbStartDate": "Data do ínicio",
+                "lbEndDate": "Data do término",
             },
             "btns": {
                 "active": "Ativar",

@@ -288,7 +288,9 @@ export default {
             "box": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
-                "lbKeywods": "KEYWORDS"
+                "lbKeywods": "KEYWORDS",
+                "lbStartDate": "Start Date",
+                "lbEndDate": "End Date",
             },
             "btns": {
                 "active": "Active",
