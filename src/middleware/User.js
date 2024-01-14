@@ -1,7 +1,6 @@
 import Api from '@/middleware/ApiVGI'
 
 export default {
-
   login (credentials) {
     return Api().get('/api/auth/login',
       {

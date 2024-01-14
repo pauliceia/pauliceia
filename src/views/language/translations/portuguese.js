@@ -28,7 +28,12 @@ export default {
             "dashboard": "Painel de Controle",
             "notifications": "Notificações",
             "myLayers": "Minhas Camadas",
-            "sharedLayers": "Camadas Compartilhadas"
+            "sharedLayers": "Camadas Compartilhadas",
+            "delete": {
+                "msg": "Você irá deletar a camada selecionada. Deseja continuar?",
+                "yes": "Sim",
+                "no": "Não"
+            }
         },
         "newLayer": {
             "name": "Nome",
@@ -279,9 +284,11 @@ export default {
         "addLayer": {
             "title": "Adicionar e remover camadas",
             "input": "Pesquise por tema, camada ou autor:",
+            "select": "Filtrar por:",
             "close": "Fechar",
             "box": {
                 "lbTitle": "TÍTULO",
+                "lbdesc": "DESCRIÇÃO",
                 "lbAuthors": "AUTORES",
                 "lbKeywods": "PALAVRAS-CHAVE"
             },
@@ -292,6 +299,11 @@ export default {
             "msg": {
                 "errTitle": "Erro Interno",
                 "errMsg": "Serviço indisponível, tente mais tarde ou comunique nosso suporte!"
+            }, 
+            "remove": {
+                "msg": "Você irá remover a camada selecionada. Deseja continuar?",
+                "yes": "Sim",
+                "no": "Não"
             }
         },
         "viewInfo": {
@@ -310,6 +322,9 @@ export default {
             "btnFeature": "Por localização",
             "btnBox": "Por região",
             "btnClean": "Limpar"
+        },
+        "download": {
+            "action": "Download do mapa atual"
         },
         "betaVersionModal": {
             "welcome": "Bem-vindo a plataforma `Pauliceia 2.0`",

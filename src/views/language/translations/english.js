@@ -278,9 +278,11 @@ export default {
         "addLayer": {
             "title": "Add or remove layers",
             "input": "Search by theme, layer or author:",
+            "select": "Filter by:",
             "close": "Close",
             "box": {
                 "lbTitle": "TITLE",
+                "lbdesc": "DESCRIPTION",
                 "lbAuthors": "AUTHORS",
                 "lbKeywods": "KEYWORDS"
             },
@@ -291,6 +293,11 @@ export default {
             "msg": {
                 "errTitle": "Internal Error",
                 "errMsg": "Service not available, try again later or report our support!"
+            },
+            "remove": {
+                "msg": "You are removing the selected layer. Continue?",
+                "yes": "Yes",
+                "no": "No"
             }
         },
         "viewInfo": {
@@ -309,6 +316,9 @@ export default {
             "btnFeature": "By location",
             "btnBox": "By region",
             "btnClean": "Clean"
+        },
+        "download": {
+            "action": "Download current map"
         },
         "betaVersionModal": {
             "welcome": "Welcome to the `Pauliceia 2.0` platform",
