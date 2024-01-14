@@ -136,6 +136,14 @@ export default {
         "unifesp": "Universidade Federal de SP (UNIFESP)",
       },
     },
+    "tutorial":{
+        "tutorial1": "Tutorial em Português",
+        "tutorial2": "Aqui temos um tutorial de como utilizar o Pauliceia:",
+        "download1": "Download em Português",
+        "links":{
+            "download2" : "https://drive.usercontent.google.com/download?id=196wlzsvMM-YHeLA2nQ77JSdtjMpq1eDM&export=download&authuser=0&confirm=t&uuid=f41e5617-69cb-4336-95ee-3b026daeb492&at=APZUnTXfAKngUcgOX8tJ6vxQoTmq:1705200007504",
+        },
+    },
     "about":{
       "title1": "Quem desenvolveu?",
       "title2": "Quem financiou?",

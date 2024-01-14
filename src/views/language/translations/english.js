@@ -135,6 +135,14 @@ export default {
         "unifesp": "Federal University of Sao Paulo (UNIFESP)",
       },
     },
+    "tutorial":{
+        "tutorial1": "English tutorial",
+        "tutorial2": "Here we have a use guide in English for Pauliceia:",
+        "download1": "Download in English",
+        "links":{
+            "download2" : "https://drive.usercontent.google.com/download?id=1UT6T0Kg6w32Nht4-guRdl8bz5eDU3J9D&export=download&authuser=0&confirm=t&uuid=2b73c372-6e57-440b-ae24-ae7e0dc7fc81&at=APZUnTX_jBmgytAze90q-0oMMSdR:1705202461993",
+        },
+    },
     "about":{
         "title1": "Who developed it?",
         "title2": "Who finaced it?",
