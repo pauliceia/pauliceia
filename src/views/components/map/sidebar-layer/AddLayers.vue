@@ -30,6 +30,13 @@
                     {{ name }}
                   </el-tag>
                 </p>
+
+                <p><strong>{{ $t('map.addLayer.box.lbStartDate') }}:</strong>
+                  {{layer.properties.startDate}}
+                </p>
+                <p><strong>{{ $t('map.addLayer.box.lbEndDate') }}:</strong>
+                  {{layer.properties.endDate}}
+                </p>
               </div>
 
               <div class="btns">
@@ -88,7 +95,8 @@ export default {
         listLayers: [],
         allLayers: [],
         allKeywords: [],
-        allAuthorsLayers: []
+        allAuthorsLayers: [],
+        allTemporalColumns: [],
       }
     },
     async mounted() {
@@ -104,6 +112,11 @@ export default {
 
         result = await Map.getAuthorsLayers(null)
         this.allAuthorsLayers = result.data.features
+
+        //chamar a API e receber os dados temporais em um JSON
+        const temporalColumns = await Map.getTemporalColumns()
+        this.allTemporalColumns = temporalColumns.data.features //salva em um array
+        this.updateTemporalDates()
 
         // add a list of authors and keywords names inside each layer
         this.allLayers.forEach(layer => {
@@ -144,6 +157,21 @@ export default {
       getAuthorById(id){
         return this.allAuthors.filter(author => author.properties.user_id === id)
       },
+
+      // Esta função atualiza as datas temporais nas propriedades das determinadas camadas
+      updateTemporalDates() {
+
+        this.allLayers.forEach(layer => {
+          const matchingTemporalColumn = this.allTemporalColumns.find(tc => tc.properties.f_table_name === layer.properties.f_table_name);
+          if (matchingTemporalColumn) {
+            // Atualiza a propriedade startDate da camada com a data de start_date da coluna temporal
+            layer.properties.startDate = this._getDate(matchingTemporalColumn.properties.start_date);
+            // Atualiza a propriedade endDate da camada com a data de end_date da coluna temporal
+            layer.properties.endDate = this._getDate(matchingTemporalColumn.properties.end_date);
+          }
+        });
+      },
+
       disabled(layer) {
         if(this.btnDisabled == false)
           this.btnDisabled = true
@@ -200,6 +228,16 @@ export default {
           })
         }
       },
+
+      _getDate(date) {
+            let dateParsed = date.split('-')
+            if(this.$i18n.locale() == "pt") {
+                return dateParsed[2].split(" ")[0] + "/" + dateParsed[1] + "/" + dateParsed[0]
+            } else {
+                return dateParsed[1] + "/" + dateParsed[2].split(" ")[0] + "/" + dateParsed[0]
+            }
+        },
+
       _openFullScreen() {
         this.loading = this.$loading({
           lock: true,
