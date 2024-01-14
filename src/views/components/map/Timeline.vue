@@ -13,7 +13,7 @@
     <!-- Botão para alternar entre os tipos de controle deslizante -->
     <div class = "button">
       <button @click="toggleSliderType" id = "changeButton" >
-      {{ useDoubleSlider ?  'Mudar régua' : 'Mudar régua' }}
+      {{ useDoubleSlider ?  $t('main.ruler') : $t('main.ruler') }}
       </button>
     </div>    
 
