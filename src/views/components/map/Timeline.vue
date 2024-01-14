@@ -1,6 +1,9 @@
 <template>
   <div id="contentSlider">
     <div class="sliders" id="slider"></div>
+    <button class="changeSliderButton" @click="changeSlider">
+      <md-icon>design_services</md-icon>
+    </button>
   </div>
 </template>
 
@@ -49,7 +52,8 @@
         sliderStartYear: 1886,
         sliderEndYear: 1970,
         // loaded temporal columns
-        loadedTC: []
+        loadedTC: [],
+        isSliderYearRange: true,
       }
     },
     computed: {
@@ -99,8 +103,95 @@
 
         this.filterUpdate()
       })
+
     },
     methods: {
+      changeSlider(){
+        if(this.isSliderYearRange) {
+          this.createYearSpecificSlider();
+        } else {
+          this.createYearRangeSlider();
+        }
+        this.isSliderYearRange = !this.isSliderYearRange;
+      },
+      createYearSpecificSlider(){
+        slider.noUiSlider.destroy()
+        let newYearSpecificSlider = document.getElementById('slider')
+
+        noUiSlider.create(newYearSpecificSlider, {
+          start: [this.sliderStartYear],
+          connect: true,
+          orientation: 'horizontal',
+          step: 1,
+          tooltips: true,
+          direction: 'ltr',
+          range: {
+            'min': this.sliderStartYear,
+            'max': this.sliderEndYear
+          },
+          pips: {
+            mode: 'count',
+            values: 5,
+            density: 4
+          },
+          format: {
+            to: value => {
+              return value + ''
+            },
+            from: value => {
+              return value.replace(',-', '')
+            }
+          }
+        })
+
+        newYearSpecificSlider.noUiSlider.on('update', (values, handle) => {
+          this.$store.dispatch('map/setYears', {
+            first: values[0],
+            last: values[1]
+          })
+
+          this.filterUpdate()
+        })
+      },
+      createYearRangeSlider() {
+        slider.noUiSlider.destroy()
+        var newYearRangeSlider = document.getElementById('slider')
+
+        noUiSlider.create(newYearRangeSlider, {
+          start: [this.sliderStartYear, this.sliderEndYear],
+          connect: true,
+          orientation: 'horizontal',
+          step: 1,
+          tooltips: true,
+          direction: 'ltr',
+          range: {
+            'min': this.sliderStartYear,
+            'max': this.sliderEndYear
+          },
+          pips: {
+            mode: 'count',
+            values: 5,
+            density: 4
+          },
+          format: {
+            to: value => {
+              return value + ''
+            },
+            from: value => {
+              return value.replace(',-', '')
+            }
+          }
+        })
+
+        newYearRangeSlider.noUiSlider.on('update', (values, handle) => {
+          this.$store.dispatch('map/setYears', {
+            first: values[0],
+            last: values[1]
+          })
+
+          this.filterUpdate()
+        })
+      },
       getTemporalColumns (f_table_name) {
         // tcs - array with the selected temporal columns
         let tcs = this.loadedTC.filter(tc => tc.properties.f_table_name === f_table_name)
@@ -136,15 +227,32 @@
           if(isNaN(endYear))
             endYear = new Date(String(tcProperties.end_date).replace(/-/g, '\/')).getFullYear()
 
-          // check if the feature is inside the selected period
-          if (startYear <= this.selectedEndYear && endYear >= this.selectedStartYear) {
-            // the feature style is removed, in other words, the feature is showed on the map
-            feature.setStyle(null)
-          } else {
-            // an `invisible` style is set to the feature, in other words, the feature is hidden from the map
-            feature.setStyle(emptyStyle)
+          // // check if the feature is inside the selected period
+          if (this.isSliderYearRange){
+            if (startYear <= this.selectedEndYear && endYear >= this.selectedStartYear) {
+              // the feature style is removed, in other words, the feature is showed on the map
+              feature.setStyle(null)
+            } else {
+              // an `invisible` style is set to the feature, in other words, the feature is hidden from the map
+              feature.setStyle(emptyStyle)
+            }
           }
+
+          // check if the feature is contained the selected period
+          else {
+            if (this.isContained(startYear, endYear, this.selectedStartYear)) {
+              // the feature style is removed, in other words, the feature is showed on the map
+              feature.setStyle(null)
+            } else {
+              // an `invisible` style is set to the feature, in other words, the feature is hidden from the map
+              feature.setStyle(emptyStyle)
+            }
+          }
+
         })
+      },
+      isContained(min, max, current){
+        return current >= min && current <= max;
       },
       filterUpdate () {
         overlayGroup.getLayers().forEach(vectorLayer => {
@@ -200,5 +308,12 @@
 
   #contentSlider .sliders .noUi-connect{
     background: #58595b !important;
+  }
+
+  .changeSliderButton {
+    background-color: transparent;
+    padding:20px;
+    margin-left: 20px;
+    border-color: transparent;
   }
 </style>
