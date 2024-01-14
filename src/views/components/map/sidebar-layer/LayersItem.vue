@@ -51,11 +51,10 @@
 <script>
 import { mapState } from 'vuex'
 import {
-    emptyStyle,
-    lineStyle,
-    polygonStyle,
-    pointStyle
-} from '@/views/assets/js/map/Styles'
+    getPointStyle,
+    getLineStyle,
+    getPolygonStyle
+} from '@/views/assets/js/map/geometricStyle'
 import Map from '@/middleware/Map'
 import Dashboard from '@/middleware/Dashboard'
 
@@ -177,18 +176,27 @@ export default {
               let styleType = typeof(layer.getStyle())
 
               if (this.type === 'multilinestring' || this.type === 'linestring') {
+
+                const lineStyle = getLineStyle();
+
                 if (styleType === 'function')
                   layer.setStyle(lineStyle)
 
                 this.colorVector = lineStyle.getStroke().getColor()
 
               } else if (this.type === 'multipoint' || this.type === 'point') {
+
+                const pointStyle = getPointStyle(true);
+
                 if (styleType === 'function')
                   layer.setStyle(pointStyle)
 
                 this.colorVector = pointStyle.getImage().getFill().getColor()
 
               } else if (this.type === 'multipolygon' || this.type === 'polygon') {
+
+                const polygonStyle = getPolygonStyle();
+
                 if (styleType === 'function')
                   layer.setStyle(polygonStyle)
 
