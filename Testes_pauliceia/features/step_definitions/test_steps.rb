@@ -176,4 +176,29 @@ When('I click the Mudar régua button') do
   find(:xpath, '//*[@id="changeButton"]').click
 end
 
+Then('it should be possible to observe the {string}') do |string|
+  page.should have_content(string)
+end
 
+Given('that I am in the side panel for layers on the map') do
+  visit 'http://localhost:8080/portal/explore'
+  find(:xpath, '/html/body/div/section/div/section/div/section[3]/button').click
+  sleep (1)
+  find(:xpath, '/html/body/div/section/div/section/div/div[2]/p').click
+  sleep (1)
+end
+
+Then('click the engine button') do
+  
+  find(:xpath, '/html/body/div[1]/section/div/section/div/div[2]/section/ul/section/div/div/div/span[2]/span/button').click
+end
+
+When('i click in the information about layer') do
+  
+  find(:xpath, '/html/body/div[1]/section/div/section/div/div[2]/section/ul/section/div/div/div/div[2]/i[2]').click
+end
+
+Then('i shoul see {string} e {string}') do |string, string2|
+  page.should have_content(string)
+  page.should have_content(string2)
+end
