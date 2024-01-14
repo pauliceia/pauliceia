@@ -292,6 +292,9 @@ export default {
                 "lbKeywods": "PALAVRAS-CHAVE",
                 "lbStartDate": "Data do ínicio",
                 "lbEndDate": "Data do término",
+                "lbDescription": "Descrição", 
+                "showLess": "Mostrar menos",
+                "showMore": "Mostrar mais"
             },
             "btns": {
                 "active": "Ativar",
