@@ -198,18 +198,9 @@ export default {
       reader.onload = async file => {
         let text = reader.result;
         let node = document.getElementById('output');
-        let csv = text.replace('\r','');
-        let rows = csv.split('\n');
-        // Filter out blank lines
-        let nonBlankRows = rows.filter(row => row.trim() !== '');
-
-        if (nonBlankRows.length === 0) {
-          this._msgError('CSV file contains only blank lines. Please provide valid data.');
-          return;
-        }
-        
-        let headers = nonBlankRows[0].split('\n')[0].split(',')
-
+        let csv = text.replace(/\r/g, '');
+        csv = csv.replace(/\n{2,}/g, '\n')
+        let headers = csv.split('\n')[0].split(',')
         // check if there is some blank header
         if (headers.some(e => e === '')) {
           this._msgError('Há nome de coluna(s) (i.e. cabeçalho(s)) em branco. Dê um nome a ela(s) ou remova-a(s)!')
@@ -218,7 +209,7 @@ export default {
 
         this.headers = headers
         //this.headers = csv.split('\n')[0].split(',').map( header => header.substr(header.indexOf('"')+1, header.lastIndexOf('"')-1).replace('"', '') )
-        this.csvjson = CSV2JSON(nonBlankRows);
+        this.csvjson = CSV2JSON(csv);
 
         this.loading.close()
       }
