@@ -30,6 +30,37 @@
                     {{ name }}
                   </el-tag>
                 </p>
+                <!--Create a button that says "Mostrar Descrição" that when i click it displays the description-->
+                <!-- <p>
+                  <strong>{{ $t('map.addLayer.box.lbDescription') }}:</strong>
+                  <span v-if="layer.properties.description != null">
+                    {{ layer.properties.description }}
+                  </span>
+                  <span v-else>
+                    {{ $t('map.addLayer.box.lbNoDescription') }}
+                  </span>
+                </p> -->
+                <p>
+                  <span v-if="layer.properties.description != null && showDescription[layer.properties.layer_id]">
+                    <strong>{{ $t('map.addLayer.box.lbDescription') }}:</strong>
+                    {{ layer.properties.description }}
+                    <div class="btns">
+                      <el-button @click="toggleDescription(layer.properties.layer_id)">
+                        {{ $t('map.addLayer.box.lbShowLess') }}
+                      </el-button>
+                    </div>
+                  </span>
+                  <span v-else-if="layer.properties.description != null">
+                    <div class="btns">
+                      <el-button @click="toggleDescription(layer.properties.layer_id)">
+                        {{ $t('map.addLayer.box.lbShowMore') }}
+                      </el-button>
+                    </div>
+                  </span>
+                  <span v-else>
+                    {{ $t('map.addLayer.box.lbNoDescription') }}
+                  </span>
+                </p>
               </div>
 
               <div class="btns">
@@ -88,7 +119,8 @@ export default {
         listLayers: [],
         allLayers: [],
         allKeywords: [],
-        allAuthorsLayers: []
+        allAuthorsLayers: [],
+        showDescription: {}
       }
     },
     async mounted() {
@@ -131,6 +163,7 @@ export default {
         this.listLayers = this.allLayers
 
       } catch (error) {
+        console.log(error)
         this.$alert(this.$t('map.addLayer.msg.errMsg'), this.$t('map.addLayer.msg.errTitle'), {
           confirmButtonText: 'OK',
           type: 'error'
@@ -207,6 +240,13 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         })
+      },
+      toggleDescription(id) {
+        if (this.showDescription[id] === undefined) {
+          this.$set(this.showDescription, id, true);
+        } else {
+          this.showDescription[id] = !this.showDescription[id];
+        }
       }
     }
 }
