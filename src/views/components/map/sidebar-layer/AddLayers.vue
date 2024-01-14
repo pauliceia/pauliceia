@@ -30,6 +30,9 @@
                     {{ name }}
                   </el-tag>
                 </p>
+                <p><strong>{{ $t('map.addLayer.box.lbDate') }}:</strong>
+                  {{ convertDateFormat(layer.properties.created_at) }}
+                </p> 
                 <!--Create a button that says "Mostrar Descrição" that when i click it displays the description-->
                 <!-- <p>
                   <strong>{{ $t('map.addLayer.box.lbDescription') }}:</strong>
@@ -102,7 +105,8 @@ export default {
           this.listLayers = this.allLayers.filter(layer => {
             if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
                 layer.properties.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
+                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
+                this.convertDateFormat(layer.properties.created_at.toString()).indexOf(val.toLowerCase()) >= 0)
                   return layer
           })
         }
@@ -177,6 +181,21 @@ export default {
       getAuthorById(id){
         return this.allAuthors.filter(author => author.properties.user_id === id)
       },
+      convertDateFormat(inputDate) {
+      const inputDateObj = new Date(inputDate);
+
+      if (isNaN(inputDateObj.getTime())) {
+        throw new Error("Data inválida.");
+      }
+
+      const day = String(inputDateObj.getDate()).padStart(2, '0');
+      const month = String(inputDateObj.getMonth() + 1).padStart(2, '0');
+      const year = inputDateObj.getFullYear();
+
+      const outputDate = `${day}/${month}/${year}`;
+
+      return outputDate;
+    },
       disabled(layer) {
         if(this.btnDisabled == false)
           this.btnDisabled = true
