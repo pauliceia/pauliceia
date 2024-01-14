@@ -24,8 +24,9 @@
             <div class="card-text">
               <div class="row" v-for="layer in myLayers" v-bind:key="layer.layer_id">
                 <div class="col-sm-7">{{ layer.name }}</div>
+                <!-- div com o botao de confirmacao de deletar camada -->
                 <div class="col-sm-5">
-                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
+                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="showDeleteConfirmation(layer.layer_id)"><md-icon>clear</md-icon></button>
                   <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
                 </div>
                 <hr>
@@ -65,6 +66,7 @@
   import Api from '@/middleware/ApiVGI'
   import { mapState } from 'vuex'
   import Notifications from '@/views/components/dashboard/Notifications'
+  import { MessageBox } from 'element-ui';
 
   export default {
     data () {
@@ -87,6 +89,23 @@
           this.updateLayers()
         })
       },
+      // método para confirmar se o uusuario deseja excluir a camada
+      showDeleteConfirmation(layerId) {
+      const confirmMessage = `Você tem certeza de que deseja excluir a camada?`;
+
+      MessageBox.confirm(confirmMessage, 'Confirmação', {
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
+        type: 'warning'
+      })
+        .then(() => {
+          // Se o usuário confirmar, chame o método de exclusão
+          this.deleteLayer(layerId);
+        })
+        .catch(() => {
+          // Se o usuário cancelar, não faça nada
+        });
+    },
       editLayer(id){
         this.$router.push({name: 'EditLayer', params: {layer_id: id}})
       },
