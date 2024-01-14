@@ -33,11 +33,11 @@ And('Eu clico no botão "Cadastrar"') do
   sleep(8)
 end
 
-Then('Aparece o erro: {string} ou {string}') do |errorMessagePT, errorMessageEN|
-  expect(page).to have_content(errorMessagePT) or have_content(errorMessageEN)
+Then('Aparece o erro: {string}') do |errorMessage|
+  expect(page).to have_content(errorMessage)
 end
 
-Then('Aparece {string}, {string}') do |errorMessagePT, errorMessageEN|
-  expect(page).to have_content(errorMessagePT) or have_content(errorMessageEN)
+Then('Aparece {string}') do |errorMessage|
+  expect(page).to have_content(errorMessage)
 end
 

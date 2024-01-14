@@ -9,7 +9,7 @@ Scenario Outline: Cadastro com campos vazios
   | Nome   | NomeDeUsuario   | Senha   | ConfirmeSenha   |
   | <nome> | <nomedeusuario> | <senha> | <confirmesenha> |
   And Eu clico no botão "Cadastrar"
-  Then Aparece o erro: "Preencha todos os campos." ou "Fill in all fields."
+  Then Aparece o erro: "Preencha todos os campos."
 
 Examples:
     | nome       | nomedeusuario | senha   | confirmesenha |
@@ -28,7 +28,7 @@ Scenario Outline: Cadastro com preenchimento inválido
 
 Examples:
     | nome       | nomedeusuario | senha   | confirmesenha | mensagemDeErro |
-    | XX         | NomeVálido    | Senha1  | Senha1        | "O nome deve ter no mínimo 3 caracteres.", "The name must be at least 3 characters long."                                                                                         |
-    | NomeVálido | XX            | Senha1  | Senha1        | "O nome de usuário deve ter no mínimo 3 caracteres.", "The username must be at least 3 characters long."                                                                          |
-    | NomeVálido | NomeVálido    | XX      | XX            | "A senha deve ter no mínimo 6 caracteres, pelo menos 1 letra maiúscula e 1 número.", "The password must have at least 6 characters, with at least 1 capital letter and 1 number." |
-    | NomeVálido | NomeVálido    | Senha1  | XX            | "As senhas devem ser iguais.", "The passwords must be the same."                                                                                                                  |
+    | XX         | NomeVálido    | Senha1  | Senha1        | "O nome deve ter no mínimo 3 caracteres."                                           |
+    | NomeVálido | XX            | Senha1  | Senha1        | "O nome de usuário deve ter no mínimo 3 caracteres."                                |
+    | NomeVálido | NomeVálido    | XX      | XX            | "A senha deve ter no mínimo 6 caracteres, pelo menos 1 letra maiúscula e 1 número." |
+    | NomeVálido | NomeVálido    | Senha1  | XX            | "As senhas devem ser iguais."                                                       |
