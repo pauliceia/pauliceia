@@ -59,11 +59,13 @@
     z-index: 99
 
     .buttonClose
+      position: relative
       color: #FFF
       font-size: 30px
       bottom: 5px
-      right: 150px
-      width: 15%
+      right: -40%
+      width: 20%
+      height: 40px
       border-radius: 7.5px
       font-size: 30px
       background: #f15a29
