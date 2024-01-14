@@ -14,7 +14,6 @@ And('Eu preencho informações válidas') do
   fill_in 'E-mail', with: 'teste@gmail.com'
   fill_in 'Nome de usuário', with: 'teste'
   fill_in 'Senha', with: 'Senha1'
-  fill_in 'Confirme a senha', with: 'Senha1'
   check('Eu concordo com os termos de uso.', allow_label_click: true)
 end
 
