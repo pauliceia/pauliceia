@@ -311,6 +311,8 @@ export default {
             "lbTitle": "TÍTULO",
             "lbDescription": "DESCRIÇÃO",
             "lbKeywods": "PALAVRAS-CHAVE",
+            "lbStartDate": "DATA DO INÍCIO",
+            "lbEndDate": "DATA DO TÉRMINO",
             "lbAuthors": "AUTORES",
             "lbDate": "DATA DE CRIAÇÃO",
             "lbReferences": "REFERÊNCIAS",

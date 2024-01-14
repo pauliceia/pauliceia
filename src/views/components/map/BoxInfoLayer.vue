@@ -30,6 +30,10 @@
                         {{ getTagName(id)[0].properties.name }}
                     </el-tag>
                 </li>
+
+                <li><b>{{ $t('map.viewInfo.lbStartDate') }}:</b> {{ infos.startDate }} </li>
+                <li><b>{{ $t('map.viewInfo.lbEndDate') }}:</b> {{ infos.endDate }} </li>
+
                 <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b> {{ infos.description }} </li>
                 <li><b>{{ $t('map.viewInfo.lbDate') }}:</b> {{ infos.date }}</li>
                 <li><b>{{ $t('map.viewInfo.lbAuthors') }}:</b>
@@ -399,6 +403,13 @@ export default {
             this.infos.keywords = this.layer.keyword
             this.infos.references = this.layer.reference
             this.infos.authors = this.allAuthorsLayers.filter( item => item.properties.layer_id == this.layer.layer_id )
+
+            //Chamada a API que retorna o JSON com os dados temporais da camada
+            const temporalColumns = await Map.getTemporalColumns(`f_table_name=${this.layer.f_table_name}`)
+
+            //armazena nas variáveis de apresentação os valores da data do início e fim da camada
+            this.infos.startDate = this._getDate(temporalColumns.data.features[0].properties.start_date)
+            this.infos.endDate = this._getDate(temporalColumns.data.features[0].properties.end_date)
 
             this.infos.date = this._getDate(this.layer.created_at)
         },
