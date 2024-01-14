@@ -6,12 +6,17 @@
 
       <!-- Renderiza o segundo tipo de controle deslizante se useDoubleSlider for falso -->
       <div v-else class="sliders" id="singleSlider"></div>
+
     </div>
+    
 
     <!-- Botão para alternar entre os tipos de controle deslizante -->
-    <button @click="toggleSliderType">
-      {{ useDoubleSlider ?  'Usar Controle Simples' : 'Usar Controle Duplo' }}
-    </button>
+    <div class = "button">
+      <button @click="toggleSliderType" id = "changeButton" >
+      {{ useDoubleSlider ?  'Mudar régua' : 'Mudar régua' }}
+      </button>
+    </div>    
+
   </div>
 </template>
 
@@ -79,7 +84,8 @@
       this.initializeSlider();
     },
     
-    methods: {
+    methods: {           
+
       toggleSliderType() {
         console.log('Clicou no botão de alternância');
         this.useDoubleSlider = !this.useDoubleSlider;
@@ -149,6 +155,7 @@
         this.filterUpdate();
       });
     },
+
       getTemporalColumns (f_table_name) {
         // tcs - array with the selected temporal columns
         let tcs = this.loadedTC.filter(tc => tc.properties.f_table_name === f_table_name)
@@ -226,6 +233,8 @@
 </script>
 
 <style>
+
+
   #contentSlider {
     position: absolute;
     display: flex;
@@ -249,4 +258,34 @@
   #contentSlider .sliders .noUi-connect{
     background: #58595b !important;
   }
+
+
+  #playButton {
+    border-radius: 7.5px;
+    line-height: 1;
+    color: #FFF;
+    font-size: 30px;
+    background: #f15a29;
+    font-family: IrisUPC ;
+    position: absolute;
+    display: flex;
+    z-index: 4;
+    bottom: 51px;
+    left: 25%;
+  }
+  #changeButton  {
+    border-radius: 7.5px;
+    line-height: 1;
+    color: #FFF;
+    font-size: 30px;
+    background: #f15a29;
+    font-family: IrisUPC ;
+    position: absolute;
+    display: flex;
+    z-index: 4;
+    bottom: 51px;
+    right: 24%;
+  }
+
+
 </style>
