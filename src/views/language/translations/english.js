@@ -282,6 +282,7 @@ export default {
             "close": "Close",
             "box": {
                 "lbTitle": "TITLE",
+                "lbdesc": "DESCRIPTION",
                 "lbAuthors": "AUTHORS",
                 "lbKeywods": "KEYWORDS"
             },

@@ -11,8 +11,9 @@ export default {
   },
 
   getLayers(query) {
-    if(query != null) return ApiVGI().get(`/api/layer/?`+query)
-    else return ApiVGI().get(`/api/layer/`)
+    if(query != null) 
+      return ApiVGI().get(`/api/layer/?`+query)
+    return ApiVGI().get(`/api/layer/`)
   },
 
   getLayers(query) {

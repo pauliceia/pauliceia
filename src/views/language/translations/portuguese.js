@@ -28,7 +28,12 @@ export default {
             "dashboard": "Painel de Controle",
             "notifications": "Notificações",
             "myLayers": "Minhas Camadas",
-            "sharedLayers": "Camadas Compartilhadas"
+            "sharedLayers": "Camadas Compartilhadas",
+            "delete": {
+                "msg": "Você irá deletar a camada selecionada. Deseja continuar?",
+                "yes": "Sim",
+                "no": "Não"
+            }
         },
         "newLayer": {
             "name": "Nome",
@@ -283,6 +288,7 @@ export default {
             "close": "Fechar",
             "box": {
                 "lbTitle": "TÍTULO",
+                "lbdesc": "DESCRIÇÃO",
                 "lbAuthors": "AUTORES",
                 "lbKeywods": "PALAVRAS-CHAVE"
             },
