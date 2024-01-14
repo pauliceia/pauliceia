@@ -30,7 +30,8 @@ export default {
 <style lang="sass" scoped>
 .box-language
     padding: 0 0 0 20px
+    margin-bottom: 20px
     .md-icon
-        cursor: pointer
+        cursor: pointer    
 
 </style>

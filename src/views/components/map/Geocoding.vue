@@ -228,6 +228,14 @@ export default {
       let CsvTotalStatus = "Status da busca de endereços via CSV: \n \n"
       let errosCount = 0;
 
+      function exportToTxt() {
+        const link = document.createElement('a');
+        const blob = new Blob([jsonErros], { type: 'text/plain' });
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'Erros encontrados.vue.txt';
+        link.click();
+      }
+
       for (let i = 0; i < json.length; i++) {
         let address = json[i][this.street].toLowerCase()+", "+json[i][this.numberAddress]+", "+json[i][this.year];
 
@@ -280,6 +288,7 @@ export default {
 
       if (errosCount > 0){
         alert(jsonErros)
+        exportToTxt()
       }
 
       alert(CsvTotalStatus)

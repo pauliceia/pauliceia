@@ -52,6 +52,7 @@
                     <p-logAvatar :photo="user.picture" :name="user.name"/>
                 </div>
                 <div v-else>
+                    <router-link to="/register" class="btn btn-register">Register</router-link>
                     <router-link to="/login" class="btn btn-login">{{ $t('nav.login') }}</router-link>
                 </div>
 
@@ -128,5 +129,13 @@ export default {
             background: rgba(#f15a29, 0.5)
         .btn-active:hover
             background: rgba(#f15a29, 0.2)
+
+        .btn-register
+            font-family: IrisUPC           
+            font-size: 30px
+
+        .btn-register:hover
+            color: #fc6603
+            text-decoration: none
 
 </style>
