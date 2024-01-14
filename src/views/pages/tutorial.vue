@@ -22,6 +22,30 @@
       </header>
     </div>
 
+    <div class="container2">
+      <div class="container">
+        <div class="row justify-content-md-left">
+          <div class="col-sm-12 column-style">
+            <h5 class="title2">{{ $t('tutorial.tutorial3') }}</h5><br>
+          </div>
+        </div>
+        {{/**/}}
+        <div class="row justify-content-md-left row-style">
+          <div class="col-sm-4 column-style text-right" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
+            <h5 class="title2">{{ $t('tutorial.tutorial4') }}</h5><br>
+            <!-- {{ $t('tutorial.tutorial4') }}  -->
+            <!-- {{ $t('about.desc1') }} -->
+          </div>
+        </div>
+        <div class="row justify-content-md-left row-style">
+          <div class="col-sm-4 column-style text-right" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
+            <a :href="$t('tutorial.links.download3')" class="btn btn-drive">{{ $t('tutorial.drive1') }}</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </section>
 </template>
 
@@ -44,10 +68,10 @@ export default {
 
 <style lang="sass" scoped>
   .page-weapper
+    background: url('~@/views/assets/images/mapa5_1877.jpg') no-repeat center center fixed;
+    background-size: cover;
 
     .container
-
-      
 
       position: relative
       padding-top: 300px
@@ -58,6 +82,18 @@ export default {
 
       .column-style:last-child
         padding-right: 0
+
+      .btn-drive
+          color: #FFFFFF
+          background: #f15a29
+          font-family: IrisUPC
+          font-size: 30px
+          padding: 200 px 20px
+          border-radius: 7.5px
+          line-height: 1
+          a
+            text-decoration: none
+            display: inline-block
 
       .card-style
         border-radius: 20px
@@ -77,33 +113,26 @@ export default {
           border-radius: 7.5px
           line-height: 1
           a
-              list-decoration: none
+            list-decoration: none
 
     .container2
       background-color: #c6c6c6
-      padding-bottom: 50px
+      padding-TOP: 50px
+      padding-bottom: 100px
 
       .container
         padding: 0
 
       .row
-        margin: 0
+        margin: -20px
 
       .row-style
-        padding-bottom: 50px
+        padding-bottom: 0px
 
       .title2
         position: relative
-        padding-top: 20px
+        padding-top: 0px
+      .column-style.text-right
+        margin-top: 30px
 
-
-    .picture
-      position: relative
-      top: 20px
-
-    .picture2
-      position: relative
-      top: 0px
-      padding-top: 20px
-      width: 400px
 </style>

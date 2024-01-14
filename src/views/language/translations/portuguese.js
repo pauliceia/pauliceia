@@ -139,9 +139,13 @@ export default {
     "tutorial":{
         "tutorial1": "Tutorial em Português",
         "tutorial2": "Aqui temos um tutorial de como utilizar o Pauliceia:",
+        "tutorial3": "Outros links para download",
+        "tutorial4": "Caso preferir, aqui está o link para o google drive com os tutoriais nos idiomas disponíveis :",
+        "drive1": "Google drive",
         "download1": "Download em Português",
         "links":{
             "download2" : "https://drive.usercontent.google.com/download?id=196wlzsvMM-YHeLA2nQ77JSdtjMpq1eDM&export=download&authuser=0&confirm=t&uuid=f41e5617-69cb-4336-95ee-3b026daeb492&at=APZUnTXfAKngUcgOX8tJ6vxQoTmq:1705200007504",
+            "download3" : "https://drive.google.com/drive/folders/1M7iU2iz46i2gIgfctkUCZdBARWJykcoT",
         },
     },
     "about":{
