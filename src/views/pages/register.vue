@@ -108,6 +108,7 @@ export default {
             this._openFullScreen()
             try {
                 this.resetInputColorBorder()
+                this.errorMessage = ''
                 if(!this.isEveryInputFilled()){
                     this.colorEmptyInputBorder()
                     this.errorMessage = this.$t('register.msg.emptyField')
@@ -127,9 +128,6 @@ export default {
                     this.$refs.passwordInput.style.borderColor = 'red'
                     this.$refs.confirmPasswordInput.style.borderColor = 'red'
                     this.errorMessage = this.$t('register.msg.invalidConfirmPassword')
-                } else if (!this.isSuperName(this.user.name)){
-                    this.$refs.nameInput.style.borderColor = 'red'
-                    this.errorMessage = this.$t('register.msg.invalidName')
                 } else {
                     let password = new jsSHA("SHA-512", "TEXT")
                     password.update(this.user.password)
@@ -219,9 +217,6 @@ export default {
         },
         isConfirmPasswordValid(password, confirmpassword) {
             return password == confirmpassword;
-        },
-        isSuperName(name) {
-            return name.length >= 6;
         },
         _cleanForm() {
             let userClean = {

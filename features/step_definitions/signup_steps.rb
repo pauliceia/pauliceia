@@ -13,7 +13,8 @@ And('Eu preencho informações válidas') do
   fill_in 'Nome', with: 'teste'
   fill_in 'E-mail', with: 'teste@gmail.com'
   fill_in 'Nome de usuário', with: 'teste'
-  fill_in 'Senha', with: '123'
+  fill_in 'Senha', with: 'Senha1'
+  fill_in 'Confirme a senha', with: 'Senha1'
   check('Eu concordo com os termos de uso.', allow_label_click: true)
 end
 
@@ -25,8 +26,9 @@ And('Eu clico em "Cadastrar"') do
 end
 
 # cenario 'infeliz'
-And('Não há conexão com o servidor interno') do
+And('Cadastro é bem-sucedido e eu sou redirecionado para a página de login') do
+  expect(current_path).to eq('/portal/login')
   expect(page.has_css?('.el-message-box'))
-  expect(find('span', text: 'ERROR'))
+  expect(find('span', text: 'SUCESSO'))
 end
 
