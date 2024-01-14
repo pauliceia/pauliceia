@@ -288,9 +288,32 @@
       },
       Upload2(){
         // this method sends the temporal columns to VGIMWS
-
         if ((this.startDate === "" || this.endDate === "") || (this.startDate === null || this.endDate === null)) {
           this._msgError("O preenchimento das datas é obrigatório!")
+          return;
+        }
+        
+        var startDateObject = new Date(Date.UTC(
+            parseInt(this.startDate.substring(0, 4), 10),
+            parseInt(this.startDate.substring(5, 7), 10) - 1,
+            parseInt(this.startDate.substring(8, 10), 10)
+        ));
+        
+        var endDateObject = new Date(Date.UTC(
+            parseInt(this.endDate.substring(0, 4), 10),
+            parseInt(this.endDate.substring(5, 7), 10) - 1,
+            parseInt(this.endDate.substring(8, 10), 10)
+        ));
+
+        var currentDate = new Date();
+
+        if(startDateObject > endDateObject){
+          this._msgError(`A data inicial não pode ser maior que a data final!`);
+          return;          
+        }
+
+        if(endDateObject.getUTCFullYear() > currentDate.getUTCFullYear()){
+          this._msgError(`O ano da data final da camada deve ser no máximo ${currentDate.getFullYear()}!`);
           return;
         }
 
