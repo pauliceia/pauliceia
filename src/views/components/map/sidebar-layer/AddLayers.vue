@@ -70,6 +70,19 @@
                     {{ name }}
                   </el-tag>
                 </p>
+                <div class="btns">
+                  <el-button @click="showDescription(layer.properties.description)" size="small" type="info" round>{{
+                    $t('map.addLayer.box.lbDescription') }}</el-button> 
+                  <el-dialog :title="$t('map.addLayer.box.lbDescription')" :visible.sync="showDescriptionDialog"
+                    width="30%" center append-to-body>
+                    <p>{{ selectedLayerDescription }}</p>
+                    <span class="dialog-footer">
+                      <el-button @click="closeDescriptionDialog">{{ $t('map.addLayer.close') }}</el-button>
+                    </span>
+                  </el-dialog>
+                </div>
+
+
               </div>
 
               <div class="btns">
@@ -140,6 +153,8 @@ export default {
         allTemporalData: [],
         allAuthors: [],
         showFilters: false,
+        showDescriptionDialog: false,
+        selectedLayerDescription: '',
       }
     },
     async mounted() {
@@ -196,6 +211,17 @@ export default {
       }
     },
     methods: {
+      // method to show description in a dialog
+      showDescription(description) {
+        this.selectedLayerDescription = description;
+        this.showDescriptionDialog = true;
+      },
+
+      // method to close the description dialog
+      closeDescriptionDialog() {
+        this.showDescriptionDialog = false;
+        this.selectedLayerDescription = '';
+      },
       getKeywordById(id){
         return this.allKeywords.filter(key => key.properties.keyword_id === id)
       },

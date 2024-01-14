@@ -293,6 +293,7 @@ export default {
                 "lbTitle": "TÍTULO",
                 "lbAuthors": "AUTORES",
                 "lbKeywods": "PALAVRAS-CHAVE",
+                "lbDescription": "DESCRIÇÃO",
                 "lbTemporalData": "DADOS TEMPORAIS",
                 "lbUntil": "até",
             },
