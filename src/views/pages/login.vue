@@ -139,6 +139,7 @@ section
     padding-top: 50px
 
 .terms
+    float: right
     text-align: center
     a
         color: #0099ff
