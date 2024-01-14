@@ -86,6 +86,11 @@ export default {
             "layer": "Edição Camada",
             "editLayer": "Editar Camada"
         },
+        "deletionConfirmationPopup": {
+            "confirmationText": "Tem certeza que deseja deletar essa camada?",
+            "deleteButton": "Sim!",
+            "cancelButton": "Não"
+        },
         "keywords":{
             "keywords": "Palavras-chave",
             "newKeyword": "Nova Palavra-Chave",

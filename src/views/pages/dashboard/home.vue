@@ -1,63 +1,74 @@
 <template>
-  <p-dash-layout :title="$t('dashboard.home.dashboard')">
-    <div class="row">
+  <section>
+    <p-dash-layout :title="$t('dashboard.home.dashboard')">
+      <div class="row">
 
-      <!-- notifications -->
-      <div class="col-sm-8">
-        <div class="card ">
-          <div class="card-body">
-            <h6 class="mb-0">{{ $t('dashboard.home.notifications') }}</h6>
-            <br>
-            <p-notifications showInput="true"></p-notifications>
-          </div>
-        </div>
-      </div>
-
-      <!-- layers lists -->
-      <div class="col-sm-4">
-
-        <!-- my layers list -->
-        <div class="card ">
-          <div class="card-body">
-            <h6 class="mb-0">{{ $t('dashboard.home.myLayers') }}</h6>
-            <br>
-            <div class="card-text">
-              <div class="row" v-for="layer in myLayers" v-bind:key="layer.layer_id">
-                <div class="col-sm-7">{{ layer.name }}</div>
-                <div class="col-sm-5">
-                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
-                  <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
-                </div>
-                <hr>
-              </div>
+        <!-- notifications -->
+        <div class="col-sm-8">
+          <div class="card ">
+            <div class="card-body">
+              <h6 class="mb-0">{{ $t('dashboard.home.notifications') }}</h6>
+              <br>
+              <p-notifications showInput="true"></p-notifications>
             </div>
           </div>
         </div>
 
-        <!-- shared layers list -->
-        <div class="card " style="margin-top: 20px">
-          <div class="card-body">
-            <h6 class="mb-0">{{ $t('dashboard.home.sharedLayers') }}</h6>
-            <br>
-            <div class="card-text">
-              <div class="row" v-for="layer in sharedLayers" v-bind:key="layer.layer_id">
-                <div class="col-sm-8">{{ layer.name }}</div>
-                <div class="col-sm-2">
-                  <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+        <!-- layers lists -->
+        <div class="col-sm-4">
+
+          <!-- my layers list -->
+          <div class="card ">
+            <div class="card-body">
+              <h6 class="mb-0">{{ $t('dashboard.home.myLayers') }}</h6>
+              <br>
+              <div class="card-text">
+                <div class="row" v-for="layer in myLayers" v-bind:key="layer.layer_id">
+                  <div class="col-sm-7">{{ layer.name }}</div>
+                  <div class="col-sm-5">
+                    <button type="button" class="btn btn-outline-danger btn-sm add2" @click="OpenDeletionPopup(layer.layer_id)"><md-icon>clear</md-icon></button>
+                    <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  </div>
+                  <hr>
                 </div>
-                <div class="col-sm-2">
-                  <!--<button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>-->
-                </div>
-                <hr>
               </div>
             </div>
           </div>
+
+          <!-- shared layers list -->
+          <div class="card " style="margin-top: 20px">
+            <div class="card-body">
+              <h6 class="mb-0">{{ $t('dashboard.home.sharedLayers') }}</h6>
+              <br>
+              <div class="card-text">
+                <div class="row" v-for="layer in sharedLayers" v-bind:key="layer.layer_id">
+                  <div class="col-sm-8">{{ layer.name }}</div>
+                  <div class="col-sm-2">
+                    <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
+                  </div>
+                  <div class="col-sm-2">
+                    <!--<button type="button" class="btn btn-outline-danger btn-sm add" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>-->
+                  </div>
+                  <hr>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
+    </p-dash-layout>
 
-    </div>
-  </p-dash-layout>
+    <!-- Deletion Confirmation Pop-up -->
+    <p-deletion-alert 
+      :currentLayerId="currentLayerId"
+      v-if="showDeletionPopup" 
+      @CloseDeletionPopup="CloseDeletionPopup" 
+      @deleteLayerById="deleteLayerById">
+    </p-deletion-alert>
+
+  </section>
 </template>
 
 <script>
@@ -65,12 +76,15 @@
   import Api from '@/middleware/ApiVGI'
   import { mapState } from 'vuex'
   import Notifications from '@/views/components/dashboard/Notifications'
+  import DeletionAlert from '../../components/map/deletionAlert.vue'
 
   export default {
     data () {
       return {
         myLayers: [],
-        sharedLayers: []
+        sharedLayers: [],
+        showDeletionPopup: false,
+        currentLayerId: 0,
       }
     },
     mounted() {
@@ -82,8 +96,17 @@
       ...mapState('map', ['boxNotifications']),
     },
     methods: {
-      deleteLayer(id){
-        Api().delete('/api/layer/' + id).then((response) => {
+      OpenDeletionPopup (currentLayerId){
+        this.showDeletionPopup = true;
+        this.currentLayerId = currentLayerId;
+      },
+      CloseDeletionPopup (){
+        this.showDeletionPopup = false;  
+        this.currentLayerId = -1;
+      },
+      deleteLayerById(currentLayerId){
+        console.log("try");
+        Api().delete('/api/layer/' + currentLayerId).then((response) => {
           this.updateLayers()
         })
       },
@@ -147,7 +170,8 @@
     },
     components: {
       "p-dash-layout": DashLayout,
-      'p-notifications': Notifications
+      'p-notifications': Notifications,
+      "p-deletion-alert": DeletionAlert,
     }
   }
 </script>
