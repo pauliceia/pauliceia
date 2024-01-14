@@ -30,6 +30,12 @@ export default {
             "myLayers": "My Layers",
             "sharedLayers": "Shared Layers"
         },
+        "deleteLayer": {
+            "confirmMessage": "Are you sure you want to delete the layer?",
+            "Confirmation": "Confirmation",
+            "confirmButtonText": "Confirm",
+            "cancelButtonText": "Cancel",
+        },
         "newLayer": {
             "name": "Name",
             "keywords": "Keywords",

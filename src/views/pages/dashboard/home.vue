@@ -91,11 +91,11 @@
       },
       // método para confirmar se o uusuario deseja excluir a camada
       showDeleteConfirmation(layerId) {
-      const confirmMessage = `Você tem certeza de que deseja excluir a camada?`;
+      const confirmMessage = this.$t('dashboard.deleteLayer.confirmMessage');
 
-      MessageBox.confirm(confirmMessage, 'Confirmação', {
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Cancelar',
+      MessageBox.confirm(confirmMessage, this.$t('dashboard.deleteLayer.Confirmation'), {
+        confirmButtonText: this.$t('dashboard.deleteLayer.confirmButtonText'),
+        cancelButtonText: this.$t('dashboard.deleteLayer.cancelButtonText'),
         type: 'warning'
       })
         .then(() => {
