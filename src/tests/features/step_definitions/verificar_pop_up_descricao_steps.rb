@@ -11,7 +11,7 @@ Quando('abro o seletor de camadas') do
 end
 
 E("clico no botão {string}") do | buttonText | 
-  find_all("span", :text => buttonText)[0].click
+  page.find_all("span", :text => buttonText)[0].click
 end
 
 Então ('eu vejo o popup da descrição') do 
