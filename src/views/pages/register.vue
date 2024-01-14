@@ -14,23 +14,28 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label>{{ $t('register.lbName') }}</label>
-                            <input type="text" v-model="user.name" class="form-control form-control-lg" :placeholder="$t('register.lbName')" required>
+                            <input type="text" v-model="user.name" ref="nameInput" class="form-control form-control-lg" :placeholder="$t('register.lbName')">
                         </div>
                         <div class="form-group col-md-12">
                             <label>{{ $t('register.lbEmail') }}</label>
-                            <input type="email" v-model="user.email" class="form-control form-control-lg" :placeholder="$t('register.lbEmail')" required>
+                            <input type="email" v-model="user.email" ref="emailInput" class="form-control form-control-lg" :placeholder="$t('register.lbEmail')">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>{{ $t('register.lbUsername') }}</label>
+                            <input type="text" v-model="user.username" ref="usernameInput" class="form-control form-control-lg" :placeholder="$t('register.lbUsername')">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>{{ $t('register.lbUsername') }}</label>
-                            <input type="text" v-model="user.username" class="form-control form-control-lg" :placeholder="$t('register.lbUsername')" required>
+                            <label>{{ $t('register.lbPassword') }}</label>
+                            <input type="password" v-model="user.password" ref="passwordInput" class="form-control form-control-lg" :placeholder="$t('register.lbPassword')">
                         </div>
                         <div class="form-group col-md-6">
-                            <label>{{ $t('register.lbPassword') }}</label>
-                            <input type="password" v-model="user.password" class="form-control form-control-lg" :placeholder="$t('register.lbPassword')" required>
+                            <label>{{ $t('register.lbConfirmPassword') }}</label>
+                            <input type="password" v-model="user.confirmpassword" ref="confirmPasswordInput" class="form-control form-control-lg" :placeholder="$t('register.lbConfirmPassword')">
                         </div>
+                        <span style="color: rgb(217,48,37)">{{ errorMessage }}</span>
                     </div>
 
                     <div class="box-check">
@@ -77,10 +82,12 @@ export default {
                 email: '',
                 username: '',
                 password: '',
+                confirmpassword: '',
                 receive_notification_by_email: true,
                 terms_agreed: false,
                 can_add_layer: true
             },
+            errorMessage: '',
             loading: '',
             terms_agreed: false,
             emailSuporte: 'pauliceia_support@googlegroups.com'
@@ -100,13 +107,27 @@ export default {
         async registerSubmit () {
             this._openFullScreen()
             try {
-                if(this.user.email == '' || this.user.username == '' || this.user.password == '') {
-                    this._msgBox(
-                        'ERROR',
-                        this.$t('register.msg.emptyField'),
-                        'error'
-                    )
-
+                this.resetInputColorBorder()
+                this.errorMessage = ''
+                if(!this.isEveryInputFilled()){
+                    this.colorEmptyInputBorder()
+                    this.errorMessage = this.$t('register.msg.emptyField')
+                } else if (!this.isNameValid(this.user.name)){
+                    this.$refs.nameInput.style.borderColor = 'red'
+                    this.errorMessage = this.$t('register.msg.invalidName')
+                }/*  else if (!this.isEmailValid(this.user.email)){
+                    this.$refs.emailInput.style.borderColor = 'red'
+                    this.errorMessage = this.$t('register.msg.invalidEmail')
+                }*/ else if (!this.isUsernameValid(this.user.username)){
+                    this.$refs.usernameInput.style.borderColor = 'red'
+                    this.errorMessage = this.$t('register.msg.invalidUsername')
+                } else if (!this.isPasswordValid(this.user.password)){
+                    this.$refs.passwordInput.style.borderColor = 'red'
+                    this.errorMessage = this.$t('register.msg.invalidPassword')
+                } else if (!this.isConfirmPasswordValid(this.user.password, this.user.confirmpassword)){
+                    this.$refs.passwordInput.style.borderColor = 'red'
+                    this.$refs.confirmPasswordInput.style.borderColor = 'red'
+                    this.errorMessage = this.$t('register.msg.invalidConfirmPassword')
                 } else {
                     let password = new jsSHA("SHA-512", "TEXT")
                     password.update(this.user.password)
@@ -137,7 +158,7 @@ export default {
 
                     this._cleanForm()
                 }
-
+                this.loading.close()
             } catch (error) {
                 if (error.response == undefined || error.response.status == 500)
                     this._msgBox(
@@ -152,6 +173,50 @@ export default {
                         'error'
                     )
             }
+        },
+        isEveryInputFilled() {
+            if(this.user.name != '' &&
+               this.user.email != '' &&
+               this.user.username != '' &&
+               this.user.password != '' &&
+               this.user.confirmpassword != '') {
+                   return true
+            }
+            return false
+        },
+        resetInputColorBorder() {
+            this.$refs.nameInput.style.borderColor = ''
+            this.$refs.emailInput.style.borderColor = ''
+            this.$refs.usernameInput.style.borderColor = ''
+            this.$refs.passwordInput.style.borderColor = ''
+            this.$refs.confirmPasswordInput.style.borderColor = ''
+        },
+        colorEmptyInputBorder() {
+            if(this.user.name == '')
+                this.$refs.nameInput.style.borderColor = 'red'                
+            if(this.user.email == '')
+                this.$refs.emailInput.style.borderColor = 'red'
+            if(this.user.username == '')
+                this.$refs.usernameInput.style.borderColor = 'red'
+            if(this.user.password == '')
+                this.$refs.passwordInput.style.borderColor = 'red'
+            if(this.user.confirmpassword == '')
+                this.$refs.confirmPasswordInput.style.borderColor = 'red'
+        },
+        isNameValid(name) {
+            return name.length >= 3;
+        },/*
+        isEmailValid(email) {
+            return true;
+        },*/
+        isUsernameValid(username) {
+            return username.length >= 3;
+        },
+        isPasswordValid(password) {
+            return /^(?=.*[A-Z])(?=.*\d).{6,}$/.test(password);
+        },
+        isConfirmPasswordValid(password, confirmpassword) {
+            return password == confirmpassword;
         },
         _cleanForm() {
             let userClean = {

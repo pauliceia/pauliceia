@@ -213,6 +213,7 @@ export default {
         "lbEmail": "E-mail",
         "lbUsername": "Nome de usuário",
         "lbPassword": "Senha",
+        "lbConfirmPassword": "Confirme a senha",
         "lbCheckNotification": "Receber notificações por e-mail",
         "lbCheckAgree": "Eu concordo com os termos de uso.",
         "lbReadme": "leia os termos aqui",
@@ -222,7 +223,11 @@ export default {
         "msg": {
             "registerBtnHover": "Você deve aceitar os Termos de Uso para se registrar!",
             "success": "O teu cadastro está quase pronto. Basta acessar o teu e-mail e seguir as instruções.",
-            "emptyField": "ERRO: complete todos os campos!",
+            "emptyField": "Preencha todos os campos.",
+            "invalidName": "O nome deve ter no mínimo 3 caracteres.",
+            "invalidUsername": "O nome de usuário deve ter no mínimo 3 caracteres.",
+            "invalidPassword": "A senha deve ter no mínimo 6 caracteres, pelo menos 1 letra maiúscula e 1 número.",
+            "invalidConfirmPassword": "As senhas devem ser iguais.",
             "err500": "Erro no servidor interno - entre em contato com o administrador",
             "err409": "<strong>E-mail</strong> ou <strong>nome de usuário</strong> já existe em nosso sistema."
         }

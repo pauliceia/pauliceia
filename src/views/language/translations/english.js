@@ -212,6 +212,7 @@ export default {
         "lbEmail": "Email address",
         "lbUsername": "Username",
         "lbPassword": "Password",
+        "lbConfirmPassword": "Confirm password",
         "lbCheckNotification": "Receive notification by email",
         "lbCheckAgree": "I agree to the terms of use.",
         "lbReadme": "read the terms here",
@@ -221,7 +222,11 @@ export default {
         "msg": {
             "registerBtnHover": "You must accept the Use Terms in order to register yourself!",
             "success": "Your registration is almost ready. Just access your email and follow the instructions.",
-            "emptyField": "ERROR: complete all fields!",
+            "emptyField": "Fill in all fields.",
+            "invalidName": "The name must be at least 3 characters long.",
+            "invalidUsername": "The username must be at least 3 characters long.",
+            "invalidPassword": "The password must have at least 6 characters, with at least 1 capital letter and 1 number.",
+            "invalidConfirmPassword": "The passwords must be the same.",
             "err500": "Error internal server - contact your administrator",
             "err409": "<strong>email</strong> or <strong>username</strong> already exists in our system."
         }
