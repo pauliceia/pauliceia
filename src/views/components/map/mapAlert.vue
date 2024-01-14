@@ -14,7 +14,7 @@
     <p style="text-align: right">
       {{ $t('map.betaVersionModal.footnote') }}
     </p>
-    <button  @click="closeBox()" class="buttonClose"> Começar </button>
+    <button  @click="closeBox()" class="buttonClose"> {{$t('map.betaVersionModal.start')}} </button>
   </section>
 </template>
 

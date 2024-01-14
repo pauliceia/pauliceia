@@ -13,7 +13,7 @@
     <!-- Botão para alternar entre os tipos de controle deslizante -->
     <div class = "button">
       <button @click="toggleSliderType" id = "changeButton" >
-      {{ useDoubleSlider ?  'Mudar régua' : 'Mudar régua' }}
+      {{ useDoubleSlider ?  $t('main.ruler') : $t('main.ruler') }}
       </button>
     </div>    
 
@@ -86,21 +86,16 @@
     
     methods: {           
 
-      toggleSliderType() {
-        console.log('Clicou no botão de alternância');
+      toggleSliderType() {        
         this.useDoubleSlider = !this.useDoubleSlider;
         Vue.nextTick(() => {
-          this.initializeSlider();
-          console.log('Slider atualizado:', this.useDoubleSlider ? 'Duplo' : 'Simples');
+          this.initializeSlider();        
         });
       },
 
-      initializeSlider() {
-      console.log('Chamando initializeSlider');
-      let sliderId = this.useDoubleSlider ? 'doubleSlider' : 'singleSlider';
-      console.log('Slider ID:', sliderId);
-      let slider = document.getElementById(sliderId);
-      console.log('Slider Element:', slider);
+      initializeSlider() {      
+      let sliderId = this.useDoubleSlider ? 'doubleSlider' : 'singleSlider';      
+      let slider = document.getElementById(sliderId);      
 
       // Verificar se o slider já está inicializado
       if (slider.noUiSlider) {        

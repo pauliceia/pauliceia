@@ -14,7 +14,11 @@ export default {
         "msgLogout": "Até breve!"
     },
     "main": {
-        "developedBy": "Desenvolvido por INPE"
+        "developedBy": "Desenvolvido por INPE",
+        "search": "Pesquisar endereço",
+        "information": "Informações sobre camadas ativas",
+        "notification": "Notificações",
+        "ruler": "Mudar régua"
     },
     "dashboard": {
         "nav": {
@@ -340,7 +344,8 @@ export default {
                         Pedimos a sua compreensão em relação a isso, para que se registre novamente. <br>
                         Agradecemos sua compreensão e contribuição.
                     </p>`,
-            "footnote": "Equipe Pauliceia 2.0"
+            "footnote": "Equipe Pauliceia 2.0",
+            "start": "Começar"
         }
     },
     "terms": {

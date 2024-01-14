@@ -14,7 +14,11 @@ export default {
         "msgLogout": "bye bye see you!"
     },
     "main": {
-        "developedBy": "Developed by INPE"
+        "developedBy": "Developed by INPE",
+        "search": "Search address",
+        "information": "Information about active layers",
+        "notification": "Notifications",
+        "ruler": "Change ruler"
     },
     "dashboard": {
         "nav": {
@@ -340,7 +344,8 @@ export default {
                         The team deeply regrets any inconvenience and hope that users understand the team’s efforts in developing a tool to the expectations of the users. <br>
                         The team duly acknowledges the users for their contributions.
                     </p>`,
-            "footnote": "Pauliceia 2.0 team"
+            "footnote": "Pauliceia 2.0 team",
+            "start": "Start"
         }
     },
     "terms": {
