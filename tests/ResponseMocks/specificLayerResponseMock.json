@@ -1,0 +1,20 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Layer",
+            "properties": {
+            "name": "camada-teste-exclusao",
+                "keyword": [
+                    4
+                ],
+                "layer_id": 1,
+                "reference": null,
+                "created_at": "2024-01-14 21:18:00",
+                "description": "",
+                "f_table_name": "teste_c6",
+                "source_description": ""
+            }
+        }
+    ]
+}
