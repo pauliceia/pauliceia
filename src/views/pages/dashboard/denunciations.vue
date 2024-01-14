@@ -4,7 +4,7 @@
       <div class="col-sm-4">
         <div class="card  ">
           <div class="card-header text-center">
-            Denounced Layers
+            {{ $t('dashboard.denunciations.DLayers') }}:
           </div>
           <div class="card-body">
             <div class="card-text">
@@ -24,7 +24,7 @@
 
         <div class="card  ">
           <div class="card-header text-center">
-            Denounced Comments
+            {{ $t('dashboard.denunciations.DComments') }}:
           </div>
           <div class="card-body">
             <div class="card-text">
@@ -46,7 +46,7 @@
       <div class="col-sm-8">
         <div class="card  text-center" v-if="is_comment">
           <div class="card-header">
-            Comment
+            {{ $t('dashboard.denunciations.Comment') }}:
             <ul class="description" >
               <li><b> User Name:</b> {{nameUsers[chosenComment.user_id_creator]}}</li>
               <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b>{{ chosenComment.description }}  </li>
@@ -58,7 +58,7 @@
 
         <div class="card  text-center" v-if="is_layer">
           <div class="card-header">
-            Layer
+            {{ $t('dashboard.denunciations.Layer') }}:
             <ul class="description" >
               <li><b> {{ $t('map.viewInfo.lbTitle') }}:</b> {{chosenLayer.name}}</li>
               <li><b> {{ $t('map.viewInfo.lbKeywods') }}:</b>
@@ -78,7 +78,7 @@
         </div>
         <div class="card  text-center">
           <div class="card-header">
-            Denunciations
+            {{ $t('dashboard.denunciations.Denunciations') }}:
           </div>
           <div class="card-body">
             <div class="nofitication">

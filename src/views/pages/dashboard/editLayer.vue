@@ -290,7 +290,7 @@
         // this method sends the temporal columns to VGIMWS
 
         if ((this.startDate === "" || this.endDate === "") || (this.startDate === null || this.endDate === null)) {
-          this._msgError("O preenchimento das datas é obrigatório!")
+          this._msgError(this.$t('dashboard.editLayer.insertDate'))
           return;
         }
 
@@ -308,7 +308,7 @@
         }
 
         Api().put('/api/temporal_columns', temporalColumns).then(response => {
-          this.$message.success("A camada foi atualizada com sucesso!")
+          this.$message.success(this.$t('dashboard.editLayer.updateLayer'))
           this.$router.push({path: '/dashboard/home'})
         }, cause => {
           this._showErrorMessages(cause)
@@ -327,7 +327,7 @@
         //if(this.chosenRefID == null) this.chosenRefID = []
 
         if (this.chosenKeywordsID.length === 0) {
-          this.$message.error("Having at least one keyword is mandatory!")
+          this.$message.error(this.$t('dashboard.editLayer.minKey'))
         } else {
           const loading = this.$loading({
             lock: true,
