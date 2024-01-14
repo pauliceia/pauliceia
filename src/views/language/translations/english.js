@@ -277,12 +277,13 @@ export default {
         },
         "addLayer": {
             "title": "Add or remove layers",
-            "input": "Search by theme, layer or author:",
+            "input": "Search by theme, layer, author or creation date (example: 31/12/2001):",
             "close": "Close",
             "box": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
                 "lbKeywods": "KEYWORDS",
+                "lbDate": "CREATION DATE",
                 "lbDescription": "DESCRIPTION",
                 "lbShowMore": "Show more",
                 "lbShowLess": "Show less",
