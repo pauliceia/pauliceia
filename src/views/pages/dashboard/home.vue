@@ -82,10 +82,17 @@
       ...mapState('map', ['boxNotifications']),
     },
     methods: {
-      deleteLayer(id){
-        Api().delete('/api/layer/' + id).then((response) => {
-          this.updateLayers()
-        })
+      deleteLayer(id) {
+        // Exibe um diálogo de confirmação nativo do navegador
+        const userConfirmed = window.confirm('Tem certeza que deseja excluir esta camada?');
+
+        // Verifica se o usuário confirmou
+        if (userConfirmed) {
+          // Se confirmado, faça a exclusão
+          Api().delete('/api/layer/' + id).then((response) => {
+            this.updateLayers();
+          });
+        }
       },
       editLayer(id){
         this.$router.push({name: 'EditLayer', params: {layer_id: id}})
