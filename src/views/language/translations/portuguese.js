@@ -283,11 +283,14 @@ export default {
             "box": {
                 "lbTitle": "TÍTULO",
                 "lbAuthors": "AUTORES",
-                "lbKeywods": "PALAVRAS-CHAVE"
+                "lbKeywods": "PALAVRAS-CHAVE",
+                "lbDescription": "DESCRIÇÃO",
+                "lbShowMore": "Mostrar mais",
+                "lbShowLess": "Mostrar menos",
             },
             "btns": {
                 "active": "Ativar",
-                "disable": "Desativar"
+                "disable": "Desativar",
             },
             "msg": {
                 "errTitle": "Erro Interno",
