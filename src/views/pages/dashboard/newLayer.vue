@@ -611,7 +611,10 @@
               this.finished = 1
               this.loading.close();
 
-              this._showErrorMessages(cause)
+              if(cause.response.status === 409)
+                this._msgError("Já existe uma camada com esse nome, por favor, escolha outro!")
+              else
+                this._msgError("Erro ao criar a camada, confira as informações inseridas. Caso o erro persista entre em contato com os administradores da plataforma!")
             })
 
           } catch (error) {
