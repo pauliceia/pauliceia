@@ -22,6 +22,7 @@ export default {
             "infos": "Information",
             "newLayer": "New Layer",
             "keywords": "Keywords",
+            "denunciations": "Denunciations",
             "layer": "Layers"
         },
         "home":{
@@ -78,7 +79,13 @@ export default {
                         "yes": "YES"
                     }
                 }
-            }
+            },
+            
+            "addSuccess": "The layer was added successfully!",
+            "nameRequired": "The layer name is required!",
+            "numChar": "The layer name must be between 5 and 63 characters!",
+            "restName": "The layer name cannot start with a number and cannot contain special characters!",
+            "minKey": "At least one keyword must be added!"
         },
         "editLayer": {
             "delete": "Delete",
@@ -90,6 +97,9 @@ export default {
             "cancelButton": "NO",
             "sucessMsg": "Layer deleted successfully!",
             "errorMsg": "Error deleting the layer",
+            "insertDate": "The filling of the dates is mandatory!",
+            "updateLayer": "Layer updated successfully!",
+            "minKey": "It is mandatory to have at least one keyword!"
         },
         "keywords":{
             "keywords": "Keywords",
@@ -97,9 +107,26 @@ export default {
             "myKeywords": "My Keywords",
             "nameD": "Name of the new keyword. It is unique in the system.",
             "name": "Name"
-        }
+        },
+
+        "denunciations": {
+            "DLayers": "Denounced Layers",
+            "DComments": "Denounced Comments",
+            "Comment": "Comment",
+            "Layer": "Layer",
+            "Denunciations": "Denunciations"
+        },
+
+        "profile": {
+            "Profile": "Profile",
+            "ProfilePic": "Profile Picture",
+            "UpPic": "Upload New Picture",
+            "UserName": "Username",
+            "Sub": "Submit"
+        },
     },
     "login": {
+        "label": "Access Your Account",
         "inputEmail": "Email address",
         "inputPassword": "Password",
         "register": "Register now",
@@ -110,7 +137,8 @@ export default {
             "success": "WELCOME",
             "err404": "<strong>Email</strong> or <strong>password</strong> incorrect!",
             "err409": "You have <strong>not yet confirmed your email</strong>, access your email box and confirm it by following instructions!"
-        }
+        },
+        "googleAcess": "Acesso com o Google+",
     },
     "home":{
       "title1": "What is it?",
@@ -213,6 +241,7 @@ export default {
 
     },
     "register": {
+        "labelNew": "New Registration",
         "title": "Register",
         "lbName": "Name",
         "lbEmail": "Email address",

@@ -7,7 +7,7 @@
 
           <div class="card-body">
                 <!--<h3 class="mb-0">{{ $t('register.title') }}</h3>-->
-              <h5 class="mb-0">Novo Cadastro</h5>
+              <h5 class="mb-0">{{ $t('register.labelNew') }}</h5>
               <br><br>
 
                 <form class="form-signin" @submit.prevent="registerSubmit">

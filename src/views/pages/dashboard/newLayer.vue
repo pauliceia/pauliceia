@@ -450,7 +450,7 @@
         this._openFullLoading()
 
         if ((this.startDate === null || this.endDate === null) || (this.startDate === "" || this.endDate === "")) {
-          this._msgError("O preenchimento das datas é obrigatório!")
+          this._msgError(this.$t('dashboard.editLayer.insertDate'))
           return;
         }
 
@@ -471,7 +471,7 @@
 
         Api().post('/api/temporal_columns/create', temporalColumns).then(response => {
           this.loading.close()
-          this.$message.success("A camada foi adicionada com sucesso!")
+          this.$message.success(this.$t('dashboard.newLayer.addSucess'))
           this.finished = 1
           this.$router.push({path: '/dashboard/home'})
         }, cause => {
@@ -488,16 +488,16 @@
         this._openFullLoading()
 
         if (this.name === '') {
-          this._msgError("O nome da camada é necessário!")
+          this._msgError(this.$t('dashboard.newLayer.nameNece'))
 
         } else if (this.fTableName.length < 5 ||  this.fTableName.length > 63) {
-          this._msgError("O nome da camada deve ter entre 5 e 63 caracteres!")
+          this._msgError(this.$t('dashboard.newLayer.numChar'))
 
         } else if (doesTheStringHaveSpecialChars(this.fTableName)) {
-          this._msgError("O nome da camada NÃO pode começar com `número` e nem conter `caracteres especiais`!")
+          this._msgError(this.$t('dashboard.newLayer.restName'))
 
         } else if (this.selectedKeywords.length === 0) {
-          this._msgError("É necessário adicionar pelo menos uma palavra-chave!")
+          this._msgError(this.$t('dashboard.newLayer.restName'))
 
         } else {
           if (this.typeSubmit === 'file') {   //Importando o arquivo
