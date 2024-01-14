@@ -291,6 +291,9 @@ export default {
                 "lbKeywods": "KEYWORDS",
                 "lbStartDate": "Start Date",
                 "lbEndDate": "End Date",
+                "lbDescription": "Description", 
+                "showLess": "Show More",
+                "showMore": "Show less"
             },
             "btns": {
                 "active": "Active",

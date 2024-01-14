@@ -37,6 +37,22 @@
                 <p><strong>{{ $t('map.addLayer.box.lbEndDate') }}:</strong>
                   {{layer.properties.endDate}}
                 </p>
+
+                <div v-if="layer.properties.description">
+                  <p>
+                    <strong>{{ $t('map.addLayer.box.lbDescription') }}: </strong>
+                    <span v-if="layer.showMore">
+                      {{ layer.properties.description }}
+                    </span>
+                    <span v-else>
+                      {{ truncateDescription(layer.properties.description) }}
+                    </span>
+                    <a v-if="layer.wordCount > 50" href="#" @click.prevent="toggleDescription(layer)">
+                      {{ toggleButtonText(layer) }}
+                    </a>
+                  </p>
+                </div>
+
               </div>
 
               <div class="btns">
@@ -132,6 +148,9 @@ export default {
           layer.properties.keyword = layer.properties.keyword.map(
             id => this.getKeywordById(id)[0].properties.name
           )
+
+          layer.showMore = false; // Inicializando showMore aqui
+          layer.wordCount = this.countWords(layer.properties.description); // Inicializando wordCount
         })
 
         // sort the layers by name
@@ -171,6 +190,35 @@ export default {
           }
         });
       },
+
+      //Verifica se deve "mostrar mais" ou não
+      toggleDescription(layer) {
+        console.log(layer.showMore)
+        if (layer.showMore === undefined) {
+          this.$set(layer, 'showMore', false);
+        }
+        layer.showMore = !layer.showMore;
+        console.log(layer.showMore)
+        this.$forceUpdate();
+      },
+
+      //Trunca o texto da descrição
+      truncateDescription(description) {
+        const maxWords = 50;
+        const words = description.split(/\s+/);
+        return words.slice(0, maxWords).join(' ') + (words.length > maxWords ? '...' : '');
+      },
+
+      //Conta o número de palavras do texto da descrição
+      countWords(str) {
+        return str.split(/\s+/).length;
+      },
+
+      //Muda o botão entre "Mostrar mais" e "Mostrar menos"
+      toggleButtonText(layer) {
+        return layer.showMore ? this.$t('map.addLayer.box.showLess') : this.$t('map.addLayer.box.showMore');
+      },
+
 
       disabled(layer) {
         if(this.btnDisabled == false)
