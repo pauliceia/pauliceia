@@ -9,7 +9,7 @@ Quando('eu filtro pelo autor {string}') do |author|
 end
 
 Então('todos os resultados visiveis devem conter {string} ou {string}') do |termo_pesquisa1, termo_pesquisa2|
-  elements = all('.box-layer-info')
+  elements = page.all('.box-layer-info')
 
   all_elements_contain_search = elements.all? do |element|
     element.text.include?(termo_pesquisa1) || element.text.include?(termo_pesquisa2)

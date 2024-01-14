@@ -3,6 +3,20 @@ def clicar_acao_camada(acao, camada)
   element.find('button', text: "#{acao}").click
 end
 
+
+#temp
+Dado('que estou na página de mapa com o popup de bem-vindo fechado') do
+  # local: http://0.0.0.0:8080/portal/explore
+  # https://pauliceia.unifesp.br/portal/explore
+  visit('http://localhost:8080/portal/explore')
+  find('section.boxS button.btn i.md-icon-font', text: 'close').click
+end
+Quando('abro o seletor de camadas') do
+  find('p.btn_sidebar').click
+  find('div.md-button-content img[src="/portal/static/img/add-layer.5bcee7e.png"]').find(:xpath, '..').click
+end
+# temp
+
 Dado("que estou na página de mapa, abri o seletor de camadas e ativei as camadas {string} e {string}") do |camada, camada2|
   puts "Camada 1: #{camada}"
   puts "Camada 2: #{camada2}"
@@ -25,7 +39,7 @@ end
 
 Então("vejo que as cores são diferentes") do
   # Encontra os dois elementos com a classe el-color-picker__color-inner
-  elementos = all('.el-color-picker__color-inner')
+  elementos = page.all('.el-color-picker__color-inner')
 
   elemento1 = find(:xpath,"(//span[@class='el-color-picker__color-inner'])[1]")
   elemento2 = find(:xpath,"(//span[@class='el-color-picker__color-inner'])[2]")
