@@ -66,11 +66,11 @@
             {{ $t('about.desc1') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/1.png">
+            <img class="picture" src="@/views/assets/images/perfil/1.png" alt="Imagem com descrito sobre o projeto">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/26.png">
+            <img class="picture" src="@/views/assets/images/perfil/26.png" alt="Imagem com descrito sobre o projeto">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">{{ $t('about.name26') }}</h5>
@@ -84,11 +84,11 @@
             {{ $t('about.desc3') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/3.png">
+            <img class="picture" src="@/views/assets/images/perfil/3.png" alt="Imagem com descrito sobre o projeto">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/4.png">
+            <img class="picture" src="@/views/assets/images/perfil/4.png" alt="Imagem com descrito sobre o projeto">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Ana Maria Alves Barbour</h5>
@@ -102,11 +102,11 @@
             {{ $t('about.desc27') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/27.png">
+            <img class="picture" src="@/views/assets/images/perfil/27.png" alt="Imagem com descrito sobre o projeto">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/6.png">
+            <img class="picture" src="@/views/assets/images/perfil/6.png" alt="Imagem de Carlos Alberto Noronha">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Carlos Alberto Noronha</h5>
@@ -120,11 +120,11 @@
             {{ $t('about.desc5') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/5.png">
+            <img class="picture" src="@/views/assets/images/perfil/5.png" alt="Imagem de Cintia Rodrigues de Almeida">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/7.png">
+            <img class="picture" src="@/views/assets/images/perfil/7.png" alt="Imagem de Cristiane Regina Myiasaka">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Cristiane Regina Myiasaka</h5>
@@ -138,11 +138,11 @@
             {{ $t('about.desc8') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/8.png">
+            <img class="picture" src="@/views/assets/images/perfil/8.png" alt="Imagem de Daniela Leal Musa">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/10.png">
+            <img class="picture" src="@/views/assets/images/perfil/10.png" alt="Imagem de Denis Taveira de Lima">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Denis Taveira de Lima</h5>
@@ -156,11 +156,11 @@
             {{ $t('about.desc12') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/12.png">
+            <img class="picture" src="@/views/assets/images/perfil/12.png" alt="Imagem de Eduardo de Souza Goiabeira">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/9.png">
+            <img class="picture" src="@/views/assets/images/perfil/9.png" alt="Imagem de Ester Danta Reis Nunes">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Ester Dantas Reis Nunes </h5>
@@ -174,11 +174,11 @@
             {{ $t('about.desc11') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/11.png">
+            <img class="picture" src="@/views/assets/images/perfil/11.png" alt="Imagem de Fernando Atique">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/25.png">
+            <img class="picture" src="@/views/assets/images/perfil/25.png" alt="Imagem de Gabriel Reis">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Gabriel Reis</h5>
@@ -192,11 +192,11 @@
             {{ $t('about.desc14') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/14.png">
+            <img class="picture" src="@/views/assets/images/perfil/14.png" alt="Imagem de Gabriel Sansigolo">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/16.png">
+            <img class="picture" src="@/views/assets/images/perfil/16.png" alt="Imagem de Gilbero Ribeiro de Queiroz">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Gilberto Ribeiro de Queiroz</h5>
@@ -210,11 +210,11 @@
             {{ $t('about.desc13') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/13.png">
+            <img class="picture" src="@/views/assets/images/perfil/13.png" alt="Imagem de Jeffrey Lesser">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/2.png">
+            <img class="picture" src="@/views/assets/images/perfil/2.png" alt="Imagem de Karine Reis Ferreira">
           </div>
           <div class="col-sm-4 column-style"  itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Karine Reis Ferreira </h5>
@@ -228,11 +228,11 @@
             {{ $t('about.desc15') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/15.png">
+            <img class="picture" src="@/views/assets/images/perfil/15.png" alt="Imagem de Luanna do Nascimento">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/17.png">
+            <img class="picture" src="@/views/assets/images/perfil/17.png" alt="Imagem de Monaliza Caetano">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Monaliza Caetano</h5>
@@ -246,11 +246,11 @@
             {{ $t('about.desc18') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/18.png">
+            <img class="picture" src="@/views/assets/images/perfil/18.png" alt="Imagem de Nandamudi Vijaykumar">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/19.png">
+            <img class="picture" src="@/views/assets/images/perfil/19.png" alt="Imagem de Orlando Guarnier Farias">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Orlando Guarnier Farias</h5>
@@ -264,11 +264,11 @@
             {{ $t('about.desc21') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/21.png">
+            <img class="picture" src="@/views/assets/images/perfil/21.png" alt="Imagem de Priscila Machado Meireles">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/28.png">
+            <img class="picture" src="@/views/assets/images/perfil/28.png" alt="Imagem de Raphael Augusto de Oliveira Silva">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Raphael Augusto de Oliveira Silva</h5>
@@ -282,11 +282,11 @@
             {{ $t('about.desc20') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/20.png">
+            <img class="picture" src="@/views/assets/images/perfil/20.png" alt="Imagem de Rodrigo Mariano">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/21_1.png">
+            <img class="picture" src="@/views/assets/images/perfil/21_1.png" alt="Thomas Rogers">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Thomas Rogers</h5>
@@ -300,11 +300,11 @@
             {{ $t('about.desc23') }}
           </div>
           <div class="col-sm-2 column-style text-right">
-            <img class="picture" src="@/views/assets/images/perfil/23.png">
+            <img class="picture" src="@/views/assets/images/perfil/23.png" alt="Vitória Martins Fontes da Silva">
           </div>
 
           <div class="col-sm-2 column-style">
-            <img class="picture" src="@/views/assets/images/perfil/24.png">
+            <img class="picture" src="@/views/assets/images/perfil/24.png" alt="Wania Mazzarello">
           </div>
           <div class="col-sm-4 column-style" itemprop="contributor" itemscope itemtype="https://schema.org/Person">
             <h5 class="title2" itemprop="name">Wania Mazzarello</h5>
@@ -320,32 +320,32 @@
         <div class="row justify-content-md-center">
           <div class="col-sm ">
             {{ $t('about.title4') }}
-            <img class="picture" style="left: 30px" src="@/views/assets/images/logos/inpe_transparente.png">
+            <img class="picture" style="left: 30px" src="@/views/assets/images/logos/inpe_transparente.png" alt="logo INPE">
           </div>
           <div class="col-sm ">
             <br>
-            <img class="picture2" src="@/views/assets/images/logos/unifesp_verde_fundo_transparente.png">
+            <img class="picture2" src="@/views/assets/images/logos/unifesp_verde_fundo_transparente.png" alt="logo UNIFESP">
           </div>
           <div class="col-sm ">
             <br>
-            <img class="picture2" src="@/views/assets/images/logos/logo_himaco_fundo_transparente.png">
+            <img class="picture2" src="@/views/assets/images/logos/logo_himaco_fundo_transparente.png" alt="logo himaco">
           </div>
           <div class="col-sm ">
             <br>
-            <img class="picture2" src="@/views/assets/images/logos/labhum_2018-crop-u6539.jpg">
+            <img class="picture2" src="@/views/assets/images/logos/labhum_2018-crop-u6539.jpg" alt="logo labhum">
           </div>
 
           <div class="col-sm ">
             {{ $t('about.title5') }}
-            <img class="picture2" style="left: 30px" src="@/views/assets/images/logos/logofapesp_transparente.png">
+            <img class="picture2" style="left: 30px" src="@/views/assets/images/logos/logofapesp_transparente.png" alt="logo FAPESP">
           </div>
           <div class="col-sm ">
             <br>
-            <img class="picture" style="left: 30px" src="@/views/assets/images/logos/eu_vt_280.png">
+            <img class="picture" style="left: 30px" src="@/views/assets/images/logos/eu_vt_280.png" alt="logo FAPESP">
           </div>
           <div class="col-sm ">
             {{ $t('about.title6') }}
-            <img class="picture2" style="left: 30px" src="@/views/assets/images/logos/fapesp_fundo_transparente.png">
+            <img class="picture2" style="left: 30px" src="@/views/assets/images/logos/fapesp_fundo_transparente.png" alt="logo FAPESP">
           </div>
         </div>
       </header>
