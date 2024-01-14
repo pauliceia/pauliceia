@@ -83,7 +83,13 @@ export default {
         "editLayer": {
             "delete": "Delete",
             "layer": "Layer Edit",
-            "editLayer": "Edit Layer"
+            "editLayer": "Edit Layer",
+            "confirmDeleteTitle": "WARNING",
+            "confirmDeleteMsg": "Do you really want to delete the layer",
+            "confirmButton": "YES",
+            "cancelButton": "NO",
+            "sucessMsg": "Layer deleted successfully!",
+            "errorMsg": "Error deleting the layer",
         },
         "keywords":{
             "keywords": "Keywords",

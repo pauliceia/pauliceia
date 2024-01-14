@@ -25,7 +25,7 @@
               <div class="row" v-for="layer in myLayers" v-bind:key="layer.layer_id">
                 <div class="col-sm-7">{{ layer.name }}</div>
                 <div class="col-sm-5">
-                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
+                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteLayer(layer.layer_id, layer.name)"><md-icon>clear</md-icon></button>
                   <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
                 </div>
                 <hr>
@@ -82,11 +82,40 @@
       ...mapState('map', ['boxNotifications']),
     },
     methods: {
-      deleteLayer(id){
-        Api().delete('/api/layer/' + id).then((response) => {
-          this.updateLayers()
+
+      deleteLayer(id, layerName) {
+        // Solicita confirmação do usuário antes de excluir a camada.
+        this.$confirm(`${this.$t('dashboard.editLayer.confirmDeleteMsg')} "${layerName}" ?`, this.$t('dashboard.editLayer.confirmDeleteTitle'), {
+          confirmButtonText: this.$t('dashboard.editLayer.confirmButton'),
+          cancelButtonText: this.$t('dashboard.editLayer.cancelButton'),
+          type: 'warning'
         })
+        .then(async _ => {
+          try {
+            // Usuário confirmou a exclusão, então prosseguimos com a chamada da API para deletar a camada.
+            await Api().delete('/api/layer/' + id);
+            // Atualiza a lista de camadas após a exclusão bem-sucedida.
+            this.updateLayers();
+            
+            // Exibe uma mensagem de sucesso para o usuário.
+            this.$message({
+              message: this.$t('dashboard.editLayer.successMsg'),
+              type: 'success'  
+            });
+          } catch (error) {
+            // Ocorreu um erro durante o processo de exclusão. Exibe uma mensagem de erro.
+            this.$message({
+              message: this.$t('dashboard.editLayer.errorMsg'),
+              type: 'error'
+            });
+          }
+        })
+        .catch(_ => {
+          // Usuário cancelou a exclusão.
+          console.log('Usuário cancelou a exclusão.');
+        });
       },
+      
       editLayer(id){
         this.$router.push({name: 'EditLayer', params: {layer_id: id}})
       },
