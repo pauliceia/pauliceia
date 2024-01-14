@@ -1,14 +1,4 @@
-# Integrantes do Grupo
-
-Caio Augusto Dantas Camelo dos Santos - 12623911
-
-Caio Katsumi Hayashi - 12543162
-
-Fabio Luis Ameixeira Santos - 11795505
-
-Guilherme Sebastião Teodoro Junior - 11953911
-
-Rafael Ferreira Mendes - 12543141
+Testes atualizados com as features implementadas por esse grupo. Contem novos testes e antigos atualizados
 
 # Pastas
 
