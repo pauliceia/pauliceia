@@ -212,10 +212,12 @@
                 </div>
 
                 <div class="form-row">
+                  <!-- div da data final -->
                   <div class="form-group col-md-4">
-                    <label for="end_date">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
-                    <input class="form-control" id="end_date" type="date" v-model="endDate">
+                      <label for="end_date">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
+                      <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
+                      <input class="form-control" id="end_date" type="date" v-model="endDate" :max="getCurrentDate()" @input="checkEndDate">
+                      <small v-if="endDateExceedsCurrentDate" class="text-danger">A data final não pode ser posterior à data atual.</small>
                   </div>
 
                   <div class="form-group col-md-4">
@@ -235,8 +237,8 @@
 
                 <div class="form-row">
                   <div class="col align-self-end">
-                    <br>
-                    <a @click="Upload2()" class="btn btn-primary" href="#">{{ $t('dashboard.newLayer.submit') }}</a>
+                      <br>
+                      <a @click="Upload2()" class="btn btn-primary" href="#" :disabled="endDateExceedsCurrentDate">{{ $t('dashboard.newLayer.submit') }}</a>
                   </div>
                 </div>
               </form>
@@ -330,6 +332,7 @@
         endDateMask: null,
         startDate: null,
         endDate: null,
+        endDateExceedsCurrentDate: false,
         shapeCorrect: false,
         fullscreenLoading: false,
         typeSubmit: 'file',
@@ -404,6 +407,31 @@
           params: {name: 'NewLayer'}
         })
       },
+      // metodos para verificar a data final
+      getCurrentDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            let day = today.getDate();
+
+            month = month < 10 ? '0' + month : month;
+            day = day < 10 ? '0' + day : day;
+
+            return `${year}-${month}-${day}`;
+        },
+
+        checkEndDate() {
+            const currentDate = new Date();
+            const selectedDate = new Date(this.endDate);
+
+            this.endDateExceedsCurrentDate = selectedDate > currentDate;
+
+            // Desabilitar o botão de envio se a data final exceder a data atual
+            if (this.endDateExceedsCurrentDate) {
+                // Pode-se também exibir uma mensagem de aviso adicional se desejado
+            }
+        },
+      ////////
       clearData(){
         // this method cleans the store data
 
@@ -452,6 +480,15 @@
         if ((this.startDate === null || this.endDate === null) || (this.startDate === "" || this.endDate === "")) {
           this._msgError("O preenchimento das datas é obrigatório!")
           return;
+        }
+
+        // Verificar se a data final excede a data atual
+        const currentDate = new Date();
+        const selectedEndDate = new Date(this.endDate);
+
+        if (selectedEndDate > currentDate) {
+            this._msgError("A data final não pode ser posterior à data atual. Não é possível adicionar a camada.");
+            return;
         }
 
         this.timeout_upload()
