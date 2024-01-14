@@ -45,17 +45,17 @@ Or build for production and view the bundle analyzer report
 $ npm run build --report
 ```
 
-### Testes no Pauliceia
+### Tests on Pauliceia
 
 1. Install [Ruby](https://rubyinstaller.org/downloads/)
 2. Run the following command to install the test libraries (Capybara + Cucumber):
 
 ```
-bundle install
+$ bundle install
 ```
 
 3. Run the tests:
 
 ```
-cucumber
+$ cucumber
 ```
