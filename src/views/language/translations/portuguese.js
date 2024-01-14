@@ -84,7 +84,13 @@ export default {
         "editLayer": {
             "delete": "Deletar",
             "layer": "Edição Camada",
-            "editLayer": "Editar Camada"
+            "editLayer": "Editar Camada",
+            "confirmDeleteTitle": "ATENÇÃO",
+            "confirmDeleteMsg": "Você realmente quer excluir a camada",
+            "confirmButton": "SIM",
+            "cancelButton": "NÃO",
+            "successMsg": "Camada excluída com sucesso!",
+            "errorMsg": "Erro ao excluir a camada",
         },
         "keywords":{
             "keywords": "Palavras-chave",
