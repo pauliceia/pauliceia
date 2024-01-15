@@ -10,4 +10,5 @@ CREDENCIAL = {
 
 SUPPORT_TESTING = {
   pathFileCSV: 'addresses.csv',
+  pathFileShapeFile: 'bairros.zip'
 }

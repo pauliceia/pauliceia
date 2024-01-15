@@ -61,6 +61,8 @@ export default {
             "lblEndDate": "Data final",
             "lblStartDateColumn": "Coluna da data inicial",
             "lblEndDateColumn": "Coluna da data final",
+            "warningEndDateExceedsCurrentDate": "A data final não pode ser posterior à data atual.",
+            "warningUploadEndDateExceedsCurrentDate": "A data final não pode ser posterior à data atual. Não é possível adicionar a camada.",
             "lblStartDateMask": "Máscara da data inicial",
             "lblEndDateMask": "Máscara da data finial",
             "startDate": "Data inicial do bounding box temporal da camada. É a data inicial do período que abrange os dados da camada. Por exemplo: a camada tem o período de 01-01-1900 à 31-12-1930. Logo a data inicial é 01-01-1900.",
