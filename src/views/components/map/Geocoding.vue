@@ -98,6 +98,9 @@
             <button class="btn btn-download" type="button" v-if="showDownloadButton" @click="download()">
               Download
             </button>
+            <button class="btn btn-download" type="button" v-if="showDownloadButton" @click="redirecionaCriacaoCamada()">
+              Criar uma camada a partir do arquivo
+            </button>
           </form>
         </div>
 
@@ -110,7 +113,6 @@ import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
 import GeoJSON from 'geojson'
 import shpwrite from 'shp-write'
-
 
 import {
     overlayGroup
@@ -323,6 +325,19 @@ export default {
       }
       shpwrite.download(this.geojson, options);
     },
+    redirecionaCriacaoCamada(){
+      let options = {
+        folder: 'myshapes',
+        types: {
+          point: this.fileName
+        }
+      }
+      const zipFile = shpwrite.zip(this.geojson, options)
+      this.$router.push({
+                name: 'NewLayer',
+                params: { zipFile }
+              })
+    },
     closeBox() {
       this.$store.dispatch('map/setBoxGeocoding', false)
     },
@@ -492,7 +507,6 @@ export default {
             color: #FFF
         .btn-download:hover
             background: rgba(#f15a29, 0.7)
-
 
         .box-multigeocoding
             width: 100%
