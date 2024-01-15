@@ -54,6 +54,8 @@ export default {
             "lblEndDate": "End date",
             "lblStartDateColumn": "Start date column",
             "lblEndDateColumn": "End date column",
+            "warningEndDateExceedsCurrentDate": "The end date cannot be later than the current date.",
+            "warningUploadEndDateExceedsCurrentDate": "The end date cannot be later than the current date. Cannot add layer.",
             "lblStartDateMask": "Start date mask",
             "lblEndDateMask": "End date mask",
             "startDate": "Start date of the temporal bounding box of the layer. This is the start date of the period that covers the layer data. For example: the layer has the period from 01-01-1900 to 31-12-1930. Hence the start date is 01-01-1900.",

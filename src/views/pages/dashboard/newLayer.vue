@@ -217,7 +217,7 @@
                       <label for="end_date">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
                       <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
                       <input class="form-control" id="end_date" type="date" v-model="endDate" :max="getCurrentDate()" @input="checkEndDate">
-                      <small v-if="endDateExceedsCurrentDate" class="text-danger">A data final não pode ser posterior à data atual.</small>
+                      <small v-if="endDateExceedsCurrentDate" class="text-danger">{{ $t('dashboard.newLayer.warningEndDateExceedsCurrentDate') }}</small>
                   </div>
 
                   <div class="form-group col-md-4">
@@ -487,7 +487,7 @@
         const selectedEndDate = new Date(this.endDate);
 
         if (selectedEndDate > currentDate) {
-            this._msgError("A data final não pode ser posterior à data atual. Não é possível adicionar a camada.");
+            this._msgError(this.$t('dashboard.newLayer.warningUploadEndDateExceedsCurrentDate'));
             return;
         }
 
