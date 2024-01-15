@@ -29,10 +29,11 @@ const dashRoutes = [
         meta: { auth: true }
     },
     {
-      path: '/dashboard/newLayer',
+      path: '/dashboard/newLayer/:zipFile?',
       name: 'NewLayer',
       component: DashNewLayer,
-      meta: { auth: true }
+      meta: { auth: true },
+      props: true
     },
     {
       path: '/dashboard/editLayer',

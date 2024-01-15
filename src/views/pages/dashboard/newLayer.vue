@@ -100,7 +100,7 @@
                       <span class="input-group-text">{{ $t('dashboard.newLayer.zipFile') }}</span>
                     </div>
                     <div class="custom-file">
-                      <label class="custom-file-label" for="Upload">{{ file.name }}</label>
+                      <label class="custom-file-label" for="Upload">{{ zipFile ? 'importacao.zip' : file.name }}</label>
                       <input @change="processFile($event)" accept=".zip" class="custom-file-input" id="Upload" type="file">
                     </div>
                   </div>
@@ -259,7 +259,6 @@
   import { mapState } from 'vuex'
   import lang from 'element-ui/lib/locale/lang/en'
   import locale from 'element-ui/lib/locale'
-
   import Dashboard from '@/middleware/Dashboard'
 
   Vue.component('v-select', vSelect)
@@ -283,6 +282,7 @@
   }
 
   export default {
+    props: ['zipFile'],
     name: "newLayer",
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
@@ -319,6 +319,7 @@
         file: {
           name: this.$t('dashboard.newLayer.chooseFile')
         },
+        zip: this.zipFile,
 
         // temporal columns form
         columns: null,
@@ -368,6 +369,7 @@
     },
     mounted() {
       this.shapeCorrect = false
+      this.processFile()
 
       // get the information of all users, except the current one
       Api().get('/api/user').then(response => {
@@ -433,7 +435,7 @@
       // },
       processFile(event){
         // I get the only one chose file
-        this.file = event.target.files[0]
+        this.file = this.$route.params.zipFile ? this.$route.params.zipFile : event.target.files[0]
       },
       timeout_upload(){ //Erro de estouro de tempo ao criar a nova camada
         this.finished = 0
@@ -496,10 +498,12 @@
         } else if (doesTheStringHaveSpecialChars(this.fTableName)) {
           this._msgError("O nome da camada NÃO pode começar com `número` e nem conter `caracteres especiais`!")
 
-        } else if (this.selectedKeywords.length === 0) {
-          this._msgError("É necessário adicionar pelo menos uma palavra-chave!")
+        }
+        // else if (this.selectedKeywords.length === 0) {
+        //   this._msgError("É necessário adicionar pelo menos uma palavra-chave!")
 
-        } else {
+        // } 
+        else {
           if (this.typeSubmit === 'file') {   //Importando o arquivo
             this.upload_from_file()
           } else {                         //Criando a camada em branco
