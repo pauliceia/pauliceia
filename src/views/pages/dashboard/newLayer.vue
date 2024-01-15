@@ -497,7 +497,7 @@
           this._msgError(this.$t('dashboard.newLayer.restName'))
 
         } else if (this.selectedKeywords.length === 0) {
-          this._msgError(this.$t('dashboard.newLayer.restName'))
+          this._msgError(this.$t('dashboard.newLayer.minKey'))
 
         } else {
           if (this.typeSubmit === 'file') {   //Importando o arquivo
