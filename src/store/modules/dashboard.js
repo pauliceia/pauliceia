@@ -1,29 +1,49 @@
+// Importações
+import { defineStore } from 'vuex';
+
+// Estado inicial
 const state = {
   myLayers: [],
-  sharedLayers: []
-}
+  sharedLayers: [],
+};
 
+// Mutações
 const mutations = {
-  setMyLayers (state, myLayers) {
-    state.myLayers = myLayers
+  // Atualiza as camadas pessoais
+  setPersonalLayers(state, layers) {
+    state.myLayers = layers;
   },
-  setSharedLayers (state, sharedLayers) {
-    state.sharedLayers = sharedLayers
-  }
-}
+  // Atualiza as camadas compartilhadas
+  setSharedLayers(state, layers) {
+    state.sharedLayers = layers;
+  },
+};
 
+// Actions
 const actions = {
-  setMyLayers ({commit}, myLayers) {
-    commit('setMyLayers', myLayers)
+  // Busca as camadas pessoais
+  async fetchPersonalLayers({ commit }) {
+    try {
+      const response = await Api.get('/api/personal-layers');
+      commit('setPersonalLayers', response.data);
+    } catch (error) {
+      console.error('Erro ao buscar camadas pessoais:', error);
+    }
   },
-  setSharedLayers ({commit}, sharedLayers) {
-    commit('setSharedLayers', sharedLayers)
-  }
-}
+  // Busca as camadas compartilhadas
+  async fetchSharedLayers({ commit }) {
+    try {
+      const response = await Api.get('/api/shared-layers');
+      commit('setSharedLayers', response.data);
+    } catch (error) {
+      console.error('Erro ao buscar camadas compartilhadas:', error);
+    }
+  },
+};
 
-export default {
-  namespaced: true,
+// Exportação do store
+export default defineStore('layers', {
   state,
   mutations,
-  actions
-}
+  actions,
+});
