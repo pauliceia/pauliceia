@@ -107,17 +107,17 @@ export default {
         }
     },
     "home":{
-      "title1": "What is it?",
-      "title2": "How?",
-      "title3": "When will it be ready?",
-      "title4": "How to cite a layer?",
-      "example": "Example",
-      "column1": "Pauliceia 2.0 is a platform to make the collaborative mapping of history of the city of São Paulo for the period 1870 to 1940.",
-      "column2": `By means of an interface, researchers can share their spatial data sets in the platform. The data sets must be spatially localizable.<br>
-                    So, a historical cartographic base of the city will be enriched, also making this data available to all.<br>
-                    The user that collaborates will have a map or a view of his or her own research.`,
-      "column3": "A beta is currently available for testing. The final version is scheduled for January 2022.",
-
+      "hero": "Collaborative Mapping of São Paulo's History",
+      "hero2": "(1870 to 1940)",
+      "heroBtn": "View Map",
+      "how": "How does it work?",
+      "howTitle1": "Contribution",
+      "howTitle2": "Cartographic Enrichment",
+      "howTitle3": "Global Access",
+      "howText1": "Researchers and scholars of the city can add spatially locatable data.",
+      "howText2": "The added data enrich the cartographic base, building a detailed representation of the city's evolution over time.",
+      "howText3": "Everyone can benefit from these data, and contributors can create customized maps for their research.",
+      "faqTitle": "Frequently Asked Questions",
     },
     "contact":{
       "title1": "Collaborative mapping of the history of São Paulo (1870-1940).",
@@ -143,11 +143,13 @@ export default {
         "title5": "Support:",
         "title6": "Financing:",
         "title7": "Who are we?",
+        "title8": "How to cite a layer?",
         "text1": `The project is a partnership between INPE (National Institute for Space Research), UNIFESP (Guarulhos and São José dos Campos Units) and the State Archive of São Paulo and Emory University (United States). <br>
                     The concept of "open science" that guides the project makes it a friendly initiative to involve all stakeholders in various stages of its implementation.`,
         "text2": "The project was one of the four contemplated by the eScience 2016 call of FAPESP (Foundation for Research Support of the State of São Paulo), which stimulates collaboration between areas of computer science and any other area of knowledge.",
         "text3": `Pauliceia 2.0 platform is open source, web-based and service-oriented. It is implemented using the GIS library TerraLib and the web geoportal framework TerraBrasilis developed by INPE. The team also uses the gvSIG software, a free alternative to open GIS.<br>
                     The platform is implemented based on the Single Page Application (SPA) concept using the framework Vue.js developed in JavaScript language and the tools jQuery and OpenLayers.`,
+        "text8": "«LASTNAME», «FirstName». «LayerName» [layer]. Creation date. Pauliceia 2.0 Platform: Collaborative Mapping of São Paulo's History (1870-1940). Available at: http://www.pauliceia.dpi.inpe.br. Accessed on: day month. Year.",
         "name1": "Luís Ferla - coordinator",
         "desc1": "Luis Ferla is professor of contemporary history at Unifesp. In this University, he coordinates the research group Himaco (History, maps and computers) and lab.hum (Laboratory of Digital Humanities). Together with Karla Donato Fook, he is one of the coordinators of the project",
         "name2": "Karine Reis Ferreira ",

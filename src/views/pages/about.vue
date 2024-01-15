@@ -1,57 +1,6 @@
 <template>
   <section class="page-weapper" itemscope itemtype="http://schema.org/CreativeWork">
 
-    <div class="container">
-      <header class="row row-style justify-content-md-center">
-        <div class="col-sm-4 column-style">
-          <div class="card card-style">
-            <div class="card-body"><br>
-              <h5 class="card-title">{{ $t('about.title1') }}</h5><br>
-              <div class="card-text" itemprop="about" v-html="$t('about.text1')"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4 column-style">
-          <div class="card card-style">
-            <div class="card-body"><br>
-              <h5 class="card-title">{{ $t('about.title2') }}</h5><br>
-              <div class="card-text" v-html="$t('about.text2')"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4 column-style">
-          <div class="card card-style">
-            <div class="card-body"><br>
-              <h5 class="card-title">{{ $t('about.title3') }}</h5><br>
-              <div class="card-text" v-html="$t('about.text3')"/>
-            </div>
-          </div>
-        </div>
-      </header>
-    </div>
-
-    <div class="container" style="padding-top:0px;">
-      <header class="row row-style justify-content-md-center">
-        <div class="col-sm-12 column-style">
-          <div class="card card-style">
-
-            <div class="card-body">
-              <br>
-              <!-- <h5 class="card-title">
-                {{ $t('home.title4') }}
-              </h5> -->
-              <div class="card-text">
-                <how-to-cite/>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </header>
-    </div>
-
     <div class="container2">
       <div class="container">
         <div class="row justify-content-md-center">

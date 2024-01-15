@@ -6,7 +6,7 @@ export default {
         "map": "Mapa",
         "team": "Equipe",
         "contact": "Contato",
-        "about": "Sobre",
+        "about": "Quem somos",
         "login": "Entrar",
         "profile": "Meu Perfil",
         "dashboard": "Painel",
@@ -108,17 +108,17 @@ export default {
         }
     },
     "home":{
-      "title1": "O que é?",
-      "title2": "Como?",
-      "title3": "Quando ficará pronta?",
-      "title4": "Como citar uma camada?",
-      "example": "Exemplo",
-      "column1": "A Pauliceia 2.0 é uma plataforma que tem o objetivo de fazer o mapeamento colaborativo da história de São Paulo no período de 1870 a 1940.",
-      "column2": `Por meio da interface da plataforma, pesquisadores e estudiosos da cidade podem alimentar os seus dados, desde que sejam espacialmente localizáveis.<br>
-          Dessa forma, uma base cartográfica histórica da cidade será enriquecida a cada alimentação, tornando esses dados também disponíveis a todos.<br>
-          Por outro lado, o usuário que colaborar terá dessa forma um mapa ou uma visualização de sua própria pesquisa.`,
-      "column3": "Uma versão beta está atualmente disponível para teste. A versão final está prevista para janeiro de 2022.",
-
+      "hero": "Mapeamento colaborativo da história de São Paulo",
+      "hero2": "(1870 a 1940)",
+      "heroBtn": "Ver mapa",
+      "how": "Como funciona?",
+      "howTitle1": "Contribuição",
+      "howTitle2": "Enriquecimento Cartográfico",
+      "howTitle3": "Acesso Global",
+      "howText1": "Pesquisadores e estudiosos da cidade podem adicionar dados espacialmente localizáveis.",
+      "howText2": "Os dados adicionados enriquecem a base cartográfica, construindo uma representação detalhada da evolução da cidade ao longo do tempo.",
+      "howText3": "Todos podem fazer proveito desses dados e os colaboradores podem criar mapas personalizados para suas pesquisas.",
+      "faqTitle": "Perguntas Frequentes",
     },
     "contact":{
       "title1": "Mapeamento colaborativo da história de São Paulo (1870 a 1940).",
@@ -144,11 +144,13 @@ export default {
       "title5": "Apoio:",
       "title6": "Financiamento:",
       "title7": "Quem somos?",
+        "title8": "Como citar uma camada?",
       "text1": `O projeto é uma parceria entre a UNIFESP (campi de Guarulhos e São José dos Campos), o Arquivo do Estado de SP, o INPE (Instituto Nacional de Pesquisas Espaciais) e a Emory University (Estados Unidos). <br> Mas a concepção de “ciência aberta” que orienta o projeto faz dele uma iniciativa amigável à participação de todos os interessados em diversas etapas de sua execução.`,
       "text2": "O projeto foi um dos 4 contemplados pela chamada eScience 2016 da FAPESP (Fundação de Amparo a Pesquisa do Estado de São Paulo), que estimula a colaboração entre as ciências da computação e outras áreas de conhecimento.",
       "text3": `A Pauliceia 2.0 é uma plataforma de código aberto, base web e orientada a serviços. Ela foi implementada usando a biblioteca GIS TerraLib e o geoportal TerraBrasilis desenvolvido pelo INPE. <br>
                 A equipe também utiliza o software gvSIG, alternativa livre a aberta de SIG. <br>
                 A plataforma foi implementada com base no conceito de Single Page Application (SPA) usando a estrutura Vue.js desenvolvido em linguagem JavaScript e as ferramentas jQuery e OpenLayers.`,
+      "text8": "«SOBRENOME», «Nome». «Nome da camada» [camada]. Data da criação. Plataforma Pauliceia 2.0: Mapeamento Colaborativo da História de São Paulo (1870-1940). Disponível em: http://www.pauliceia.dpi.inpe.br. Acesso em: dia mês. Ano.",
       "name1": "Luís Ferla - coordenador",
       "desc1": "Luis Ferla é professor de história contemporânea da UNIFESP. Nessa Universidade, coordena o grupo de pesquisas Hímaco (História, mapas e computadores) e o lab.hum (Laboratório de Humanidades Digitais). Juntamente com Karla Donato Fook, é um dos coordenadores do projeto. ",
       "name2": "Karine Reis Ferreira",

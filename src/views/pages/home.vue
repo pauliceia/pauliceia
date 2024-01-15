@@ -1,89 +1,109 @@
 <template>
   <div class="background">
-    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img class="d-block w-100" src='@/views/assets/images/mapa1_1943.jpg' alt="First slide">
+
+    <div class="hero">
+      <div class="hero-wrapper">
+        <div class="hero-text">
+          <h1>{{ $t('home.hero') }}</h1>
+          <p>{{ $t('home.hero2') }}</p>
         </div>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="@/views/assets/images/mapa2_1924.jpg" alt="Second slide">
-        </div>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="@/views/assets/images/mapa3_1890.png" alt="Third slide">
-        </div>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="@/views/assets/images/mapa5_1877.jpg" alt="Fourth slide">
-        </div>
-      </div>
-      <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-    <div class="logo" style="z-index: 1000;">
-      <img v-if="$t('home.title2')==='Como?'" src="@/views/assets/images/home_slider_pt_br.png">
-      <img v-else src="@/views/assets/images/home_slider_en.png">
-    </div>
-    <div class="text-style">
-      <div class="row justify-content-md-center">
-        <div class="col-sm-3 column-style">
-          <h5>{{ $t('home.title1') }}</h5>
-          <br>
-          <p>{{ $t('home.column1') }}</p>
-        </div>
-        <div class="col-sm-3 column-style">
-          <h5>{{ $t('home.title2') }}</h5>
-          <br>
-          <div v-html="$t('home.column2')"/>
-          <p>&nbsp;</p>
-        </div>
-        <div class="col-sm-3 column-style">
-          <h5>{{ $t('home.title3') }}</h5>
-          <br>
-          <p>{{ $t('home.column3') }}</p>
+        <div class="hero-button">
+          <router-link to="/explore">
+            <p>{{ $t('home.heroBtn') }}</p>
+            <div class="btn-image">
+              <img src="@/views/assets/images/arrow.svg" alt="arrow">
+            </div>
+          </router-link>
         </div>
       </div>
-      
-      <div class="row justify-content-md-center">
-        <div class="col-sm-9 column-style">
-          <how-to-cite/>
+    
+      <div class="carousel slide carousel-fade">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="d-block w-100" src='@/views/assets/images/mapa1_1943.jpg' alt="First slide">
+          </div>
         </div>
       </div>
     </div>
+
+    <HowItWorks />
+
+    <FAQ />
 
   </div>
 </template>
 
 <script>
-import HowToCite from '@/views/components/HowToCite.vue'
+import HowItWorks from '@/views/components/HowItWorks.vue'
+import FAQ from '@/views/components/FAQ.vue'
 
 export default {
   name: "home",
   components: {
-    HowToCite
+    HowItWorks,
+    FAQ
   }
 }
 </script>
 
 <style lang="sass" scoped>
   .background
-    background-color: #333333
-
-    .logo
-      position: absolute
-      display: flex
-      right: 300px
-      top: 100px
+    background-color: #111111
 
     .text-style
       padding: 100px
       color: white
-      font-size: 16px
+      font-size: 24px
 
       .column-style
         padding-right: 80px
+
+    .hero
+      position: relative
+      display: flex
+      flex-direction: column
+      justify-content: flex-end
+      height: calc(100vh - 80px)
+      width: 100%
+      overflow: hidden
+      font-family: 'PT Serif', serif
+
+      .hero-wrapper
+        display: flex
+        justify-content: space-between
+        align-items: flex-end
+        height: 100%
+        padding: 2%
+        background-image: url("../assets/images/hero.svg")
+        background-repeat: no-repeat
+        background-size: cover
+        background-position: bottom
+        
+        .hero-text
+          color: #c6c6c6
+          display: flex
+
+          h1
+            font-size: 68px
+            width: 47%;
+            float: left;
+
+          p
+            font-size: 24px
+        .hero-button
+          a
+            display: flex
+            align-items: flex-end
+            gap: 12px
+
+            font-size: 24px
+            color: #c6c6c6;
+
+            p
+              margin-bottom: 0px
+
+            img
+              width: 42px
+              aspect-ratio: 1/1
+          
 </style>
