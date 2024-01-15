@@ -12,3 +12,7 @@ npm-debug.log*
 *.ntvs*
 *.njsproj
 *.sln
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
