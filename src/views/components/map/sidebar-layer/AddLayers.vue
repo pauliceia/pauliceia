@@ -30,6 +30,29 @@
                     {{ name }}
                   </el-tag>
                 </p>
+
+                <p><strong>{{ $t('map.addLayer.box.lbStartDate') }}:</strong>
+                  {{layer.properties.startDate}}
+                </p>
+                <p><strong>{{ $t('map.addLayer.box.lbEndDate') }}:</strong>
+                  {{layer.properties.endDate}}
+                </p>
+
+                <div v-if="layer.properties.description">
+                  <p>
+                    <strong>{{ $t('map.addLayer.box.lbDescription') }}: </strong>
+                    <span v-if="layer.showMore">
+                      {{ layer.properties.description }}
+                    </span>
+                    <span v-else>
+                      {{ truncateDescription(layer.properties.description) }}
+                    </span>
+                    <a v-if="layer.wordCount > 50" href="#" @click.prevent="toggleDescription(layer)">
+                      {{ toggleButtonText(layer) }}
+                    </a>
+                  </p>
+                </div>
+
               </div>
 
               <div class="btns">
@@ -88,7 +111,8 @@ export default {
         listLayers: [],
         allLayers: [],
         allKeywords: [],
-        allAuthorsLayers: []
+        allAuthorsLayers: [],
+        allTemporalColumns: [],
       }
     },
     async mounted() {
@@ -105,6 +129,11 @@ export default {
         result = await Map.getAuthorsLayers(null)
         this.allAuthorsLayers = result.data.features
 
+        //chamar a API e receber os dados temporais em um JSON
+        const temporalColumns = await Map.getTemporalColumns()
+        this.allTemporalColumns = temporalColumns.data.features //salva em um array
+        this.updateTemporalDates()
+
         // add a list of authors and keywords names inside each layer
         this.allLayers.forEach(layer => {
           layer.properties.authors = this.allAuthorsLayers.filter(
@@ -119,6 +148,9 @@ export default {
           layer.properties.keyword = layer.properties.keyword.map(
             id => this.getKeywordById(id)[0].properties.name
           )
+
+          layer.showMore = false; // Inicializando showMore aqui
+          layer.wordCount = this.countWords(layer.properties.description); // Inicializando wordCount
         })
 
         // sort the layers by name
@@ -144,6 +176,50 @@ export default {
       getAuthorById(id){
         return this.allAuthors.filter(author => author.properties.user_id === id)
       },
+
+      // Esta função atualiza as datas temporais nas propriedades das determinadas camadas
+      updateTemporalDates() {
+
+        this.allLayers.forEach(layer => {
+          const matchingTemporalColumn = this.allTemporalColumns.find(tc => tc.properties.f_table_name === layer.properties.f_table_name);
+          if (matchingTemporalColumn) {
+            // Atualiza a propriedade startDate da camada com a data de start_date da coluna temporal
+            layer.properties.startDate = this._getDate(matchingTemporalColumn.properties.start_date);
+            // Atualiza a propriedade endDate da camada com a data de end_date da coluna temporal
+            layer.properties.endDate = this._getDate(matchingTemporalColumn.properties.end_date);
+          }
+        });
+      },
+
+      //Verifica se deve "mostrar mais" ou não
+      toggleDescription(layer) {
+        console.log(layer.showMore)
+        if (layer.showMore === undefined) {
+          this.$set(layer, 'showMore', false);
+        }
+        layer.showMore = !layer.showMore;
+        console.log(layer.showMore)
+        this.$forceUpdate();
+      },
+
+      //Trunca o texto da descrição
+      truncateDescription(description) {
+        const maxWords = 50;
+        const words = description.split(/\s+/);
+        return words.slice(0, maxWords).join(' ') + (words.length > maxWords ? '...' : '');
+      },
+
+      //Conta o número de palavras do texto da descrição
+      countWords(str) {
+        return str.split(/\s+/).length;
+      },
+
+      //Muda o botão entre "Mostrar mais" e "Mostrar menos"
+      toggleButtonText(layer) {
+        return layer.showMore ? this.$t('map.addLayer.box.showLess') : this.$t('map.addLayer.box.showMore');
+      },
+
+
       disabled(layer) {
         if(this.btnDisabled == false)
           this.btnDisabled = true
@@ -200,6 +276,16 @@ export default {
           })
         }
       },
+
+      _getDate(date) {
+            let dateParsed = date.split('-')
+            if(this.$i18n.locale() == "pt") {
+                return dateParsed[2].split(" ")[0] + "/" + dateParsed[1] + "/" + dateParsed[0]
+            } else {
+                return dateParsed[1] + "/" + dateParsed[2].split(" ")[0] + "/" + dateParsed[0]
+            }
+        },
+
       _openFullScreen() {
         this.loading = this.$loading({
           lock: true,

@@ -4,12 +4,12 @@
     <div class="col-sm-8">
       <div class="card styleCard">
         <div class="card-body">
-          <h5 class="card-title" style="text-align: center"><h3>Profile</h3></h5>
+          <h5 class="card-title" style="text-align: center"><h3>{{ $t('dashboard.profile.Profile') }}</h3></h5>
           <div class="card-text">
             <form>
               <div class="form-row">
                 <div class="form-group col-md-4 text-center">
-                  <p class="text-left">Profile Picture
+                  <p class="text-left">{{ $t('dashboard.profile.ProfilePic') }}
                     <p-popover-labels text="Foto para o perfil" /></p>
                   <md-avatar class="md-avatar-icon stylePicture">
                     <div class="logo">
@@ -18,7 +18,7 @@
                   </md-avatar>
                   <br>
                   <br>
-                  <a class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="UploadPicture()">Upload new picture</a>
+                  <a class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="UploadPicture()">{{ $t('dashboard.profile.UpPic') }}</a>
                 </div>
                 <div class="form-group col-md-7">
                   <div class="form-group">
@@ -32,7 +32,7 @@
                     <input type="email" v-model="user.email" class="form-control" disabled>
                   </div>
                   <div class="form-group">
-                    <label>User Name</label>
+                    <label>{{ $t('dashboard.profile.UserName') }}</label>
                     <p-popover-labels text="Nome de usuário" />
                     <input v-model="user.username" class="form-control">
                   </div>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group col-md-11">
                   <div class="text-right align-self-end"><br>
-                    <a  class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="submitInfo()">Submit</a>
+                    <a  class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="submitInfo()">{{ $t('dashboard.profile.Sub') }}</a>
                   </div>
                 </div>
               </div>

@@ -134,7 +134,7 @@
               <div class="col align-self-end">
                 <br>
                 <a href="#" class="btn btn-primary" @click="Upload()">{{ $t('dashboard.newLayer.submit') }}</a>
-                <a href="#" class="btn btn-danger" @click="Delete()">{{ $t('dashboard.editLayer.delete') }}</a>
+                <a href="#" class="btn btn-danger" @click="Delete($event)">{{ $t('dashboard.editLayer.delete') }}</a>
               </div>
             </div>
 
@@ -290,7 +290,7 @@
         // this method sends the temporal columns to VGIMWS
 
         if ((this.startDate === "" || this.endDate === "") || (this.startDate === null || this.endDate === null)) {
-          this._msgError("O preenchimento das datas é obrigatório!")
+          this._msgError(this.$t('dashboard.editLayer.insertDate'))
           return;
         }
 
@@ -308,7 +308,7 @@
         }
 
         Api().put('/api/temporal_columns', temporalColumns).then(response => {
-          this.$message.success("A camada foi atualizada com sucesso!")
+          this.$message.success(this.$t('dashboard.editLayer.updateLayer'))
           this.$router.push({path: '/dashboard/home'})
         }, cause => {
           this._showErrorMessages(cause)
@@ -327,7 +327,7 @@
         //if(this.chosenRefID == null) this.chosenRefID = []
 
         if (this.chosenKeywordsID.length === 0) {
-          this.$message.error("Having at least one keyword is mandatory!")
+          this.$message.error(this.$t('dashboard.editLayer.minKey'))
         } else {
           const loading = this.$loading({
             lock: true,
@@ -405,11 +405,42 @@
           // })
         }
       },
-      Delete() {
-        Api().delete('/api/layer/' + this.layer_id)
+      async Delete(event) {
+        // Evita o comportamento padrão do evento (neste caso, a submissão de um formulário).
+        event.preventDefault();
 
-        this.$router.push({ path: '/dashboard/home' })
+        // Solicita confirmação do usuário antes de excluir a camada.
+        try {
+          const confirmResult = await this.$confirm(`${this.$t('dashboard.editLayer.confirmDeleteMsg')} "${this.layer.name}" ?`, this.$t('dashboard.editLayer.confirmDeleteTitle'), {
+            confirmButtonText: this.$t('dashboard.editLayer.confirmButton'),
+            cancelButtonText: this.$t('dashboard.editLayer.cancelButton'),
+            type: 'warning'
+          });
+
+          if (confirmResult) {
+            // Usuário aceitou a exclusão, então prosseguimos com a chamada da API para deletar a camada.
+            await Api().delete('/api/layer/' + this.layer_id);
+
+            // Exibe uma mensagem de sucesso para o usuário.
+            this.$message({
+              message: this.$t('dashboard.editLayer.successMsg'),
+              type: 'success'
+            });
+
+            // Redireciona o usuário para a página inicial do dashboard após a exclusão.
+            this.$router.push({ path: '/dashboard/home' });
+          } else {
+            // Usuário cancelou a exclusão.
+          }
+        } catch (error) {
+          // Ocorreu um erro durante o processo de confirmação ou exclusão. Exibe uma mensagem de erro.
+          this.$message({
+            message: this.$t('dashboard.editLayer.errorMsg'),
+            type: 'error'
+          });
+        }
       },
+      
       removeRef(index) {
         //console.log(this.chosenRef[index].reference_id)
 

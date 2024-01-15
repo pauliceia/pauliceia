@@ -2,9 +2,6 @@
   <section class="boxS" v-show="boxAlert">
     <header class="header">
       <img src="@/views/assets/images/logo.png" class="img">
-      <button class="btn" @click="closeBox()">
-        <md-icon>close</md-icon>
-      </button>
       <br>
     </header>
     <p><b> 
@@ -17,6 +14,7 @@
     <p style="text-align: right">
       {{ $t('map.betaVersionModal.footnote') }}
     </p>
+    <button  @click="closeBox()" class="buttonClose"> {{$t('map.betaVersionModal.start')}} </button>
   </section>
 </template>
 
@@ -44,6 +42,10 @@
 </script>
 
 <style lang="sass" scoped>
+
+
+
+  
   .boxS
     position: absolute
     display: inline-block
@@ -55,6 +57,19 @@
     padding: 30px
     background: rgba(255, 255, 255, 0.95)
     z-index: 99
+
+    .buttonClose
+      position: relative
+      color: #FFF
+      font-size: 30px
+      bottom: 5px
+      right: -40%
+      width: 20%
+      height: 40px
+      border-radius: 7.5px
+      font-size: 30px
+      background: #f15a29
+      font-family: IrisUPC
 
 
     .header
@@ -71,23 +86,11 @@
         display: inline-block
         margin: 0 !important
         color: #000000
+ 
 
       .img
         width: 250px
         height: 120px
-
-      .btn
-        margin: 3px !important
-        padding: 2px !important
-        background: none
-        font-size: 1em
-        border: none
-        float: right
-        right: 20px
-        position: absolute
-
-      .btn:hover
-        background: rgba(#000, 0.1)
 
     .text1
       color: #ff6107

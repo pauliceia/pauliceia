@@ -1,10 +1,27 @@
 <template>
-  <div id="contentSlider">
-    <div class="sliders" id="slider"></div>
+  <div>
+    <div id="contentSlider">
+      <!-- Renderiza o primeiro tipo de controle deslizante se useDoubleSlider for verdadeiro -->
+      <div v-if="useDoubleSlider" class="sliders" id="doubleSlider"></div>
+
+      <!-- Renderiza o segundo tipo de controle deslizante se useDoubleSlider for falso -->
+      <div v-else class="sliders" id="singleSlider"></div>
+
+    </div>
+    
+
+    <!-- Botão para alternar entre os tipos de controle deslizante -->
+    <div class = "button">
+      <button @click="toggleSliderType" id = "changeButton" >
+      {{ useDoubleSlider ?  $t('main.ruler') : $t('main.ruler') }}
+      </button>
+    </div>    
+
   </div>
 </template>
 
 <script>
+  import Vue from 'vue'
   import noUiSlider from 'nouislider'
   import { mapState } from 'vuex'
   import Api from '@/middleware/ApiVGI'
@@ -48,6 +65,7 @@
       return {
         sliderStartYear: 1886,
         sliderEndYear: 1970,
+        useDoubleSlider: true,        
         // loaded temporal columns
         loadedTC: []
       }
@@ -58,15 +76,35 @@
         return this.years.first
       },
       selectedEndYear(){
-        return this.years.last
+        return this.useDoubleSlider ? this.years.last : this.years.first
       }
     },
-    mounted () {
-      let slider = document.getElementById('slider')
+    
+    mounted() {
+      this.initializeSlider();
+    },
+    
+    methods: {           
 
-      //this.filterUpdate()
-      noUiSlider.create(slider, {
-        start: [this.sliderStartYear, this.sliderEndYear],
+      toggleSliderType() {        
+        this.useDoubleSlider = !this.useDoubleSlider;
+        Vue.nextTick(() => {
+          this.initializeSlider();        
+        });
+      },
+
+      initializeSlider() {      
+      let sliderId = this.useDoubleSlider ? 'doubleSlider' : 'singleSlider';      
+      let slider = document.getElementById(sliderId);      
+
+      // Verificar se o slider já está inicializado
+      if (slider.noUiSlider) {        
+        slider.noUiSlider.destroy();
+      }
+
+
+  // Configurações comuns a ambos os tipos de controles deslizantes
+      let commonSliderOptions = {
         connect: true,
         orientation: 'horizontal',
         step: 1,
@@ -83,24 +121,36 @@
         },
         format: {
           to: value => {
-            return value + ''
+            return value + '';
           },
           from: value => {
-            return value.replace(',-', '')
+            return value.replace(',-', '');
           }
         }
-      })
+      };
 
+      // Configurações específicas para cada tipo de controle deslizante
+      let sliderSpecificOptions = this.useDoubleSlider
+        ? { start: [this.sliderStartYear, this.sliderEndYear] }
+        : { start: [this.sliderStartYear] };
+
+      // Configurações comuns e específicas combinadas
+      let sliderOptions = { ...commonSliderOptions, ...sliderSpecificOptions };
+
+      // Criar o controle deslizante
+      noUiSlider.create(slider, sliderOptions);
+
+      // Atualização na régua quando os controles deslizantes são utilizados
       slider.noUiSlider.on('update', (values, handle) => {
         this.$store.dispatch('map/setYears', {
           first: values[0],
-          last: values[1]
-        })
+          last: this.useDoubleSlider ? values[1] : values[0]
+        });
 
-        this.filterUpdate()
-      })
+        this.filterUpdate();
+      });
     },
-    methods: {
+
       getTemporalColumns (f_table_name) {
         // tcs - array with the selected temporal columns
         let tcs = this.loadedTC.filter(tc => tc.properties.f_table_name === f_table_name)
@@ -178,6 +228,8 @@
 </script>
 
 <style>
+
+
   #contentSlider {
     position: absolute;
     display: flex;
@@ -201,4 +253,34 @@
   #contentSlider .sliders .noUi-connect{
     background: #58595b !important;
   }
+
+
+  #playButton {
+    border-radius: 7.5px;
+    line-height: 1;
+    color: #FFF;
+    font-size: 30px;
+    background: #f15a29;
+    font-family: IrisUPC ;
+    position: absolute;
+    display: flex;
+    z-index: 4;
+    bottom: 51px;
+    left: 25%;
+  }
+  #changeButton  {
+    border-radius: 7.5px;
+    line-height: 1;
+    color: #FFF;
+    font-size: 30px;
+    background: #f15a29;
+    font-family: IrisUPC ;
+    position: absolute;
+    display: flex;
+    z-index: 4;
+    bottom: 51px;
+    right: 24%;
+  }
+
+
 </style>
