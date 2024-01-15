@@ -104,7 +104,7 @@ export default {
         _getAttrLayer(type){
             if(type=='numeric' || type=='integer') return 'number'
             else if(type=='timestamp') return 'date'
-            else 'text'
+            else return 'text'
         }
     }
 }

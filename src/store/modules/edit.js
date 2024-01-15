@@ -1,64 +1,50 @@
 const state = {
     layerId: null,
-    typeGeometry: null,
-    attr: null,
-    featureSelected: null,
+    geometryType: null, // Nome mais descritivo para typeGeometry
+    attributes: null, // Plural para attr
+    selectedFeature: null, // Nome mais descritivo para featureSelected
     changesetId: null,
-    funcSelected: null,
-    featuresWKT: null
-}
-
-const mutations = {
-    setLayerId (state, id) {
-        state.layerId = id
+    selectedFunction: null, // Nome mais descritivo para funcSelected
+    featuresWKT: null,
+  };
+  
+  const mutations = {
+    setLayerId(state, id) {
+      state.layerId = id;
     },
-    setTypeGeometry (state, type) {
-        state.typeGeometry = type
+    setGeometryType(state, type) { // Nome mais descritivo para setTypeGeometry
+      state.geometryType = type;
     },
-    setAttr (state, value) {
-        state.attr = value
+    setAttributes(state, value) { // Plural para setAttr
+      state.attributes = value;
     },
-    setFeatureSelected (state, value) {
-        state.featureSelected = value
+    setSelectedFeature(state, value) { // Nome mais descritivo para setFeatureSelected
+      state.selectedFeature = value;
     },
-    setChangesetId (state, value) {
-        state.changesetId = value
+    setChangesetId(state, value) {
+      state.changesetId = value;
     },
-    setFuncSelected (state, value) {
-        state.funcSelected = value
+    setSelectedFunction(state, value) { // Nome mais descritivo para setFuncSelected
+      state.selectedFunction = value;
     },
-    setFeaturesWKT (state, value) {
-        state.featuresWKT = value
-    }
-}
-
-const actions = {
-    setLayerId ({commit}, id) {
-        commit('setLayerId', id)
+    setFeaturesWKT(state, value) {
+      state.featuresWKT = value;
     },
-    setTypeGeometry ({commit}, type) {
-        commit('setTypeGeometry', type)
+  };
+  
+  const actions = {
+    // Actions com lógica adicional
+    async setLayerId({ commit }, id) {
+      // Validar ID da camada ou realizar outras ações antes de setar o estado
+      await validateLayerId(id);
+      commit('setLayerId', id);
     },
-    setAttr ({commit}, value) {
-        commit('setAttr', value)
-    },
-    setFeatureSelected ({commit}, value) {
-        commit('setFeatureSelected', value)
-    },
-    setChangesetId ({commit}, value) {
-        commit('setChangesetId', value)
-    },
-    setFuncSelected ({commit}, value) {
-        commit('setFuncSelected', value)
-    },
-    setFeaturesWKT ({commit}, value) {
-        commit('setFeaturesWKT', value)
-    }
-}
-
-export default {
+    // Aqui, pode-se adicionar mais actions de forma facilitada
+  };
+  
+  export default {
     namespaced: true,
     state,
     mutations,
-    actions
-}
+    actions,
+  };

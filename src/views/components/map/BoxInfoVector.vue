@@ -15,7 +15,7 @@
 
             <div class="result" v-if="resultProperties[0]">
                 <p>Atributos da Feature:</p>
-                <table class="table" v-for="resultAttr in resultProperties" :key="resultAttr.id">
+                <table class="table" v-for="resultAttr in resultProperties" :key="resultAttr.id" aria-describedby="resultados da pesquisa">
                     <tr v-for="element in resultAttr" :key="element.key">
                         <td><strong><i>{{ element.key }}:</i></strong></td>
                         <td>{{ element.value }}</td>

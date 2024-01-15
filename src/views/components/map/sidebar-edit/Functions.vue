@@ -4,7 +4,7 @@
             <i class="el-icon-caret-right" style="color: red"></i>
             Editando a camada '{{ layer.name }}' ({{ layer.type }}):
         </p>
-        <center>
+        <div style="display: flex; align-items: center;">
             <p-sidebarEdit-func-point v-show="layer.type == 'point' || layer.type == 'multipoint'" :source="layer.vector"/>
             <p-sidebarEdit-func-line v-show="layer.type == 'multilinestring' || layer.type == 'linestring'" :source="layer.vector"/>
             <p-sidebarEdit-func-polygon v-show="layer.type == 'multipolygon' || layer.type == 'polygon'"/>
@@ -16,7 +16,7 @@
                 center
                 show-icon>
             </el-alert>
-        </center>
+        </div>
     </section>
 </template>
 

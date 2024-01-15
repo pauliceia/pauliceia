@@ -2,7 +2,7 @@
     <div>
       <div class="row justify-content-md-center row-style" itemscope itemtype="https://schema.org/Organization">
         <div class="col-sm-4 column-style">
-          <img class="picture" src="@/views/assets/images/untitled-4.png">
+          <img class="picture" src="@/views/assets/images/untitled-4.png" alt="Pauliceia">
           <p itemprop="name">PAULICEIA 2.0:</p>
           <p style="position: relative; top: -10px;">{{ $t('contact.title1') }}</p>
           <br>

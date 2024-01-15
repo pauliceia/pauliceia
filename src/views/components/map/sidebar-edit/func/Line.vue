@@ -66,6 +66,7 @@ export default {
             let properties = vm.source.getFeatures()[0].getProperties()
             await Object.keys(properties).map( (index, key) => {
                 properties[index] = null
+                return
             })
             this.$store.dispatch('edit/setAttr', properties)
         },

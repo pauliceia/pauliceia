@@ -71,6 +71,7 @@ export default {
 
             await Object.keys(properties).map( (index, key) => {
                 properties[index] = null
+                return
             })
             this.$store.dispatch('edit/setAttr', properties)
         },

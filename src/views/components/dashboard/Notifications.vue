@@ -26,7 +26,7 @@
                   <div class="photo">
                     <md-avatar class="md-avatar-icon stylePicture">
                       <div class="logo">
-                        <img :src="notification.photo"/>
+                        <img :src="notification.photo" alt="notificação"/>
                       </div>
                     </md-avatar>
                   </div>
@@ -83,7 +83,7 @@
                     <div class="photo">
                       <md-avatar class="md-avatar-icon stylePicture">
                         <div class="logo">
-                          <img :src="notification.photo"/>
+                          <img :src="notification.photo" alt="notificação"/>
                         </div>
                       </md-avatar>
                     </div>
@@ -163,7 +163,7 @@
                     <div class="photo">
                       <md-avatar class="md-avatar-icon stylePicture">
                         <div class="logo">
-                          <img :src="notification.photo"/>
+                          <img :src="notification.photo" alt="notificação"/>
                         </div>
                       </md-avatar>
                     </div>

@@ -83,9 +83,11 @@
     },
     methods: {
       deleteLayer(id){
-        Api().delete('/api/layer/' + id).then((response) => {
+        if(window.confirm("Você tem certeza que deseja deletar esta camada?")){
+          Api().delete('/api/layer/' + id).then((response) => {
           this.updateLayers()
         })
+        }
       },
       editLayer(id){
         this.$router.push({name: 'EditLayer', params: {layer_id: id}})
