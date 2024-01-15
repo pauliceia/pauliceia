@@ -34,5 +34,17 @@ export default {
         'Accept': 'application/json; charset=UTF-8'
       }
     })
-  }
+  },
+
+  requestPasswordReset(email, credentials) {
+    return Api().post('/api/requestPasswordReset/', {
+      headers: {
+          'Authorization': `Basic ${credentials}`,
+          'Content-type': 'application/json',
+          'Accept': 'application/json; charset=UTF-8'
+      },
+      email: email,
+    });
+  },
+
 }
