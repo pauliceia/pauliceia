@@ -85,7 +85,7 @@ export default {
                 }
             },
             
-            "addSuccess": "The layer was added successfully!",
+            "addSucess": "The layer was added successfully!",
             "nameRequired": "The layer name is required!",
             "nameNece": "The name of de layer is necessary",
             "numChar": "The layer name must be between 5 and 63 characters!",
