@@ -294,6 +294,11 @@
           return;
         }
 
+        if(this.endDate > Date.now()){
+          this._msgError("A data final não pode ser maior que a data atual!")
+          return;
+        }
+
         let temporalColumns = {
           'properties': {
             'f_table_name': this.tableName,
