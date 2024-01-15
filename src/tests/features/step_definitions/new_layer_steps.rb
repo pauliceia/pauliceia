@@ -19,7 +19,7 @@ Dado('que estou na página de criar uma nova camada, preencho as informações d
   fill_in('Nome', with: "Camada"+DateTime.now.strftime('%s')) 
 
   # escolha da palavra chave
-  dropdown = all('.dropdown.v-select.searchable').first
+  dropdown = page.all('.dropdown.v-select.searchable').first
   dropdown.click
 
   within(dropdown) do
