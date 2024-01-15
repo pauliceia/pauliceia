@@ -25,7 +25,7 @@
               <div class="row" v-for="layer in myLayers" v-bind:key="layer.layer_id">
                 <div class="col-sm-7">{{ layer.name }}</div>
                 <div class="col-sm-5">
-                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="deleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
+                  <button type="button" class="btn btn-outline-danger btn-sm add2" @click="confirmDeleteLayer(layer.layer_id)"><md-icon>clear</md-icon></button>
                   <button type="button" class="btn btn-outline-dark btn-sm add" @click="editLayer(layer.layer_id)"><md-icon>create</md-icon></button>
                 </div>
                 <hr>
@@ -82,6 +82,11 @@
       ...mapState('map', ['boxNotifications']),
     },
     methods: {
+      confirmDeleteLayer(id) {
+        if (window.confirm("Tem certeza que deseja excluir este layer?")) {
+          this.deleteLayer(id);
+        }
+      },
       deleteLayer(id){
         Api().delete('/api/layer/' + id).then((response) => {
           this.updateLayers()

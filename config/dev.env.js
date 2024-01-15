@@ -5,10 +5,10 @@ const prodEnv = require('./prod.env')
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   // urlVGI: '"http://localhost:3001"',
-  urlVGI: '"http://www.pauliceia.dpi.inpe.br/api/vgi"',
+  urlVGI: '"http://localhost:8888"',
   // urlGeoserverPauliceia: '"http://localhost:9021/geoserver/pauliceia"',
-  urlGeoserverPauliceia: '"http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia"',
-  urlGeoserveOther: '"http://www.pauliceia.dpi.inpe.br/geoserver/other"',
-  urlGeocoding: '"http://www.pauliceia.dpi.inpe.br/api/geocoding"',
+  urlGeoserverPauliceia: '"http://localhost:3002/geoserver/pauliceia"',
+  urlGeoserveOther: '"http://localhost:3002/geoserver/other"',
+  urlGeocoding: '"http://localhost:3000/api/geocoding"',
   keyCripto: '"keytest"'
 })

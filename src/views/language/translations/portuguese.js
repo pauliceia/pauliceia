@@ -101,6 +101,12 @@ export default {
         "btnText": "Entrar",
         "terms": "Se você fizer login via rede social, estará automaticamente concordando com os termos do projeto.",
         "lbReadme": "leia os termos aqui",
+        "forgotPassword": "Esqueci Minha Senha",
+        "updatePassword": "Atualizar Minha Senha",
+        "sendCode": "Enviar código",
+        "code": "Código",
+        "resetPassword": "Recuperar Senha",
+        "newPassword": "Nova Senha",
         "msg": {
             "success": "BEM-VINDO",
             "err404": "<strong>E-mail</strong> ou <strong>senha</strong> incorreta!",

@@ -27,7 +27,7 @@
                         <md-icon class="icon">error_outline</md-icon>
                       </button>
                     </el-popover>
-                    <input class="form-control" id="inputName" disabled>
+                    <input class="form-control" id="inputName">
                   </div>
                   <!-- select keywords -->
                   <div class="form-group col-md-6">
