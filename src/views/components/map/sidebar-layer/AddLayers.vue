@@ -30,8 +30,12 @@
                     {{ name }}
                   </el-tag>
                 </p>
+                <el-collapse>
+                  <el-collapse-item title="DESCRIÇÃO" :class="layers.some(id => id == layer.properties.layer_id) ? 'activated' : 'disabled'"> 
+                    <p>{{ layer.properties.description }}</p>
+                  </el-collapse-item>
+                </el-collapse>
               </div>
-
               <div class="btns">
                 <el-button :type="layers.some(id => id == layer.properties.layer_id) ? 'danger' : 'success'"
                               round @click="layers.some(id => id == layer.properties.layer_id) ? disabled(layer) : active(layer)"
@@ -211,6 +215,65 @@ export default {
     }
 }
 </script>
+
+<style>
+
+  .el-collapse {
+    margin: 0px;
+    padding: 0px;
+    border-color: transparent;
+  }
+
+  .el-collapse-item.activated{
+    background-color: #d6f5d6;
+    border-color: transparent;
+    font-weight: bolder;
+
+    .el-collapse-item__header {
+      background-color: #d6f5d6;
+      border-color: transparent;
+      font-size: 0.9em;
+      font-weight: bolder;
+      margin-left: 5px;
+    }
+
+    .el-collapse-item__wrap {
+      background-color: #d6f5d6;
+      border-color: transparent;
+      font-size: 0.9em;
+      font-weight: bolder;
+      margin-left: 5px;
+    }
+  }
+
+  .el-collapse-item.disabled{
+    background-color: #ffd6cc;
+    border-color: transparent;
+    font-weight: bolder;
+
+    .el-collapse-item__header {
+      background-color: #ffd6cc;
+      border-color: transparent;
+      font-size: 0.9em;
+      font-weight: bolder;
+      margin-left: 5px;
+    }
+
+    .el-collapse-item__wrap {
+      background-color: #ffd6cc;
+      border-color: transparent;
+      font-size: 0.9em;
+      font-weight: bolder;
+      margin-left: 5px;
+    }
+  }
+
+  .el-collapse-item__content{
+    font-weight: normal;
+  }
+
+
+</style>
 
 <style lang="sass" scoped>
 .modal-content
