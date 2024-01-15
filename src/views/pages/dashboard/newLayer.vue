@@ -488,6 +488,7 @@
 
         if (selectedEndDate > currentDate) {
             this._msgError(this.$t('dashboard.newLayer.warningUploadEndDateExceedsCurrentDate'));
+            Api().delete('/api/layer/' + this.layer_id)
             return;
         }
 

@@ -16,18 +16,16 @@ Dado('que estou na página de criar uma nova camada, preencho as informações d
   find(:xpath, "//a[@href='/portal/dashboard/newLayer']").click
 
   # preenchimento do nome
-  fill_in('Nome', with: "Camada"+DateTime.now.strftime('%s')) 
+  fill_in('Nome', with: "Camada"+DateTime.now.strftime('%s'))
 
   # escolha da palavra chave
   dropdown = page.all('.dropdown.v-select.searchable').first
   dropdown.click
 
-  within(dropdown) do
-    find('.dropdown-menu').click
-  end
+  find('ul.dropdown-menu').click
 
   # uploado do arquivo
-  find('input#Upload', visible: false).set(SUPPORT_TESTING[:pathFileShapefile]) # upload do arquivo
+  find('input#Upload', visible: false).set("bairros.zip") # upload do arquivo
 
   # clica em Enviar
   find('button', :text=>'Enviar').click
@@ -40,8 +38,8 @@ Quando('que eu preencho os dados de forma coerente') do
   fill_in('Data final', with: '01012002')
 end
 
-E('clico em {string}') do |string|
-  find('a', :text => string).click
+E('clico em enviar') do
+  find('a', :text => 'Enviar').click
 end
 
 Então('eu devo ver um pop-up informando que a camada foi adicionada com sucesso') do
