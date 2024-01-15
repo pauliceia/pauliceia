@@ -30,6 +30,33 @@ export default {
             "myLayers": "Minhas Camadas",
             "sharedLayers": "Camadas Compartilhadas"
         },
+        "notification":{
+            "notification":"Notificação",
+            "general": "GERAL",
+            "personal": "PESSOAL",
+            "following": "SEGUINDO",
+            "comments": "Comentários",
+            "answer": "Responder",
+            "report": "Denunciar",
+            "submit": "Enviar",
+            "clear": "Excluir",
+            "close": "Fechar",
+            "denunciation": "Denúncia",
+            "ofYourMessage": "da sua mensagem na camada",
+            "ofYourLayer": "da sua camada",
+            "ofYourMessageGlobalNotification": "da sua mensagem nas suas notificações globais",
+            "commentYourLayer": "Comente na sua camada",
+            "replyYourLayer": "Resposta da sua mensagem",
+            "onYourLayer": "na sua camada",
+            "onYourGlobalNotification": "nas suas notificações globais",
+            "ofSomeMessage":"de alguma mensagem na camada",
+            "ofLayer":"da camada",
+            "ofYourMessageonGlobal":"da sua mensagem nas notificações globais",
+            "replySomeMessage":"Responder a algumas mensagens",
+            "onLayer": "na camada",
+            "onGlobalNotification":"nas notificações globais",
+            "commentLayer":"Comentar na camada"
+        },
         "newLayer": {
             "name": "Nome",
             "keywords": "Palavras-chave",
@@ -91,7 +118,18 @@ export default {
             "newKeyword": "Nova Palavra-Chave",
             "myKeywords": "Minhas Palavras-Chave",
             "nameD": "Nome da nova palavra-chave. Ela é única no sistema.",
-            "name": "Nome"
+            "name": "Nome",
+            "submit": "Enviar"
+        },
+        "profile":{
+            "profile": "Meu Perfil",
+            "name": "Nome",
+            "submit": "Enviar",
+            "uploadNewPicture": "Enviar Nova Foto",
+            "profilePicture": "Foto de Perfil",
+            "emailMessage": "Não é possível modificar o e-mail",
+            "usernameMessage": "Nome social",
+            "profilePictureMessage" : "Foto para o perfil"
         }
     },
     "login": {
@@ -101,6 +139,8 @@ export default {
         "btnText": "Entrar",
         "terms": "Se você fizer login via rede social, estará automaticamente concordando com os termos do projeto.",
         "lbReadme": "leia os termos aqui",
+        "loginAccount": "Acesse sua conta",
+        "loginGoogle": "Acesso com o Google+",
         "msg": {
             "success": "BEM-VINDO",
             "err404": "<strong>E-mail</strong> ou <strong>senha</strong> incorreta!",
@@ -219,6 +259,7 @@ export default {
         "btnTitle": "Cadastrar",
         "lbToLogin": "Você já está cadastrado?",
         "lbToLoginLink": "CLIQUE AQUI",
+        "submit": "Enviar",
         "msg": {
             "registerBtnHover": "Você deve aceitar os Termos de Uso para se registrar!",
             "success": "O teu cadastro está quase pronto. Basta acessar o teu e-mail e seguir as instruções.",
@@ -271,7 +312,9 @@ export default {
                 "editColor": "Mudar a cor",
                 "download": "Baixar .shp"
             },
-            "msgEmpty": "Adicione as camadas para a visualização no mapa!"
+            "msgEmpty": "Adicione as camadas para a visualização no mapa!",
+            "mde_sp_colore": "Modelo Digital de Elevação de São Paulo (colorido)",
+            "mde_sp_bw": "Modelo Digital de Elevação de São Paulo (tons de cinza)"
         },
         "sidebarEdit": {
             "title": "Editor"
@@ -303,7 +346,8 @@ export default {
             "lbAuthors": "AUTORES",
             "lbDate": "DATA DE CRIAÇÃO",
             "lbReferences": "REFERÊNCIAS",
-            "lbNotifications": "Notificações"
+            "lbNotifications": "Notificações",
+            "submit": "Enviar"
         },
         "viewInfoVector": {
             "title": "Selecione as informações",
@@ -332,6 +376,7 @@ export default {
     },
     "terms": {
         "title": "TERMOS DE USO",
-        "text": termsPT
+        "text": termsPT,
+        "close": "Fechar"
     }
 }

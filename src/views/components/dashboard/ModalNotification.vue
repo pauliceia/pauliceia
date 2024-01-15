@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-button type="text" @click="showModal2()">Comments</el-button>
+    <el-button type="text" @click="showModal2()">{{ $t('dashboard.notification.comments') }}</el-button>
 
-    <el-dialog title="Notification" :visible.sync="outerVisible" id="myModal" :append-to-body="true" class="mod">
+    <el-dialog :title="$t('dashboard.notification.notification')" :visible.sync="outerVisible" id="myModal" :append-to-body="true" class="mod">
 
       <div class="notification-box">
         <div style="display: flex; align-items: center;">
@@ -19,7 +19,7 @@
         <textarea class="form-control" v-model="txtNotif" id="inputReference" rows="3"></textarea>
         <br>
         <div style="right: 30px; position: absolute">
-          <a class="btn btn-primary" @click="addNotif()" style="color: white">Submit</a>
+          <a class="btn btn-primary" @click="addNotif()" style="color: white">{{ $t('dashboard.notification.comments') }}</a>
         </div>
         <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
           <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()" v-if="txtReply !== null">
@@ -43,13 +43,13 @@
 
             <p class="content">{{n.description}}</p>
             <p class="comments">
-              <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)" title="Responder" v-if=false>
+              <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(n)" :title="$t('dashboard.notification.answer')" v-if=false>
                 <md-icon>replay</md-icon>
               </button>
-              <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)" title="Denunciar" v-if=false>
+              <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(n)" :title="$t('dashboard.notification.report')" v-if=false>
                 <md-icon>report</md-icon>
               </button>
-              <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="user.user_id === n.user_id_creator || user.is_the_admin" title="Excluir">
+              <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(n)" v-if="user.user_id === n.user_id_creator || user.is_the_admin" :title="$t('dashboard.notification.clear')">
                 <md-icon>clear</md-icon>
               </button>
             </p>
@@ -58,7 +58,7 @@
       </div>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="outerVisible = false">Close</el-button>
+        <el-button @click="outerVisible = false">{{ $t('dashboard.notification.close') }}</el-button>
         <!--<el-button type="primary" @click="innerVisible = true">Close</el-button>-->
       </div>
     </el-dialog>

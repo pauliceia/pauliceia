@@ -30,6 +30,33 @@ export default {
             "myLayers": "My Layers",
             "sharedLayers": "Shared Layers"
         },
+        "notification":{
+            "notification":"Notification",
+            "general": "GENERAL",
+            "personal": "PERSONAL",
+            "following": "FOLLOWING",
+            "comments": "Comments",
+            "answer": "Answer",
+            "report": "Report",
+            "submit": "Submit",
+            "clear": "Clear",
+            "close": "Close",
+            "denunciation": "Denunciation",
+            "ofYourMessage": "of your message on layer",
+            "ofYourLayer": "of your layer",
+            "ofYourMessageGlobalNotification": "of your message on your global notification",
+            "commentYourLayer": "Comment on your layer",
+            "replyYourLayer": "Reply of your message",
+            "onYourLayer": "on your layer",
+            "onYourGlobalNotification": "on your global notification",
+            "ofSomeMessage":"of some message on layer",
+            "ofLayer":"of layer",
+            "ofYourMessageonGlobal":"of your message on global notification",
+            "replySomeMessage":"Reply of some message",
+            "onLayer": "on layer",
+            "onGlobalNotification":"on global notification",
+            "commentLayer":"Comment on layer"
+        },
         "newLayer": {
             "name": "Name",
             "keywords": "Keywords",
@@ -90,7 +117,18 @@ export default {
             "newKeyword": "New Keyword",
             "myKeywords": "My Keywords",
             "nameD": "Name of the new keyword. It is unique in the system.",
-            "name": "Name"
+            "name": "Name",
+            "submit": "Submit"
+        }, 
+        "profile":{
+            "profile": "My Profile",
+            "name": "Name",
+            "submit": "Submit",
+            "uploadNewPicture": "Upload New Picture",
+            "profilePicture": "Profile Picture",
+            "emailMessage": "It is not possible to modify the email",
+            "usernameMessage": "Social Name",
+            "profilePictureMessage" : "Picture for Profile"
         }
     },
     "login": {
@@ -100,6 +138,8 @@ export default {
         "btnText": "Login",
         "terms": "If you sign in with the social network, you automatically agree to the terms of the project.",
         "lbReadme": "read the terms here",
+        "loginAccount": "Login your account",
+        "loginGoogle": "Login with Google+",
         "msg": {
             "success": "WELCOME",
             "err404": "<strong>Email</strong> or <strong>password</strong> incorrect!",
@@ -218,6 +258,7 @@ export default {
         "btnTitle": "Register",
         "lbToLogin": "Are you already registered?",
         "lbToLoginLink": "CLICK HERE",
+        "submit": "Submit",
         "msg": {
             "registerBtnHover": "You must accept the Use Terms in order to register yourself!",
             "success": "Your registration is almost ready. Just access your email and follow the instructions.",
@@ -270,7 +311,9 @@ export default {
                 "editColor": "Edit color",
                 "download": "Download"
             },
-            "msgEmpty": "Add layers to the view on the map!"
+            "msgEmpty": "Add layers to the view on the map!",
+            "mde_sp_colore": "Digital Model of Sao Paulo Elevation (colore)",
+            "mde_sp_bw": "Digital Model of Sao Paulo Elevation (grey shades)"
         },
         "sidebarEdit": {
             "title": "Edit"
@@ -302,7 +345,8 @@ export default {
             "lbAuthors": "AUTHORS",
             "lbDate": "CREATION DATE",
             "lbReferences": "REFERENCES",
-            "lbNotifications": "Notifications"
+            "lbNotifications": "Notifications",
+            "submit": "Submit"
         },
         "viewInfoVector": {
             "title": "Select Information",
@@ -332,6 +376,7 @@ export default {
     },
     "terms": {
         "title": "USE TERMS",
-        "text": termsEN
+        "text": termsEN,
+        "close": "Close"
     }
 }

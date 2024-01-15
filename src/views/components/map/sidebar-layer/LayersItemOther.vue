@@ -22,12 +22,12 @@ export default {
             layers: [
                 {
                     title: 'mde_sp_colored',
-                    titleReal: 'Modelo Digital de Elevação de São Paulo (colorido)',
+                    titleReal: this.$t('map.sidebarLayer.mde_sp_colore'),
                     status: false
                 },
                 {
                     title: 'mde_sp_bw',
-                    titleReal: 'Modelo Digital de Elevação de São Paulo (tons de cinza)',
+                    titleReal: this.$t('map.sidebarLayer.mde_sp_bw'),
                     status: false
                 }
             ]
