@@ -87,6 +87,7 @@ export default {
             
             "addSuccess": "The layer was added successfully!",
             "nameRequired": "The layer name is required!",
+            "nameNece": "The name of de layer is necessary",
             "numChar": "The layer name must be between 5 and 63 characters!",
             "restName": "The layer name cannot start with a number and cannot contain special characters!",
             "minKey": "At least one keyword must be added!"
