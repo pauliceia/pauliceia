@@ -1,208 +1,220 @@
 <template>
-  <p-dash-layout :title="$t('dashboard.nav.layer')">
-    <div class="row">
-      <!-- edit layer -->
-      <div class="col-sm-6"  v-if="shapeCorrect === false">
-        <div class="card">
-          <div class="card-body">
+  <section>
+    <p-dash-layout :title="$t('dashboard.nav.layer')">
+      <div class="row">
+        <!-- edit layer -->
+        <div class="col-sm-6"  v-if="shapeCorrect === false">
+          <div class="card">
+            <div class="card-body">
 
-            <!-- page title -->
-            <h5 class="card-title">{{ $t('dashboard.editLayer.layer') }}</h5>
+              <!-- page title -->
+              <h5 class="card-title">{{ $t('dashboard.editLayer.layer') }}</h5>
 
-            <!-- <p class="card-text">Creator? {{ isTheCurrentUserTheLayerCreator }}</p>
-            <p class="card-text">Collaborator? {{ isTheCurrentUserALayerCollaborator }}</p> -->
+              <!-- <p class="card-text">Creator? {{ isTheCurrentUserTheLayerCreator }}</p>
+              <p class="card-text">Collaborator? {{ isTheCurrentUserALayerCollaborator }}</p> -->
 
-            <p class="card-text">
-              <form>
-                <!-- layer name and select keywords -->
-                <div class="form-row">
-                  <!-- layer name -->
-                  <div class="form-group col-md-6">
-                    <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                :content= " $t('dashboard.newLayer.nameD')"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
-                    <input class="form-control" id="inputName" disabled>
-                  </div>
-                  <!-- select keywords -->
-                  <div class="form-group col-md-6">
-                    <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
-                    <el-popover class="info" placement="top-start" width="200"
-                                trigger="hover"
-                                :content="$t('dashboard.newLayer.keywordsD')"
-                                type="primary">
-                      <button type="button" slot="reference" class="btn btn-outline-primary info">
-                        <md-icon class="icon">error_outline</md-icon>
-                      </button>
-                    </el-popover>
-                    <!-- button to go to the new keyword page -->
-                    <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
-                      <md-icon>add_circle_outline</md-icon>
-                    </button>
-                    <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
-                              value="description"
-                              id="keywordsSelect"></v-select>
-                  </div>
-                </div>
-
-                <div class="form-group"></div>
-
-                <!-- collaborators -->
-                <div class="form-group">
-                  <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content="$t('dashboard.newLayer.collaboratorsD')"
-                              type="primary">
-                    <button type="button" slot="reference" class="btn btn-outline-primary info">
-                      <md-icon class="icon">error_outline</md-icon>
-                    </button>
-                  </el-popover>
-                  <v-select
-                    multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
-                    id="userSelect" :disabled="!isTheCurrentUserTheLayerCreator"
-                  ></v-select>
-                </div>
-
-                <!-- description -->
-                <div class="form-group">
-                  <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content="$t('dashboard.newLayer.descriptionD')"
-                              type="primary">
-                    <button type="button" slot="reference" class="btn btn-outline-primary info">
-                      <md-icon class="icon">error_outline</md-icon>
-                    </button>
-                  </el-popover>
-                  <textarea class="form-control" id="inputDescription" rows="3"></textarea>
-                </div>
-
-                <!-- reference -->
-                <div class="form-group">
-                  <label for="inputReference">{{ $t('dashboard.newLayer.reference') }}</label>
-                  <el-popover class="info" placement="top-start" width="200"
-                              trigger="hover"
-                              :content="$t('dashboard.newLayer.referenceD')"
-                              type="primary">
-                    <button type="button" slot="reference" class="btn btn-outline-primary info">
-                      <md-icon class="icon">error_outline</md-icon>
-                    </button>
-                  </el-popover>
+              <p class="card-text">
+                <form>
+                  <!-- layer name and select keywords -->
                   <div class="form-row">
-                    <!-- text area to add a new reference -->
-                    <div class="form-group col-md-12">
-                      <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
-                      <!--<input type="text" class="form-control" id="inputReference" placeholder="">
-                      <select class="form-control">
-                        <option v-for="r in references" :value="r.reference_id">{{r.description}}</option>
-                      </select>-->
+                    <!-- layer name -->
+                    <div class="form-group col-md-6">
+                      <label for="inputName">{{ $t('dashboard.newLayer.name') }}</label>
+                      <el-popover class="info" placement="top-start" width="200"
+                                  trigger="hover"
+                                  :content= " $t('dashboard.newLayer.nameD')"
+                                  type="primary">
+                        <button type="button" slot="reference" class="btn btn-outline-primary info">
+                          <md-icon class="icon">error_outline</md-icon>
+                        </button>
+                      </el-popover>
+                      <input class="form-control" id="inputName" disabled>
                     </div>
-                    <!-- button to add a new references -->
-                    <div class="form-group col-md-4">
-                      <a href="#" class="btn btn-primary" @click="addRef()">{{ $t('dashboard.newLayer.add') }}</a>
+                    <!-- select keywords -->
+                    <div class="form-group col-md-6">
+                      <label class="mr-sm-2" for="keywordsSelect">{{ $t('dashboard.newLayer.keywords') }}</label>
+                      <el-popover class="info" placement="top-start" width="200"
+                                  trigger="hover"
+                                  :content="$t('dashboard.newLayer.keywordsD')"
+                                  type="primary">
+                        <button type="button" slot="reference" class="btn btn-outline-primary info">
+                          <md-icon class="icon">error_outline</md-icon>
+                        </button>
+                      </el-popover>
+                      <!-- button to go to the new keyword page -->
+                      <button type="button" class="btn btn-outline-warning btn-sm add" @click="newKeyword()">
+                        <md-icon>add_circle_outline</md-icon>
+                      </button>
+                      <v-select multiple v-model="chosenKeywords" :options="keywords" track-by="name" label="name"
+                                value="description"
+                                id="keywordsSelect"></v-select>
                     </div>
                   </div>
-                </div>
 
-                <!-- added references -->
-                <div class="form-group" v-show="chosenRef.length !== 0">
-                  <label for="inputReference" >{{ $t('dashboard.newLayer.addedReferences') }}</label>
+                  <div class="form-group"></div>
 
-                  <ol>
-                    <li v-for="(reference, index) in chosenRef" v-bind:key="reference.reference_id">
-                      {{ reference.description }}
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
-                        <md-icon>clear</md-icon>
+                  <!-- collaborators -->
+                  <div class="form-group">
+                    <label for="userSelect">{{ $t('dashboard.newLayer.collaborators') }}</label>
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                :content="$t('dashboard.newLayer.collaboratorsD')"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
                       </button>
-                    </li>
-                  </ol>
+                    </el-popover>
+                    <v-select
+                      multiple v-model="chosenUsers" :options="users" track-by="username" label="username"
+                      id="userSelect" :disabled="!isTheCurrentUserTheLayerCreator"
+                    ></v-select>
+                  </div>
+
+                  <!-- description -->
+                  <div class="form-group">
+                    <label for="inputDescription">{{ $t('dashboard.newLayer.description') }}</label>
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                :content="$t('dashboard.newLayer.descriptionD')"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <textarea class="form-control" id="inputDescription" rows="3"></textarea>
+                  </div>
+
+                  <!-- reference -->
+                  <div class="form-group">
+                    <label for="inputReference">{{ $t('dashboard.newLayer.reference') }}</label>
+                    <el-popover class="info" placement="top-start" width="200"
+                                trigger="hover"
+                                :content="$t('dashboard.newLayer.referenceD')"
+                                type="primary">
+                      <button type="button" slot="reference" class="btn btn-outline-primary info">
+                        <md-icon class="icon">error_outline</md-icon>
+                      </button>
+                    </el-popover>
+                    <div class="form-row">
+                      <!-- text area to add a new reference -->
+                      <div class="form-group col-md-12">
+                        <textarea class="form-control" v-model="auxRef" id="inputReference" rows="3"></textarea>
+                        <!--<input type="text" class="form-control" id="inputReference" placeholder="">
+                        <select class="form-control">
+                          <option v-for="r in references" :value="r.reference_id">{{r.description}}</option>
+                        </select>-->
+                      </div>
+                      <!-- button to add a new references -->
+                      <div class="form-group col-md-4">
+                        <a href="#" class="btn btn-primary" @click="addRef()">{{ $t('dashboard.newLayer.add') }}</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- added references -->
+                  <div class="form-group" v-show="chosenRef.length !== 0">
+                    <label for="inputReference" >{{ $t('dashboard.newLayer.addedReferences') }}</label>
+
+                    <ol>
+                      <li v-for="(reference, index) in chosenRef" v-bind:key="reference.reference_id">
+                        {{ reference.description }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-outline-danger btn-sm del" @click="removeRef(index)">
+                          <md-icon>clear</md-icon>
+                        </button>
+                      </li>
+                    </ol>
+                  </div>
+
+                  <div class="form-group"></div>
+                </form>
+              </p>
+
+              <!-- submit and delete buttons -->
+              <div class="row">
+                <div class="col align-self-end">
+                  <br>
+                  <a href="#" class="btn btn-primary" @click="Upload()">{{ $t('dashboard.newLayer.submit') }}</a>
+                  <a href="#" class="btn btn-danger" @click="OpenDeletionPopup()">{{ $t('dashboard.editLayer.delete') }}</a>
                 </div>
+              </div>
 
-                <div class="form-group"></div>
-              </form>
-            </p>
+            </div>
+          </div>
+        </div>
 
-            <!-- submit and delete buttons -->
-            <div class="row">
-              <div class="col align-self-end">
-                <br>
-                <a href="#" class="btn btn-primary" @click="Upload()">{{ $t('dashboard.newLayer.submit') }}</a>
-                <a href="#" class="btn btn-danger" @click="Delete()">{{ $t('dashboard.editLayer.delete') }}</a>
+
+        <!-- edit temporal columns -->
+        <div class="col-sm-6 tam">
+          <div class="card" v-if="shapeCorrect">
+            <div class="card-body">
+              <!-- page title -->
+              <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
+
+              <div class="card-text">
+                <form>
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
+                        <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
+                      <input class="form-control" v-model="startDate" type="date" id="start_date">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateColumn') }}</label>&nbsp;
+                      <p-popover-labels :text="$t('dashboard.newLayer.startDateColumn')" />
+                      <v-select v-model="startColumnsName" :options="columnsName" track-by="" label=""
+                                id="start_date_column_name"></v-select>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
+                      <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
+                      <v-select v-model="startDateMask" :options="dateMask" track-by="mask" label="mask"
+                                id="start_date_mask"></v-select>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
+                      <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
+                      <input class="form-control" type="date" v-model="endDate" id="end_date">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateColumn') }}</label>&nbsp;
+                      <p-popover-labels :text="$t('dashboard.newLayer.endDateColumn')" />
+                      <v-select v-model="endColumnsName" :options="columnsName" track-by="" label=""
+                                id="end_date_column_name"></v-select>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
+                      <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
+                      <v-select v-model="endDateMask" :options="dateMask" track-by="mask" label="mask"
+                                id="end_date_mask"></v-select>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col align-self-end">
+                      <br>
+                      <a href="#" class="btn btn-primary" @click="Upload2()">{{ $t('dashboard.newLayer.submit') }}</a>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
-
           </div>
         </div>
+
       </div>
+    </p-dash-layout>
 
-      <!-- edit temporal columns -->
-      <div class="col-sm-6 tam">
-        <div class="card" v-if="shapeCorrect">
-          <div class="card-body">
-            <!-- page title -->
-            <h5 class="card-title">{{ $t('dashboard.newLayer.temporalColumns') }}</h5>
+    <!-- Deletion Confirmation Pop-up -->
+    <p-deletion-alert 
+      :currentLayerId="layer_id"
+      v-if="showDeletionPopup" 
+      @CloseDeletionPopup="CloseDeletionPopup" 
+      @deleteLayerById="deleteLayerById">
+    </p-deletion-alert>
 
-            <div class="card-text">
-              <form>
-                <div class="form-row">
-                  <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.lblStartDate') }}</label>&nbsp;
-                      <p-popover-labels :text="$t('dashboard.newLayer.startDate')" />
-                    <input class="form-control" v-model="startDate" type="date" id="start_date">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateColumn') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.startDateColumn')" />
-                    <v-select v-model="startColumnsName" :options="columnsName" track-by="" label=""
-                              id="start_date_column_name"></v-select>
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.lblStartDateMask') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.startDateMask')" />
-                    <v-select v-model="startDateMask" :options="dateMask" track-by="mask" label="mask"
-                              id="start_date_mask"></v-select>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-4">
-                    <label for="inputName">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
-                    <input class="form-control" type="date" v-model="endDate" id="end_date">
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateColumn') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.endDateColumn')" />
-                    <v-select v-model="endColumnsName" :options="columnsName" track-by="" label=""
-                              id="end_date_column_name"></v-select>
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="userSelect">{{ $t('dashboard.newLayer.lblEndDateMask') }}</label>&nbsp;
-                    <p-popover-labels :text="$t('dashboard.newLayer.endDateMask')" />
-                    <v-select v-model="endDateMask" :options="dateMask" track-by="mask" label="mask"
-                              id="end_date_mask"></v-select>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="col align-self-end">
-                    <br>
-                    <a href="#" class="btn btn-primary" @click="Upload2()">{{ $t('dashboard.newLayer.submit') }}</a>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </p-dash-layout>
+    </section>
 </template>
 
 <script>
@@ -212,6 +224,7 @@
   import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
   import {mapState} from 'vuex'
+  import DeletionAlert from '../../components/map/deletionAlert.vue'
 
   Vue.component('v-select', vSelect)
 
@@ -219,7 +232,8 @@
     name: "editLayer",
     components: {
       "p-dash-layout": DashLayout,
-      "p-popover-labels": PopoverLabels
+      "p-popover-labels": PopoverLabels,
+      "p-deletion-alert": DeletionAlert
     },
     computed: {
       ...mapState('auth', ['isUserLoggedIn', 'user']),
@@ -276,7 +290,8 @@
         endDate: null,
         shapeCorrect: false,
         fullscreenLoading: false,
-        layer_id: this.$route.params.layer_id
+        layer_id: this.$route.params.layer_id,
+        showDeletionPopup: false,
       }
     },
     methods: {
@@ -405,8 +420,14 @@
           // })
         }
       },
-      Delete() {
-        Api().delete('/api/layer/' + this.layer_id)
+      OpenDeletionPopup (){
+        this.showDeletionPopup = true;
+      },
+      CloseDeletionPopup (){
+        this.showDeletionPopup = false;  
+      },
+      deleteLayerById(currentLayerId) {
+        Api().delete('/api/layer/' + currentLayerId)
 
         this.$router.push({ path: '/dashboard/home' })
       },

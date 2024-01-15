@@ -85,6 +85,11 @@ export default {
             "layer": "Layer Edit",
             "editLayer": "Edit Layer"
         },
+        "deletionConfirmationPopup": {
+            "confirmationText": "Are you sure you want to delete this layer?",
+            "deleteButton": "Yes!",
+            "cancelButton": "No"
+        },
         "keywords":{
             "keywords": "Keywords",
             "newKeyword": "New Keyword",
