@@ -215,7 +215,7 @@
                   <div class="form-group col-md-4">
                     <label for="end_date">{{ $t('dashboard.newLayer.lblEndDate') }}</label>&nbsp;
                     <p-popover-labels :text="$t('dashboard.newLayer.endDate')" />
-                    <input class="form-control" id="end_date" type="date" v-model="endDate">
+                    <input class="form-control" id="end_date" type="date" v-model="endDate" :max="maxEndDate">
                   </div>
 
                   <div class="form-group col-md-4">
@@ -330,6 +330,7 @@
         endDateMask: null,
         startDate: null,
         endDate: null,
+        maxEndDate: '',
         shapeCorrect: false,
         fullscreenLoading: false,
         typeSubmit: 'file',
@@ -368,6 +369,7 @@
     },
     mounted() {
       this.shapeCorrect = false
+      this.maxEndDate = this.getMaxEndDate();
 
       // get the information of all users, except the current one
       Api().get('/api/user').then(response => {
@@ -781,6 +783,18 @@
       async removeAttr(id) {
         this.optionsAttr = await this.optionsAttr.filter( attr => attr.id != id )
       },
+      getMaxEndDate(){
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1; // Months are zero-based
+        let dd = today.getDate();
+
+        // Add leading zero if the month or day is a single digit
+        mm = mm < 10 ? '0' + mm : mm;
+        dd = dd < 10 ? '0' + dd : dd;
+
+        return `${yyyy}-${mm}-${dd}`;
+      },
       _msgError(msg){
         if(this.loading != '' && this.loading != null)
           this.loading.close()
@@ -808,7 +822,7 @@
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         })
-      }
+      },
     },
     components: {
       "p-dash-layout": DashLayout,
