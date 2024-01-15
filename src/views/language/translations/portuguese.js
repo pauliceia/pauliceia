@@ -86,6 +86,11 @@ export default {
             "layer": "Edição Camada",
             "editLayer": "Editar Camada"
         },
+        "deletionConfirmationPopup": {
+            "confirmationText": "Tem certeza que deseja deletar essa camada?",
+            "deleteButton": "Sim!",
+            "cancelButton": "Não"
+        },
         "keywords":{
             "keywords": "Palavras-chave",
             "newKeyword": "Nova Palavra-Chave",
@@ -302,6 +307,8 @@ export default {
             "lbKeywods": "PALAVRAS-CHAVE",
             "lbAuthors": "AUTORES",
             "lbDate": "DATA DE CRIAÇÃO",
+            "lbLayerStartDate": "DATA DE INÍCIO DA CAMADA",
+            "lbLayerEndDate": "DATA DE TÉRMINO DA CAMADA",
             "lbReferences": "REFERÊNCIAS",
             "lbNotifications": "Notificações"
         },
