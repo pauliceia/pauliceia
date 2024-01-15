@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div class="row justify-content-md-center row-style" itemscope itemtype="https://schema.org/Organization">
+      <div class="justify-content-md-center row-style" itemscope itemtype="https://schema.org/Organization">
         <div class="col-sm-4 column-style">
           <img class="picture" src="@/views/assets/images/untitled-4.png">
           <p itemprop="name">PAULICEIA 2.0:</p>
@@ -65,4 +65,6 @@
   .orange-style
     color: #ff6107
 
+  .row-style
+    display: -webkit-box
 </style>

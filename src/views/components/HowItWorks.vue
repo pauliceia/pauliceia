@@ -32,7 +32,7 @@ export default {}
 
 <style lang="sass" scoped>
   .how-wrapper
-    padding: 100px 5%
+    padding: 100px 5% 50px 5%
     color: #c6c6c6
     font-family: 'Archivo', sans-serif     
     .how-container

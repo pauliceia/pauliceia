@@ -4,6 +4,7 @@
 
             <router-link to="/home" class="navbar-brand">
                 <img :src="logo" class="logo" title="logo of pauliceia" alt="logo of pauliceia" />
+                <span>Pauliceia 2.0</span>
             </router-link>
 
             <!-- BUTTON MOBILE -->
@@ -26,6 +27,12 @@
                     </li>
                     <li class="nav-item">
                       <a :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'" href="https://drive.google.com/drive/folders/1M7iU2iz46i2gIgfctkUCZdBARWJykcoT?usp=sharing" target="_blank" >Tutorial</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <router-link
+                            :class="this.$route.path == '/about' ? 'nav-link active': 'nav-link'"
+                            to="/about">{{ $t('nav.team') }}</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link
@@ -96,6 +103,12 @@ export default {
                     width: 50px
                     object-fit: contain
                     aspect-ratio: 1
+
+                span
+                    color: #c6c6c6
+                    font-family: 'PT Serif', serif
+                    font-size: 20px
+                    font-weight: 700
 
             .navbar-nav
                 display: flex

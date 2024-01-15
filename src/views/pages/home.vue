@@ -82,16 +82,13 @@ export default {
         .hero-text
           color: #c6c6c6
           display: flex
-          position: relative
-          width: 650px
 
           h1
-            font-size: 60px
+            font-size: 68px
+            width: 47%;
+            float: left;
 
           p
-            position: absolute
-            right: -120px
-            top: 0px
             font-size: 24px
         .hero-button
           a
