@@ -2,13 +2,13 @@
   <div class="body">
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="GENERAL" name="first" class="">
+      <el-tab-pane :label="$t('dashboard.notification.general')" name="first" class="">
         <div class="notification-box-main" v-if="showInput">
           <textarea class="form-control" v-model="txtNotif" id="inputReference" rows="3"></textarea>
           <br>
           <div style="float: right">
             <a class="btn btn-dark" @click="addNotif()"
-               style="color: white; background-color: #ff6107; border-color: #ff6107">Submit</a>
+               style="color: white; background-color: #ff6107; border-color: #ff6107">{{ $t('dashboard.notification.submit') }}</a>
           </div>
           <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
             <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
@@ -35,15 +35,15 @@
               <div class="col-9 col-md-9  col-lg-11 col-sm-9">
                 <div class="comments">
                   <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(notification)"
-                          v-if="showInput" title="Responder">
+                          v-if="showInput" :title="$t('dashboard.notification.answer')">
                     <md-icon>replay</md-icon>
                   </button>
                   <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(notification)"
-                          v-if="showInput" title="Denunciar">
+                          v-if="showInput" :title="$t('dashboard.notification.report')">
                     <md-icon>report</md-icon>
                   </button>
                   <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(notification)"
-                          v-if="canUserRemoveIt(notification)" title="Excluir">
+                          v-if="canUserRemoveIt(notification)" :title="$t('dashboard.notification.clear')">
                     <md-icon>clear</md-icon>
                   </button>
                 </div>
@@ -59,12 +59,12 @@
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="PERSONAL" name="second">
+      <el-tab-pane :label="$t('dashboard.notification.personal')" name="second">
         <div class="notification-box-main" v-if="showInput && showInput2">
           <textarea class="form-control" v-model="txtNotif" id="inputReference2" rows="3"></textarea>
           <br>
           <div style="right: 30px; position: absolute">
-            <a style="color: white" class="btn btn-primary" @click="addNotif()">Submit</a>
+            <a style="color: white" class="btn btn-primary" @click="addNotif()">{{ $t('dashboard.notification.submit') }}</a>
           </div>
           <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
             <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
@@ -92,15 +92,15 @@
                 <div class="col-9 col-md-9  col-lg-11 col-sm-9">
                   <div class="comments">
                     <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(notification)"
-                            v-if="showInput" title="Responder">
+                            v-if="showInput" :title="$t('dashboard.notification.answer')">
                       <md-icon>replay</md-icon>
                     </button>
                     <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(notification)"
-                            v-if="showInput" title="Denunciar">
+                            v-if="showInput" :title="$t('dashboard.notification.report')">
                       <md-icon>report</md-icon>
                     </button>
                     <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(notification)"
-                            v-if="canUserRemoveIt(notification)">
+                            v-if="canUserRemoveIt(notification)" :title="$t('dashboard.notification.clear')">
                       <md-icon>clear</md-icon>
                     </button>
                   </div>
@@ -113,23 +113,23 @@
                 </div>
               </div>
               <div class="msgType">
-                <div class="msgType" v-if="notification.is_denunciation !== false">Denunciation&nbsp;
-                  <div v-if="notification.notification_id_parent !== null">of your message on layer {{notification.layer_name}}</div>
-                  <div v-else-if="notification.layer_id !== null">of your layer {{notification.layer_name}}</div>
-                  <div v-else>of your message on your global notification</div>
+                <div class="msgType" v-if="notification.is_denunciation !== false">{{$t("dashboard.notification.denunciation")}}&nbsp;
+                  <div v-if="notification.notification_id_parent !== null">{{$t("dashboard.notification.ofYourMessage")}} {{notification.layer_name}}</div>
+                  <div v-else-if="notification.layer_id !== null">{{$t("dashboard.notification.ofYourLayer")}} {{notification.layer_name}}</div>
+                  <div v-else>{{$t("dashboard.notification.ofYourMessageGlobalNotification")}}</div>
                 </div>
 
                 <div v-else-if="notification.layer_id !== null && notification.type === 'myLayer'">
-                  Comment on your layer {{notification.layer_name}}
+                  {{$t("dashboard.notification.commentYourLayer")}} {{notification.layer_name}}
                 </div>
 
                 <div class="msgType" v-else-if="notification.notification_id_parent !== null && notification.type === 'message'">
-                  Reply of your message&nbsp;
+                  {{$t("dashboard.notification.replyYourLayer")}}&nbsp;
                   <div v-if="notification.layer_id !== null">
-                    on your layer {{notification.layer_name}}
+                    {{$t("dashboard.notification.onYourLayer")}} {{notification.layer_name}}
                   </div>
                   <div v-else>
-                    on your global notification
+                    {{$t("dashboard.notification.onYourGlobalNotification")}}
                   </div>
                 </div>
               </div>
@@ -138,12 +138,12 @@
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="FOLLOWING" name="thrid">
+      <el-tab-pane :label="$t('dashboard.notification.following')" name="thrid">
         <div class="notification-box-main" v-if="showInput && showInput2">
           <textarea class="form-control" v-model="txtNotif" id="inputReference3" rows="3"></textarea>
           <br>
           <div style="right: 30px; position: absolute">
-            <a style="color: white" class="btn btn-primary" @click="addNotif()">Submit</a>
+            <a style="color: white" class="btn btn-primary" @click="addNotif()">{{ $t('dashboard.notification.submit') }}</a>
           </div>
           <p style="left: 0px; display: flex">{{txtReply}}&nbsp;&nbsp;&nbsp;
             <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearMsg()"
@@ -173,15 +173,15 @@
                 <div class="col-9 col-md-9  col-lg-11 col-sm-9">
                   <p class="comments">
                     <button type="button" class="btn btn-outline-primary btn-sm add" @click="replyNot(notification)"
-                            v-if="showInput" title="Responder">
+                            v-if="showInput" :title="$t('dashboard.notification.answer')">
                       <md-icon>replay</md-icon>
                     </button>
                     <button type="button" class="btn btn-outline-warning btn-sm add" @click="reportNot(notification)"
-                            v-if="showInput" title="Denunciar">
+                            v-if="showInput" :title="$t('dashboard.notification.report')">
                       <md-icon>report</md-icon>
                     </button>
                     <button type="button" class="btn btn-outline-danger btn-sm add" @click="clearNot(notification)"
-                            v-if="canUserRemoveIt(notification)" title="Excluir">
+                            v-if="canUserRemoveIt(notification)" :title="$t('dashboard.notification.clear')">
                       <md-icon>clear</md-icon>
                     </button>
                   </p>
@@ -195,29 +195,29 @@
               </div>
               <div class="msgType">
                 <div class="msgType" v-if="notification.is_denunciation !== false">
-                  Denunciation&nbsp;
+                  {{$t("dashboard.notification.denunciation")}}&nbsp;
                   <div v-if="notification.notification_id_parent !== null">
-                    of some message on layer {{notification.layer_name}}
+                    {{$t("dashboard.notification.ofSomeMessage")}} {{notification.layer_name}}
                   </div>
                   <div v-else-if="notification.layer_id !== null">
-                    of layer {{notification.layer_name}}
+                    {{$t("dashboard.notification.ofLayer")}} {{notification.layer_name}}
                   </div>
                   <div v-else>
-                    of your message on global notification
+                    {{$t("dashboard.notification.ofYourMessageonGlobal")}}
                   </div>
                 </div>
 
                 <div class="msgType" v-else-if="notification.notification_id_parent !== null">
-                  Reply of some message&nbsp;
+                  {{$t("dashboard.notification.replySomeMessage")}}&nbsp;
                   <div v-if="notification.layer_id !== null">
-                    on layer {{notification.layer_name}}
+                    {{$t("dashboard.notification.onLayer")}} {{notification.layer_name}}
                   </div>
                   <div v-else>
-                    on global notification
+                    {{$t("dashboard.notification.onGlobalNotification")}}
                   </div>
                 </div>
                 <div v-else>
-                  Comment on layer {{notification.layer_name}}
+                  {{$t("dashboard.notification.commentLayer")}} {{notification.layer_name}}
                 </div>
               </div>
             </div>

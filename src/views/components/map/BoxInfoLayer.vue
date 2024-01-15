@@ -53,7 +53,7 @@
                 <textarea class="form-control" v-model="txtNotif" id="inputReference" rows="3"></textarea>
                 <br>
                 <div style="right: 60px; position: absolute">
-                  <a class="btn btn-primary" @click="addNotif()" style="color: white">Submit</a>
+                  <a class="btn btn-primary" @click="addNotif()" style="color: white">{{ $t('map.viewInfo.submit') }}</a>
                 </div>
                 <div style="right: 150px; position: absolute">
                   <a class="btn btn-warning" @click="addNotifD()"><md-icon>report</md-icon></a>

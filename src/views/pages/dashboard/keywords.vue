@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="form-group col-md-12">
-                  <a class="btn btn-dark styleBtn" @click="Upload()">Submit</a>
+                  <a class="btn btn-dark styleBtn" @click="Upload()">{{ $t('dashboard.keywords.submit') }}</a>
                 </div>
               </div>
             </form>

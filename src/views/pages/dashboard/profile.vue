@@ -4,13 +4,13 @@
     <div class="col-sm-8">
       <div class="card styleCard">
         <div class="card-body">
-          <h5 class="card-title" style="text-align: center"><h3>Profile</h3></h5>
+          <h5 class="card-title" style="text-align: center"><h3>{{ $t('dashboard.profile.profile') }}</h3></h5>
           <div class="card-text">
             <form>
               <div class="form-row">
                 <div class="form-group col-md-4 text-center">
-                  <p class="text-left">Profile Picture
-                    <p-popover-labels text="Foto para o perfil" /></p>
+                  <p class="text-left">{{ $t('dashboard.profile.profilePicture') }}
+                    <p-popover-labels :text="$t('dashboard.profile.profilePictureMessage')" /></p>
                   <md-avatar class="md-avatar-icon stylePicture">
                     <div class="logo">
                       <img :src="imagePerson" />
@@ -18,22 +18,22 @@
                   </md-avatar>
                   <br>
                   <br>
-                  <a class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="UploadPicture()">Upload new picture</a>
+                  <a class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="UploadPicture()">{{ $t('dashboard.profile.uploadNewPicture') }}</a>
                 </div>
                 <div class="form-group col-md-7">
                   <div class="form-group">
                   <label for="inputName">{{ $t('dashboard.keywords.name') }}</label>&nbsp;
-                    <p-popover-labels text="Nome social" />
+                    <p-popover-labels :text="$t('dashboard.profile.usernameMessage')" />
                     <input class="form-control"  v-model="user.name" id="inputName">
                   </div>
                   <div class="form-group">
                     <label>{{ $t('register.lbEmail') }}</label>
-                    <p-popover-labels text="Não é possível modificar o e-mail" />
+                    <p-popover-labels :text="$t('dashboard.profile.emailMessage')" />
                     <input type="email" v-model="user.email" class="form-control" disabled>
                   </div>
                   <div class="form-group">
-                    <label>User Name</label>
-                    <p-popover-labels text="Nome de usuário" />
+                    <label>{{ $t('register.lbUsername') }}</label>
+                    <p-popover-labels :text="$t('register.lbUsername')" />
                     <input v-model="user.username" class="form-control">
                   </div>
 
@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group col-md-11">
                   <div class="text-right align-self-end"><br>
-                    <a  class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="submitInfo()">Submit</a>
+                    <a  class="btn btn-primary" style="color: #ffffff; background-color: #ff6107; border-color: #ff6107" @click="submitInfo()">{{ $t('register.submit') }}</a>
                   </div>
                 </div>
               </div>
