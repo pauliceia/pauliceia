@@ -100,7 +100,7 @@
             </button>
           </form>
         </div>
-
+        <confirmation-modal ref="confirmationModal"></confirmation-modal>
     </section>
 </template>
 
@@ -110,7 +110,7 @@ import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
 import GeoJSON from 'geojson'
 import shpwrite from 'shp-write'
-
+import ConfirmationModal from '../dashboard/ConfirmationModal.vue'
 
 import {
     overlayGroup
@@ -126,6 +126,7 @@ import {
 import {
     CSV2JSON,
     CSVToArray,
+    jsonToCSV,
     getUrl
 } from '@/views/assets/js/map/multiplegeocode'
 
@@ -150,6 +151,7 @@ export default {
       showDownloadButton: false
     }
   },
+  components:{ ConfirmationModal },
   computed: {
     ...mapState('map', ['boxGeocoding', 'boxSubtitle']),
     fileName(){
@@ -223,6 +225,7 @@ export default {
       this._openFullScreen()
 
       let json = JSON.parse(this.csvjson);
+      console.log(json)
       let jsonResults = [];
       let jsonErros = "Erros: \n \n";
       let CsvTotalStatus = "Status da busca de endereços via CSV: \n \n"
@@ -269,20 +272,16 @@ export default {
           } else {
             errosCount = errosCount + 1
             let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" não foi encontrado. \n'
+            json[i]['log'] = erro.replace("\n", "").replaceAll(`\"`, "")
             jsonErros = jsonErros.concat(erro);
           }
         } catch (_) {
           errosCount = errosCount + 1
           let erro = 'O endereço "'+json[i][this.street]+", "+json[i][this.numberAddress]+", "+json[i][this.year]+'" não foi encontrado. \n'
+          json[i]['log'] = erro.replace("\n", "").replaceAll(`\"`, "")
           jsonErros = jsonErros.concat(erro);
         }
       }
-
-      if (errosCount > 0){
-        alert(jsonErros)
-      }
-
-      alert(CsvTotalStatus)
 
       let textJsonResults = ('['+jsonResults+']');
       let final = JSON.parse(textJsonResults);
@@ -305,6 +304,29 @@ export default {
 
         this.loading.close()
         this.showDownloadButton = true
+
+        if (errosCount > 0){
+          let filteredJson = json.filter(el => el.log)
+          let csvContent = "data:text/csv;charset=utf-8,"
+          csvContent += jsonToCSV(filteredJson)
+
+          const ok = await this.$refs.confirmationModal.show({
+            title: this.$t('map.geocoding.downloadCSVModal.modalTitle'),
+            message: this.$t('map.geocoding.downloadCSVModal.modalText'),
+            okButton: this.$t('map.geocoding.downloadCSVModal.modalBtnConfirm'),
+            cancelButton: this.$t('map.geocoding.downloadCSVModal.modalBtnCancel'),
+          })
+
+          if (ok) {
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "enderecos_nao_encontrados.csv");
+            document.body.appendChild(link);
+
+            link.click();
+          } 
+        }
 
       } catch (error) {
         this.$alert('Não foi possível ler o arquivo CSV', 'Erro no arquivo', {

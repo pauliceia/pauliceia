@@ -11,10 +11,14 @@
 import {
     overlayGroupRasters
 } from '@/views/assets/js/map/overlayGroup'
+import { mapState } from 'vuex'
 
 export default {
     props: {
         color: String
+    },
+    computed: {
+        ...mapState('map', ['mapLayers'])
     },
     data() {
         return {
@@ -73,6 +77,7 @@ export default {
     },
     created() {
         overlayGroupRasters.getLayers().clear()
+        this.$store.dispatch('map/setMapLayers', this.layers);
 
         overlayGroupRasters.getLayers().push(
             new ol.layer.Tile({
@@ -87,7 +92,8 @@ export default {
                         STYLES: '',
                         LAYERS: 'pauliceia:1930_1_1000',
                         tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
-                    }
+                    },
+                    crossOrigin: "Anonymous"
                 })
             })
         )
@@ -96,7 +102,7 @@ export default {
         modifyLayer(layerSelected) {
             if(overlayGroupRasters.getLayers().getLength() > 0)
                 overlayGroupRasters.getLayers().pop()
-
+            
             if(layerSelected.status == true) {
                 for(var i in this.layers){
                     if(this.layers[i].title != layerSelected.title)
@@ -122,10 +128,12 @@ export default {
                                 STYLES: '',
                                 LAYERS: 'pauliceia:' + layerSelected.title,
                                 tilesOrigin: 330937.3300521516 + ',' + 7393691.47872888
-                            }
+                            },
+                            crossOrigin: "Anonymous"
                         })
                     })
                 )
+                this.$store.dispatch('map/setMapLayers', this.layers);
                 this.loading.close()
             }
         },

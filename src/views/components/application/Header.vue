@@ -2,7 +2,7 @@
     <header>
         <!--<div class="container">-->
         <!--</div>-->
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <nav class="navbar navbar-expand-md navbar-light bg-light" style="z-index: 1000;">
 
             <router-link to="/home" class="navbar-brand">
                 <img :src="logo" class="logo" title="logo of pauliceia" alt="logo of pauliceia" />
@@ -92,7 +92,7 @@ export default {
         .navbar
             padding-left: 10%
             padding-right: 10%
-            background: rgba(#FFF, 0.7) !important
+            background: rgba(#FFF, 1) !important
 
             .navbar-brand
                 width: 120px

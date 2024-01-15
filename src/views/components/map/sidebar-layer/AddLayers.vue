@@ -10,16 +10,56 @@
         </div>
 
         <div class="modal-body">
-          <el-input
-            :placeholder="$t('map.addLayer.input')"
-            v-model="filterText">
-          </el-input>
-          <br/>
+          <div class="actions">
+            <div class="search filter" style="display: flex; flex-direction: row; gap: 8px; margin-bottom: 20px;">
+              <el-input
+                :placeholder="$t('map.addLayer.input')"
+                v-model="filterText"
+                >
+              </el-input>
+              <br/>
+
+              <button type="button" class="btn btn-secondary" @click="toggleFilters" style="margin: 0; height: 100%;">
+                <i v-if="showFilters" class="md-icon md-icon-font md-theme-default">filter_alt_off</i>
+                <i v-if="!showFilters" class="md-icon md-icon-font md-theme-default">filter_alt</i>
+              </button>
+            </div>
+
+            <div v-if="showFilters">
+              <v-select v-model="filterAuthors" :placeholder="$t('map.addLayer.author')" :options="this.getAllAuthors()" id="authorSelect"
+                label="name" track-by="name" multiple
+              ></v-select>
+              <br/>
+
+              <el-date-picker
+                id="startDateFilter"
+                v-model="startDateFilter"
+                type="date"
+                :placeholder="$t('map.addLayer.initialDate')"
+                format="dd/MM/yyyy"
+                style="width: 100%; margin-bottom: 10px"
+              ></el-date-picker>
+              <br/>
+
+              <el-date-picker
+                id="endDateFilter"
+                v-model="endDateFilter"
+                type="date"
+                :placeholder="$t('map.addLayer.finalDate')"
+                format="dd/MM/yyyy"
+                style="width: 100%"
+                :picker-options="endDateOptions"
+              ></el-date-picker>
+              <br/>
+            </div>
+          </div>
+
 
           <article v-for="layer in listLayers" :key="layer.id">
             <div :class="layers.some(id => id == layer.properties.layer_id) ? 'box-layer-info activated' : 'box-layer-info disabled'">
               <div class="infos">
                 <p><strong>{{ $t('map.addLayer.box.lbTitle') }}:</strong> {{ layer.properties.name }}</p>
+                <p><strong>{{ $t('map.addLayer.box.lbTemporalData') }}:</strong> {{ layer.properties.start_date }} {{ $t('map.addLayer.box.lbUntil') }} {{ layer.properties.end_date }}</p>
                 <p><strong>{{ $t('map.addLayer.box.lbAuthors') }}:</strong>
                   <span v-for="name in layer.properties.authors" :key="name">
                     {{ name }};
@@ -30,6 +70,19 @@
                     {{ name }}
                   </el-tag>
                 </p>
+                <div class="btns">
+                  <el-button @click="showDescription(layer.properties.description)" size="small" type="info" round>{{
+                    $t('map.addLayer.box.lbDescription') }}</el-button> 
+                  <el-dialog :title="$t('map.addLayer.box.lbDescription')" :visible.sync="showDescriptionDialog"
+                    width="30%" center append-to-body>
+                    <p>{{ selectedLayerDescription }}</p>
+                    <span class="dialog-footer">
+                      <el-button @click="closeDescriptionDialog">{{ $t('map.addLayer.close') }}</el-button>
+                    </span>
+                  </el-dialog>
+                </div>
+
+
               </div>
 
               <div class="btns">
@@ -65,30 +118,43 @@ import {
 export default {
     watch: {
       filterText(val){
-        if (val === '') {
-          this.listLayers = this.allLayers
-        } else {
-          this.listLayers = this.allLayers.filter(layer => {
-            if (layer.properties.name.toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.authors.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 ||
-                layer.properties.keyword.toString().toLowerCase().indexOf(val.toLowerCase()) >= 0 )
-                  return layer
-          })
-        }
+        this.applyFilters()
+      },
+      filterAuthors(val){
+        this.applyFilters()
+      },
+      startDateFilter(val){
+        this.applyFilters()
+      },
+      endDateFilter(val){
+        this.applyFilters()
       }
     },
     computed: {
-      ...mapState('map', ['layers'])
+      ...mapState('map', ['layers']),
+      endDateOptions() {
+        return {
+          disabledDate: this.disableEndDate,
+        };
+      },
     },
     data() {
       return {
         loading: '',
         btnDisabled: false,
         filterText: '',
+        filterAuthors: [],
+        endDateFilter: '',
+        startDateFilter: '',
         listLayers: [],
         allLayers: [],
         allKeywords: [],
-        allAuthorsLayers: []
+        allAuthorsLayers: [],
+        allTemporalData: [],
+        allAuthors: [],
+        showFilters: false,
+        showDescriptionDialog: false,
+        selectedLayerDescription: '',
       }
     },
     async mounted() {
@@ -105,6 +171,9 @@ export default {
         result = await Map.getAuthorsLayers(null)
         this.allAuthorsLayers = result.data.features
 
+        result = await Map.getTemporalData();
+        this.allTemporalData = result.data.features;
+
         // add a list of authors and keywords names inside each layer
         this.allLayers.forEach(layer => {
           layer.properties.authors = this.allAuthorsLayers.filter(
@@ -119,6 +188,10 @@ export default {
           layer.properties.keyword = layer.properties.keyword.map(
             id => this.getKeywordById(id)[0].properties.name
           )
+
+          const temporalData = this.getTemporalDataByFTableName(layer.properties.f_table_name)[0].properties;
+          layer.properties.start_date = this._getDate(temporalData.start_date);
+          layer.properties.end_date = this._getDate(temporalData.end_date);
         })
 
         // sort the layers by name
@@ -138,11 +211,32 @@ export default {
       }
     },
     methods: {
+      // method to show description in a dialog
+      showDescription(description) {
+        this.selectedLayerDescription = description;
+        this.showDescriptionDialog = true;
+      },
+
+      // method to close the description dialog
+      closeDescriptionDialog() {
+        this.showDescriptionDialog = false;
+        this.selectedLayerDescription = '';
+      },
       getKeywordById(id){
         return this.allKeywords.filter(key => key.properties.keyword_id === id)
       },
       getAuthorById(id){
         return this.allAuthors.filter(author => author.properties.user_id === id)
+      },
+      getAllAuthors() {
+        let authorsProperties = this.allAuthors.map(author => author.properties)
+        authorsProperties = authorsProperties.filter(author => {
+          return author.name !== null
+        })
+        return authorsProperties;
+      },
+      getTemporalDataByFTableName(f_table_name) {
+        return this.allTemporalData.filter(temporalData => temporalData.properties.f_table_name === f_table_name);
       },
       disabled(layer) {
         if(this.btnDisabled == false)
@@ -200,6 +294,90 @@ export default {
           })
         }
       },
+      disableEndDate(time) {
+        // Desabilita datas anteriores à data inicial selecionada
+        if (this.startDateFilter) {
+          const startDate = new Date(this.startDateFilter);
+          startDate.setHours(0, 0, 0, 0); // Configura para o início do dia
+
+          return time.getTime() < startDate.getTime();
+        }
+        return false;
+      },
+      toggleFilters() {
+        if (this.showFilters) {
+          this.clearFilters();
+        }
+        this.showFilters = !this.showFilters;
+      },
+      clearFilters() {
+        this.filterAuthors = [];
+        this.startDateFilter = '';
+        this.endDateFilter = '';
+        this.applyFilters();
+      },
+      applyFilters() {
+          let filteredLayers = this.filterByText(this.allLayers.slice());
+          filteredLayers = this.filterByAuthors(filteredLayers);
+          filteredLayers = this.filterByDateRange(filteredLayers);
+
+          this.listLayers = filteredLayers;
+      },
+
+      filterByText(layers) {
+          return layers.filter(layer => {
+              return (
+                  layer.properties.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
+                  layer.properties.authors.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
+                  layer.properties.keyword.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
+                  layer.properties.start_date.toLowerCase().includes(this.filterText.toLowerCase()) ||
+                  layer.properties.end_date.toLowerCase().includes(this.filterText.toLowerCase())
+              );
+          });
+      },
+
+      filterByAuthors(layers) {
+          if (this.filterAuthors.length > 0) {
+              const authorNames = this.filterAuthors.map(author => author.name);
+              return layers.filter(layer => layer.properties.authors.some(author => authorNames.includes(author)));
+          }
+          return layers;
+      },
+
+      filterByDateRange(layers) {
+          if (this.startDateFilter && this.endDateFilter) {
+              const startTimestamp = this.startDateFilter.getTime();
+              const endTimestamp = this.endDateFilter.getTime();
+
+              return layers.filter(layer => {
+                  const { start, end } = this.getLayerDateRange(layer);
+                  return (start <= endTimestamp && start >= startTimestamp) || (end >= startTimestamp && end <= endTimestamp);
+              });
+          } else if (this.startDateFilter) {
+              const startTimestamp = this.startDateFilter.getTime();
+              return layers.filter(layer => {
+                  const { start, end } = this.getLayerDateRange(layer);
+                  return start >= startTimestamp || end >= startTimestamp;
+              });
+          } else if (this.endDateFilter) {
+              const endTimestamp = this.endDateFilter.getTime();
+              return layers.filter(layer => {
+                  const { start, end } = this.getLayerDateRange(layer);
+                  return start <= endTimestamp || end <= endTimestamp;
+              });
+          }
+          return layers;
+      },
+
+      getLayerDateRange(layer) {
+          const layerStartParts = layer.properties.start_date.split('/');
+          const layerEndParts = layer.properties.end_date.split('/');
+
+          const start = new Date(`${layerStartParts[1]}/${layerStartParts[0]}/${layerStartParts[2]}`).getTime();
+          const end = new Date(`${layerEndParts[1]}/${layerEndParts[0]}/${layerEndParts[2]}`).getTime();
+
+          return { start, end };
+      },
       _openFullScreen() {
         this.loading = this.$loading({
           lock: true,
@@ -207,6 +385,26 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         })
+      },
+      _getDate(date) {
+        let dateParsed = date.split("-");
+        if (this.$i18n.locale() == "pt") {
+          return (
+            dateParsed[2].split(" ")[0] +
+            "/" +
+            dateParsed[1] +
+            "/" +
+            dateParsed[0]
+          );
+        } else {
+          return (
+            dateParsed[1] +
+            "/" +
+            dateParsed[2].split(" ")[0] +
+            "/" +
+            dateParsed[0]
+          );
+        }
       }
     }
 }

@@ -18,6 +18,13 @@
                 :class="this.boxNotifications ? 'btn active' : 'btn'">
                 <md-icon>message</md-icon>
             </button>
+
+            <button type="button"
+                id="download-map"
+                @click="actDownloadMap()"  
+                :class="this.boxDownloadMap ? 'btn active' : 'btn'">
+                <md-icon>arrow_circle_down</md-icon>
+            </button>
         </section>
 
         <div class="box-bottom">
@@ -35,7 +42,7 @@ import { mapState } from 'vuex'
 
 export default {
     computed: {
-        ...mapState('map', ['boxGeocoding', 'boxInfoLayer', 'boxInfoVector', 'boxNotifications'])
+        ...mapState('map', ['boxGeocoding', 'boxInfoLayer', 'boxInfoVector', 'boxNotifications', 'boxDownloadMap'])
     },
 
     methods: {
@@ -43,19 +50,29 @@ export default {
             this.$store.dispatch('map/setBoxInfoLayer', false)
             this.$store.dispatch('map/setBoxGeocoding', false)
             this.$store.dispatch('map/setBoxNotifications', false)
+            this.$store.dispatch('map/setBoxDownloadMap', false)
             this.$store.dispatch('map/setBoxInfoVector', !this.boxInfoVector)
         },
         actNotifications() {
             this.$store.dispatch('map/setBoxInfoLayer', false)
             this.$store.dispatch('map/setBoxInfoVector', false)
             this.$store.dispatch('map/setBoxGeocoding', false)
+            this.$store.dispatch('map/setBoxDownloadMap', false)
             this.$store.dispatch('map/setBoxNotifications', !this.boxNotifications)
         },
         actGeocoding() {
             this.$store.dispatch('map/setBoxInfoLayer', false)
             this.$store.dispatch('map/setBoxInfoVector', false)
             this.$store.dispatch('map/setBoxNotifications', false)
+            this.$store.dispatch('map/setBoxDownloadMap', false)
             this.$store.dispatch('map/setBoxGeocoding', !this.boxGeocoding)
+        },
+        actDownloadMap() {
+            this.$store.dispatch('map/setBoxInfoLayer', false)
+            this.$store.dispatch('map/setBoxInfoVector', false)
+            this.$store.dispatch('map/setBoxNotifications', false)
+            this.$store.dispatch('map/setBoxGeocoding', false)
+            this.$store.dispatch('map/setBoxDownloadMap', !this.boxDownloadMap)
         }
     }
 }

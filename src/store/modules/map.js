@@ -4,10 +4,12 @@ const state = {
     last: 1940
   },
   layers: [],
+  mapLayers: [],
   boxGeocoding: true,
   boxInfoLayer: false,
   boxNotifications: false,
   boxInfoVector: false,
+  boxDownloadMap: false,
   boxSubtitle: false,
   boxAlert: true,
   //informação do layer
@@ -40,6 +42,9 @@ const mutations = {
   setBoxInfoVector (state, value) {
     state.boxInfoVector = value
   },
+  setBoxDownloadMap (state, value) {
+    state.boxDownloadMap = value
+  },
   setNewLayers (state, value) {
     state.layers.push(value)
   },
@@ -54,6 +59,9 @@ const mutations = {
   },
   setSidebar (state, value) {
     state.sidebar = value
+  },
+  setMapLayers(state, value) {
+    state.mapLayers = value
   }
 }
 
@@ -63,6 +71,9 @@ const actions = {
   },
   setBoxGeocoding({commit}, value) {
     commit('setBoxGeocoding', value)
+  },
+  setBoxDownloadMap({commit}, value) {
+    commit('setBoxDownloadMap', value)
   },
   setBoxSubtitle({commit}, value) {
     commit('setBoxSubtitle', value)
@@ -93,6 +104,9 @@ const actions = {
   },
   setSidebar ({commit}, value) {
     commit('setSidebar', value)
+  },
+  setMapLayers({commit}, value) {
+    commit('setMapLayers', value)
   }
 }
 

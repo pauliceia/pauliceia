@@ -30,6 +30,12 @@ export default {
             "myLayers": "Minhas Camadas",
             "sharedLayers": "Camadas Compartilhadas"
         },
+        "deleteLayer": {
+            "confirmMessage": "Você tem certeza de que deseja excluir a camada?",
+            "Confirmation": "Confirmação",
+            "confirmButtonText": "Confirmar",
+            "cancelButtonText": "Cancelar",
+        },
         "newLayer": {
             "name": "Nome",
             "keywords": "Palavras-chave",
@@ -55,6 +61,8 @@ export default {
             "lblEndDate": "Data final",
             "lblStartDateColumn": "Coluna da data inicial",
             "lblEndDateColumn": "Coluna da data final",
+            "warningEndDateExceedsCurrentDate": "A data final não pode ser posterior à data atual.",
+            "warningUploadEndDateExceedsCurrentDate": "A data final não pode ser posterior à data atual. Não é possível adicionar a camada.",
             "lblStartDateMask": "Máscara da data inicial",
             "lblEndDateMask": "Máscara da data finial",
             "startDate": "Data inicial do bounding box temporal da camada. É a data inicial do período que abrange os dados da camada. Por exemplo: a camada tem o período de 01-01-1900 à 31-12-1930. Logo a data inicial é 01-01-1900.",
@@ -259,6 +267,12 @@ export default {
                 "found": "Encontrado",
                 "geocoded": "Geocodificado",
                 "extrapolated": "Extrapolado"
+            },
+            "downloadCSVModal": {
+                "modalText": `Um ou mais endereços não foram encontrados. Deseja fazer o download dos logs?`,
+                "modalTitle": "Não encontrado",
+                "modalBtnConfirm": "Sim",
+                "modalBtnCancel": "Não",
             }
         },
         "sidebarLayer": {
@@ -278,12 +292,18 @@ export default {
         },
         "addLayer": {
             "title": "Adicionar e remover camadas",
-            "input": "Pesquise por tema, camada ou autor:",
+            "input": "Pesquise por tema, camada, autor ou dados temporais:",
+"initialDate": "Data inicial",
+            "finalDate": "Data final",
+            "author": "Autor",
             "close": "Fechar",
             "box": {
                 "lbTitle": "TÍTULO",
                 "lbAuthors": "AUTORES",
-                "lbKeywods": "PALAVRAS-CHAVE"
+                "lbKeywods": "PALAVRAS-CHAVE",
+                "lbDescription": "DESCRIÇÃO",
+                "lbTemporalData": "DADOS TEMPORAIS",
+                "lbUntil": "até",
             },
             "btns": {
                 "active": "Ativar",
@@ -303,6 +323,8 @@ export default {
             "lbAuthors": "AUTORES",
             "lbDate": "DATA DE CRIAÇÃO",
             "lbReferences": "REFERÊNCIAS",
+"lbTemporalData": "DADOS TEMPORAIS",
+            "lbUntil": "até",
             "lbNotifications": "Notificações"
         },
         "viewInfoVector": {
@@ -310,6 +332,20 @@ export default {
             "btnFeature": "Por localização",
             "btnBox": "Por região",
             "btnClean": "Limpar"
+        },
+        "viewDownloadMap": {
+            "title": "Baixar mapa",
+            "btnFeature": "Visualização atual",
+            "btnBox": "Mapa de fundo",
+            "modalText": `Devido a alta resolução do mapa, não é possível realizar o download, porém é possível visulizá-lo utilizando o OpenLayers. 
+                            Será aberto uma nova aba, deseja continuar?`,
+            "modalTitle": "Baixar mapa",
+            "modalBtnConfirm": "Sim",
+            "modalBtnCancel": "Voltar",
+            "msg": {
+                "errTitle": "Nenhuma camada de mapa selecionada",
+                "errMsg": "Selecione uma camada de mapa antes de tentar o download"
+            }
         },
         "betaVersionModal": {
             "welcome": "Bem-vindo a plataforma `Pauliceia 2.0`",

@@ -30,6 +30,12 @@ export default {
             "myLayers": "My Layers",
             "sharedLayers": "Shared Layers"
         },
+        "deleteLayer": {
+            "confirmMessage": "Are you sure you want to delete the layer?",
+            "Confirmation": "Confirmation",
+            "confirmButtonText": "Confirm",
+            "cancelButtonText": "Cancel",
+        },
         "newLayer": {
             "name": "Name",
             "keywords": "Keywords",
@@ -54,6 +60,8 @@ export default {
             "lblEndDate": "End date",
             "lblStartDateColumn": "Start date column",
             "lblEndDateColumn": "End date column",
+            "warningEndDateExceedsCurrentDate": "The end date cannot be later than the current date.",
+            "warningUploadEndDateExceedsCurrentDate": "The end date cannot be later than the current date. Cannot add layer.",
             "lblStartDateMask": "Start date mask",
             "lblEndDateMask": "End date mask",
             "startDate": "Start date of the temporal bounding box of the layer. This is the start date of the period that covers the layer data. For example: the layer has the period from 01-01-1900 to 31-12-1930. Hence the start date is 01-01-1900.",
@@ -258,6 +266,12 @@ export default {
                 "found": "Found",
                 "geocoded": "Geocoded",
                 "extrapolated": "Extrapolated"
+            },
+            "downloadCSVModal": {
+                "modalText": `One or more addresses weren't found. Do you want to download the logs file?`,
+                "modalTitle": "Not found",
+                "modalBtnConfirm": "Yes",
+                "modalBtnCancel": "No",
             }
         },
         "sidebarLayer": {
@@ -277,12 +291,17 @@ export default {
         },
         "addLayer": {
             "title": "Add or remove layers",
-            "input": "Search by theme, layer or author:",
+            "input": "Search by theme, layer, author or temporal data:",
+            "initialDate": "Initial date",
+            "finalDate": "End date",
+            "author": "Author",
             "close": "Close",
             "box": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
-                "lbKeywods": "KEYWORDS"
+                "lbKeywods": "KEYWORDS",
+                "lbTemporalData": "TEMPORAL DATA",
+                "lbUntil": "to",
             },
             "btns": {
                 "active": "Active",
@@ -302,6 +321,8 @@ export default {
             "lbAuthors": "AUTHORS",
             "lbDate": "CREATION DATE",
             "lbReferences": "REFERENCES",
+"lbTemporalData": "TEMPORAL DATA",
+            "lbUntil": "to",
             "lbNotifications": "Notifications"
         },
         "viewInfoVector": {
@@ -309,6 +330,20 @@ export default {
             "btnFeature": "By location",
             "btnBox": "By region",
             "btnClean": "Clean"
+        },
+        "viewDownloadMap": {
+            "title": "Download map",
+            "btnFeature": "Actual view",
+            "btnBox": "Background map",
+            "modalText": `Due the map high resolution, it is not possible to download it, but you can view it using OpenLayers. 
+                            It will open a new tab, do you want to continue?`,
+            "modalTitle": "Download map",
+            "modalBtnConfirm": "Yes",
+            "modalBtnCancel": "Go back",
+            "msg": {
+                "errTitle": "None map layer selected",
+                "errMsg": "Select a map layer before trying to download it"
+            }
         },
         "betaVersionModal": {
             "welcome": "Welcome to the `Pauliceia 2.0` platform",

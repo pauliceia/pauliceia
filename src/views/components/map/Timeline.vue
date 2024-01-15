@@ -1,6 +1,15 @@
 <template>
   <div id="contentSlider">
-    <div class="sliders" id="slider"></div>
+    <div class="slider-container">
+      <div class="slider-title">Seleção de um espaço de tempo</div>
+      <div class="sliders" id="slider"></div>
+    </div>
+
+    <div class="slider-container">
+      <div class="slider-title">Seleção de um único ano</div>
+      <div class="slider1year" id="slider1year"></div>
+    </div>
+    
   </div>
 </template>
 
@@ -99,6 +108,44 @@
 
         this.filterUpdate()
       })
+
+      // Second slider
+      let slider1year = document.getElementById('slider1year')
+
+      noUiSlider.create(slider1year, {
+        start: [this.sliderStartYear],
+        connect: 'lower',
+        orientation: 'horizontal',
+        step: 1,
+        tooltips: true,
+        direction: 'ltr',
+        range: {
+          'min': this.sliderStartYear,
+          'max': this.sliderEndYear
+        },
+        pips: {
+          mode: 'count',
+          values: 5,
+          density: 4
+        },
+        format: {
+          to: value => {
+            return value + ''
+          },
+          from: value => {
+            return value.replace(',-', '')
+          }
+        }
+      })
+
+      slider1year.noUiSlider.on('update', (values, handle) => {
+        this.$store.dispatch('map/setYears', {
+          first: values[0],
+          last: values[0]
+        })
+
+        this.filterUpdate()
+      })
     },
     methods: {
       getTemporalColumns (f_table_name) {
@@ -183,11 +230,28 @@
     display: flex;
     z-index: 2;
     bottom: 35px;
-    height: 65px;
+    height: 120px;
     width: 40%;
     background-color: rgba(255, 255, 255, 0.7);
     right: 30%;
     border-radius: 10px;
+  }
+
+  .slider-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slider-title {
+    font-size: 12px;
+    color: #0c0c0c;
+    height: 10px;
+    margin-left: 8%;
+    bottom: -10px;
+  
   }
 
   #contentSlider .sliders{
@@ -201,4 +265,22 @@
   #contentSlider .sliders .noUi-connect{
     background: #58595b !important;
   }
+
+  #contentSlider .slider1year{
+    position: relative;
+    width: 84%;
+    height: 10px;
+    margin-left: 8%;
+    margin-right: 5%;
+    bottom: -10px;
+  }
+
+  #contentSlider .slider1year .noUi-connect{
+    background: #ffffff !important;
+  }
+
+
+
+
+  
 </style>
