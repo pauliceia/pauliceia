@@ -1,0 +1,24 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Layer",
+      "properties": {
+        "name": "A enchente de 1929 em SP",
+        "keyword": [
+            1,
+            5,
+            28
+        ],
+        "layer_id": 41,
+        "reference": [
+            14
+        ],
+        "created_at": "2019-05-28 13:12:03",
+        "description": "Mapa aproximado da abrang\u00eancia da enchente de fevereiro de 1929 em S\u00e3o Paulo, produzido pelo grupo H\u00edmaco (Hist\u00f3ria, mapas e computadores), com financiamento do CNPq e da Fapesp (2012-2015).",
+        "f_table_name": "a_enchente_de_1929_em_sp",
+        "source_description": "Mapa aproximado da abrang\u00eancia da enchente de fevereiro de 1929 em S\u00e3o Paulo, produzido pelo grupo H\u00edmaco (Hist\u00f3ria, mapas e computadores), com financiamento do CNPq e da Fapesp (2012-2015)."
+      }
+    }
+  ]
+}
