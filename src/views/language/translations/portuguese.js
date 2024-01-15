@@ -30,6 +30,12 @@ export default {
             "myLayers": "Minhas Camadas",
             "sharedLayers": "Camadas Compartilhadas"
         },
+        "deleteLayer": {
+            "confirmMessage": "Você tem certeza de que deseja excluir a camada?",
+            "Confirmation": "Confirmação",
+            "confirmButtonText": "Confirmar",
+            "cancelButtonText": "Cancelar",
+        },
         "newLayer": {
             "name": "Nome",
             "keywords": "Palavras-chave",
