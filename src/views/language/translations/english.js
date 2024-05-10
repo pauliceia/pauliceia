@@ -204,7 +204,12 @@ export default {
         "desc27": "Aracele Torres holds a PhD in History from USP (University of Sao Paulo), working in the area of History of Science and Technology, focusing on open sciences and technologies. She is a member of Hímaco (History, Maps and Computers) and lab.hum (Laboratory of Digital Humanities) at UNIFESP/Guarulhos. She makes technical contributions to the project, in addition to contributing as a researcher.",
         "name28": "Raphael Augusto de Oliveira Silva",
         "desc28": "Raphael Augusto de Oliveira Silva has a degree in History from UNIFESP. He is currently a Computer Engineering student at UNIVESP. Your contributions are both for the maintenance of the Portal as well as for the development of research.",
-
+        "name29": "Renata Baesso",
+        "desc29": "Renata Baesso Pereira is an urban architect/PhD from FAU USP in the area of ​​concentration History and Fundamentals of Architecture and Urbanism. Her research area focuses on the History of architecture and urbanism. She is a professor in the Postgraduate Program in Architecture and Urbanism at PUC Campinas and responsible for transferring technology from the Pauliceia 2.0 project to the case study of the city of Campinas - SP .",
+        "name30": "Marina Gomes",
+        "desc30": "Marina Pereira Gomes has a degree in History from UNIFESP. She received a Scientific Initiation scholarship from FAPESP and worked on the team responsible for the spatial expansion of the geolocator area of ​​the Pauliceia 2.0 platform.",
+        "name31": "Daniel Cordeiro",
+        "desc31": "Daniel Cordeiro is a professor at the School of Arts, Sciences and Humanities at the University of São Paulo, where he researches High Performance Distributed Computing. His current research projects are related to the energy-efficient execution of High Performance Computing applications on Cloud Computing platforms and the creation of collaborative distributed computing platforms. With his students, he collaborates on improvements to the Pauliceia 2.0 computational platform code.",
     },
     "register": {
         "title": "Register",
