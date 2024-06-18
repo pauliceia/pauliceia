@@ -184,7 +184,7 @@ export default {
       "name17": "Monaliza Caetano",
       "desc17": "Monaliza Caetano é historiadora, graduada através da Universidade Federal de São Paulo. É uma das bolsistas do Projeto aprovado na FAPESP.",
       "name18": "Nandamudi Vijaykumar",
-      "desc18": "N. L. Vijaykumar (Vijay) tem experiência em Engenharia de Software, testes baseados em modelos e avaliação de desempenho. É colaborador aposentado e voluntário do Laboratório de Computação e Matemática Aplicada (LAC) do Instituto Nacional de Pesquisas Espaciais (INPE).",
+      "desc18": "N. L. Vijaykumar é Tecnólogo de Computação, Mestre em Computação Aplicada e Doutor em Informática. Participou do Programa de PósDoutorado na University College Cork (Irlanda) na área de Modelagem Computacional de Impacto de Ventos e Ondas na área Costeira da Irlanda. Participa do projeto Pauliceia e tem interesse nas áreas de Engenharia de Software, em particular, em validação e verificação de software, aplicações de Inteligência Artificial em Cidades Inteligentes, e validação e verificação de contratos em Blockchain.",
       "name19": "Orlando Guarnier Farias",
       "desc19": "Orlando Guarnier é estudante de história da EFLCH/UNIFESP e membro do grupo Hímaco.",
       "name20": "Rodrigo Mariano",
@@ -205,6 +205,12 @@ export default {
       "desc27": "Aracele Torres é doutora em História pela USP, atuando na área de História da Ciência e da Tecnologia, com foco em ciências e tecnologias abertas. É membro do Hímaco (História, Mapas e Computadores) e do lab.hum (Laboratório de Humanidades Digitais) da UNIFESP/Guarulhos. Faz contribuições técnicas para o projeto, além de contribuir como pesquisadora.",
       "name28": "Raphael Augusto de Oliveira Silva",
       "desc28": "Raphael Augusto de Oliveira Silva é graduado em História pela UNIFESP. Atualmente é aluno de Engenharia da Computação da UNIVESP. Suas contribuições são tanto para a manutenção do Portal como também para o desenvolvimento das pesquisas.",
+      "name29": "Renata Baesso",
+      "desc29": "Renata Baesso Pereira é arquiteta urbanista/ Doutora pela FAU USP na área de concentração História e Fundamentos da Arquitetura e do Urbanismo. Sua área de pesquisa se concentra na História da arquitetura e do urbanismo.É professora do Programa de Pós-graduação em Arquitetura e Urbanismo da PUC Campinas e responsável pela transferência de tecnologia do projeto Pauliceia 2.0 para o estudo de caso da cidade de Campinas - SP. ",
+      "name30": "Marina Gomes",
+      "desc30": "Marina Pereira Gomes é graduada em História pela UNIFESP. Foi bolsista de Iniciação Científica pela FAPESP e atuou na equipe responsável pela expansão espacial da área do geolocalizador da plataforma Pauliceia 2.0. ",
+      "name31": "Daniel Cordeiro",
+      "desc31": "Daniel Cordeiro é professor da Escola de Artes, Ciências e Humanidades da Universidade de São Paulo, onde pesquisa Computação Distribuída de Alto Desempenho. Seus projetos de pesquisa atuais estão relacionados à execução eficiente em energia de aplicações de Computação de Alto Desempenho em plataformas de Computação em Nuvem e a criação de plataformas de computação distribuídas colaborativas. Com seus alunos, colabora com melhorias no código da plataforma computacional do Pauliceia 2.0.",
 
     },
     "register": {
