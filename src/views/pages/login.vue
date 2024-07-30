@@ -7,7 +7,7 @@
 
             <div class="card-body">
 
-                <h5 class="mb-0">Acesse sua conta</h5>
+                <h5 class="mb-0">{{ $t('login.label') }}</h5>
                 <br><br>
                 <form class="form-signin" @submit.prevent="loginSubmit">
                     <div class="form-label-group">
@@ -28,7 +28,7 @@
                         <div class="col-6 link-social">
                           <md-list-item class="btn btn-danger style-google" @click="loginSocial('google')">
                             <md-icon>add_box</md-icon>
-                            <span class="md-list-item-text"> Acesso com o Google+</span>
+                            <span class="md-list-item-text"> {{ $t('login.googleAcess') }}</span>
                           </md-list-item>
                         </div>
                     </div>

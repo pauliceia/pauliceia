@@ -17,7 +17,7 @@
 
         <md-list-item :class="this.$route.path == '/dashboard/denunciations' ? 'active': ''" to="/dashboard/denunciations" v-if="user.is_the_admin">
           <md-icon>report</md-icon>
-          <span class="md-list-item-text">Denunciations</span>
+          <span class="md-list-item-text">{{ $t('dashboard.nav.denunciations') }}</span>
         </md-list-item>
 
         <!--<md-list-item :class="this.$route.path == '/dashboard/infos' ? 'active': ''" to="/dashboard/infos">-->

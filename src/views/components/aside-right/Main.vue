@@ -1,23 +1,29 @@
 <template>
     <aside class="box-aside-right">
         <section class="box-top">
-            <button type="button" 
-                @click="actGeocoding()"  
-                :class="this.boxGeocoding ? 'btn active' : 'btn'">
-                <md-icon>location_on</md-icon>
-            </button>
+            <el-tooltip :content="$t('main.search')" placement="left" effect="light">
+                <button type="button" 
+                    @click="actGeocoding()"  
+                    :class="this.boxGeocoding ? 'btn active' : 'btn'">
+                    <md-icon>location_on</md-icon>
+                </button>
+            </el-tooltip>
 
-            <button type="button"
-                @click="actInfoVector()"  
-                :class="this.boxInfoVector ? 'btn active' : 'btn'">
-                <md-icon>info</md-icon>
-            </button>
+            <el-tooltip :content="$t('main.information')" placement="left" effect="light">    
+                <button type="button"
+                    @click="actInfoVector()"  
+                    :class="this.boxInfoVector ? 'btn active' : 'btn'">
+                    <md-icon>info</md-icon>
+                </button>
+            </el-tooltip>
 
-            <button type="button"
-                @click="actNotifications()"  
-                :class="this.boxNotifications ? 'btn active' : 'btn'">
-                <md-icon>message</md-icon>
-            </button>
+            <el-tooltip :content="$t('main.notification')" placement="left" effect="light">
+                <button type="button"
+                    @click="actNotifications()"  
+                    :class="this.boxNotifications ? 'btn active' : 'btn'">
+                    <md-icon>message</md-icon>
+                </button>
+            </el-tooltip>
         </section>
 
         <div class="box-bottom">

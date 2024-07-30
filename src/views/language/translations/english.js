@@ -14,7 +14,11 @@ export default {
         "msgLogout": "bye bye see you!"
     },
     "main": {
-        "developedBy": "Developed by INPE"
+        "developedBy": "Developed by INPE",
+        "search": "Search address",
+        "information": "Information about active layers",
+        "notification": "Notifications",
+        "ruler": "Change ruler"
     },
     "dashboard": {
         "nav": {
@@ -22,6 +26,7 @@ export default {
             "infos": "Information",
             "newLayer": "New Layer",
             "keywords": "Keywords",
+            "denunciations": "Denunciations",
             "layer": "Layers"
         },
         "home":{
@@ -78,12 +83,28 @@ export default {
                         "yes": "YES"
                     }
                 }
-            }
+            },
+            
+            "addSucess": "The layer was added successfully!",
+            "nameRequired": "The layer name is required!",
+            "nameNece": "The name of de layer is necessary",
+            "numChar": "The layer name must be between 5 and 63 characters!",
+            "restName": "The layer name cannot start with a number and cannot contain special characters!",
+            "minKey": "At least one keyword must be added!"
         },
         "editLayer": {
             "delete": "Delete",
             "layer": "Layer Edit",
-            "editLayer": "Edit Layer"
+            "editLayer": "Edit Layer",
+            "confirmDeleteTitle": "WARNING",
+            "confirmDeleteMsg": "Do you really want to delete the layer",
+            "confirmButton": "YES",
+            "cancelButton": "NO",
+            "sucessMsg": "Layer deleted successfully!",
+            "errorMsg": "Error deleting the layer",
+            "insertDate": "The filling of the dates is mandatory!",
+            "updateLayer": "Layer updated successfully!",
+            "minKey": "It is mandatory to have at least one keyword!"
         },
         "keywords":{
             "keywords": "Keywords",
@@ -91,9 +112,26 @@ export default {
             "myKeywords": "My Keywords",
             "nameD": "Name of the new keyword. It is unique in the system.",
             "name": "Name"
-        }
+        },
+
+        "denunciations": {
+            "DLayers": "Denounced Layers",
+            "DComments": "Denounced Comments",
+            "Comment": "Comment",
+            "Layer": "Layer",
+            "Denunciations": "Denunciations"
+        },
+
+        "profile": {
+            "Profile": "Profile",
+            "ProfilePic": "Profile Picture",
+            "UpPic": "Upload New Picture",
+            "UserName": "Username",
+            "Sub": "Submit"
+        },
     },
     "login": {
+        "label": "Access Your Account",
         "inputEmail": "Email address",
         "inputPassword": "Password",
         "register": "Register now",
@@ -104,7 +142,8 @@ export default {
             "success": "WELCOME",
             "err404": "<strong>Email</strong> or <strong>password</strong> incorrect!",
             "err409": "You have <strong>not yet confirmed your email</strong>, access your email box and confirm it by following instructions!"
-        }
+        },
+        "googleAcess": "Acesso com o Google+",
     },
     "home":{
       "title1": "What is it?",
@@ -212,6 +251,7 @@ export default {
         "desc31": "Daniel Cordeiro is a professor at the School of Arts, Sciences and Humanities at the University of São Paulo, where he researches High Performance Distributed Computing. His current research projects are related to the energy-efficient execution of High Performance Computing applications on Cloud Computing platforms and the creation of collaborative distributed computing platforms. With his students, he collaborates on improvements to the Pauliceia 2.0 computational platform code.",
     },
     "register": {
+        "labelNew": "New Registration",
         "title": "Register",
         "lbName": "Name",
         "lbEmail": "Email address",
@@ -287,7 +327,12 @@ export default {
             "box": {
                 "lbTitle": "TITLE",
                 "lbAuthors": "AUTHORS",
-                "lbKeywods": "KEYWORDS"
+                "lbKeywods": "KEYWORDS",
+                "lbStartDate": "Start Date",
+                "lbEndDate": "End Date",
+                "lbDescription": "Description", 
+                "showLess": "Show More",
+                "showMore": "Show less"
             },
             "btns": {
                 "active": "Active",
@@ -304,6 +349,8 @@ export default {
             "lbTitle": "TITLE",
             "lbDescription": "DESCRIPTION",
             "lbKeywods": "KEYWORDS",
+            "lbStartDate": "START DATE",
+            "lbEndDate": "END DATE",
             "lbAuthors": "AUTHORS",
             "lbDate": "CREATION DATE",
             "lbReferences": "REFERENCES",
@@ -332,7 +379,8 @@ export default {
                         The team deeply regrets any inconvenience and hope that users understand the team’s efforts in developing a tool to the expectations of the users. <br>
                         The team duly acknowledges the users for their contributions.
                     </p>`,
-            "footnote": "Pauliceia 2.0 team"
+            "footnote": "Pauliceia 2.0 team",
+            "start": "Start"
         }
     },
     "terms": {

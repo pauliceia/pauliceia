@@ -14,7 +14,11 @@ export default {
         "msgLogout": "Até breve!"
     },
     "main": {
-        "developedBy": "Desenvolvido por INPE"
+        "developedBy": "Desenvolvido por INPE",
+        "search": "Pesquisar endereço",
+        "information": "Informações sobre camadas ativas",
+        "notification": "Notificações",
+        "ruler": "Mudar régua"
     },
     "dashboard": {
         "nav": {
@@ -22,6 +26,7 @@ export default {
             "infos": "Informações",
             "newLayer": "Nova Camada",
             "keywords": "Palavras-chave",
+            "denunciations": "Denúncias",
             "layer": "Camadas"
         },
         "home":{
@@ -79,12 +84,27 @@ export default {
                         "yes": "SIM"
                     }
                 }
-            }
+            },
+            "addSucess": "A camada foi adicionada com sucesso!",
+            "nameNece": "O nome da camada é necessário!",
+            "numChar": "O nome da camada deve ter entre 5 e 63 caracteres!",
+            "restName": "O nome da camada NÃO pode começar com `número` e nem conter `caracteres especiais`!",
+            "minKey": "É necessário adicionar pelo menos uma palavra-chave!",
+
         },
         "editLayer": {
             "delete": "Deletar",
             "layer": "Edição Camada",
-            "editLayer": "Editar Camada"
+            "editLayer": "Editar Camada",
+            "confirmDeleteTitle": "ATENÇÃO",
+            "confirmDeleteMsg": "Você realmente quer excluir a camada",
+            "confirmButton": "SIM",
+            "cancelButton": "NÃO",
+            "successMsg": "Camada excluída com sucesso!",
+            "errorMsg": "Erro ao excluir a camada",
+            "insertDate": "O preenchimento das datas é obrigatório!",
+            "updateLayer": "A camada foi atualizada com sucesso!",
+            "minKey": "É obrigatório ter pelo menos uma palavra-chave!"
         },
         "keywords":{
             "keywords": "Palavras-chave",
@@ -92,9 +112,26 @@ export default {
             "myKeywords": "Minhas Palavras-Chave",
             "nameD": "Nome da nova palavra-chave. Ela é única no sistema.",
             "name": "Nome"
-        }
+        },
+
+        "denunciations":{
+            "DLayers": "Camadas Denunciadas",
+            "DComments": "Comentários Denunciados",
+            "Comment": "Comentário",
+            "Layer": "Camada",
+            "Denunciations": "Denúncias"
+        },
+        "profile":{
+            "Profile": "Perfil",
+            "ProfilePic": "Foto de perfil",
+            "UpPic": "Enviar nova foto",
+            "UserName": "Nome de usuário",
+            "Sub": "Enviar"
+
+        },
     },
     "login": {
+        "label": "Acesse sua conta",
         "inputEmail": "E-mail",
         "inputPassword": "Senha",
         "register": "Registre-se agora",
@@ -105,7 +142,8 @@ export default {
             "success": "BEM-VINDO",
             "err404": "<strong>E-mail</strong> ou <strong>senha</strong> incorreta!",
             "err409": "Você ainda <strong>não confirmou seu e-mail</strong>, acesse sua caixa de e-mail e confirme-o seguindo instruções!"
-        }
+        },
+        "googleAcess": "Acesso com o Google+"
     },
     "home":{
       "title1": "O que é?",
@@ -214,6 +252,7 @@ export default {
 
     },
     "register": {
+        "labelNew": "Novo cadastro",
         "title": "Cadastrar",
         "lbName": "Nome",
         "lbEmail": "E-mail",
@@ -289,7 +328,12 @@ export default {
             "box": {
                 "lbTitle": "TÍTULO",
                 "lbAuthors": "AUTORES",
-                "lbKeywods": "PALAVRAS-CHAVE"
+                "lbKeywods": "PALAVRAS-CHAVE",
+                "lbStartDate": "Data do ínicio",
+                "lbEndDate": "Data do término",
+                "lbDescription": "Descrição", 
+                "showLess": "Mostrar menos",
+                "showMore": "Mostrar mais"
             },
             "btns": {
                 "active": "Ativar",
@@ -306,6 +350,8 @@ export default {
             "lbTitle": "TÍTULO",
             "lbDescription": "DESCRIÇÃO",
             "lbKeywods": "PALAVRAS-CHAVE",
+            "lbStartDate": "DATA DO INÍCIO",
+            "lbEndDate": "DATA DO TÉRMINO",
             "lbAuthors": "AUTORES",
             "lbDate": "DATA DE CRIAÇÃO",
             "lbReferences": "REFERÊNCIAS",
@@ -333,7 +379,8 @@ export default {
                         Pedimos a sua compreensão em relação a isso, para que se registre novamente. <br>
                         Agradecemos sua compreensão e contribuição.
                     </p>`,
-            "footnote": "Equipe Pauliceia 2.0"
+            "footnote": "Equipe Pauliceia 2.0",
+            "start": "Começar"
         }
     },
     "terms": {
