@@ -284,16 +284,20 @@ export default {
         },
         "addLayer": {
             "title": "Adicionar e remover camadas",
-            "input": "Pesquise por tema, camada ou autor:",
+            "input": "Pesquise por tema, camada, autor ou data de criação (exemplo: 31/12/2001):",
             "close": "Fechar",
             "box": {
                 "lbTitle": "TÍTULO",
                 "lbAuthors": "AUTORES",
-                "lbKeywods": "PALAVRAS-CHAVE"
+                "lbKeywods": "PALAVRAS-CHAVE",
+                "lbDate": "DATA DE CRIAÇÃO",
+                "lbDescription": "DESCRIÇÃO",
+                "lbShowMore": "Mostrar mais",
+                "lbShowLess": "Mostrar menos",
             },
             "btns": {
                 "active": "Ativar",
-                "disable": "Desativar"
+                "disable": "Desativar",
             },
             "msg": {
                 "errTitle": "Erro Interno",
