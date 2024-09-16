@@ -1,0 +1,14 @@
+source 'https://rubygems.org'
+
+group :test do
+  gem 'cucumber-rails', require: false
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
+  gem 'rspec'
+  gem 'rack', '2.2.8'
+  gem 'rack-session', '1.0.2'
+  gem 'rackup', '1.0.0'
+  gem 'sinatra', '~> 3.1'
+  gem 'sinatra-cross_origin'
+end
