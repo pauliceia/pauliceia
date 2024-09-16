@@ -186,6 +186,20 @@ export default {
     handleFileChange(event) {
       this._openFullScreen()
 
+      // Check if a file was selected
+      if (!event.target.files || event.target.files.length === 0) {
+        this._msgError('No file selected.');
+        return;
+      }
+
+      const selectedFile = event.target.files[0];
+      
+      // Check if the file has a CSV extension
+      if (!selectedFile.name.toLowerCase().endsWith('.csv')) {
+        this._msgError('Formato de arquivo invalido. Por favor insira um arquivo .CSV');
+        return;
+      }
+
       // add default values
       this.headers = []
       this.showDownloadButton = false
