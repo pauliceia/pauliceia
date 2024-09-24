@@ -1,25 +1,3 @@
-<template>
-  <section class="boxS" v-show="boxAlert">
-    <header class="header">
-      <img src="@/views/assets/images/logo.png" class="img">
-      <button class="btn" @click="closeBox()">
-        <md-icon>close</md-icon>
-      </button>
-      <br>
-    </header>
-    <p><b> 
-      {{ $t('map.betaVersionModal.welcome') }}
-    </b></p>
-    <p class="text1">
-      {{ $t('map.betaVersionModal.betaVersion') }}
-    </p>
-    <div v-html="$t('map.betaVersionModal.body')"/>
-    <p style="text-align: right">
-      {{ $t('map.betaVersionModal.footnote') }}
-    </p>
-  </section>
-</template>
-
 <script>
   import {mapState} from 'vuex'
   import Vue from 'vue'
