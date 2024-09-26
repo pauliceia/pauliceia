@@ -13,7 +13,6 @@ function resolve (dir) {
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: [
-    'babel-polyfill',
     './src/main.js'
   ],
   output: {
