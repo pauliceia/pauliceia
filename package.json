@@ -36,6 +36,7 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
+    "@nuxt/friendly-errors-webpack-plugin": "^2.6.0",
     "@prerenderer/renderer-puppeteer": "^1.2.4",
     "@prerenderer/webpack-plugin": "^5.3.10",
     "autoprefixer": "^10.4.20",

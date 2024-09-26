@@ -7,7 +7,7 @@ const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('@nuxt/friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
@@ -39,7 +39,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       : false,
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
-    quiet: true, // necessary for FriendlyErrorsPlugin
+    quiet: true, // necessary for FriendlyErrorsWebpackPlugin // TODO: check if this is still necessary
     watchOptions: {
       poll: config.dev.poll,
     }
@@ -85,8 +85,8 @@ module.exports = new Promise((resolve, reject) => {
       // add port to devServer config
       devWebpackConfig.devServer.port = port
 
-      // Add FriendlyErrorsPlugin
-      devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
+      // Add FriendlyErrorsWebpackPlugin
+      devWebpackConfig.plugins.push(new FriendlyErrorsWebpackPlugin({
         compilationSuccessInfo: {
           messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
         },
