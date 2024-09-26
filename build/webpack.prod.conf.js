@@ -9,9 +9,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const PrerenderSPAPlugin = require('prerender-spa-plugin')
 // const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
+const TerserPlugin = require('terser-webpack-plugin')
+const terserOptions = require('./terserOptions')
 
 const env = require('../config/prod.env')
 
@@ -22,6 +23,28 @@ const webpackConfig = merge(baseWebpackConfig, {
       extract: true,
       usePostCSS: true
     })
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin(terserOptions())],
+    moduleIds: 'deterministic',
+    splitChunks: {
+      cacheGroups: {
+        defaultVendors: {
+          name: `chunk-vendors`,
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          chunks: 'initial',
+        },
+        common: {
+          name: `chunk-common`,
+          minChunks: 2,
+          priority: -20,
+          chunks: 'initial',
+          reuseExistingChunk: true,
+        },
+      },
+    },
   },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
@@ -39,15 +62,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       jquery: 'jquery',
       'window.jQuery': 'jquery',
       jQuery: 'jquery'
-    }),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false
-        }
-      },
-      sourceMap: config.build.productionSourceMap,
-      parallel: true
     }),
     // extract css into its own file
     new ExtractTextPlugin({
