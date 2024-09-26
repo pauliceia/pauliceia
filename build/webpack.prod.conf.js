@@ -9,8 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-const PrerenderSPAPlugin = require('prerender-spa-plugin')
-// const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
+const PrerendererWebpackPlugin = require('@prerenderer/webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const terserOptions = require('./terserOptions')
 
@@ -138,9 +137,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       }
     ]),
-    new PrerenderSPAPlugin({
-      staticDir: path.join(__dirname, '../dist'),
-      routes: [ '/', '/register', '/home', '/explore', '/about', '/contact' ]
+    new PrerendererWebpackPlugin({
+      routes: [ '/', '/register', '/home', '/explore', '/about', '/contact' ],
     }),
   ]
 })
