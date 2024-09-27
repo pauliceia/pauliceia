@@ -27,10 +27,10 @@
                             to="/explore">{{ $t('nav.map') }}</router-link>
                     </li>
                     <li class="nav-item">
-                      <!--<router-link
+                      <router-link
                           :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'"
-                          to="/tutorial">Tutorial</router-link>-->
-                      <a :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'" href="https://drive.google.com/drive/folders/1M7iU2iz46i2gIgfctkUCZdBARWJykcoT?usp=sharing" target="_blank" >Tutorial</a>
+                          to="/tutorial">Tutorial</router-link>
+                      <!-- <a :class="this.$route.path == '/tutorial' ? 'nav-link active': 'nav-link'" href="https://drive.google.com/drive/folders/1M7iU2iz46i2gIgfctkUCZdBARWJykcoT?usp=sharing" target="_blank" >Tutorial</a> -->
                     </li>
                     <li class="nav-item">
                       <router-link
