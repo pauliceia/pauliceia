@@ -17,31 +17,41 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
   },
+  optimization: {
+    chunkIds: "named" // Readable chunk ids for better debugging
+  },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    clientLogLevel: 'warning',
+    client: {
+      // TODO: Maybe add none instead, since FriendlyErrorsWebpackPlugin should handle this
+      logging: 'warn', 
+      overlay: config.dev.errorOverlay
+        ? { warnings: false, errors: true }
+        : false,
+    },
     historyApiFallback: {
       rewrites: [
         { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
       ],
     },
     hot: true,
-    contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
-    overlay: config.dev.errorOverlay
-      ? { warnings: false, errors: true }
-      : false,
-    publicPath: config.dev.assetsPublicPath,
+    devMiddleware: {
+      publicPath: config.dev.assetsPublicPath,
+    },
     proxy: config.dev.proxyTable,
-    quiet: true, // necessary for FriendlyErrorsWebpackPlugin // TODO: check if this is still necessary
-    watchOptions: {
-      poll: config.dev.poll,
+    static: {
+      // TODO: Now is 'directory', but doesn't accept 'false', maybe just omitting it 'directory' is enough?
+      // contentBase: false, // since we use CopyWebpackPlugin.
+      watch: {
+        usePolling: config.dev.poll,
+      }
     }
   },
   plugins: [
@@ -55,7 +65,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       jQuery: 'jquery'
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
@@ -64,13 +73,17 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       inject: true
     }),
     // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.dev.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../static'),
+          to: config.dev.assetsSubDirectory,
+          globOptions: {
+            ignore: ['.*'], // this now needs to be in 'globOptions'
+          },
+        },
+      ],
+    }),
   ]
 })
 

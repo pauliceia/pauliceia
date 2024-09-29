@@ -4,7 +4,7 @@
   "description": "Pauliceia 2.0 portal",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
@@ -68,6 +68,7 @@
     "vue-template-compiler": "^2.7.16",
     "webpack": "^5.94.0",
     "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4",
     "webpack-merge": "^6.0.1"
   },
