@@ -15,7 +15,7 @@
     emptyStyle
   } from '@/views/assets/js/map/Styles'
 
-  import 'nouislider/distribute/nouislider.css'
+  import 'nouislider/dist/nouislider.css'
 
   function extractYearFromDateAsString(date, default_value){
     let year = default_value

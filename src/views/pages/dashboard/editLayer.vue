@@ -597,5 +597,5 @@
     border-radius: 30px
 
   .tam
-    min-width: 800px;
+    min-width: 800px
 </style>

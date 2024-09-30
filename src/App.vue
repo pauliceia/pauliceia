@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style lang="sass">  
+<style lang="sass">
 html, body, #app
   height: 100%
   width: 100%
@@ -30,6 +30,4 @@ li
 @font-face 
   font-family: IrisUPC
   src: url(views/assets/fonts/upcil.ttf)
-
-
 </style>

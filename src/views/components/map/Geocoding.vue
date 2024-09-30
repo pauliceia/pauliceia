@@ -126,7 +126,6 @@ import {
 import {
     CSV2JSON,
     CSVToArray,
-    getUrl
 } from '@/views/assets/js/map/multiplegeocode'
 
 import {
@@ -527,9 +526,6 @@ export default {
                 border-radius: 30px
             .info:hover
                 background: #008ae6
-
-            .btn
-            .btn:hover
 
             .headers-form
                 .inputs

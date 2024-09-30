@@ -42,5 +42,4 @@ function CSVToArray(strData, strDelimiter) {
 export {
     CSV2JSON,
     CSVToArray,
-    getUrl
 }
