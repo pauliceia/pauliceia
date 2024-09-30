@@ -9,6 +9,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@mapbox/shp-write": "^0.4.3",
     "assert": "^2.1.0",
     "axios": "^1.7.7",
     "babel-plugin-syntax-jsx": "^6.18.0",
@@ -23,7 +24,6 @@
     "openlayers": "^4.6.5",
     "popper.js": "^1.16.1",
     "repair": "^0.1.1",
-    "shp-write": "^0.3.2",
     "sortablejs": "^1.15.3",
     "vue": "^2.7.16",
     "vue-i18n": "^8.28.2",

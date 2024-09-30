@@ -109,7 +109,7 @@
 import ApiMap from '@/middleware/Map'
 import { mapState } from 'vuex'
 import GeoJSON from 'geojson'
-import shpwrite from 'shp-write'
+import shpwrite from '@mapbox/shp-write'
 
 
 import {
