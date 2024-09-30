@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -43,7 +44,23 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig
+      },
+      {
+        test: /\.s(a|c)ss$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              api: "legacy",
+              sassOptions: {
+                indentedSyntax: true,
+                silenceDeprecations: ["legacy-js-api"],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.js$/,
@@ -88,9 +105,5 @@ module.exports = {
       }
     ]
   },
-  // node: {
-  //   // prevent webpack from injecting useless setImmediate polyfill because Vue
-  //   // source contains it (although only uses it if it's native).
-  //   setImmediate: false,
-  // }
+  plugins: [new VueLoaderPlugin()],
 }
