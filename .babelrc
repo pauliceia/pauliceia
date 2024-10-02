@@ -1,12 +1,14 @@
 {
   "presets": [
-    ["@babel/preset-env", {
-      "modules": false,
-      "useBuiltIns": "usage",
-      "corejs": 3,
-      "targets": "ie >= 8"
-    }]
+    [
+      "@babel/preset-env",
+      {
+        "modules": false,
+        "useBuiltIns": "usage",
+        "corejs": 3,
+        "targets": "ie >= 8"
+      }
+    ]
   ],
   "plugins": ["transform-vue-jsx", "@babel/plugin-transform-runtime"]
 }
-

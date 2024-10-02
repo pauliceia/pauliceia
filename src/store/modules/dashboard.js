@@ -1,29 +1,29 @@
 const state = {
   myLayers: [],
-  sharedLayers: []
-}
+  sharedLayers: [],
+};
 
 const mutations = {
-  setMyLayers (state, myLayers) {
-    state.myLayers = myLayers
+  setMyLayers(state, myLayers) {
+    state.myLayers = myLayers;
   },
-  setSharedLayers (state, sharedLayers) {
-    state.sharedLayers = sharedLayers
-  }
-}
+  setSharedLayers(state, sharedLayers) {
+    state.sharedLayers = sharedLayers;
+  },
+};
 
 const actions = {
-  setMyLayers ({commit}, myLayers) {
-    commit('setMyLayers', myLayers)
+  setMyLayers({ commit }, myLayers) {
+    commit("setMyLayers", myLayers);
   },
-  setSharedLayers ({commit}, sharedLayers) {
-    commit('setSharedLayers', sharedLayers)
-  }
-}
+  setSharedLayers({ commit }, sharedLayers) {
+    commit("setSharedLayers", sharedLayers);
+  },
+};
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
-}
+  actions,
+};

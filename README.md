@@ -2,7 +2,6 @@
 
 Pauliceia 2.0 project front-end.
 
-
 ## Dependencies
 
 Requires:
@@ -11,7 +10,6 @@ Requires:
 - NPM: >=6.13.4 <=6.14.8
 
 You can install the above versions globally on your machine or through [NVM](https://github.com/nvm-sh/nvm).
-
 
 ## Install
 

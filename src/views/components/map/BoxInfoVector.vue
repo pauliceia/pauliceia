@@ -1,190 +1,215 @@
 <template>
-    <div class="box-info" v-show="boxInfoVector">
-        <header class="header">
-            <h1>{{ $t('map.viewInfoVector.title') }}</h1>
-            <button class="btn" @click="closeBox()">
-                <md-icon>close</md-icon>
-            </button>
-        </header>
-        <div class="body">
-            <div class="row justify-content-md-center">
-                <button class="btn btn-success" @click="getFeature()">{{ $t('map.viewInfoVector.btnFeature') }}</button>
-                <button class="btn btn-secondary" @click="getBox()">{{ $t('map.viewInfoVector.btnBox') }}</button>
-                <button class="btn btn-danger" @click="clear()">{{ $t('map.viewInfoVector.btnClean') }}</button>
-            </div>
+  <div class="box-info" v-show="boxInfoVector">
+    <header class="header">
+      <h1>{{ $t("map.viewInfoVector.title") }}</h1>
+      <button class="btn" @click="closeBox()">
+        <md-icon>close</md-icon>
+      </button>
+    </header>
+    <div class="body">
+      <div class="row justify-content-md-center">
+        <button class="btn btn-success" @click="getFeature()">
+          {{ $t("map.viewInfoVector.btnFeature") }}
+        </button>
+        <button class="btn btn-secondary" @click="getBox()">
+          {{ $t("map.viewInfoVector.btnBox") }}
+        </button>
+        <button class="btn btn-danger" @click="clear()">
+          {{ $t("map.viewInfoVector.btnClean") }}
+        </button>
+      </div>
 
-            <div class="result" v-if="resultProperties[0]">
-                <p>Atributos da Feature:</p>
-                <table class="table" v-for="resultAttr in resultProperties" :key="resultAttr.id">
-                    <tr v-for="element in resultAttr" :key="element.key">
-                        <td><strong><i>{{ element.key }}:</i></strong></td>
-                        <td>{{ element.value }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+      <div class="result" v-if="resultProperties[0]">
+        <p>Atributos da Feature:</p>
+        <table
+          class="table"
+          v-for="resultAttr in resultProperties"
+          :key="resultAttr.id"
+        >
+          <tr v-for="element in resultAttr" :key="element.key">
+            <td>
+              <strong
+                ><i>{{ element.key }}:</i></strong
+              >
+            </td>
+            <td>{{ element.value }}</td>
+          </tr>
+        </table>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 
+import { overlayGroup } from "@/views/assets/js/map/overlayGroup";
 import {
-    overlayGroup
-} from '@/views/assets/js/map/overlayGroup'
-import {
-    emptyStyle,
-    pointSelectStyle,
-    lineSelectStyle,
-    polygonSelectStyle
-} from '@/views/assets/js/map/Styles'
+  emptyStyle,
+  pointSelectStyle,
+  lineSelectStyle,
+  polygonSelectStyle,
+} from "@/views/assets/js/map/Styles";
 
 export default {
-    computed: {
-      ...mapState('map', ['boxInfoVector', 'idInfoFeatureLayer']),
-      ...mapState('edit', ['layerId'])
+  computed: {
+    ...mapState("map", ["boxInfoVector", "idInfoFeatureLayer"]),
+    ...mapState("edit", ["layerId"]),
+  },
+  data() {
+    return {
+      select: null,
+      box: null,
+      resultVectors: [],
+      resultProperties: [],
+    };
+  },
+  watch: {
+    idInfoFeatureLayer(val) {
+      //alguma feature de uma camada foi selecionada para visualização
+      if (val != null) {
+        this._clearInteractions();
+      }
     },
-    data() {
-        return {
-            select: null,
-            box: null,
-            resultVectors: [],
-            resultProperties: []
+    layerId(val) {
+      //alguma camada foi selecionada p/ edição
+      if (val != null) {
+        this._clearInteractions();
+      }
+    },
+  },
+  methods: {
+    closeBox() {
+      this.$store.dispatch("map/setBoxInfoVector", false);
+    },
+    async getFeature() {
+      //REMOVE INTERATIONS
+      if (this.select == null) {
+        this.$store.dispatch("edit/setLayerId", null);
+        this.$store.dispatch("map/setIdInfoFeatureLayer", null);
+        this._clearInteractions();
+
+        //ADD INTERACTION
+        this.select = new ol.interaction.Select();
+        this.$root.olmap.addInteraction(this.select);
+      }
+
+      const vm = this;
+
+      this.select.on("select", (event) => {
+        vm.resultVectors = [];
+        let featureSelected = event.selected[0];
+
+        if (featureSelected !== undefined) {
+          //selecionando as features com a mesma geometria
+          vm.resultVectors.push(featureSelected);
+          featureSelected.setStyle();
+
+          //selecionando as features com a mesma geometria
+          overlayGroup.getLayers().forEach((sublayer) => {
+            if (sublayer != undefined && sublayer.get("id") != undefined) {
+              sublayer
+                .getSource()
+                .getFeatures()
+                .forEach((feat) => {
+                  let formatWKT = new ol.format.WKT();
+                  let featSelectWKT = formatWKT.writeFeature(featureSelected);
+                  let featWKT = formatWKT.writeFeature(feat);
+
+                  if (
+                    featWKT == featSelectWKT &&
+                    JSON.stringify(feat.getStyle()) !==
+                      JSON.stringify(emptyStyle) &&
+                    feat.getId() != featureSelected.getId()
+                  ) {
+                    vm.resultVectors.push(feat);
+                  }
+                });
+            }
+          });
+
+          vm.defineListProps(vm.resultVectors);
+        } else {
+          this.resultVectors = [];
+          this.resultProperties = [];
         }
+      });
     },
-    watch: {
-        idInfoFeatureLayer(val){
-            //alguma feature de uma camada foi selecionada para visualização
-            if(val != null) {
-                this._clearInteractions()
-            }
-        },
-        layerId(val){
-            //alguma camada foi selecionada p/ edição
-            if(val != null) {
-                this._clearInteractions()
-            }
-        }
-    },
-    methods: {
-        closeBox() {
-            this.$store.dispatch('map/setBoxInfoVector', false)
-        },
-        async getFeature() {
-            //REMOVE INTERATIONS
-            if(this.select == null){
-                this.$store.dispatch('edit/setLayerId', null)
-                this.$store.dispatch('map/setIdInfoFeatureLayer', null)
-                this._clearInteractions()
+    async getBox() {
+      if (this.resultVectors[0] != undefined) {
+        this.$store.dispatch("edit/setLayerId", null);
+        this.$store.dispatch("map/setIdInfoFeatureLayer", null);
+        this._clearInteractions();
+      }
 
-                //ADD INTERACTION
-                this.select = new ol.interaction.Select()
-                this.$root.olmap.addInteraction(this.select)
-            }
+      //ADD INTERACTION
+      this.box = new ol.interaction.DragBox();
+      this.$root.olmap.addInteraction(this.box);
 
-            const vm = this
+      let vm = this;
 
-            this.select.on('select', (event) => {
-                vm.resultVectors = []
-                let featureSelected = event.selected[0]
+      this.box.on("boxend", (event) => {
+        let extent = vm.box.getGeometry().getExtent();
 
-                if(featureSelected !== undefined) {
-                    //selecionando as features com a mesma geometria
-                    vm.resultVectors.push(featureSelected)
-                    featureSelected.setStyle()
-
-                    //selecionando as features com a mesma geometria
-                    overlayGroup.getLayers().forEach(sublayer => {
-                        if(sublayer != undefined && sublayer.get('id') != undefined) {
-
-                            sublayer.getSource().getFeatures().forEach(feat => {
-                                let formatWKT = new ol.format.WKT();
-                                let featSelectWKT = formatWKT.writeFeature(featureSelected);
-                                let featWKT = formatWKT.writeFeature(feat)
-
-                                if( (featWKT == featSelectWKT) && (JSON.stringify(feat.getStyle()) !== JSON.stringify(emptyStyle)) && feat.getId() != featureSelected.getId() ){
-                                    vm.resultVectors.push(feat)
-                                }
-                            })
-                        }
-                    })
-
-                    vm.defineListProps(vm.resultVectors)
-                } else {
-                    this.resultVectors = []
-                    this.resultProperties = []
+        overlayGroup.getLayers().forEach((sublayer) => {
+          if (
+            sublayer != undefined &&
+            sublayer.get("id") != undefined &&
+            sublayer.getVisible() == true
+          ) {
+            sublayer
+              .getSource()
+              .forEachFeatureIntersectingExtent(extent, (feature) => {
+                if (
+                  JSON.stringify(feature.getStyle()) !==
+                  JSON.stringify(emptyStyle)
+                ) {
+                  // feature.setStyle(lineSelectStyle)
+                  vm.resultVectors.push(feature);
                 }
-            });
-        },
-        async getBox() {
-            if(this.resultVectors[0] != undefined){
-                this.$store.dispatch('edit/setLayerId', null)
-                this.$store.dispatch('map/setIdInfoFeatureLayer', null)
-                this._clearInteractions()
-            }
+              });
+          }
+        });
 
-            //ADD INTERACTION
-            this.box = new ol.interaction.DragBox()
-            this.$root.olmap.addInteraction(this.box)
+        vm.defineListProps(vm.resultVectors);
+        this.$root.olmap.removeInteraction(this.box);
+      });
+    },
+    defineListProps(resultVectors) {
+      this.resultProperties = resultVectors.map((feature) => {
+        let result = [
+          {
+            key: "id",
+            value: feature.getId().split(".")[1],
+          },
+        ];
 
-            let vm = this
+        for (const [key, value] of Object.entries(feature.getProperties())) {
+          // do not add to the info box the `changeset_id` and `version` properties
+          if (key === "changeset_id" || key === "version") continue;
 
-            this.box.on('boxend', (event) => {
-                let extent = vm.box.getGeometry().getExtent()
-
-                overlayGroup.getLayers().forEach(sublayer => {
-                    if(sublayer != undefined && sublayer.get('id') != undefined && sublayer.getVisible() == true) {
-
-                        sublayer.getSource().forEachFeatureIntersectingExtent(extent, feature => {
-                            if(JSON.stringify(feature.getStyle()) !== JSON.stringify(emptyStyle) ){
-                                // feature.setStyle(lineSelectStyle)
-                                vm.resultVectors.push(feature)
-                            }
-                        })
-                    }
-                })
-
-                vm.defineListProps(vm.resultVectors)
-                this.$root.olmap.removeInteraction(this.box)
-            })
-        },
-        defineListProps(resultVectors) {
-          this.resultProperties = resultVectors.map(feature => {
-            let result = [
-              {
-                key: "id",
-                value: feature.getId().split('.')[1]
-              }
-            ]
-
-            for (const [key, value] of Object.entries(feature.getProperties())) {
-              // do not add to the info box the `changeset_id` and `version` properties
-              if (key === 'changeset_id' || key === 'version')
-                continue
-
-              if (typeof(value) !== 'object')
-                result.push({key, value})
-            }
-
-            return result
-          })
-        },
-        clear() {
-            this.$store.dispatch('edit/setLayerId', null)
-            this.$store.dispatch('map/setIdInfoFeatureLayer', null)
-            this._clearInteractions()
-        },
-        _clearInteractions() {
-            this.$root.olmap.removeInteraction(this.select)
-            this.$root.olmap.removeInteraction(this.box)
-            this.select = null
-            this.box = null
-            this.$root.olmap.getOverlays().clear()
-            this.resultVectors = []
-            this.resultProperties = []
+          if (typeof value !== "object") result.push({ key, value });
         }
-    }
-}
+
+        return result;
+      });
+    },
+    clear() {
+      this.$store.dispatch("edit/setLayerId", null);
+      this.$store.dispatch("map/setIdInfoFeatureLayer", null);
+      this._clearInteractions();
+    },
+    _clearInteractions() {
+      this.$root.olmap.removeInteraction(this.select);
+      this.$root.olmap.removeInteraction(this.box);
+      this.select = null;
+      this.box = null;
+      this.$root.olmap.getOverlays().clear();
+      this.resultVectors = [];
+      this.resultProperties = [];
+    },
+  },
+};
 </script>
 
 <style lang="sass" scoped>
@@ -241,5 +266,4 @@ export default {
                 border: 1px solid #CCC
             .table
                 background: rgba(#000, 0.03)
-
 </style>
