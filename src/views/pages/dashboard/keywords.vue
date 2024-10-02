@@ -5,7 +5,7 @@
         <div class="card">
           <div class="card-body">
             <h6 class="mb-0">{{ $t('dashboard.keywords.newKeyword') }}</h6>
-            <p class="card-text">
+            <div class="card-text">
             <form>
               <div class="form-row">
                 <div class="form-group col-md-12">
@@ -22,7 +22,7 @@
                 </div>
               </div>
             </form>
-            </p>
+          </div>
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@
             <!-- <p class="card-text">Creator? {{ isTheCurrentUserTheLayerCreator }}</p>
             <p class="card-text">Collaborator? {{ isTheCurrentUserALayerCollaborator }}</p> -->
 
-            <p class="card-text">
+            <div class="card-text">
               <form>
                 <!-- layer name and select keywords -->
                 <div class="form-row">
@@ -127,7 +127,7 @@
 
                 <div class="form-group"></div>
               </form>
-            </p>
+            </div>
 
             <!-- submit and delete buttons -->
             <div class="row">
