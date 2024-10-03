@@ -44,12 +44,7 @@
 import { mapState } from "vuex";
 
 import { overlayGroup } from "@/views/assets/js/map/overlayGroup";
-import {
-  emptyStyle,
-  pointSelectStyle,
-  lineSelectStyle,
-  polygonSelectStyle,
-} from "@/views/assets/js/map/Styles";
+import { emptyStyle } from "@/views/assets/js/map/Styles";
 
 export default {
   computed: {

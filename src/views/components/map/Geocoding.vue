@@ -144,16 +144,13 @@ import { mapState } from "vuex";
 import GeoJSON from "geojson";
 import shpwrite from "@mapbox/shp-write";
 
-import { overlayGroup } from "@/views/assets/js/map/overlayGroup";
-
 import {
-  placeStyle,
   placeStyleSearch1,
   placeStyleSearch0,
   placeStyleSearch3,
 } from "@/views/assets/js/map/Styles";
 
-import { CSV2JSON, CSVToArray } from "@/views/assets/js/map/multiplegeocode";
+import { CSV2JSON } from "@/views/assets/js/map/multiplegeocode";
 
 import { overlayGroupGeolocation } from "@/views/assets/js/map/overlayGroup";
 
@@ -234,9 +231,8 @@ export default {
 
       let reader = new FileReader();
 
-      reader.onload = async (file) => {
+      reader.onload = async (_file) => {
         let text = reader.result;
-        let node = document.getElementById("output");
         let csv = text.replace("\r", "");
         let headers = csv.split("\n")[0].split(",");
 
@@ -291,17 +287,6 @@ export default {
           let response = await ApiMap.geolocationOne(address);
 
           if (response.data[1][0].name != "Point not found") {
-            let textAddress =
-              "[{" +
-              '"address":' +
-              '"' +
-              json[i][this.street] +
-              ", " +
-              json[i][this.numberAddress] +
-              ", " +
-              json[i][this.year] +
-              '"' +
-              "}]";
             let geomPoint = response.data[1][0].geom.substr(
               response.data[1][0].geom.indexOf("(") + 1,
             );
@@ -520,6 +505,8 @@ export default {
           });
           this.loading.close();
         } else {
+          let search = this.inputSearch.replace(/( )+/g, " ");
+
           let text =
             "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
             search +

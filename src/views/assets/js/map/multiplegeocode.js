@@ -34,10 +34,11 @@ function CSVToArray(strData, strDelimiter) {
     if (strMatchedDelimiter.length && strMatchedDelimiter != strDelimiter) {
       arrData.push([]);
     }
+    let strMatchedValue;
     if (arrMatches[2]) {
-      var strMatchedValue = arrMatches[2].replace(new RegExp('""', "g"), '"');
+      strMatchedValue = arrMatches[2].replace(new RegExp('""', "g"), '"');
     } else {
-      var strMatchedValue = arrMatches[3];
+      strMatchedValue = arrMatches[3];
     }
     arrData[arrData.length - 1].push(strMatchedValue);
   }

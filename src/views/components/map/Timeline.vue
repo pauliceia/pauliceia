@@ -84,7 +84,7 @@ export default {
       },
     });
 
-    slider.noUiSlider.on("update", (values, handle) => {
+    slider.noUiSlider.on("update", (values, _handle) => {
       this.$store.dispatch("map/setYears", {
         first: values[0],
         last: values[1],
@@ -115,10 +115,10 @@ export default {
         // Discussion: https://stackoverflow.com/a/31732581/8447990
         let startDate = String(
           fProperties[tcProperties.start_date_column_name],
-        ).replace(/-/g, "\/");
+        ).replace(/-/g, "/");
         let endDate = String(
           fProperties[tcProperties.end_date_column_name],
-        ).replace(/-/g, "\/");
+        ).replace(/-/g, "/");
 
         // Extracting the year from the dates as strings.
         // The default values are the values from the slider temporal bounding
@@ -133,11 +133,11 @@ export default {
         // (e.g. when `endDate` is an invalid string (e.g. "null"), then finding a year is not possible)
         if (isNaN(startYear))
           startYear = new Date(
-            String(tcProperties.start_date).replace(/-/g, "\/"),
+            String(tcProperties.start_date).replace(/-/g, "/"),
           ).getFullYear();
         if (isNaN(endYear))
           endYear = new Date(
-            String(tcProperties.end_date).replace(/-/g, "\/"),
+            String(tcProperties.end_date).replace(/-/g, "/"),
           ).getFullYear();
 
         // check if the feature is inside the selected period

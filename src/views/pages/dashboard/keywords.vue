@@ -42,7 +42,7 @@
             <h6 class="mb-0">{{ $t("dashboard.keywords.myKeywords") }}</h6>
             <br /><br />
             <div class="card-text">
-              <div class="row" v-for="k in keywords">
+              <div class="row" v-for="k in keywords" :key="k.keyword_id">
                 <div class="col-sm-5" v-if="user.is_the_admin">
                   {{ k.name }}
                 </div>

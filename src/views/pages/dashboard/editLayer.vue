@@ -658,7 +658,7 @@ export default {
               this.auxRef = null;
             },
             (cause) => {
-              this, _showErrorMessages(cause);
+              this._showErrorMessages(cause);
             },
           );
       }

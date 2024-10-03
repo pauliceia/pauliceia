@@ -374,7 +374,6 @@
 </template>
 
 <script>
-import DashLayout from "@/views/layouts/dashboard";
 import Api from "@/middleware/ApiVGI";
 import { mapState } from "vuex";
 import ModalNotification from "@/views/components/dashboard/ModalNotification";
@@ -450,7 +449,7 @@ export default {
       this.is_denunciation = false;
       this.showInput2 = false;
     },
-    handleClick(tab, event) {
+    handleClick(_tab, _event) {
       // console.log(tab, event);
     },
     addNotif() {
@@ -725,7 +724,6 @@ export default {
     },
   },
   components: {
-    "p-dash-layout": DashLayout,
     "p-modal-notification": ModalNotification,
   },
 };

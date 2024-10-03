@@ -13,8 +13,6 @@
   </section>
 </template>
 <script>
-import { mapState } from "vuex";
-
 import Header from "@/views/components/application/Header";
 import AsideRight from "@/views/components/aside-right/Main";
 

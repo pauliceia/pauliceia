@@ -100,8 +100,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-import vSelect from "vue-select";
 import Api from "@/middleware/ApiVGI";
 import PopoverLabels from "@/views/components/dashboard/PopoverLabels";
 import { mapState } from "vuex";
@@ -146,7 +144,7 @@ export default {
             });
           },
           function (cause) {
-            msg = cause.toString();
+            const msg = cause.toString();
             vm._msgError(msg);
           },
         );

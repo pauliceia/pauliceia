@@ -25,7 +25,6 @@
   </md-menu>
 </template>
 <script>
-import User from "@/middleware/User";
 import ImgPerson from "@/views/assets/images/icon_person.png";
 import "vue-material/dist/vue-material.min.css";
 

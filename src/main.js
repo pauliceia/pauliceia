@@ -18,6 +18,7 @@ import "openlayers/dist/ol-debug.js";
 import { sync } from "vuex-router-sync";
 import router from "@/router";
 import store from "@/store";
+// eslint-disable-next-line no-unused-vars
 import i18n from "@/views/language";
 
 import App from "@/App";
@@ -29,7 +30,7 @@ sync(store, router);
 
 Vue.directive("sortable", {
   inserted: function (el, binding) {
-    var sortable = new Sortable(el, binding.value || {});
+    new Sortable(el, binding.value || {});
   },
 });
 

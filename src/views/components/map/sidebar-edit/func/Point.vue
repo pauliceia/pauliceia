@@ -75,8 +75,8 @@ export default {
       let attrLayer = await Map.getAttrLayer("f_table_name=" + f_name);
       let properties = attrLayer.data.features[0].properties;
 
-      await Object.keys(properties).map((index, key) => {
-        properties[index] = null;
+      await Object.keys(properties).map((key) => {
+        properties[key] = null;
       });
       this.$store.dispatch("edit/setAttr", properties);
     },

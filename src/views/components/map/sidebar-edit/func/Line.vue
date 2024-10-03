@@ -70,8 +70,8 @@ export default {
       }
 
       let properties = vm.source.getFeatures()[0].getProperties();
-      await Object.keys(properties).map((index, key) => {
-        properties[index] = null;
+      await Object.keys(properties).map((key) => {
+        properties[key] = null;
       });
       this.$store.dispatch("edit/setAttr", properties);
     },

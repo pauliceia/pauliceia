@@ -1,6 +1,5 @@
 // features/step_definitions/registration_steps.js
 const { Given, When, Then } = require("cucumber");
-const chai = require("chai");
 const { expect } = require("chai");
 const puppeteer = require("puppeteer");
 

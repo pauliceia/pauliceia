@@ -167,7 +167,7 @@ export default {
         });
       });
     },
-    async closeChangeset(id) {
+    async closeChangeset(_id) {
       let response = await Edit.closeChangeset(this.changeset);
       this.changeset = null;
       this.$store.dispatch("edit/setChangesetId", null);

@@ -50,7 +50,7 @@
       </div>
 
       <div class="nofitication">
-        <div v-for="n in notifG">
+        <div v-for="n in notifG" :key="n.notification_id">
           <div class="notification-box2">
             <div style="display: flex; align-items: center">
               <div class="photo">B</div>
@@ -105,18 +105,11 @@
 </template>
 
 <script>
-import DashLayout from "@/views/layouts/dashboard";
-import { MessageBox } from "element-ui";
 import Api from "@/middleware/ApiVGI";
 import { mapState } from "vuex";
 
 export default {
   name: "ModalNotification",
-  components: {
-    modal: {
-      template: "#modal-template",
-    },
-  },
   computed: {
     ...mapState("auth", ["isUserLoggedIn", "user"]),
     ...mapState("map", ["boxNotifications"]),

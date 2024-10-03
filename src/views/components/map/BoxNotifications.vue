@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import Api from "@/middleware/ApiVGI";
 import { mapState } from "vuex";
 import Notifications from "@/views/components/dashboard/Notifications";
 

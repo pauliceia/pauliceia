@@ -6,7 +6,11 @@
           <div class="card-header text-center">Denounced Layers</div>
           <div class="card-body">
             <div class="card-text">
-              <div class="row" v-for="layer in denouncedLayers">
+              <div
+                class="row"
+                v-for="layer in denouncedLayers"
+                :key="layer.layer_id"
+              >
                 <div class="col-sm-8">{{ layer.name }} ({{ layer.n }})</div>
                 <div class="col-sm-2">
                   <button
@@ -36,7 +40,11 @@
           <div class="card-header text-center">Denounced Comments</div>
           <div class="card-body">
             <div class="card-text">
-              <div class="row" v-for="comment in denouncedComments">
+              <div
+                class="row"
+                v-for="comment in denouncedComments"
+                :key="comment.id"
+              >
                 <div class="col-sm-8">{{ comment.name }} ({{ comment.n }})</div>
                 <div class="col-sm-2">
                   <button
@@ -128,7 +136,7 @@
           <div class="card-header">Denunciations</div>
           <div class="card-body">
             <div class="nofitication">
-              <div v-for="n in denunciations">
+              <div v-for="n in denunciations" :key="n.notification_id">
                 <div class="notification-box">
                   <div style="display: flex; align-items: center">
                     <div class="photo">B</div>
