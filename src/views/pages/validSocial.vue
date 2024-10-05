@@ -1,5 +1,3 @@
-<template></template>
-
 <script>
 import User from "@/middleware/User";
 
