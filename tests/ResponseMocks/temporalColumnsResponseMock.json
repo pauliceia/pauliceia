@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+      {
+          "type": "TemporalColumns",
+          "properties": {
+              "end_date": "1929-02-27",
+              "start_date": "1929-02-01",
+              "f_table_name": "a_enchente_de_1929_em_sp",
+              "end_date_mask_id": null,
+              "start_date_mask_id": null,
+              "end_date_column_name": "None",
+              "start_date_column_name": "None"
+          }
+      }
+  ]
+}

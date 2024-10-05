@@ -32,6 +32,10 @@
                 </li>
                 <li><b>{{ $t('map.viewInfo.lbDescription') }}:</b> {{ infos.description }} </li>
                 <li><b>{{ $t('map.viewInfo.lbDate') }}:</b> {{ infos.date }}</li>
+                <div class="layers-date-box">
+                  <li><b>{{ $t('map.viewInfo.lbLayerStartDate') }}:</b> {{ infos.layerStartDate }}</li>
+                  <li><b>{{ $t('map.viewInfo.lbLayerEndDate') }}:</b> {{ infos.layerEndDate }}</li>
+                </div>
                 <li><b>{{ $t('map.viewInfo.lbAuthors') }}:</b>
                     <span v-show="layer != null" v-for="author in infos.authors" :key="author.properties.user_id">
                         {{ getAuthorName(author)[0].properties.name }};
@@ -134,7 +138,9 @@ export default {
             infos: {
                 name: '',
                 date: '',
-                description: ''
+                description: '',
+                layerStartDate: '',
+                layerEndDate: '',
             },
             activeName: 'first',
             notifications: [],
@@ -401,6 +407,14 @@ export default {
             this.infos.authors = this.allAuthorsLayers.filter( item => item.properties.layer_id == this.layer.layer_id )
 
             this.infos.date = this._getDate(this.layer.created_at)
+
+            let table_name = this.layer.f_table_name;
+            Api().get('/api/temporal_columns/?f_table_name=' + this.layer.f_table_name).then(response => {
+              let p = response.data.features[0].properties
+
+              this.infos.layerStartDate = this._getDate(p.start_date)
+              this.infos.layerEndDate = this._getDate(p.end_date)
+            })
         },
         _getDate(date) {
             let dateParsed = date.split('-')
@@ -526,5 +540,9 @@ export default {
 
     .msgType
       display: flex
+
+    .layers-date-box
+      display: flex
+      gap: 2rem
 
 </style>
