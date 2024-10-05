@@ -7,6 +7,7 @@ export default {
     team: "Team",
     contact: "Contact",
     about: "About",
+    register: "Register",
     login: "Sign In",
     profile: "My Profile",
     dashboard: "Dashboard",
@@ -300,7 +301,7 @@ export default {
       "Daniel Cordeiro is a professor at the School of Arts, Sciences and Humanities at the University of São Paulo, where he researches High Performance Distributed Computing. His current research projects are related to the energy-efficient execution of High Performance Computing applications on Cloud Computing platforms and the creation of collaborative distributed computing platforms. With his students, he collaborates on improvements to the Pauliceia 2.0 computational platform code.",
   },
   register: {
-    title: "Register",
+    title: "New Registration",
     lbName: "Name",
     lbEmail: "Email address",
     lbUsername: "Username",

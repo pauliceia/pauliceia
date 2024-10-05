@@ -29,7 +29,7 @@
 
                   <!-- keywords -->
                   <div class="form-group col-md-6">
-                    <label class="mr-sm-2" for="keywordsSelect">{{
+                    <label class="me-sm-2" for="keywordsSelect">{{
                       $t("dashboard.newLayer.keywords")
                     }}</label>
                     <p-popover-labels

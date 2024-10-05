@@ -11,7 +11,7 @@
             <form>
               <div class="form-row">
                 <div class="form-group col-md-4 text-center">
-                  <p class="text-left">
+                  <p class="text-start">
                     {{ $t("dashboard.profile.profilePicture") }}
                     <p-popover-labels
                       :text="$t('dashboard.profile.profilePictureMessage')"
@@ -76,7 +76,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-11">
-                  <div class="text-right align-self-end">
+                  <div class="text-end align-self-end">
                     <br />
                     <a
                       class="btn btn-primary"

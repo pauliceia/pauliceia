@@ -16,8 +16,8 @@
       <button
         class="navbar-toggler"
         type="button"
-        data-toggle="collapse"
-        data-target="#navbarCollapse"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
         aria-controls="navbarCollapse"
         aria-expanded="false"
         aria-label="Toggle navigation"
@@ -27,7 +27,7 @@
 
       <!-- content nav -->
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <router-link
               :class="
@@ -87,9 +87,9 @@
           <p-logAvatar :photo="user.picture" :name="user.name" />
         </div>
         <div v-else>
-          <router-link to="/register" class="btn btn-register"
-            >Register</router-link
-          >
+          <router-link to="/register" class="btn btn-register">{{
+            $t("nav.register")
+          }}</router-link>
           <router-link to="/login" class="btn btn-login">{{
             $t("nav.login")
           }}</router-link>

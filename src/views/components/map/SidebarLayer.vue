@@ -20,10 +20,9 @@
             >
               <md-button
                 class="md-icon-button md-dense"
-                data-toggle="modal"
-                data-target="#modalAddLayer"
+                data-bs-toggle="modal"
+                data-bs-target="#modalAddLayer"
               >
-                <!--<md-icon style="color: #FFF;">settings</md-icon>-->
                 <img
                   class="btn-ico"
                   src="@/views/assets/images/icons/add-layer.png"

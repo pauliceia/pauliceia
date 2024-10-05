@@ -4,14 +4,13 @@
       <!-- form card login -->
       <div class="card rounded stylecard">
         <div class="card-body">
-          <!--<h3 class="mb-0">{{ $t('register.title') }}</h3>-->
-          <h5 class="mb-0">Novo Cadastro</h5>
+          <h5 class="mb-0">{{ $t("register.title") }}</h5>
           <br /><br />
 
           <form class="form-signin" @submit.prevent="registerSubmit">
-            <div class="form-row">
-              <div class="form-group col-md-12">
-                <label>{{ $t("register.lbName") }}</label>
+            <div class="row mb-3 g-3">
+              <div class="col-md-12">
+                <label class="mb-2">{{ $t("register.lbName") }}</label>
                 <input
                   type="text"
                   v-model="user.name"
@@ -20,8 +19,8 @@
                   required
                 />
               </div>
-              <div class="form-group col-md-12">
-                <label>{{ $t("register.lbEmail") }}</label>
+              <div class="col-md-12">
+                <label class="mb-2">{{ $t("register.lbEmail") }}</label>
                 <input
                   type="email"
                   v-model="user.email"
@@ -30,11 +29,8 @@
                   required
                 />
               </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label>{{ $t("register.lbUsername") }}</label>
+              <div class="col-md-6">
+                <label class="mb-2">{{ $t("register.lbUsername") }}</label>
                 <input
                   type="text"
                   v-model="user.username"
@@ -43,8 +39,8 @@
                   required
                 />
               </div>
-              <div class="form-group col-md-6">
-                <label>{{ $t("register.lbPassword") }}</label>
+              <div class="col-md-6">
+                <label class="mb-2">{{ $t("register.lbPassword") }}</label>
                 <input
                   type="password"
                   v-model="user.password"
@@ -65,7 +61,7 @@
                 :label="$t('register.lbCheckAgree')"
                 v-model="terms_agreed"
               ></el-checkbox>
-              <a data-toggle="modal" data-target="#modalTerms">
+              <a data-bs-toggle="modal" data-bs-target="#modalTerms">
                 ( {{ $t("register.lbReadme") }} )
               </a>
             </div>
@@ -74,7 +70,7 @@
               id="btn-register"
               type="submit"
               disabled
-              class="btn btn-lg btn-block"
+              class="btn btn-lg w-100"
               :title="$t('register.msg.registerBtnHover')"
               style="background-color: #ff6107; color: #ffffff"
             >

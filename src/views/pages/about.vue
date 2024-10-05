@@ -74,7 +74,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -82,7 +82,7 @@
             <h5 class="title2" itemprop="name">{{ $t("about.name1") }}</h5>
             {{ $t("about.desc1") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/1.png" />
           </div>
 
@@ -102,7 +102,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -110,7 +110,7 @@
             <h5 class="title2" itemprop="name">{{ $t("about.name3") }}</h5>
             {{ $t("about.desc3") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/3.png" />
           </div>
 
@@ -130,7 +130,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -138,7 +138,7 @@
             <h5 class="title2" itemprop="name">{{ $t("about.name27") }}</h5>
             {{ $t("about.desc27") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/27.png" />
           </div>
 
@@ -158,7 +158,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -166,7 +166,7 @@
             <h5 class="title2" itemprop="name">Cíntia Rodrigues de Almeida</h5>
             {{ $t("about.desc5") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/5.png" />
           </div>
 
@@ -186,7 +186,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -194,7 +194,7 @@
             <h5 class="title2" itemprop="name">Daniel Cordeiro</h5>
             {{ $t("about.desc31") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/31.png" />
           </div>
 
@@ -214,7 +214,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -222,7 +222,7 @@
             <h5 class="title2" itemprop="name">Denis Taveira de Lima</h5>
             {{ $t("about.desc10") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/10.png" />
           </div>
 
@@ -242,7 +242,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -250,7 +250,7 @@
             <h5 class="title2" itemprop="name">Ester Dantas Reis Nunes</h5>
             {{ $t("about.desc9") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/9.png" />
           </div>
 
@@ -270,7 +270,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -278,7 +278,7 @@
             <h5 class="title2" itemprop="name">Gabriel Reis</h5>
             {{ $t("about.desc25") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/25.png" />
           </div>
 
@@ -298,7 +298,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -306,7 +306,7 @@
             <h5 class="title2" itemprop="name">Gilberto Ribeiro de Queiroz</h5>
             {{ $t("about.desc16") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/16.png" />
           </div>
 
@@ -326,7 +326,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -334,7 +334,7 @@
             <h5 class="title2" itemprop="name">Karine Reis Ferreira</h5>
             {{ $t("about.desc2") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/2.png" />
           </div>
 
@@ -354,7 +354,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -362,7 +362,7 @@
             <h5 class="title2" itemprop="name">Marina Gomes</h5>
             {{ $t("about.desc30") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/30.png" />
           </div>
 
@@ -382,7 +382,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -390,7 +390,7 @@
             <h5 class="title2" itemprop="name">Nandamudi Vijaykumar</h5>
             {{ $t("about.desc18") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/18.png" />
           </div>
 
@@ -410,7 +410,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -418,7 +418,7 @@
             <h5 class="title2" itemprop="name">Priscila Machado Meireles</h5>
             {{ $t("about.desc21") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/21.png" />
           </div>
 
@@ -440,7 +440,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -448,7 +448,7 @@
             <h5 class="title2" itemprop="name">Renata Baesso</h5>
             {{ $t("about.desc29") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/29.png" />
           </div>
 
@@ -468,7 +468,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -476,7 +476,7 @@
             <h5 class="title2" itemprop="name">Thomas Rogers</h5>
             {{ $t("about.desc22") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/21_1.png" />
           </div>
 
@@ -498,7 +498,7 @@
         {{/**/}}
         <div class="row justify-content-md-center row-style">
           <div
-            class="col-sm-4 column-style text-right"
+            class="col-sm-4 column-style text-end"
             itemprop="contributor"
             itemscope
             itemtype="https://schema.org/Person"
@@ -506,7 +506,7 @@
             <h5 class="title2" itemprop="name">Wania Mazzarello</h5>
             {{ $t("about.desc24") }}
           </div>
-          <div class="col-sm-2 column-style text-right">
+          <div class="col-sm-2 column-style text-end">
             <img class="picture" src="@/views/assets/images/perfil/24.png" />
           </div>
 

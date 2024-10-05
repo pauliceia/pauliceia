@@ -57,7 +57,7 @@
             <br />
             <div class="col-12 terms">
               {{ $t("login.terms") }}
-              <a data-toggle="modal" data-target="#modalTerms">
+              <a data-bs-toggle="modal" data-bs-target="#modalTerms">
                 ({{ $t("login.lbReadme") }})
               </a>
             </div>

@@ -7,6 +7,7 @@ export default {
     team: "Equipe",
     contact: "Contato",
     about: "Sobre",
+    register: "Cadastrar",
     login: "Entrar",
     profile: "Meu Perfil",
     dashboard: "Painel",
@@ -297,7 +298,7 @@ export default {
       "Daniel Cordeiro é professor da Escola de Artes, Ciências e Humanidades da Universidade de São Paulo, onde pesquisa Computação Distribuída de Alto Desempenho. Seus projetos de pesquisa atuais estão relacionados à execução eficiente em energia de aplicações de Computação de Alto Desempenho em plataformas de Computação em Nuvem e a criação de plataformas de computação distribuídas colaborativas. Com seus alunos, colabora com melhorias no código da plataforma computacional do Pauliceia 2.0.",
   },
   register: {
-    title: "Cadastrar",
+    title: "Novo Cadastro",
     lbName: "Nome",
     lbEmail: "E-mail",
     lbUsername: "Nome de usuário",

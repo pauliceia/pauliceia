@@ -7,18 +7,23 @@
       </button>
     </header>
     <div class="body">
-      <div class="row justify-content-md-center">
-        <button class="btn btn-success" @click="getFeature()">
-          {{ $t("map.viewInfoVector.btnFeature") }}
-        </button>
-        <button class="btn btn-secondary" @click="getBox()">
-          {{ $t("map.viewInfoVector.btnBox") }}
-        </button>
-        <button class="btn btn-danger" @click="clear()">
-          {{ $t("map.viewInfoVector.btnClean") }}
-        </button>
+      <div class="row justify-content-md-center g-0">
+        <div class="col-auto">
+          <button class="btn btn-success" @click="getFeature()">
+            {{ $t("map.viewInfoVector.btnFeature") }}
+          </button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-secondary" @click="getBox()">
+            {{ $t("map.viewInfoVector.btnBox") }}
+          </button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-danger" @click="clear()">
+            {{ $t("map.viewInfoVector.btnClean") }}
+          </button>
+        </div>
       </div>
-
       <div class="result" v-if="resultProperties[0]">
         <p>Atributos da Feature:</p>
         <table

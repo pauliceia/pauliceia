@@ -44,16 +44,12 @@
           </template>
         </el-autocomplete>
 
-        <div class="input-group-append">
-          <button class="btn btn-search">
-            {{ $t("map.geocoding.btnText") }}
-          </button>
-        </div>
-        <div class="input-group-append">
-          <button type="button" class="btn" @click="setting()">
-            <md-icon>settings</md-icon>
-          </button>
-        </div>
+        <button class="btn btn-search">
+          {{ $t("map.geocoding.btnText") }}
+        </button>
+        <button type="button" class="btn" @click="setting()">
+          <md-icon>settings</md-icon>
+        </button>
       </div>
     </form>
 
