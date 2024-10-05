@@ -37,4 +37,4 @@ export default `
 <br>
 <p><b>SECTION 9 - CONTACT</b></p>
 <p>If you have any questions regarding the terms, use of the platform, information, complaints or compliments, you may contact us at the following email: "pauliceia_support[at]googlegroups.com"</p>
-`
+`;

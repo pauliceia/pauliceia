@@ -1,7 +1,7 @@
 const state = {
   years: {
     first: 1868,
-    last: 1940
+    last: 1940,
   },
   layers: [],
   boxGeocoding: true,
@@ -14,91 +14,91 @@ const state = {
   idInfoLayer: null,
   //id da layer que está ativa a funaçã INFO FEATURE
   idInfoFeatureLayer: null,
-  sidebar: null
-}
+  sidebar: null,
+};
 
 const mutations = {
-  setYears (state, years) {
-    state.years.first = years.first
-    state.years.last = years.last
+  setYears(state, years) {
+    state.years.first = years.first;
+    state.years.last = years.last;
   },
-  setBoxGeocoding (state, value) {
-    state.boxGeocoding = value
+  setBoxGeocoding(state, value) {
+    state.boxGeocoding = value;
   },
-  setBoxSubtitle (state, value) {
-    state.boxSubtitle = value
+  setBoxSubtitle(state, value) {
+    state.boxSubtitle = value;
   },
-  setBoxAlert (state, value) {
-    state.boxAlert = value
+  setBoxAlert(state, value) {
+    state.boxAlert = value;
   },
-  setBoxInfoLayer (state, value) {
-    state.boxInfoLayer = value
+  setBoxInfoLayer(state, value) {
+    state.boxInfoLayer = value;
   },
-  setBoxNotifications (state, value) {
-    state.boxNotifications = value
+  setBoxNotifications(state, value) {
+    state.boxNotifications = value;
   },
-  setBoxInfoVector (state, value) {
-    state.boxInfoVector = value
+  setBoxInfoVector(state, value) {
+    state.boxInfoVector = value;
   },
-  setNewLayers (state, value) {
-    state.layers.push(value)
+  setNewLayers(state, value) {
+    state.layers.push(value);
   },
-  setRemoveLayers (state, value) {
-    state.layers.splice(state.layers.indexOf(value), 1)
+  setRemoveLayers(state, value) {
+    state.layers.splice(state.layers.indexOf(value), 1);
   },
-  setIdInfoLayer (state, value) {
-    state.idInfoLayer = value
+  setIdInfoLayer(state, value) {
+    state.idInfoLayer = value;
   },
-  setIdInfoFeatureLayer (state, value) {
-    state.idInfoFeatureLayer = value
+  setIdInfoFeatureLayer(state, value) {
+    state.idInfoFeatureLayer = value;
   },
-  setSidebar (state, value) {
-    state.sidebar = value
-  }
-}
+  setSidebar(state, value) {
+    state.sidebar = value;
+  },
+};
 
 const actions = {
-  setYears ({commit}, years) {
-    commit('setYears', years)
+  setYears({ commit }, years) {
+    commit("setYears", years);
   },
-  setBoxGeocoding({commit}, value) {
-    commit('setBoxGeocoding', value)
+  setBoxGeocoding({ commit }, value) {
+    commit("setBoxGeocoding", value);
   },
-  setBoxSubtitle({commit}, value) {
-    commit('setBoxSubtitle', value)
+  setBoxSubtitle({ commit }, value) {
+    commit("setBoxSubtitle", value);
   },
-  setBoxAlert({commit}, value) {
-    commit('setBoxAlert', value)
+  setBoxAlert({ commit }, value) {
+    commit("setBoxAlert", value);
   },
-  setBoxInfoLayer({commit}, value) {
-    commit('setBoxInfoLayer', value)
+  setBoxInfoLayer({ commit }, value) {
+    commit("setBoxInfoLayer", value);
   },
-  setBoxInfoVector({commit}, value) {
-    commit('setBoxInfoVector', value)
+  setBoxInfoVector({ commit }, value) {
+    commit("setBoxInfoVector", value);
   },
-  setBoxNotifications({commit}, value) {
-    commit('setBoxNotifications', value)
+  setBoxNotifications({ commit }, value) {
+    commit("setBoxNotifications", value);
   },
-  setNewLayers({commit}, value) {
-    commit('setNewLayers', value)
+  setNewLayers({ commit }, value) {
+    commit("setNewLayers", value);
   },
-  setRemoveLayers({commit}, value) {
-    commit('setRemoveLayers', value)
+  setRemoveLayers({ commit }, value) {
+    commit("setRemoveLayers", value);
   },
-  setIdInfoLayer ({commit}, value) {
-    commit('setIdInfoLayer', value)
+  setIdInfoLayer({ commit }, value) {
+    commit("setIdInfoLayer", value);
   },
-  setIdInfoFeatureLayer ({commit}, value) {
-    commit('setIdInfoFeatureLayer', value)
+  setIdInfoFeatureLayer({ commit }, value) {
+    commit("setIdInfoFeatureLayer", value);
   },
-  setSidebar ({commit}, value) {
-    commit('setSidebar', value)
-  }
-}
+  setSidebar({ commit }, value) {
+    commit("setSidebar", value);
+  },
+};
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
-}
+  actions,
+};
