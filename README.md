@@ -6,8 +6,8 @@ Pauliceia 2.0 project front-end.
 
 Requires:
 
-- Node: v8.17.0
-- NPM: >=6.13.4 <=6.14.8
+- Node: >=22.6.0
+- NPM: >=10.8.2
 
 You can install the above versions globally on your machine or through [NVM](https://github.com/nvm-sh/nvm).
 
