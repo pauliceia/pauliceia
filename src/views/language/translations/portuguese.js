@@ -13,6 +13,7 @@ export default {
     dashboard: "Painel",
     logout: "Sair",
     msgLogout: "Até breve!",
+    registrationBook: "Emplacamento",
   },
   main: {
     developedBy: "Desenvolvido por INPE",
@@ -438,4 +439,18 @@ export default {
     text: termsPT,
     close: "Fechar",
   },
+
+  registrationBook: {
+    button: {
+      clear: "Limpa todos os campos de caixa variáveis",
+      save: "Envia o formulário preenchido ao banco de dados",
+      newpoint: "Limpa os campos variáveis e os campos de Número Saboya, Id Ponto e Metragem. <b> Não faz a submissão de formulário</b>",
+    },
+
+    box: {
+
+    },
+
+  },
+
 };

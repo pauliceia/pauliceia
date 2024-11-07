@@ -81,6 +81,16 @@
           <!--<a :class="this.$route.path == '/team' ? 'nav-link active': 'nav-link'"-->
           <!--href="http://www.pauliceia.dpi.inpe.br/" target="_blank">{{ $t('nav.team') }}</a>-->
           <!--</li>-->
+
+          <div v-if="isUserLoggedIn">
+          <li class="nav-item">
+              <router-link
+                  :class="this.$route.path == '/registration-book' ? 'nav-link active': 'nav-link'"
+                  to="/registration-book"
+                  >{{ $t('nav.registrationBook') }}</router-link>
+          </li>
+          </div>
+
         </ul>
 
         <div v-if="isUserLoggedIn">
