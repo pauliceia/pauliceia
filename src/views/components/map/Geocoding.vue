@@ -198,9 +198,9 @@ export default {
       reader.onload = async file => {
         let text = reader.result;
         let node = document.getElementById('output');
-        let csv = text.replace('\r','');
+        let csv = text.replace(/\r/g, '');
+        csv = csv.replace(/\n{2,}/g, '\n')
         let headers = csv.split('\n')[0].split(',')
-
         // check if there is some blank header
         if (headers.some(e => e === '')) {
           this._msgError('Há nome de coluna(s) (i.e. cabeçalho(s)) em branco. Dê um nome a ela(s) ou remova-a(s)!')
