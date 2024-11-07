@@ -61,8 +61,12 @@
 </template>
 
 <script>
-  import DashLayout from '@/views/layouts/dashboard'
+
+  import PopoverLabels from '@/views/components/dashboard/PopoverLabels'
+  import Vue from 'vue'
+  import vSelect from 'vue-select'
   import Api from '@/middleware/ApiVGI'
+  import DashLayout from '@/views/layouts/dashboard'
   import { mapState } from 'vuex'
   import Notifications from '@/views/components/dashboard/Notifications'
 
