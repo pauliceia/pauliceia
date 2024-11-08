@@ -1,22 +1,22 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
-}
+  name: "app",
+};
 </script>
 
-<style lang="sass">  
+<style lang="sass">
 html, body, #app
   height: 100%
   width: 100%
   margin: 0
 
-*, *:before, *:after 
+*, *:before, *:after
   box-sizing: border-box
   margin: 0
   padding: 0
@@ -27,9 +27,7 @@ li
 .clear
   clear: both
 
-@font-face 
+@font-face
   font-family: IrisUPC
   src: url(views/assets/fonts/upcil.ttf)
-
-
 </style>

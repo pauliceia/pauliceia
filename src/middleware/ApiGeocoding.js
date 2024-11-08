@@ -1,8 +1,7 @@
-import axios from 'axios'
-import store from '@/store'
+import axios from "axios";
 
 export default () => {
   return axios.create({
-      baseURL: process.env.urlGeocoding
-    })
-}
+    baseURL: process.env.urlGeocoding,
+  });
+};
