@@ -12,7 +12,7 @@
           <div class="row">
             <div class="col-md-3 mb-3">
               <label for="field1">Rua</label>
-              <input type="text" id="field1" v-model="fields[0].value" class="form-control" placeholder="Digite algo" autocomplete="off">
+              <input type="text" id="field1" v-model="fields[0].value" class="form-control" placeholder="Digite algo" autocomplete="off"  @blur="fetchStreetId">
             </div>
             <div class="col-md-3 mb-3">
               <label for="field2">Id Rua</label>
@@ -153,6 +153,7 @@
   </template>
   
   <script>
+  import axios from 'axios';
   export default {
     name: 'RegistrationBook',
     
@@ -177,6 +178,46 @@
     },
     
     methods: {
+
+      async fetchStreetId() {
+        try {
+          const streetName = this.fields[0].value.trim();
+
+          if (streetName !=='') {
+            const response = await axios.get(
+              `https://pauliceia-dev.unifesp.br/api/geocoding/street-id`,
+              {
+                params: {
+                  name: streetName,
+                },
+              }
+            );
+
+            if (response.data.success) {
+              console.log("entrou?");
+              this.fields[1].value = response.data.results[0].id_street.toString();
+            } else {
+              this.fields[1].value = 'nul';
+            }
+          }
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status == 404) {
+              console.warn("Nome rua nao encontrado");
+            } else if (error.response.status == 500) {
+              console.warn("Consulta não funcionou");
+            }
+            else {
+              console.warn("Erro de conexao");
+            } 
+          } else {
+            console.error(error);
+            this.streetId = 'Erro na busca';
+          }
+        }
+      },
+
+
       addField() {
         this.var_fields.push({ numero: '', dataInicial: '', dataFinal: '' });
       },

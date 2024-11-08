@@ -50,7 +50,7 @@ const routes = [
         path: '/registration-book',
         name: 'RegistrationBook',
         component: RegistrationBook,
-        meta: { auth: true },
+        //meta: { auth: true },
       },
       {
         path: "/login",
