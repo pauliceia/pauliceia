@@ -10,6 +10,8 @@ import Register from '@/views/pages/register'
 import ValidSocial from '@/views/pages/validSocial'
 import ValidEmail from '@/views/pages/validEmail'
 import Tutorial from '@/views/pages/tutorial'
+import RecuperacaoDeSenha from '@/views/pages/recuperacaoDeSenha'
+import AlterarSenha from '@/views/pages/alterarSenha'
 
 //routes
 import mapRoutes from '@/router/map'
@@ -64,6 +66,18 @@ const routes = [
           path: '/valid/email/:token', 
           name: 'ValidEmail',
           component: ValidEmail
+        },
+        {
+          path: '/recuperacao-de-senha',
+          name: 'RecuparacaoDeSenha',
+          component: RecuperacaoDeSenha,
+          children: [
+            {
+              path: '/recuperacao-de-senha/alterar-senha',
+              name: 'AlterarSenha',
+              component: AlterarSenha
+            },
+          ]
         },
         //routes of map
         ...mapRoutes,

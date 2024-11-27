@@ -20,10 +20,12 @@
                         <input type="password" v-model="password" class="form-control form-control-lg" :placeholder="$t('login.inputPassword')" required>
                     </div>
                     <br />
-
+                    
                     <router-link to="/register" class="register">{{ $t('login.register') }}</router-link><br>
                     <div><button type="submit" class="btn style-btn btn-lg btn-block">{{ $t('login.btnText') }}</button>
                     </div>
+
+                    <router-link to="/recuperacao-de-senha" class="recuperacao-de-senha">Esqueceu sua senha?</router-link><br>
                     <div class="row">
                         <div class="col-6 link-social">
                           <md-list-item class="btn btn-danger style-google" @click="loginSocial('google')">
@@ -169,6 +171,12 @@ section
     color: #666
 .register:hover
     color: #000
+
+.recuperacao-de-senha
+    float: left
+    color: #666
+
+.recuperacao-de-senha:hover
 
 .stylecard
     border-radius: 70px
