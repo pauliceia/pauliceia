@@ -1,19 +1,19 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-import createPersistedState from 'vuex-persistedstate'
+import createPersistedState from "vuex-persistedstate";
 
-import modules from './modules'
+import modules from "./modules";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules,
   plugins: [
     createPersistedState({
       keyCripto: process.env.urlVGI,
-      paths: ['auth']
-    })
+      paths: ["auth"],
+    }),
   ],
-  strict: false
-})
+  strict: false,
+});

@@ -1,6 +1,6 @@
-import icon_ext from './../../images/iconExtrapolate.png'
-import icon_geo from './../../images/iconGeocoding.png'
-import icon_loc from './../../images/iconGeolocation.png'
+import icon_ext from "./../../images/iconExtrapolate.png";
+import icon_geo from "./../../images/iconGeocoding.png";
+import icon_loc from "./../../images/iconGeolocation.png";
 
 /*
   WARNING:
@@ -14,69 +14,75 @@ const pointStyle = new ol.style.Style({
     radius: 8,
     stroke: new ol.style.Stroke({
       // white
-      color: 'rgba(255, 255, 255, 1)',
-      width: 2
+      color: "rgba(255, 255, 255, 1)",
+      width: 2,
     }),
     fill: new ol.style.Fill({
       // red
-      color: 'rgba(255, 0, 0, 1)'
-    })
-  })
+      color: "rgba(255, 0, 0, 1)",
+    }),
+  }),
 });
 
 const lineStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
     // blue
-    color: 'rgba(0, 0, 255, 1)',
-    width: 3
-  })
-})
+    color: "rgba(0, 0, 255, 1)",
+    width: 3,
+  }),
+});
 
 const polygonStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
     // black
-    color: 'rgba(0, 0, 0, 1)',
-    width: 3
+    color: "rgba(0, 0, 0, 1)",
+    width: 3,
   }),
   fill: new ol.style.Fill({
     // transparent white
-    color: 'rgba(255, 255, 255, 0.5)'
-  })
+    color: "rgba(255, 255, 255, 0.5)",
+  }),
 });
 
 const placeStyleSearch1 = new ol.style.Style({
-  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+  image: new ol.style.Icon(
+    /** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 45],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'pixels',
+      anchorXUnits: "fraction",
+      anchorYUnits: "pixels",
       opacity: 1,
-      src: icon_loc
-  }))
-})
+      src: icon_loc,
+    }),
+  ),
+});
 
 const placeStyleSearch0 = new ol.style.Style({
-  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+  image: new ol.style.Icon(
+    /** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 45],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'pixels',
+      anchorXUnits: "fraction",
+      anchorYUnits: "pixels",
       opacity: 1,
-      src: icon_ext
-  }))
-})
+      src: icon_ext,
+    }),
+  ),
+});
 
 const placeStyleSearch3 = new ol.style.Style({
-  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+  image: new ol.style.Icon(
+    /** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 45],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'pixels',
+      anchorXUnits: "fraction",
+      anchorYUnits: "pixels",
       opacity: 1,
-      src: icon_geo
-  }))
-})
+      src: icon_geo,
+    }),
+  ),
+});
 
 const emptyStyle = new ol.style.Style({
-  display: 'none'
-})
+  display: "none",
+});
 
 export {
   pointStyle,
@@ -85,5 +91,5 @@ export {
   placeStyleSearch1,
   placeStyleSearch3,
   placeStyleSearch0,
-  emptyStyle
-}
+  emptyStyle,
+};

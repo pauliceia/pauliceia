@@ -1,7 +1,7 @@
 <template>
   <div class="box-info" v-show="boxNotifications">
     <header class="header">
-      <h1>{{ $t('dashboard.notification.notification') }}</h1>
+      <h1>{{ $t("dashboard.notification.notification") }}</h1>
       <button class="btn" @click="closeBox()">
         <md-icon>close</md-icon>
       </button>
@@ -11,28 +11,27 @@
 </template>
 
 <script>
-import Api from '@/middleware/ApiVGI'
-import { mapState } from 'vuex'
-import Notifications from '@/views/components/dashboard/Notifications'
+import { mapState } from "vuex";
+import Notifications from "@/views/components/dashboard/Notifications";
 
 export default {
   components: {
-    'p-notifications': Notifications
+    "p-notifications": Notifications,
   },
   computed: {
-    ...mapState('map', ['boxNotifications'])
+    ...mapState("map", ["boxNotifications"]),
   },
   data() {
     return {
-      activeName: 'first'
+      activeName: "first",
     };
   },
   methods: {
-      closeBox() {
-          this.$store.dispatch('map/setBoxNotifications', false)
-      },
-  }
-}
+    closeBox() {
+      this.$store.dispatch("map/setBoxNotifications", false);
+    },
+  },
+};
 </script>
 
 <style lang="sass" scoped>
@@ -74,6 +73,4 @@ export default {
   .body
       padding: 10px 20px
       background: #FFF
-
-
 </style>
