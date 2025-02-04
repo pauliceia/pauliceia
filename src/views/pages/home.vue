@@ -63,26 +63,21 @@
     </div>
     <div class="text-style">
       <div class="row justify-content-md-center">
-        <div class="col-sm-3 column-style">
+        <div class="col-sm-5 column-style">
           <h5>{{ $t("home.title1") }}</h5>
           <br />
           <p>{{ $t("home.column1") }}</p>
         </div>
-        <div class="col-sm-3 column-style">
+        <div class="col-sm-5 column-style">
           <h5>{{ $t("home.title2") }}</h5>
           <br />
           <div v-html="$t('home.column2')" />
           <p>&nbsp;</p>
-        </div>
-        <div class="col-sm-3 column-style">
-          <h5>{{ $t("home.title3") }}</h5>
-          <br />
-          <p>{{ $t("home.column3") }}</p>
-        </div>
+        </div>        
       </div>
 
       <div class="row justify-content-md-center">
-        <div class="col-sm-9 column-style">
+        <div class="col-sm-5 column-style">
           <how-to-cite />
         </div>
       </div>
