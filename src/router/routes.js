@@ -10,6 +10,7 @@ import Register from "@/views/pages/register";
 import ValidSocial from "@/views/pages/validSocial";
 import ValidEmail from "@/views/pages/validEmail";
 import Tutorial from "@/views/pages/tutorial";
+import RegistrationBook from '@/views/pages/registrationBook'
 
 //routes
 import mapRoutes from "@/router/map";
@@ -44,6 +45,12 @@ const routes = [
         path: "/contact",
         name: "Contact",
         component: Contact,
+      },
+      {
+        path: '/registration-book',
+        name: 'RegistrationBook',
+        component: RegistrationBook,
+        meta: { auth: true },
       },
       {
         path: "/login",
