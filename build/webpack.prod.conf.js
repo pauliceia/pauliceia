@@ -98,10 +98,11 @@ const webpackConfig = merge(baseWebpackConfig, {
         },
       ],
     }),
-    new PrerendererWebpackPlugin({
-      routes: ["/", "/register", "/home", "/explore", "/about", "/contact"],
-      renderer: new (require("@prerenderer/renderer-puppeteer"))(),
-    }),
+    // Disabled pre-render due to issues with puppeteer
+    // new PrerendererWebpackPlugin({
+    //   routes: ["/", "/register", "/home", "/explore", "/about", "/contact"],
+    //   renderer: new (require("@prerenderer/renderer-puppeteer"))(),
+    // }),
   ],
 });
 
