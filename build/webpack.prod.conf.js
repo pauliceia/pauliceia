@@ -29,23 +29,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     minimizer: [new TerserPlugin(terserOptions()), new CssMinimizerPlugin()],
     // keep module.id stable when vendor modules does not change
     moduleIds: "named",
-    splitChunks: {
-      cacheGroups: {
-        defaultVendors: {
-          name: `chunk-vendors`,
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          chunks: "initial",
-        },
-        common: {
-          name: `chunk-common`,
-          minChunks: 2,
-          priority: -20,
-          chunks: "initial",
-          reuseExistingChunk: true,
-        },
-      },
-    },
+    splitChunks: false,
   },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
