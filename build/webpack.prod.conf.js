@@ -25,7 +25,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
   },
   optimization: {
-    minimize: true,
+    minimize: false,
     minimizer: [new TerserPlugin(terserOptions()), new CssMinimizerPlugin()],
     // keep module.id stable when vendor modules does not change
     moduleIds: "deterministic",
