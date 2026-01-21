@@ -2,6 +2,8 @@ import icon_ext from "./../../images/iconExtrapolate.png";
 import icon_geo from "./../../images/iconGeocoding.png";
 import icon_loc from "./../../images/iconGeolocation.png";
 
+import { Style, Circle, Stroke, Fill, Icon } from "ol/style";
+
 /*
   WARNING:
 
@@ -9,43 +11,43 @@ import icon_loc from "./../../images/iconGeolocation.png";
   because if you use a `string color`, this color will not be recognized by the color picker on the map as default color.
 */
 
-const pointStyle = new ol.style.Style({
-  image: new ol.style.Circle({
+const pointStyle = new Style({
+  image: new Circle({
     radius: 8,
-    stroke: new ol.style.Stroke({
+    stroke: new Stroke({
       // white
       color: "rgba(255, 255, 255, 1)",
       width: 2,
     }),
-    fill: new ol.style.Fill({
+    fill: new Fill({
       // red
       color: "rgba(255, 0, 0, 1)",
     }),
   }),
 });
 
-const lineStyle = new ol.style.Style({
-  stroke: new ol.style.Stroke({
+const lineStyle = new Style({
+  stroke: new Stroke({
     // blue
     color: "rgba(0, 0, 255, 1)",
     width: 3,
   }),
 });
 
-const polygonStyle = new ol.style.Style({
-  stroke: new ol.style.Stroke({
+const polygonStyle = new Style({
+  stroke: new Stroke({
     // black
     color: "rgba(0, 0, 0, 1)",
     width: 3,
   }),
-  fill: new ol.style.Fill({
+  fill: new Fill({
     // transparent white
     color: "rgba(255, 255, 255, 0.5)",
   }),
 });
 
-const placeStyleSearch1 = new ol.style.Style({
-  image: new ol.style.Icon(
+const placeStyleSearch1 = new Style({
+  image: new Icon(
     /** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 45],
       anchorXUnits: "fraction",
@@ -56,8 +58,8 @@ const placeStyleSearch1 = new ol.style.Style({
   ),
 });
 
-const placeStyleSearch0 = new ol.style.Style({
-  image: new ol.style.Icon(
+const placeStyleSearch0 = new Style({
+  image: new Icon(
     /** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 45],
       anchorXUnits: "fraction",
@@ -68,8 +70,8 @@ const placeStyleSearch0 = new ol.style.Style({
   ),
 });
 
-const placeStyleSearch3 = new ol.style.Style({
-  image: new ol.style.Icon(
+const placeStyleSearch3 = new Style({
+  image: new Icon(
     /** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 45],
       anchorXUnits: "fraction",
@@ -80,7 +82,7 @@ const placeStyleSearch3 = new ol.style.Style({
   ),
 });
 
-const emptyStyle = new ol.style.Style({
+const emptyStyle = new Style({
   display: "none",
 });
 
