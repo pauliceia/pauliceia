@@ -140,6 +140,12 @@ import { mapState } from "vuex";
 import GeoJSON from "geojson";
 import shpwrite from "@mapbox/shp-write";
 
+import { Vector as VectorLayer } from "ol/layer";
+import { Vector as VectorSource } from "ol/source";
+import { GeoJSON as GeoJSONFormat } from "ol/format";
+import { Feature } from "ol";
+import { Point } from "ol/geom";
+
 import {
   placeStyleSearch1,
   placeStyleSearch0,
@@ -248,10 +254,7 @@ export default {
       };
       reader.readAsText(event.target.files[0]);
     },
-    async visualizar() {
-      console.log("\n visualizar()");
-      console.log("this.headers: ", this.headers);
-      console.log("this.csvjson: ", this.csvjson);
+    async visualizar() {      
 
       this._openFullScreen();
 
@@ -277,7 +280,7 @@ export default {
           ", " +
           json[i][this.year];
 
-        console.log(address);
+       
 
         try {
           let response = await ApiMap.geolocationOne(address);
@@ -301,7 +304,7 @@ export default {
               response.data[1][0].confidence +
               "}";
 
-            console.log(geom);
+           
 
             let jsonAddress = JSON.parse(geom);
             let jsonSlice = json[i];
@@ -379,10 +382,10 @@ export default {
       this.geojson = resultGeoJSON;
 
       try {
-        let vectorLayer = new ol.layer.Vector({
+        let vectorLayer = new VectorLayer({
           title: "multipligeolocation",
-          source: new ol.source.Vector({
-            features: new ol.format.GeoJSON().readFeatures(resultGeoJSON),
+          source: new VectorSource({
+            features: new GeoJSONFormat().readFeatures(resultGeoJSON),
           }),
           name: "placesSearchMultiple",
           style: placeStyleSearch1,
@@ -402,14 +405,48 @@ export default {
         this.loading.close();
       }
     },
-    download() {
-      let options = {
-        folder: "myshapes",
-        types: {
-          point: this.fileName,
-        },
-      };
-      shpwrite.download(this.geojson, options);
+    async download() {
+      try {
+        // Verify geojson data exists
+        if (!this.geojson || !this.geojson.features || this.geojson.features.length === 0) {
+          this.$message.error("Nenhum dado para baixar");
+          return;
+        }
+        
+        const options = {
+          folder: "myshapes",
+          types: {
+            point: this.fileName,
+          },
+        };
+        
+        // Use zip() method to get the file data
+        const zipResult = await shpwrite.zip(this.geojson, options);
+        
+        if (zipResult) {
+          // Convert Base64 string to Blob
+          const binaryString = atob(zipResult);
+          const bytes = new Uint8Array(binaryString.length);
+          for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+          const blob = new Blob([bytes], { type: "application/zip" });
+          
+          // Create download link
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "myshapes.zip";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(link.href);
+          this.$message.success("Download iniciado!");
+        }
+        
+      } catch (error) {
+        console.error("Download error:", error);
+        this.$message.error("Erro ao baixar arquivo: " + error.message);
+      }
     },
     closeBox() {
       this.$store.dispatch("map/setBoxGeocoding", false);
@@ -460,9 +497,9 @@ export default {
               .substring(6)
               .replace(")", "")
               .split(" ");
-            let feature = new ol.Feature(new ol.geom.Point(coordPoint));
-            let layerSearch = new ol.layer.Vector({
-              source: new ol.source.Vector({
+            let feature = new Feature(new Point(coordPoint));
+            let layerSearch = new VectorLayer({
+              source: new VectorSource({
                 features: [feature],
               }),
               name: "placesSearch",

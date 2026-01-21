@@ -12,8 +12,31 @@ import "element-ui/lib/theme-chalk/index.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 
-import "openlayers/dist/ol.css";
-import "openlayers/dist/ol-debug.js";
+import "ol/ol.css";
+
+import * as ol from "ol";
+import * as olLayer from "ol/layer";
+import * as olSource from "ol/source";
+import * as olStyle from "ol/style";
+import * as olInteraction from "ol/interaction";
+import * as olFormat from "ol/format";
+import * as olProj from "ol/proj";
+import * as olFeature from "ol/Feature";
+import * as olGeom from "ol/geom";
+import * as olControl from "ol/control";
+import * as olEvents from "ol/events";
+
+window.ol = ol;
+window.ol.layer = olLayer;
+window.ol.source = olSource;
+window.ol.style = olStyle;
+window.ol.interaction = olInteraction;
+window.ol.format = olFormat;
+window.ol.proj = olProj;
+window.ol.feature = olFeature;
+window.ol.geom = olGeom;
+window.ol.control = olControl;
+window.ol.events = olEvents;
 
 import { sync } from "vuex-router-sync";
 import router from "@/router";

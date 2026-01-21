@@ -1,26 +1,26 @@
-import "openlayers/dist/ol-debug.js";
+import { Group } from "ol/layer";
 
-const overlayGroupGeolocation = new ol.layer.Group({
+const overlayGroupGeolocation = new Group({
   title: "overlays_geolocation",
   layers: [],
 });
 
-const overlayGroupExternal = new ol.layer.Group({
+const overlayGroupExternal = new Group({
   title: "overlays_external",
   layers: [],
 });
 
-const overlayGroupRasters = new ol.layer.Group({
+const overlayGroupRasters = new Group({
   title: "overlays_rasters",
   layers: [],
 });
 
-const overlayGroupOther = new ol.layer.Group({
+const overlayGroupOther = new Group({
   title: "overlays_other",
   layers: [],
 });
 
-const overlayGroup = new ol.layer.Group({
+const overlayGroup = new Group({
   title: "overlays",
   layers: [],
 });
