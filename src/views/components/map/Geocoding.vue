@@ -460,24 +460,22 @@ export default {
         if (regex.test(search)) {
           const result = await ApiMap.geolocationOne(search);
 
-          console.log('aoooooba2');
-          console.log(result);
+       
+          if (result.data[1][0].geom == undefined) {
+            console.log('passei aqui 02');
+            console.log(result.data[1][0].geom)
+            let text =
+              "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
+              search +
+              ")";
 
-          // if (result.data[1][0].geom == undefined) {
-          //   console.log('passei aqui 02');
-          //   console.log(result.data[1][0].geom)
-          //   let text =
-          //     "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
-          //     search +
-          //     ")";
-
-          //   this.$alert(text, "Erro", {
-          //     dangerouslyUseHTMLString: true,
-          //     confirmButtonText: "OK",
-          //     type: "error",
-          //   });
-          //   this.loading.close();
-          // }
+            this.$alert(text, "Erro", {
+              dangerouslyUseHTMLString: true,
+              confirmButtonText: "OK",
+              type: "error",
+            });
+            this.loading.close();
+          }
 
           if (result.data[1][0].geom != undefined) {
             let myStyle = placeStyleSearch1;
