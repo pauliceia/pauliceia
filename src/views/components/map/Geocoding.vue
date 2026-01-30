@@ -460,6 +460,7 @@ export default {
         if (regex.test(search)) {
           const result = await ApiMap.geolocationOne(search);
 
+          console.log('aoooooba2');
           console.log(result);
 
           // if (result.data[1][0].geom == undefined) {
