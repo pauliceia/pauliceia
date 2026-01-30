@@ -460,19 +460,23 @@ export default {
         if (regex.test(search)) {
           const result = await ApiMap.geolocationOne(search);
 
-          if (result.data[1][0].geom == undefined) {
-            let text =
-              "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
-              search +
-              ")";
+          console.log(result);
 
-            this.$alert(text, "Erro", {
-              dangerouslyUseHTMLString: true,
-              confirmButtonText: "OK",
-              type: "error",
-            });
-            this.loading.close();
-          }
+          // if (result.data[1][0].geom == undefined) {
+          //   console.log('passei aqui 02');
+          //   console.log(result.data[1][0].geom)
+          //   let text =
+          //     "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
+          //     search +
+          //     ")";
+
+          //   this.$alert(text, "Erro", {
+          //     dangerouslyUseHTMLString: true,
+          //     confirmButtonText: "OK",
+          //     type: "error",
+          //   });
+          //   this.loading.close();
+          // }
 
           if (result.data[1][0].geom != undefined) {
             let myStyle = placeStyleSearch1;
@@ -526,6 +530,8 @@ export default {
           this.loading.close();
         }
       } catch (error) {
+        console.log(error)
+        console.log('passei aqui');
         if (
           error.response != undefined &&
           error.response.data != undefined &&
