@@ -145,6 +145,7 @@ import { Vector as VectorSource } from "ol/source";
 import { GeoJSON as GeoJSONFormat } from "ol/format";
 import { Feature } from "ol";
 import { Point } from "ol/geom";
+import { createEmpty, extend } from 'ol/extent';
 
 import {
   placeStyleSearch1,
@@ -461,9 +462,7 @@ export default {
           const result = await ApiMap.geolocationOne(search);
 
        
-          if (result.data[1][0].geom == undefined) {
-            console.log('passei aqui 02');
-            console.log(result.data[1][0].geom)
+          if (result.data[1][0].geom == undefined) {          
             let text =
               "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
               search +
@@ -511,7 +510,8 @@ export default {
             });
             overlayGroupGeolocation.getLayers().clear();
             overlayGroupGeolocation.getLayers().push(layerSearch);
-            let extent = ol.extent.createEmpty();
+            let extent = createEmpty();
+            extend(extent, feature.getGeometry().getExtent());
             ol.extent.extend(extent, feature.getGeometry().getExtent());
             this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
             //this.loading.close()
