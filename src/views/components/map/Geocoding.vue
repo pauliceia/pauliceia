@@ -544,18 +544,18 @@ export default {
           });
           this.loading.close();
         } else {
-          let search = this.inputSearch.replace(/( )+/g, " ");
+         // let search = this.inputSearch.replace(/( )+/g, " ");
 
-          let text =
-            "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
-            search +
-            ")";
+          // let text =
+          //   "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
+          //   search +
+          //   ")";
 
-          this.$alert(text, "Erro", {
-            dangerouslyUseHTMLString: true,
-            confirmButtonText: "OK",
-            type: "error",
-          });
+          // this.$alert(text, "Erro", {
+          //   dangerouslyUseHTMLString: true,
+          //   confirmButtonText: "OK",
+          //   type: "error",
+          // });
           this.loading.close();
         }
       }
