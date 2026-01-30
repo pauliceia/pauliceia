@@ -544,7 +544,10 @@ export default {
           });
           this.loading.close();
         } else {
-         // let search = this.inputSearch.replace(/( )+/g, " ");
+          let search = this.inputSearch.replace(/( )+/g, " ");
+
+          console.log(error);
+          console.log(search);
 
           // let text =
           //   "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
