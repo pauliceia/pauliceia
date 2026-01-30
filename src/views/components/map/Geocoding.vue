@@ -549,16 +549,17 @@ export default {
           console.log(error);
           console.log(search);
 
-          // let text =
-          //   "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
-          //   search +
-          //   ")";
+          console.log('aoooooba');
+          let text =
+            "Não encontramos pontos necessarios para a geolocalização nesse logradouro no ano buscado (" +
+            search +
+            ")";
 
-          // this.$alert(text, "Erro", {
-          //   dangerouslyUseHTMLString: true,
-          //   confirmButtonText: "OK",
-          //   type: "error",
-          // });
+          this.$alert(text, "Erro", {
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: "OK",
+            type: "error",
+          });
           this.loading.close();
         }
       }
