@@ -512,7 +512,6 @@ export default {
             overlayGroupGeolocation.getLayers().push(layerSearch);
             let extent = createEmpty();
             extend(extent, feature.getGeometry().getExtent());
-            ol.extent.extend(extent, feature.getGeometry().getExtent());
             this.$root.olmap.getView().fit(extent, this.$root.olmap.getSize());
             //this.loading.close()
           }
@@ -528,9 +527,7 @@ export default {
           );
           this.loading.close();
         }
-      } catch (error) {
-        console.log(error)
-        console.log('passei aqui');
+      } catch (error) {        
         if (
           error.response != undefined &&
           error.response.data != undefined &&
