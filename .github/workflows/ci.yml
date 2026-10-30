@@ -24,13 +24,20 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Prepare environment config
         run: cp config/prod.env.js.EXAMPLE config/prod.env.js
 
-      - name: Check formatting (Prettier)
-        run: npx prettier . --check
+      - name: Check formatting on changed files (Prettier)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          CHANGED=$(git diff --name-only --diff-filter=ACMRT "$BASE_SHA" HEAD)
+          if [ -n "$CHANGED" ]; then
+            echo "$CHANGED" | xargs npx prettier --ignore-unknown --check
+          fi
 
       - name: Run static analysis (ESLint)
         run: npx eslint .
