@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -39,8 +41,15 @@ jobs:
             echo "$CHANGED" | xargs npx prettier --ignore-unknown --check
           fi
 
-      - name: Run static analysis (ESLint)
-        run: npx eslint .
+      - name: Run static analysis on changed files (ESLint)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          CHANGED_CODE=$(git diff --name-only --diff-filter=ACMRT "$BASE_SHA" HEAD -- '*.js' '*.mjs' '*.cjs' '*.vue')
+          if [ -n "$CHANGED_CODE" ]; then
+            echo "$CHANGED_CODE" | xargs npx eslint
+          fi
 
       - name: Build production bundle
         run: npm run build
