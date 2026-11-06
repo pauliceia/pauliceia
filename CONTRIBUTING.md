@@ -1,200 +1,211 @@
-# Guia de Contribuição — Pauliceia 2.0
+# Contributing Guide — Pauliceia 2.0
 
-Este documento define as convenções de nomenclatura para **Issues**, **Branches**, **Pull Requests** e **Commits** do projeto Pauliceia 2.0.
+This document defines the naming conventions and workflow standards for **Issues**, **Branches**, **Pull Requests**, and **Commits** in the Pauliceia 2.0 project.
 
-O objetivo é manter a organização, a rastreabilidade e a consistência do repositório à medida que a equipe cresce.
+The goal is to maintain organization, traceability, and consistency across the repository as the team grows.
 
 ---
 
-## Sumário
+## Table of Contents
 
 - [Issues](#issues)
 - [Branches](#branches)
 - [Pull Requests](#pull-requests)
 - [Commits](#commits)
-- [Fluxo Completo: da Issue ao Merge](#fluxo-completo-da-issue-ao-merge)
+- [Complete Workflow: Issue to Done](#complete-workflow-issue-to-done)
 
 ---
 
 ## Issues
 
-Os títulos das Issues devem começar com uma **categoria entre colchetes**, seguida de uma descrição curta e objetiva.
+Issue titles must start with a **category in brackets**, followed by a short, objective description in English (or aligned with the Issue template).
 
-### Categorias
+### Categories
 
-| Prefixo       | Quando usar                                      |
-| ------------- | ------------------------------------------------ |
-| `[FEATURE]`   | Nova funcionalidade                              |
-| `[FIX]`       | Correção de um problema conhecido                |
-| `[BUG]`       | Relato de um problema identificado               |
-| `[DOCS]`      | Criação ou atualização de documentação           |
-| `[REFACTOR]`  | Refatoração de código sem alterar comportamento   |
-| `[CHORE]`     | Tarefas técnicas e manutenção (dependências, CI) |
+| Prefix       | When to use                                                   |
+| :----------- | :------------------------------------------------------------ |
+| `[FEATURE]`  | Propose a new feature or enhancement                          |
+| `[FIX]`      | Fix a known problem or defect                                 |
+| `[BUG]`      | Report an unexpected behavior or bug identified               |
+| `[DOCS]`     | Create, update, or standardize documentation                  |
+| `[REFACTOR]` | Refactor code without changing external behavior              |
+| `[CHORE]`    | Technical maintenance tasks (dependencies, CI, configuration) |
 
-### Formato
+### Format
 
+```text
+[CATEGORY] Short and objective description
 ```
-[CATEGORIA] Descrição curta e objetiva
-```
 
-### Exemplos
+### Examples
 
-```
-[FEATURE] Adicionar filtro de camadas por período
-[FIX] Corrigir popup de erro no geocoding
-[BUG] Mapa não carrega camadas ao fazer login
-[DOCS] Atualizar instruções de instalação no README
-[REFACTOR] Simplificar lógica de autenticação
-[CHORE] Atualizar dependências do Webpack
+```text
+[FEATURE] Add layer filtering by time period
+[FIX] Fix error popup on valid geocoding coordinates
+[BUG] Map fails to load layers after user login
+[DOCS] Standardize repository README
+[REFACTOR] Simplify authentication store module
+[CHORE] Configure CI pipeline on GitHub Actions
 ```
 
 ---
 
 ## Branches
 
-As branches devem seguir o formato:
+Branches must be created from the target base branch (`master`) following the format:
 
+```text
+type/issue-number-short-description
 ```
-tipo/numero-da-issue-descricao-curta
-```
 
-- Use **kebab-case** (letras minúsculas separadas por hífen).
-- Inclua o **número da Issue** relacionada.
-- A descrição deve ser curta (2–4 palavras).
+- Use **kebab-case** (lowercase words separated by hyphens).
+- Always include the related **Issue number**.
+- Keep the description short and clear (2–4 words in English).
 
-### Tipos
+### Branch Types
 
-| Tipo       | Quando usar                          |
-| ---------- | ------------------------------------ |
-| `feature`  | Nova funcionalidade                  |
-| `fix`      | Correção de bug                      |
-| `docs`     | Documentação                         |
-| `refactor` | Refatoração                          |
-| `chore`    | Manutenção e tarefas técnicas        |
-| `hotfix`   | Correção urgente em produção         |
+| Type       | When to use                     |
+| :--------- | :------------------------------ |
+| `feature`  | New functionality               |
+| `fix`      | Bug or defect fix               |
+| `docs`     | Documentation changes           |
+| `refactor` | Code refactoring                |
+| `chore`    | Maintenance and technical tasks |
+| `hotfix`   | Urgent production fix           |
 
-### Exemplos
+### Examples
 
-```
-feature/110-filtro-por-periodo
-fix/112-correcao-geocoding
-docs/108-padrao-nomenclatura
-refactor/115-simplificar-autenticacao
-chore/118-atualizar-dependencias
-hotfix/120-correcao-urgente-login
+```text
+feature/201-layer-period-filter
+fix/202-geocoding-error-popup
+docs/205-standardize-readme
+refactor/208-simplify-auth-service
+chore/212-update-webpack-dependencies
+hotfix/215-urgent-login-fix
 ```
 
 ---
 
 ## Pull Requests
 
-Os títulos dos PRs devem seguir o padrão **[Conventional Commits](https://www.conventionalcommits.org/)**.
+Pull Request titles must follow the **[Conventional Commits](https://www.conventionalcommits.org/)** specification.
 
-### Formato
+### Format
 
-```
-tipo: descrição curta no imperativo
-```
-
-Opcionalmente, inclua um **escopo** entre parênteses:
-
-```
-tipo(escopo): descrição curta no imperativo
+```text
+type: short description in imperative mood
 ```
 
-### Tipos
+Optionally, include a **scope** in parentheses:
 
-| Tipo       | Quando usar                          |
-| ---------- | ------------------------------------ |
-| `feat`     | Nova funcionalidade                  |
-| `fix`      | Correção de bug                      |
-| `docs`     | Documentação                         |
-| `refactor` | Refatoração                          |
-| `chore`    | Manutenção e tarefas técnicas        |
-| `style`    | Formatação (sem mudança de lógica)   |
-| `test`     | Adição ou correção de testes         |
-| `ci`       | Configuração de CI/CD                |
-
-### Exemplos
-
-```
-feat: adicionar filtro de camadas por período
-fix: corrigir popup de erro no geocoding
-fix(geocoding): corrigir validação de coordenadas
-docs: definir convenções de nomenclatura
-refactor: simplificar lógica de autenticação
-chore: atualizar dependências do Webpack
+```text
+type(scope): short description in imperative mood
 ```
 
-### Corpo do PR
+### PR Types
 
-No corpo do Pull Request, inclua:
+| Type       | When to use                          |
+| :--------- | :----------------------------------- |
+| `feat`     | New feature                          |
+| `fix`      | Bug fix                              |
+| `docs`     | Documentation                        |
+| `refactor` | Code refactoring                     |
+| `chore`    | Maintenance and technical tasks      |
+| `style`    | Formatting changes (no logic impact) |
+| `test`     | Adding or updating tests             |
+| `ci`       | CI/CD configuration                  |
 
-- Breve descrição do que foi feito e por quê.
-- Referência à Issue relacionada usando a palavra-chave `Closes`:
+### Examples
 
+```text
+feat: add layer filtering by time period
+fix: fix false error popup on geocoding search
+fix(geocoding): validate point coordinates before rendering
+docs: standardize repository README
+refactor: simplify authentication logic
+chore: update Webpack dependencies
 ```
-Closes #108
+
+### PR Body & Issue Linking
+
+In the Pull Request description, briefly summarize what was changed and link the related Issue using the `Closes` keyword so GitHub automatically closes it when merged:
+
+```text
+Closes #205
 ```
+
+> If a PR only addresses part of a larger Issue, use `Part of #205` instead.
 
 ---
 
 ## Commits
 
-Os commits devem seguir o padrão **[Conventional Commits](https://www.conventionalcommits.org/)**.
+Commits must follow the **[Conventional Commits](https://www.conventionalcommits.org/)** standard.
 
-### Formato
+### Format
 
-```
-tipo(escopo opcional): descrição no imperativo
-```
-
-### Exemplos
-
-```
-feat: adicionar botão de exportar camada
-fix(geocoding): corrigir busca de endereços
-docs: adicionar guia de contribuição
-refactor: remover estados desnecessários do Vuex
-chore: atualizar ESLint para v9
-test: adicionar teste de registro de usuário
+```text
+type(optional scope): description in imperative mood
 ```
 
-> **Referência completa:** [conventionalcommits.org](https://www.conventionalcommits.org/)
+### Examples
+
+```text
+feat: add export layer button
+fix(geocoding): fix address search query
+docs: standardize repository README
+refactor: remove unused state properties in Vuex
+chore: configure ESLint v9 rules
+test: add user registration step definitions
+```
+
+> **Full specification:** [https://www.conventionalcommits.org/](https://www.conventionalcommits.org/)
 
 ---
 
-## Fluxo Completo: da Issue ao Merge
+## Complete Workflow: Issue to Done
 
-O exemplo abaixo ilustra o ciclo completo de uma contribuição:
+Below is a practical end-to-end example connecting an Issue, Branch, Pull Request, Code Review, and Project Board status:
 
+### Practical Example
+
+- **Issue:**
+  ```text
+  #205 [DOCS] Standardize README
+  ```
+- **Branch:**
+  ```text
+  docs/205-standardize-readme
+  ```
+- **Pull Request (#210):**
+  - **Title:** `docs: standardize repository README`
+  - **Body:** `Closes #205`
+
+### Lifecycle Flow
+
+```text
+Issue #205
+    ↓
+docs/205-standardize-readme
+    ↓
+PR #210 (docs: standardize repository README | Closes #205)
+    ↓
+review
+    ↓
+merge into master
+    ↓
+Issue #205 automatically closed
+    ↓
+Project → Done
 ```
-1. Issue criada
-   #108 — [DOCS] Definir padrão de nomenclatura
-                    │
-2. Branch criada    ▼
-   docs/108-padrao-nomenclatura
-                    │
-3. Commits          ▼
-   docs: definir convenções de nomenclatura
-                    │
-4. Pull Request     ▼
-   Título: docs: definir convenções de nomenclatura
-   Corpo:  Closes #108
-                    │
-5. Code Review      ▼
-   Revisão pela equipe
-                    │
-6. Merge            ▼
-   Branch mergeada na branch de desenvolvimento
-```
 
-### Resumo rápido
+### Quick Reference Summary
 
-| Etapa         | Exemplo                                          |
-| ------------- | ------------------------------------------------ |
-| **Issue**     | `[DOCS] Definir padrão de nomenclatura`          |
-| **Branch**    | `docs/108-padrao-nomenclatura`                   |
-| **Commit**    | `docs: definir convenções de nomenclatura`        |
-| **PR título** | `docs: definir convenções de nomenclatura`        |
-| **PR corpo**  | `Closes #108`                                    |
+| Stage                 | Convention / Example                                                   |
+| :-------------------- | :--------------------------------------------------------------------- |
+| **1. Issue**          | `#205` — `[DOCS] Standardize README`                                   |
+| **2. Branch**         | `docs/205-standardize-readme`                                          |
+| **3. Commit**         | `docs: standardize repository README`                                  |
+| **4. Pull Request**   | `PR #210` — `docs: standardize repository README` (with `Closes #205`) |
+| **5. Review & Merge** | Team review → Merged into `master`                                     |
+| **6. Result**         | Issue `#205` closed automatically → Card moved to **Project → Done**   |
