@@ -42,3 +42,24 @@ Or build for production and view the bundle analyzer report
 ```
 $ npm run build --report
 ```
+
+## Code Quality & Standards
+
+The project uses **ESLint 9**, **Prettier**, and **EditorConfig** to ensure code consistency.
+
+Run automatic formatting and validation with:
+
+```bash
+# Format with Prettier and fix with ESLint
+$ npm run lint
+
+# Or individually:
+$ npm run lint:prettier
+$ npm run lint:eslint
+```
+
+For more details on rules and editor setup, see the [Code Standards Guide](docs/code-standards.md).
+
+## Contributing
+
+See the centralized [Contributing Guide (`CONTRIBUTING.md`)](https://github.com/pauliceia/issues/blob/master/CONTRIBUTING.md) in `pauliceia/issues` for details on our development workflow and naming conventions for issues, branches, Pull Requests, and commits.
