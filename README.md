@@ -93,5 +93,5 @@ Para entender como o código-fonte está organizado (`src/middleware`, `src/stor
 
 Contribuições são muito bem-vindas! Antes de criar uma Issue, abrir uma branch ou submeter um Pull Request:
 
-1. Leia nossas convenções de nomenclatura e fluxo de trabalho no guia **[CONTRIBUTING.md](CONTRIBUTING.md)** *( caso ainda esteja em revisão, consulte a documentação da branch correspondente)*.
+1. Leia nossas convenções de nomenclatura e fluxo de trabalho no guia centralizado **[CONTRIBUTING.md (pauliceia/issues)](https://github.com/pauliceia/issues/blob/master/CONTRIBUTING.md)**.
 2. Certifique-se de que seu código segue os padrões do projeto executando `npm run lint` antes de enviar suas alterações.
