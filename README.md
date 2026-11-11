@@ -6,92 +6,92 @@
 ![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22.6.0-339933?logo=nodedotjs&logoColor=white)
 ![NPM](https://img.shields.io/badge/NPM-%3E%3D10.8.2-CB3837?logo=npm&logoColor=white)
 
-Aplicação web front-end da plataforma **Pauliceia 2.0**, um projeto aberto e colaborativo de mapeamento histórico da cidade de São Paulo (1870–1940), desenvolvido em parceria entre **UNIFESP**, **INPE**, **Arquivo Público do Estado de São Paulo** e **Emory University** (com apoio da FAPESP).
+Web front-end application for the **Pauliceia 2.0** platform, an open and collaborative historical mapping project of the city of São Paulo (1870–1940), developed in partnership between **UNIFESP**, **INPE**, **Arquivo Público do Estado de São Paulo**, and **Emory University** (supported by FAPESP).
 
-A interface permite explorar mapas históricos georreferenciados, realizar buscas de endereços no tempo (geocodificação histórica), filtrar feições por período e contribuir com novas camadas cartográficas (*Volunteered Geographic Information* — VGI).
-
----
-
-## 🛠️ Tecnologias Principais
-
-- **Vue.js 2.7** + **Vuex** + **Vue Router** (arquitetura SPA e gerenciamento de estado)
-- **OpenLayers 9** (renderização e manipulação de camadas geográficas vetoriais e raster)
-- **Element UI**, **Vue Material** e **Bootstrap 5** (componentes visuais e layout)
-- **Axios** (integração com API VGI, API de Geocodificação e GeoServer)
-- **Webpack 5** (empacotamento, servidor de desenvolvimento e build de produção)
-- **ESLint 9** + **Prettier** + **EditorConfig** (padronização e qualidade de código)
+The interface enables users to explore georeferenced historical maps, search historical addresses across time (historical geocoding), filter features by time period, and contribute new cartographic layers (_Volunteered Geographic Information_ — VGI).
 
 ---
 
-## 📋 Pré-requisitos (Dependencies)
+## 🛠️ Core Technologies
 
-Certifique-se de ter instalado em sua máquina:
+- **Vue.js 2.7** + **Vuex** + **Vue Router** (SPA architecture and state management)
+- **OpenLayers 9** (rendering and manipulation of vector and raster geographic layers)
+- **Element UI**, **Vue Material**, and **Bootstrap 5** (UI components and layout)
+- **Axios** (integration with VGI API, Geocoding API, and GeoServer)
+- **Webpack 5** (bundling, development server, and production builds)
+- **ESLint 9** + **Prettier** + **EditorConfig** (code standardization and quality)
+
+---
+
+## 📋 Dependencies
+
+Make sure you have the following installed:
 
 - **Node.js**: `>= 22.6.0`
 - **NPM**: `>= 10.8.2`
 
-Você pode instalar as versões acima globalmente ou gerenciar múltiplas versões utilizando o [NVM](https://github.com/nvm-sh/nvm).
+You can install these versions globally or manage multiple Node versions using [NVM](https://github.com/nvm-sh/nvm).
 
 ---
 
-## ⚙️ Instalação e Configuração (Install)
+## ⚙️ Install & Configuration
 
-1. Crie o arquivo de configuração de ambiente `config/prod.env.js` a partir do arquivo de exemplo e instale as dependências:
+Create the `config/prod.env.js` configuration file from the example template and install dependencies:
 
 ```bash
 $ cp config/prod.env.js.EXAMPLE config/prod.env.js
 $ npm i
 ```
 
-### Variáveis de Ambiente (`config/prod.env.js`)
+### Environment Variables (`config/prod.env.js`)
 
-| Variável | Descrição | Valor Padrão (Exemplo) |
-| :--- | :--- | :--- |
-| `NODE_ENV` | Ambiente de execução | `"production"` |
-| `urlVGI` | Endpoint da API REST de dados colaborativos (VGI) | `"http://www.pauliceia.dpi.inpe.br/api/vgi"` |
-| `urlGeocoding` | Endpoint do serviço de geocodificação histórica | `"http://www.pauliceia.dpi.inpe.br/api/geocoding"` |
-| `urlGeoserverPauliceia` | Workspace principal do GeoServer (camadas oficiais e VGI) | `"http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia"` |
-| `urlGeoserveOther` | Workspace secundário do GeoServer | `"http://www.pauliceia.dpi.inpe.br/geoserver/other"` |
-| `keyCripto` | Chave auxiliar utilizada em validações no cliente | `"keytest"` |
+| Variable                | Description                                         | Default Value (Example)                                  |
+| :---------------------- | :-------------------------------------------------- | :------------------------------------------------------- |
+| `NODE_ENV`              | Execution environment                               | `"production"`                                           |
+| `urlVGI`                | Collaborative data REST API (VGI) endpoint          | `"http://www.pauliceia.dpi.inpe.br/api/vgi"`             |
+| `urlGeocoding`          | Historical geocoding service endpoint               | `"http://www.pauliceia.dpi.inpe.br/api/geocoding"`       |
+| `urlGeoserverPauliceia` | Primary GeoServer workspace (official & VGI layers) | `"http://www.pauliceia.dpi.inpe.br/geoserver/pauliceia"` |
+| `urlGeoserveOther`      | Secondary GeoServer workspace                       | `"http://www.pauliceia.dpi.inpe.br/geoserver/other"`     |
+| `keyCripto`             | Auxiliary key used for client-side routines         | `"keytest"`                                              |
 
 ---
 
-## 🚀 Execução e Scripts Disponíveis (Run)
+## 🚀 Run & Available Scripts
 
-Execute localmente em modo de desenvolvimento com *hot-reload*:
+Run locally in development mode with hot-reload:
 
 ```bash
 $ npm start
-# ou
+# or
 $ npm run dev
 ```
 
-Acesse a aplicação em: **http://localhost:8080**
+Access the application at: **http://localhost:8080**
 
-### Todos os Scripts (`package.json`)
+### All Scripts (`package.json`)
 
-| Comando | Descrição |
-| :--- | :--- |
-| `npm start` / `npm run dev` | Inicia o servidor de desenvolvimento (`webpack-dev-server`) com *hot-reload* em `localhost:8080` |
-| `npm run build` | Gera o pacote otimizado e minificado para produção no diretório `dist/` |
-| `npm run build --report` | Gera o build de produção e exibe o relatório visual de tamanho dos pacotes (*bundle analyzer*) |
-| `npm run lint` | Executa a formatação com Prettier e a análise/correção estática com ESLint em sequência |
-| `npm run lint:prettier` | Formata automaticamente os arquivos do projeto utilizando o Prettier |
-| `npm run lint:eslint` | Verifica e corrige problemas de código utilizando o ESLint 9 |
-
----
-
-## 📚 Documentação e Arquitetura
-
-Para entender como o código-fonte está organizado (`src/middleware`, `src/store`, `src/router`, `src/views`) e como o front-end interage com o OpenLayers e as APIs da plataforma, consulte:
-
-- 🏛️ **[Arquitetura e Estrutura de Pastas (`docs/architecture.md`)](docs/architecture.md)**
+| Command                     | Description                                                                              |
+| :-------------------------- | :--------------------------------------------------------------------------------------- |
+| `npm start` / `npm run dev` | Starts the development server (`webpack-dev-server`) with hot-reload on `localhost:8080` |
+| `npm run build`             | Builds the optimized and minified production bundle into `dist/`                         |
+| `npm run build --report`    | Builds for production and opens the visual bundle analyzer report                        |
+| `npm run lint`              | Runs Prettier formatting and ESLint static analysis/autofix in sequence                  |
+| `npm run lint:prettier`     | Automatically formats project files using Prettier                                       |
+| `npm run lint:eslint`       | Checks and autofixes code issues using ESLint 9                                          |
 
 ---
 
-## 🤝 Como Contribuir
+## 📚 Documentation & Architecture
 
-Contribuições são muito bem-vindas! Antes de criar uma Issue, abrir uma branch ou submeter um Pull Request:
+To understand how the source code is organized (`src/middleware`, `src/store`, `src/router`, `src/views`) and how the front-end interacts with OpenLayers and platform APIs, check out:
 
-1. Leia nossas convenções de nomenclatura e fluxo de trabalho no guia centralizado **[CONTRIBUTING.md (pauliceia/issues)](https://github.com/pauliceia/issues/blob/master/CONTRIBUTING.md)**.
-2. Certifique-se de que seu código segue os padrões do projeto executando `npm run lint` antes de enviar suas alterações.
+- 🏛️ **[Architecture & Folder Structure (`docs/architecture.md`)](docs/architecture.md)**
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Before opening an Issue, creating a branch, or submitting a Pull Request:
+
+1. Read our centralized naming conventions and contribution workflow in **[CONTRIBUTING.md (`pauliceia/issues`)](https://github.com/pauliceia/issues/blob/master/CONTRIBUTING.md)**.
+2. Make sure your code adheres to the project's formatting and lint rules by running `npm run lint` before pushing changes.
