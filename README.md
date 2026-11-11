@@ -45,22 +45,21 @@ $ npm run build --report
 
 ## Code Quality & Standards
 
-O projeto utiliza **ESLint 9**, **Prettier** e **EditorConfig** para garantir a consistência do código.
+The project uses **ESLint 9**, **Prettier**, and **EditorConfig** to ensure code consistency.
 
-Execute a validação e formatação automática com:
+Run automatic formatting and validation with:
 
 ```bash
-# Formata com Prettier e corrige com ESLint
+# Format with Prettier and fix with ESLint
 $ npm run lint
 
-# Ou individualmente:
+# Or individually:
 $ npm run lint:prettier
 $ npm run lint:eslint
 ```
 
-Para mais detalhes sobre regras e configuração do editor, consulte o [Guia de Padrões de Código](docs/code-standards.md).
+For more details on rules and editor setup, see the [Code Standards Guide](docs/code-standards.md).
 
 ## Contributing
 
-Consulte o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes sobre nosso fluxo de desenvolvimento, convenções de branches, issues, Pull Requests e commits.
-
+See the centralized [Contributing Guide (`CONTRIBUTING.md`)](https://github.com/pauliceia/issues/blob/master/CONTRIBUTING.md) in `pauliceia/issues` for details on our development workflow and naming conventions for issues, branches, Pull Requests, and commits.

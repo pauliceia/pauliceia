@@ -1,57 +1,61 @@
-# Padrões de Código e Guia de Linting — Pauliceia 2.0
+# Code Standards & Linting Guide — Pauliceia 2.0
 
-Este documento descreve as ferramentas, convenções e comandos utilizados para manter a qualidade, consistência e legibilidade do código no projeto **Pauliceia 2.0**.
-
----
-
-## 🛠️ Ferramentas Utilizadas
-
-O projeto utiliza três camadas complementares de padronização:
-
-1. **EditorConfig (`.editorconfig`):** Garante configurações básicas de espaçamento, quebra de linha e codificação diretamente no editor do desenvolvedor.
-2. **Prettier:** Responsável pela formatação automática e estilo do código (espaçamento, aspas, pontuação).
-3. **ESLint 9 (`eslint.config.js`):** Responsável pela análise estática, boas práticas de JavaScript e regras essenciais de componentes Vue 2 (`flat/vue2-essential`).
+This document describes the tools, conventions, and commands used to maintain code quality, consistency, and readability in the **Pauliceia 2.0** project.
 
 ---
 
-## 📋 Comandos Disponíveis
+## 🛠️ Tools Used
 
-Todos os comandos de verificação e correção são executados a partir da raiz do repositório via NPM:
+The project relies on three complementary standardization layers:
 
-| Comando | Descrição | Ferramenta |
-| :--- | :--- | :--- |
-| `npm run lint` | Executa a validação e correção completa (Prettier + ESLint em sequência) | Ambos |
-| `npm run lint:prettier` | Formata automaticamente os arquivos do projeto de acordo com as regras de estilo | Prettier |
-| `npm run lint:eslint` | Analisa e corrige automaticamente problemas sintáticos e de boas práticas | ESLint |
-
-> **Nota:** Antes de abrir um Pull Request, certifique-se de executar `npm run lint` para garantir que nenhuma violação de estilo seja enviada.
+1. **EditorConfig (`.editorconfig`):** Enforces basic indentation, line ending, and charset rules directly inside the developer's editor.
+2. **Prettier:** Handles automatic code formatting and style rules (spacing, quotes, semicolons).
+3. **ESLint 9 (`eslint.config.js`):** Handles static code analysis, JavaScript best practices, and essential Vue 2 component rules (`flat/vue2-essential`).
 
 ---
 
-## 📏 Regras Adotadas
+## 📋 Available Commands
 
-### 1. Configurações Globais (`.editorconfig`)
-- **Indentação:** 2 espaços (`indent_size = 2`, `indent_style = space`).
-- **Codificação de Caracteres:** UTF-8 (`charset = utf-8`).
-- **Final de Linha:** LF no padrão Unix (`end_of_line = lf`).
-- **Espaços no final de linha:** Removidos automaticamente (`trim_trailing_whitespace = true`).
-- **Nova linha final:** Arquivos devem sempre terminar com uma linha em branco (`insert_final_newline = true`).
+All verification and autofix commands are executed from the repository root via NPM:
 
-### 2. Regras de JavaScript e Vue (`eslint.config.js`)
-- **Vue 2 Essential:** Regras fundamentais do plugin `eslint-plugin-vue` para evitar comportamentos inesperados no ciclo de vida de componentes Vue 2.
-- **Nomes de Componentes:** A regra `vue/multi-word-component-names` está desativada (`off`) para manter compatibilidade com componentes legados de nome único.
-- **Variáveis não utilizadas (`no-unused-vars`):** Erro estrito, com exceções permitidas para parâmetros utilitários comuns que começam com `_`, `event`, `response` ou `val`.
+| Command                 | Description                                                            | Tool     |
+| :---------------------- | :--------------------------------------------------------------------- | :------- |
+| `npm run lint`          | Runs full formatting and linting fixes (Prettier + ESLint in sequence) | Both     |
+| `npm run lint:prettier` | Automatically formats project files according to style rules           | Prettier |
+| `npm run lint:eslint`   | Analyzes and autofixes syntax and best-practice issues                 | ESLint   |
+
+> **Note:** Before opening a Pull Request, make sure to run `npm run lint` so that no formatting or lint violations are introduced.
 
 ---
 
-## 💻 Integração com Editores (VS Code)
+## 📏 Adopted Rules
 
-Para formatar automaticamente ao salvar no Visual Studio Code, recomenda-se instalar as seguintes extensões:
+### 1. Global Editor Settings (`.editorconfig`)
+
+- **Indentation:** 2 spaces (`indent_size = 2`, `indent_style = space`).
+- **Charset:** UTF-8 (`charset = utf-8`).
+- **End of line:** Unix-style LF (`end_of_line = lf`).
+- **Trailing whitespace:** Automatically trimmed (`trim_trailing_whitespace = true`).
+- **Final newline:** Files must always end with a blank newline (`insert_final_newline = true`).
+
+### 2. JavaScript & Vue Rules (`eslint.config.js`)
+
+- **Vue 2 Essential:** Core rules from `eslint-plugin-vue` to prevent common pitfalls in Vue 2 component lifecycles.
+- **Component names:** `vue/multi-word-component-names` is disabled (`off`) to maintain compatibility with existing single-word components.
+- **Unused variables (`no-unused-vars`):** Strict error, with exceptions allowed for common utility parameters prefixed with `_`, `event`, `response`, or `val`.
+
+---
+
+## 💻 Editor Integration (VS Code)
+
+To automatically format and fix files on save in Visual Studio Code, install the following extensions:
+
 - **EditorConfig for VS Code** (`EditorConfig.EditorConfig`)
 - **ESLint** (`dbaeumer.vscode-eslint`)
 - **Prettier - Code formatter** (`esbenp.prettier-vscode`)
 
-### Configuração sugerida para o `.vscode/settings.json`:
+### Suggested `.vscode/settings.json` configuration:
+
 ```json
 {
   "editor.formatOnSave": true,
