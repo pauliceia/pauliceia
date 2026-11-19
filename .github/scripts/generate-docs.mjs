@@ -142,7 +142,9 @@ async function callGitHubModels(prompt, token, model) {
   const response = await fetch(url, {
     method: "POST",
     headers: {
+      Accept: "application/vnd.github+json",
       "Content-Type": "application/json",
+      "X-GitHub-Api-Version": "2022-11-28",
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
@@ -163,14 +165,22 @@ async function callGitHubModels(prompt, token, model) {
     }),
   });
 
+  const rawBody = await response.text();
   if (!response.ok) {
-    const errorText = await response.text();
     throw new Error(
-      `Erro na API do GitHub Models (${response.status}): ${errorText}`
+      `Erro na API do GitHub Models (${response.status}): ${rawBody}`
     );
   }
 
-  const data = await response.json();
+  let data;
+  try {
+    data = JSON.parse(rawBody);
+  } catch (_error) {
+    throw new Error(
+      `Resposta não-JSON do GitHub Models (HTTP ${response.status}): ${rawBody.slice(0, 500)}`
+    );
+  }
+
   const text = data?.choices?.[0]?.message?.content;
   if (!text) {
     throw new Error("Resposta vazia do GitHub Models.");
