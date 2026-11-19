@@ -52,9 +52,13 @@ jobs:
           commit-message: "docs: atualiza documentação automaticamente"
           title: "docs: atualização automática da documentação"
           body: |
-            Este Pull Request foi gerado automaticamente pelo **Docs Bot** com base nas alterações recentes do repositório.
+            Atualização automática do catálogo técnico em `docs/` gerada pelo **Docs Bot**:
 
-            Revise os arquivos em `docs/` antes de fazer o merge.
+            - `docs/README.md`: visão geral da arquitetura por camada e scripts do `package.json`
+            - `docs/componentes-vue.md`: componentes `.vue` agrupados por pasta (props, eventos `$emit` e métodos)
+            - `docs/modulos-js.md`: módulos `.js` agrupados por camada (Middleware/API, Router e Vuex Store)
+
+            Revise as alterações antes de fazer o merge.
           branch: docs/auto-update
           base: ${{ github.base_ref || github.ref_name }}
           delete-branch: true
