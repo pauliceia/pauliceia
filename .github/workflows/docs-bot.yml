@@ -23,7 +23,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  models: read
 
 jobs:
   update-docs:
@@ -43,13 +42,7 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Generate documentation with GitHub Models
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_MODEL: "openai/gpt-4o-mini"
-          TARGET_PATH: ${{ inputs.target_path || '' }}
-          GITHUB_BASE_REF: ${{ github.base_ref }}
-          GITHUB_EVENT_NAME: ${{ github.event_name }}
+      - name: Generate static documentation
         run: node .github/scripts/generate-docs.mjs
 
       - name: Create Pull Request with updated docs

@@ -1,15 +1,8 @@
-import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
 const DOCS_DIR = "docs";
-const MAX_DIFF_CHARS = 35000;
-const MAX_EXISTING_DOCS_CHARS = 25000;
-const MAX_SOURCE_CHARS = 30000;
-
-function runGit(args) {
-  return execFileSync("git", args, { encoding: "utf8" }).trim();
-}
+const SRC_DIR = "src";
 
 function listFilesRecursive(dir, filterFn) {
   if (!fs.existsSync(dir)) return [];
@@ -22,237 +15,217 @@ function listFilesRecursive(dir, filterFn) {
       results.push(fullPath.replace(/\\/g, "/"));
     }
   }
-  return results;
+  return results.sort();
 }
 
-function readTruncated(filePath, limit) {
+function extractLeadingJsDoc(content) {
+  const match = content.match(/\/\*\*([\s\S]*?)\*\//);
+  if (!match) return "";
+  return match[1]
+    .split("\n")
+    .map((line) => line.replace(/^\s*\*\s?/, "").trim())
+    .filter((line) => line && !line.startsWith("@"))
+    .join(" ")
+    .trim();
+}
+
+function extractVueInfo(filePath) {
   const content = fs.readFileSync(filePath, "utf8");
-  if (content.length <= limit) return content;
-  return `${content.slice(0, limit)}\n\n... [truncado em ${limit} caracteres]`;
-}
+  const scriptMatch = content.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+  const script = scriptMatch ? scriptMatch[1] : "";
 
-function collectExistingDocs() {
-  const docFiles = listFilesRecursive(DOCS_DIR, (p) => p.endsWith(".md"));
-  if (docFiles.length === 0) return "Nenhum arquivo em docs/ ainda.";
+  const nameMatch = script.match(/\bname\s*:\s*["']([^"']+)["']/);
+  const name = nameMatch ? nameMatch[1] : path.basename(filePath, ".vue");
 
-  let total = 0;
-  const chunks = [];
-  for (const file of docFiles) {
-    if (total >= MAX_EXISTING_DOCS_CHARS) break;
-    const remaining = MAX_EXISTING_DOCS_CHARS - total;
-    const content = readTruncated(file, Math.min(remaining, 8000));
-    total += content.length;
-    chunks.push(`### ${file}\n\`\`\`markdown\n${content}\n\`\`\``);
-  }
-  return chunks.join("\n\n");
-}
-
-function collectDiffContext() {
-  const baseRef = process.env.GITHUB_BASE_REF;
-  const eventName = process.env.GITHUB_EVENT_NAME;
-
-  try {
-    if (eventName === "pull_request" && baseRef) {
-      const diff = runGit([
-        "diff",
-        `origin/${baseRef}...HEAD`,
-        "--",
-        ".",
-        ":!docs",
-        ":!package-lock.json",
-      ]);
-      if (diff) return diff.slice(0, MAX_DIFF_CHARS);
+  const props = [];
+  const propsArrayMatch = script.match(/\bprops\s*:\s*\[([^\]]*)\]/);
+  if (propsArrayMatch) {
+    for (const m of propsArrayMatch[1].matchAll(/["']([^"']+)["']/g)) {
+      props.push(m[1]);
     }
-
-    const diff = runGit([
-      "diff",
-      "HEAD~1..HEAD",
-      "--",
-      ".",
-      ":!docs",
-      ":!package-lock.json",
-    ]);
-    return diff.slice(0, MAX_DIFF_CHARS);
-  } catch (_error) {
-    return "";
-  }
-}
-
-function collectSourceSnapshot(targetDir) {
-  const root = targetDir && fs.existsSync(targetDir) ? targetDir : "src";
-  const files = listFilesRecursive(root, (p) =>
-    /\.(js|mjs|vue|ts|json)$/i.test(p)
-  ).slice(0, 40);
-
-  let total = 0;
-  const chunks = [];
-  for (const file of files) {
-    if (total >= MAX_SOURCE_CHARS) break;
-    const remaining = MAX_SOURCE_CHARS - total;
-    const content = readTruncated(file, Math.min(remaining, 4000));
-    total += content.length;
-    chunks.push(`### ${file}\n\`\`\`\n${content}\n\`\`\``);
-  }
-  return chunks.join("\n\n");
-}
-
-function buildPrompt({ diff, existingDocs, sourceSnapshot, targetPath }) {
-  return `Você é um bot especialista em documentação técnica para o projeto Pauliceia 2.0 (aplicação web Vue 2 + OpenLayers + Webpack).
-
-Sua tarefa é gerar ou atualizar guias em Markdown dentro da pasta \`docs/\` em Português (pt-BR), de forma clara, objetiva e fiel ao código real.
-
-Regras:
-1. Só crie ou atualize arquivos dentro de \`docs/\` com extensão \`.md\` (ex.: \`docs/arquitetura.md\`, \`docs/componentes.md\`, \`docs/guia-desenvolvimento.md\`).
-2. Se já existir documentação relevante em \`docs/\`, atualize o arquivo existente mantendo a estrutura coerente em vez de duplicar conteúdo.
-3. Não invente funcionalidades, endpoints ou variáveis que não estejam no código/diff fornecido.
-4. Se o diff não tiver impacto relevante na documentação (ex.: apenas formatação ou ajuste trivial), retorne \`files: []\`.
-5. Responda EXCLUSIVAMENTE em JSON válido no formato:
-{
-  "files": [
-    {
-      "path": "docs/exemplo.md",
-      "summary": "Resumo curto da alteração",
-      "content": "# Título\n\nConteúdo completo em Markdown..."
+  } else {
+    const propsObjMatch = script.match(/\bprops\s*:\s*\{([\s\S]*?)\n\s*\}/);
+    if (propsObjMatch) {
+      for (const m of propsObjMatch[1].matchAll(/^\s*([a-zA-Z0-9_$]+)\s*:/gm)) {
+        if (!["type", "default", "required", "validator"].includes(m[1])) {
+          props.push(m[1]);
+        }
+      }
     }
-  ]
+  }
+
+  const emits = new Set();
+  for (const m of content.matchAll(/\$emit\(\s*["']([^"']+)["']/g)) {
+    emits.add(m[1]);
+  }
+
+  const methods = [];
+  const methodsMatch = script.match(/\bmethods\s*:\s*\{([\s\S]*?)\n\s*\}/);
+  if (methodsMatch) {
+    for (const m of methodsMatch[1].matchAll(
+      /^\s*(?:async\s+)?([a-zA-Z0-9_$]+)\s*\(/gm
+    )) {
+      methods.push(m[1]);
+    }
+  }
+
+  const computed = [];
+  const computedMatch = script.match(/\bcomputed\s*:\s*\{([\s\S]*?)\n\s*\}/);
+  if (computedMatch) {
+    for (const m of computedMatch[1].matchAll(
+      /^\s*([a-zA-Z0-9_$]+)\s*(?:\(|:)/gm
+    )) {
+      computed.push(m[1]);
+    }
+  }
+
+  return {
+    filePath,
+    name,
+    doc: extractLeadingJsDoc(script),
+    props,
+    emits: [...emits].sort(),
+    methods,
+    computed,
+  };
 }
 
-${targetPath ? `Foco solicitado manualmente: \`${targetPath}\`\n` : ""}
-## Documentação atual em \`docs/\`
-${existingDocs}
+function extractJsInfo(filePath) {
+  const content = fs.readFileSync(filePath, "utf8");
+  const functions = new Set();
 
-## Alterações recentes (git diff)
-${diff ? `\`\`\`diff\n${diff}\n\`\`\`` : "Sem diff disponível (execução manual ou commit inicial)."}
+  for (const m of content.matchAll(
+    /(?:export\s+)?(?:async\s+)?function\s+([a-zA-Z0-9_$]+)\s*\(/g
+  )) {
+    functions.add(m[1]);
+  }
+  for (const m of content.matchAll(
+    /^\s*([a-zA-Z0-9_$]+)\s*(?::\s*(?:async\s+)?function|\([^)]*\)\s*\{)/gm
+  )) {
+    if (!["if", "for", "while", "switch", "catch"].includes(m[1])) {
+      functions.add(m[1]);
+    }
+  }
 
-## Amostra do código-fonte
-${sourceSnapshot || "Nenhum arquivo-fonte encontrado."}`;
+  const routes = [];
+  if (filePath.includes("/router/")) {
+    for (const m of content.matchAll(/\bpath\s*:\s*["']([^"']+)["']/g)) {
+      routes.push(m[1]);
+    }
+  }
+
+  return {
+    filePath,
+    doc: extractLeadingJsDoc(content),
+    functions: [...functions],
+    routes,
+  };
 }
 
-function parseJsonResponse(rawText) {
-  const cleaned = rawText
-    .trim()
-    .replace(/^```(?:json)?\s*/i, "")
-    .replace(/\s*```$/, "");
-  return JSON.parse(cleaned);
+function generateIndexDoc(vueFiles, jsFiles) {
+  let scriptsSection = "_`package.json` não encontrado._";
+  if (fs.existsSync("package.json")) {
+    const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+    const scripts = Object.entries(pkg.scripts || {});
+    if (scripts.length > 0) {
+      scriptsSection = [
+        "| Comando | Script |",
+        "| --- | --- |",
+        ...scripts.map(([k, v]) => `| \`npm run ${k}\` | \`${v}\` |`),
+      ].join("\n");
+    }
+  }
+
+  return `# Documentação — Pauliceia 2.0
+
+> Documentação gerada automaticamente a partir da estrutura de \`src/\` e \`package.json\`.
+
+## Visão geral
+- **Componentes Vue (\`.vue\`)**: ${vueFiles.length} — ver [componentes-vue.md](./componentes-vue.md)
+- **Módulos JavaScript (\`.js\`)**: ${jsFiles.length} — ver [modulos-js.md](./modulos-js.md)
+
+## Scripts disponíveis
+${scriptsSection}
+`;
 }
 
-async function callGitHubModels(prompt, token, model) {
-  const url = "https://models.github.ai/inference/chat/completions";
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      Accept: "application/vnd.github+json",
-      "Content-Type": "application/json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      model,
-      temperature: 0.2,
-      response_format: { type: "json_object" },
-      messages: [
-        {
-          role: "system",
-          content:
-            "Você é um assistente de documentação técnica. Responda sempre em JSON válido seguindo exatamente o formato pedido.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-    }),
+function generateVueDoc(vueInfos) {
+  const sections = vueInfos.map((info) => {
+    const lines = [`## \`${info.name}\``, `- **Arquivo:** \`${info.filePath}\``];
+    if (info.doc) lines.push(`- **Descrição:** ${info.doc}`);
+    if (info.props.length > 0) {
+      lines.push(
+        `- **Props:** ${info.props.map((p) => `\`${p}\``).join(", ")}`
+      );
+    }
+    if (info.emits.length > 0) {
+      lines.push(
+        `- **Eventos emitidos:** ${info.emits.map((e) => `\`${e}\``).join(", ")}`
+      );
+    }
+    if (info.computed.length > 0) {
+      lines.push(
+        `- **Computed:** ${info.computed.map((c) => `\`${c}\``).join(", ")}`
+      );
+    }
+    if (info.methods.length > 0) {
+      lines.push(
+        `- **Métodos:** ${info.methods.map((m) => `\`${m}\``).join(", ")}`
+      );
+    }
+    return lines.join("\n");
   });
 
-  const rawBody = await response.text();
-  if (!response.ok) {
-    throw new Error(
-      `Erro na API do GitHub Models (${response.status}): ${rawBody}`
-    );
-  }
-
-  let data;
-  try {
-    data = JSON.parse(rawBody);
-  } catch (_error) {
-    throw new Error(
-      `Resposta não-JSON do GitHub Models (HTTP ${response.status}): ${rawBody.slice(0, 500)}`
-    );
-  }
-
-  const text = data?.choices?.[0]?.message?.content;
-  if (!text) {
-    throw new Error("Resposta vazia do GitHub Models.");
-  }
-
-  return parseJsonResponse(text);
+  return `# Componentes Vue\n\nTotal de componentes mapeados: **${vueInfos.length}**.\n\n${sections.join("\n\n")}\n`;
 }
 
-function sanitizeDocPath(rawPath) {
-  const normalized = path.posix
-    .normalize(rawPath.replace(/\\/g, "/"))
-    .replace(/^\/+/, "");
-  if (
-    !normalized.startsWith(`${DOCS_DIR}/`) ||
-    normalized.includes("..") ||
-    !normalized.endsWith(".md")
-  ) {
-    return null;
-  }
-  return normalized;
-}
-
-async function main() {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) {
-    console.error(
-      "GITHUB_TOKEN não encontrado. Verifique se o workflow possui `models: read` em permissions."
-    );
-    process.exit(1);
-  }
-
-  const model = process.env.GITHUB_MODEL || "openai/gpt-4o-mini";
-  const targetPath = process.env.TARGET_PATH || "";
-
-  const existingDocs = collectExistingDocs();
-  const diff = collectDiffContext();
-  const sourceSnapshot =
-    targetPath || !diff ? collectSourceSnapshot(targetPath) : "";
-
-  const prompt = buildPrompt({
-    diff,
-    existingDocs,
-    sourceSnapshot,
-    targetPath,
+function generateJsDoc(jsInfos) {
+  const sections = jsInfos.map((info) => {
+    const lines = [`## \`${info.filePath}\``];
+    if (info.doc) lines.push(`- **Descrição:** ${info.doc}`);
+    if (info.routes.length > 0) {
+      lines.push(
+        `- **Rotas:** ${info.routes.map((r) => `\`${r}\``).join(", ")}`
+      );
+    }
+    if (info.functions.length > 0) {
+      lines.push(
+        `- **Funções/Métodos:** ${info.functions.map((f) => `\`${f}\``).join(", ")}`
+      );
+    }
+    return lines.join("\n");
   });
 
-  console.log(`Gerando documentação com GitHub Models (${model})...`);
-  const result = await callGitHubModels(prompt, token, model);
-
-  if (!Array.isArray(result.files) || result.files.length === 0) {
-    console.log("Nenhuma atualização de documentação necessária.");
-    return;
-  }
-
-  let written = 0;
-  for (const item of result.files) {
-    const safePath = sanitizeDocPath(item.path || "");
-    if (!safePath) {
-      console.warn(`Caminho ignorado por segurança: ${item.path}`);
-      continue;
-    }
-
-    fs.mkdirSync(path.dirname(safePath), { recursive: true });
-    fs.writeFileSync(safePath, item.content.trimEnd() + "\n", "utf8");
-    console.log(`Atualizado: ${safePath} — ${item.summary}`);
-    written += 1;
-  }
-
-  console.log(`Concluído. ${written} arquivo(s) atualizado(s) em ${DOCS_DIR}/.`);
+  return `# Módulos JavaScript\n\nTotal de arquivos mapeados: **${jsInfos.length}**.\n\n${sections.join("\n\n")}\n`;
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+function main() {
+  const vueFiles = listFilesRecursive(SRC_DIR, (p) => p.endsWith(".vue"));
+  const jsFiles = listFilesRecursive(SRC_DIR, (p) => p.endsWith(".js"));
+
+  const vueInfos = vueFiles.map(extractVueInfo);
+  const jsInfos = jsFiles.map(extractJsInfo);
+
+  fs.mkdirSync(DOCS_DIR, { recursive: true });
+  fs.writeFileSync(
+    path.join(DOCS_DIR, "README.md"),
+    generateIndexDoc(vueFiles, jsFiles),
+    "utf8"
+  );
+  fs.writeFileSync(
+    path.join(DOCS_DIR, "componentes-vue.md"),
+    generateVueDoc(vueInfos),
+    "utf8"
+  );
+  fs.writeFileSync(
+    path.join(DOCS_DIR, "modulos-js.md"),
+    generateJsDoc(jsInfos),
+    "utf8"
+  );
+
+  console.log(
+    `Documentação estática gerada em ${DOCS_DIR}/ (${vueFiles.length} componentes Vue, ${jsFiles.length} módulos JS).`
+  );
+}
+
+main();
