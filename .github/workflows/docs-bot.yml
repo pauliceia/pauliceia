@@ -52,11 +52,11 @@ jobs:
           commit-message: "docs: atualiza documentação automaticamente"
           title: "docs: atualização automática da documentação"
           body: |
-            Atualização automática do catálogo técnico em `docs/` gerada pelo **Docs Bot**:
+            Atualização automática da documentação multilíngue (`EN` / `PT-BR`) em `docs/` gerada pelo **Docs Bot**:
 
-            - `docs/README.md`: visão geral da arquitetura por camada e scripts do `package.json`
-            - `docs/componentes-vue.md`: componentes `.vue` agrupados por pasta (props, eventos `$emit` e métodos)
-            - `docs/modulos-js.md`: módulos `.js` agrupados por camada (Middleware/API, Router e Vuex Store)
+            - `docs/README.md` & `docs/README.pt-br.md`: visão geral da arquitetura por camada e scripts do `package.json`
+            - `docs/vue-components.md` & `docs/componentes-vue.md`: componentes `.vue` agrupados por pasta (props, eventos `$emit` e métodos)
+            - `docs/js-modules.md` & `docs/modulos-js.md`: módulos `.js` agrupados por camada (Middleware/API, Router e Vuex Store)
 
             Revise as alterações antes de fazer o merge.
           branch: docs/auto-update

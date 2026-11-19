@@ -4,6 +4,98 @@ import path from "node:path";
 const DOCS_DIR = "docs";
 const SRC_DIR = "src";
 
+const I18N = {
+  en: {
+    langSwitch: "**Language:** 🇺🇸 English | [🇧🇷 Português](./README.pt-br.md)",
+    vueLangSwitch:
+      "**Language:** 🇺🇸 English | [🇧🇷 Português](./componentes-vue.md)",
+    jsLangSwitch:
+      "**Language:** 🇺🇸 English | [🇧🇷 Português](./modulos-js.md)",
+    indexFile: "README.md",
+    vueFile: "vue-components.md",
+    jsFile: "js-modules.md",
+    indexTitle: "Technical Documentation — Pauliceia 2.0",
+    indexNote:
+      "Catalog automatically generated from static analysis of `src/` and `package.json`.",
+    archTitle: "Architecture Summary",
+    colLayer: "Layer",
+    colCount: "Count",
+    colRef: "Reference",
+    layerVue: "Vue Components (`.vue`)",
+    layerMiddleware: "Middleware / API (`.js`)",
+    layerRouter: "Router / Routes (`.js`)",
+    layerStore: "Store / Vuex (`.js`)",
+    scriptsTitle: "Project Scripts",
+    colCmd: "Command",
+    colRun: "Script",
+    noPkg: "_`package.json` not found._",
+    vueTitle: "Vue Components",
+    vueTotal: (n) => `Total mapped components: **${n}**.`,
+    foldersTitle: "Folders",
+    colComp: "Component",
+    colFile: "File",
+    colProps: "Props",
+    colEmits: "Events (`$emit`)",
+    colMethods: "Methods",
+    jsTitle: "JavaScript Modules",
+    jsTotal: (n) => `Total mapped files: **${n}**.`,
+    labelDesc: "Description",
+    labelVuex: "Vuex Structure",
+    labelRoutes: "Routes",
+    labelFuncs: "Functions/Methods",
+    layers: {
+      middleware: "Middleware / API",
+      router: "Router (Routes)",
+      store: "Store (Vuex)",
+      other: "Other",
+    },
+  },
+  pt: {
+    langSwitch: "**Idioma:** [🇺🇸 English](./README.md) | 🇧🇷 Português",
+    vueLangSwitch:
+      "**Idioma:** [🇺🇸 English](./vue-components.md) | 🇧🇷 Português",
+    jsLangSwitch: "**Idioma:** [🇺🇸 English](./js-modules.md) | 🇧🇷 Português",
+    indexFile: "README.pt-br.md",
+    vueFile: "componentes-vue.md",
+    jsFile: "modulos-js.md",
+    indexTitle: "Documentação Técnica — Pauliceia 2.0",
+    indexNote:
+      "Catálogo gerado automaticamente a partir da análise estática de `src/` e `package.json`.",
+    archTitle: "Resumo da Arquitetura",
+    colLayer: "Camada",
+    colCount: "Quantidade",
+    colRef: "Referência",
+    layerVue: "Componentes Vue (`.vue`)",
+    layerMiddleware: "Middleware / API (`.js`)",
+    layerRouter: "Router / Rotas (`.js`)",
+    layerStore: "Store / Vuex (`.js`)",
+    scriptsTitle: "Scripts do Projeto",
+    colCmd: "Comando",
+    colRun: "Execução",
+    noPkg: "_`package.json` não encontrado._",
+    vueTitle: "Componentes Vue",
+    vueTotal: (n) => `Total de componentes mapeados: **${n}**.`,
+    foldersTitle: "Pastas",
+    colComp: "Componente",
+    colFile: "Arquivo",
+    colProps: "Props",
+    colEmits: "Eventos (`$emit`)",
+    colMethods: "Métodos",
+    jsTitle: "Módulos JavaScript",
+    jsTotal: (n) => `Total de arquivos mapeados: **${n}**.`,
+    labelDesc: "Descrição",
+    labelVuex: "Estrutura Vuex",
+    labelRoutes: "Rotas",
+    labelFuncs: "Funções/Métodos",
+    layers: {
+      middleware: "Middleware / API",
+      router: "Router (Rotas)",
+      store: "Store (Vuex)",
+      other: "Outros",
+    },
+  },
+};
+
 function listFilesRecursive(dir, filterFn) {
   if (!fs.existsSync(dir)) return [];
   const results = [];
@@ -69,16 +161,6 @@ function extractVueInfo(filePath) {
     }
   }
 
-  const computed = [];
-  const computedMatch = script.match(/\bcomputed\s*:\s*\{([\s\S]*?)\n\s*\}/);
-  if (computedMatch) {
-    for (const m of computedMatch[1].matchAll(
-      /^\s*([a-zA-Z0-9_$]+)\s*(?:\(|:)/gm
-    )) {
-      computed.push(m[1]);
-    }
-  }
-
   return {
     filePath,
     group: path.posix.dirname(filePath),
@@ -87,7 +169,6 @@ function extractVueInfo(filePath) {
     props,
     emits: [...emits].sort(),
     methods,
-    computed,
   };
 }
 
@@ -124,14 +205,14 @@ function extractJsInfo(filePath) {
     }
   }
 
-  let layer = "Outros";
-  if (filePath.startsWith("src/middleware/")) layer = "Middleware / API";
-  else if (filePath.startsWith("src/router/")) layer = "Router (Rotas)";
-  else if (filePath.startsWith("src/store/")) layer = "Store (Vuex)";
+  let layerKey = "other";
+  if (filePath.startsWith("src/middleware/")) layerKey = "middleware";
+  else if (filePath.startsWith("src/router/")) layerKey = "router";
+  else if (filePath.startsWith("src/store/")) layerKey = "store";
 
   return {
     filePath,
-    layer,
+    layerKey,
     doc: extractLeadingJsDoc(content),
     functions: [...functions],
     routes,
@@ -149,45 +230,47 @@ function groupBy(items, keyFn) {
   return map;
 }
 
-function generateIndexDoc(vueInfos, jsInfos) {
-  let scriptsSection = "_`package.json` não encontrado._";
+function generateIndexDoc(vueInfos, jsInfos, t) {
+  let scriptsSection = t.noPkg;
   if (fs.existsSync("package.json")) {
     const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
     const scripts = Object.entries(pkg.scripts || {});
     if (scripts.length > 0) {
       scriptsSection = [
-        "| Comando | Execução |",
+        `| ${t.colCmd} | ${t.colRun} |`,
         "| --- | --- |",
         ...scripts.map(([k, v]) => `| \`npm run ${k}\` | \`${v}\` |`),
       ].join("\n");
     }
   }
 
-  const byLayer = groupBy(jsInfos, (item) => item.layer);
+  const byLayer = groupBy(jsInfos, (item) => item.layerKey);
   const summaryRows = [
-    `| Componentes Vue (\`.vue\`) | ${vueInfos.length} | [componentes-vue.md](./componentes-vue.md) |`,
-    `| Middleware / API (\`.js\`) | ${(byLayer.get("Middleware / API") || []).length} | [modulos-js.md](./modulos-js.md#middleware--api) |`,
-    `| Router / Rotas (\`.js\`) | ${(byLayer.get("Router (Rotas)") || []).length} | [modulos-js.md](./modulos-js.md#router-rotas) |`,
-    `| Store / Vuex (\`.js\`) | ${(byLayer.get("Store (Vuex)") || []).length} | [modulos-js.md](./modulos-js.md#store-vuex) |`,
+    `| ${t.layerVue} | ${vueInfos.length} | [${t.vueFile}](./${t.vueFile}) |`,
+    `| ${t.layerMiddleware} | ${(byLayer.get("middleware") || []).length} | [${t.jsFile}](./${t.jsFile}) |`,
+    `| ${t.layerRouter} | ${(byLayer.get("router") || []).length} | [${t.jsFile}](./${t.jsFile}) |`,
+    `| ${t.layerStore} | ${(byLayer.get("store") || []).length} | [${t.jsFile}](./${t.jsFile}) |`,
   ].join("\n");
 
-  return `# Documentação Técnica — Pauliceia 2.0
+  return `${t.langSwitch}
 
-> Catálogo gerado automaticamente a partir da análise estática de \`src/\` e \`package.json\`.
+# ${t.indexTitle}
 
-## Resumo da Arquitetura
+> ${t.indexNote}
 
-| Camada | Quantidade | Referência |
+## ${t.archTitle}
+
+| ${t.colLayer} | ${t.colCount} | ${t.colRef} |
 | --- | :---: | --- |
 ${summaryRows}
 
-## Scripts do Projeto
+## ${t.scriptsTitle}
 
 ${scriptsSection}
 `;
 }
 
-function generateVueDoc(vueInfos) {
+function generateVueDoc(vueInfos, t) {
   const grouped = groupBy(vueInfos, (item) => item.group);
   const toc = [...grouped.entries()]
     .map(([group, items]) => `- \`${group}\` (${items.length})`)
@@ -197,7 +280,7 @@ function generateVueDoc(vueInfos) {
   for (const [group, items] of grouped.entries()) {
     blocks.push(`## \`${group}\``);
     blocks.push(
-      "| Componente | Arquivo | Props | Eventos (`$emit`) | Métodos |",
+      `| ${t.colComp} | ${t.colFile} | ${t.colProps} | ${t.colEmits} | ${t.colMethods} |`,
       "| --- | --- | --- | --- | --- |"
     );
     for (const info of items) {
@@ -217,50 +300,58 @@ function generateVueDoc(vueInfos) {
     blocks.push("");
   }
 
-  return `# Componentes Vue
+  return `${t.vueLangSwitch}
 
-Total de componentes mapeados: **${vueInfos.length}**.
+# ${t.vueTitle}
 
-## Pastas
+${t.vueTotal(vueInfos.length)}
+
+## ${t.foldersTitle}
 ${toc}
 
 ${blocks.join("\n")}
 `;
 }
 
-function generateJsDoc(jsInfos) {
-  const order = ["Middleware / API", "Router (Rotas)", "Store (Vuex)", "Outros"];
-  const grouped = groupBy(jsInfos, (item) => item.layer);
+function generateJsDoc(jsInfos, t) {
+  const order = ["middleware", "router", "store", "other"];
+  const grouped = groupBy(jsInfos, (item) => item.layerKey);
   const blocks = [];
 
-  for (const layer of order) {
-    const items = grouped.get(layer);
+  for (const layerKey of order) {
+    const items = grouped.get(layerKey);
     if (!items || items.length === 0) continue;
 
-    blocks.push(`## ${layer}`);
+    blocks.push(`## ${t.layers[layerKey]}`);
     for (const info of items) {
       blocks.push(`### \`${info.filePath}\``);
-      if (info.doc) blocks.push(`- **Descrição:** ${info.doc}`);
+      if (info.doc) blocks.push(`- **${t.labelDesc}:** ${info.doc}`);
       if (info.vuexKeys.length > 0) {
         blocks.push(
-          `- **Estrutura Vuex:** ${info.vuexKeys.map((k) => `\`${k}\``).join(", ")}`
+          `- **${t.labelVuex}:** ${info.vuexKeys.map((k) => `\`${k}\``).join(", ")}`
         );
       }
       if (info.routes.length > 0) {
         blocks.push(
-          `- **Rotas:** ${info.routes.map((r) => `\`${r}\``).join(", ")}`
+          `- **${t.labelRoutes}:** ${info.routes.map((r) => `\`${r}\``).join(", ")}`
         );
       }
       if (info.functions.length > 0) {
         blocks.push(
-          `- **Funções/Métodos:** ${info.functions.map((f) => `\`${f}\``).join(", ")}`
+          `- **${t.labelFuncs}:** ${info.functions.map((f) => `\`${f}\``).join(", ")}`
         );
       }
       blocks.push("");
     }
   }
 
-  return `# Módulos JavaScript\n\nTotal de arquivos mapeados: **${jsInfos.length}**.\n\n${blocks.join("\n")}`;
+  return `${t.jsLangSwitch}
+
+# ${t.jsTitle}
+
+${t.jsTotal(jsInfos.length)}
+
+${blocks.join("\n")}`;
 }
 
 function main() {
@@ -271,24 +362,27 @@ function main() {
   const jsInfos = jsFiles.map(extractJsInfo);
 
   fs.mkdirSync(DOCS_DIR, { recursive: true });
-  fs.writeFileSync(
-    path.join(DOCS_DIR, "README.md"),
-    generateIndexDoc(vueInfos, jsInfos),
-    "utf8"
-  );
-  fs.writeFileSync(
-    path.join(DOCS_DIR, "componentes-vue.md"),
-    generateVueDoc(vueInfos),
-    "utf8"
-  );
-  fs.writeFileSync(
-    path.join(DOCS_DIR, "modulos-js.md"),
-    generateJsDoc(jsInfos),
-    "utf8"
-  );
+
+  for (const t of [I18N.en, I18N.pt]) {
+    fs.writeFileSync(
+      path.join(DOCS_DIR, t.indexFile),
+      generateIndexDoc(vueInfos, jsInfos, t),
+      "utf8"
+    );
+    fs.writeFileSync(
+      path.join(DOCS_DIR, t.vueFile),
+      generateVueDoc(vueInfos, t),
+      "utf8"
+    );
+    fs.writeFileSync(
+      path.join(DOCS_DIR, t.jsFile),
+      generateJsDoc(jsInfos, t),
+      "utf8"
+    );
+  }
 
   console.log(
-    `Documentação estática gerada em ${DOCS_DIR}/ (${vueFiles.length} componentes Vue, ${jsFiles.length} módulos JS).`
+    `Documentação multilíngue (EN / PT-BR) gerada em ${DOCS_DIR}/ (${vueFiles.length} componentes Vue, ${jsFiles.length} módulos JS).`
   );
 }
 
