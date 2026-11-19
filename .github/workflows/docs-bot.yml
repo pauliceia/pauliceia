@@ -56,6 +56,7 @@ jobs:
 
             Revise os arquivos em `docs/` antes de fazer o merge.
           branch: docs/auto-update
+          base: ${{ github.base_ref || github.ref_name }}
           delete-branch: true
           add-paths: |
             docs/
