@@ -1,0 +1,66 @@
+name: Docs Bot
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - "docs/**"
+  pull_request:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - "docs/**"
+  workflow_dispatch:
+    inputs:
+      target_path:
+        description: "Caminho específico para documentar (opcional, ex: src/views/components)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-docs:
+    if: >-
+      github.actor != 'github-actions[bot]' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate static documentation
+        run: node .github/scripts/generate-docs.mjs
+
+      - name: Create Pull Request with updated docs
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: atualiza documentação automaticamente"
+          title: "docs: atualização automática da documentação"
+          body: |
+            Atualização automática da documentação multilíngue (`EN` / `PT-BR`) em `docs/` gerada pelo **Docs Bot**:
+
+            - `docs/README.md` & `docs/README.pt-br.md`: visão geral da arquitetura por camada e scripts do `package.json`
+            - `docs/vue-components.md` & `docs/componentes-vue.md`: componentes `.vue` agrupados por pasta (props, eventos `$emit` e métodos)
+            - `docs/js-modules.md` & `docs/modulos-js.md`: módulos `.js` agrupados por camada (Middleware/API, Router e Vuex Store)
+
+            Revise as alterações antes de fazer o merge.
+          branch: docs/auto-update
+          base: ${{ github.base_ref || github.ref_name }}
+          delete-branch: true
+          add-paths: |
+            docs/
