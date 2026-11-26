@@ -154,6 +154,8 @@ import {
 
 import { CSV2JSON } from "@/views/assets/js/map/multiplegeocode";
 
+import { searchPlaces } from "@/views/assets/js/map/placesSearch";
+
 import { overlayGroupGeolocation } from "@/views/assets/js/map/overlayGroup";
 
 export default {
@@ -209,14 +211,7 @@ export default {
       this.multigeocoding = !this.multigeocoding;
     },
     querySearch(queryString, cb) {
-      let links = this.placesList;
-      let results = queryString
-        ? links.filter(
-            (link) =>
-              link.toLowerCase().indexOf(queryString.toLowerCase()) >= 0,
-          )
-        : links;
-      cb(results);
+      cb(searchPlaces(this.placesList, queryString));
     },
     handleSelect(item) {
       this.inputSearch = item;
@@ -254,8 +249,7 @@ export default {
       };
       reader.readAsText(event.target.files[0]);
     },
-    async visualizar() {      
-
+    async visualizar() {
       this._openFullScreen();
 
       let json = JSON.parse(this.csvjson);
@@ -280,8 +274,6 @@ export default {
           ", " +
           json[i][this.year];
 
-       
-
         try {
           let response = await ApiMap.geolocationOne(address);
 
@@ -303,8 +295,6 @@ export default {
               '], "confidence":' +
               response.data[1][0].confidence +
               "}";
-
-           
 
             let jsonAddress = JSON.parse(geom);
             let jsonSlice = json[i];
@@ -408,21 +398,25 @@ export default {
     async download() {
       try {
         // Verify geojson data exists
-        if (!this.geojson || !this.geojson.features || this.geojson.features.length === 0) {
+        if (
+          !this.geojson ||
+          !this.geojson.features ||
+          this.geojson.features.length === 0
+        ) {
           this.$message.error("Nenhum dado para baixar");
           return;
         }
-        
+
         const options = {
           folder: "myshapes",
           types: {
             point: this.fileName,
           },
         };
-        
+
         // Use zip() method to get the file data
         const zipResult = await shpwrite.zip(this.geojson, options);
-        
+
         if (zipResult) {
           // Convert Base64 string to Blob
           const binaryString = atob(zipResult);
@@ -431,7 +425,7 @@ export default {
             bytes[i] = binaryString.charCodeAt(i);
           }
           const blob = new Blob([bytes], { type: "application/zip" });
-          
+
           // Create download link
           const link = document.createElement("a");
           link.href = URL.createObjectURL(blob);
@@ -442,7 +436,6 @@ export default {
           URL.revokeObjectURL(link.href);
           this.$message.success("Download iniciado!");
         }
-        
       } catch (error) {
         console.error("Download error:", error);
         this.$message.error("Erro ao baixar arquivo: " + error.message);
